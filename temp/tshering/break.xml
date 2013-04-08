@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Break
+xmlns="http://www.tsheringML.com" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.tsheringML.com http://www.ruleml.org/temp/tshering/TsheringML-local.xsd"
+kind = "cake"
+>
+  <Date>2006-08-06</Date>
+  <Attendees>
+	 <name>Tshering Dema</name>
+	 <name>Jie Li</name>
+	 <name>David Hirtle</name>
+  </Attendees>
+  <!--<Organizer>Sandy Liu</Organizer>-->
+</Break>

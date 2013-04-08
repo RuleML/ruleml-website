@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML frames.
+			File: frame_module.xsd
+			Version: 0.91
+			Last Modification: 2006-07-17
+
+			See http://www.daml.org/services/swsl/report/swsl/#ruleml-frames for more details.
+			
+			This module declares the following RuleML elements:
+			* Set
+			* InstanceOf
+			* SubclassOf
+			* Signature
+			* Get
+			* SlotProd
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Set ***
+		Set-valued result as in t[m -> {v1,...,vk}].
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Set
+
+		content model: ( (Ind|Data|Skolem|Var|Reify)* )
+	-->
+      <xs:attributeGroup name="Set.attlist"/>
+	<xs:group name="Set.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Set.type">
+		<xs:group ref="Set.content"/>
+		<xs:attributeGroup ref="Set.attlist"/>
+	</xs:complexType>
+	<xs:element name="Set" type="Set.type"/>
+
+	<!--
+		*** InstanceOf ***
+		Class membership molecule.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-InstanceOf
+
+		content model: ( (Ind|Data|Skolem|Var|Reify), (Ind|Data|Skolem|Var|Reify) )
+	-->
+      <xs:attributeGroup name="InstanceOf.attlist"/>
+	<xs:group name="InstanceOf.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="InstanceOf.type">
+		<xs:group ref="InstanceOf.content"/>
+		<xs:attributeGroup ref="InstanceOf.attlist"/>
+	</xs:complexType>
+	<xs:element name="InstanceOf" type="InstanceOf.type"/>
+
+	<!--
+		*** SubclassOf ***
+		Subclass molecule.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-SubclassOf
+
+		content model: ( (Ind|Data|Skolem|Var|Reify), (Ind|Data|Skolem|Var|Reify) )
+	-->
+      <xs:attributeGroup name="SubclassOf.attlist"/>
+	<xs:group name="SubclassOf.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="SubclassOf.type">
+		<xs:group ref="SubclassOf.content"/>
+		<xs:attributeGroup ref="SubclassOf.attlist"/>
+	</xs:complexType>
+	<xs:element name="SubclassOf" type="SubclassOf.type"/>
+
+	<!--
+		*** Signature ***
+		Signature molecule.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Signature
+
+		content model: ( oid, (op|Con|Data|Skolem|Var|Reify|Hterm)?, slot* )
+	-->
+      <xs:attributeGroup name="Signature.attlist"/>
+	<xs:group name="Signature.content">
+		<xs:sequence>
+			<xs:element ref="oid"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="op" type="op-hterm.type"/>				
+				<xs:group ref="op-hterm.content"/>
+			</xs:choice>
+			<xs:element name="slot" type="slot-frame.type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Signature.type">
+		<xs:group ref="Signature.content"/>
+		<xs:attributeGroup ref="Signature.attlist"/>
+	</xs:complexType>
+	<xs:element name="Signature" type="Signature.type"/>
+
+	<!--
+		*** Get ***
+		Slot access primitive.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Get		
+
+		content model: ( oid, SlotProd )
+	-->
+      <xs:attributeGroup name="Get.attlist"/>
+	<xs:group name="Get.content">
+		<xs:sequence>
+			<xs:element ref="oid"/>
+			<xs:element ref="SlotProd"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Get.type">
+		<xs:group ref="Get.content"/>
+		<xs:attributeGroup ref="Get.attlist"/>
+	</xs:complexType>
+	<xs:element name="Get" type="Get.type"/>
+
+	<!--
+		*** SlotProd ***
+		Polyadic path expressions element.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-SlotProd		
+
+		content model: ( (Ind|Data|Skolem|Var|Reify)+ )
+	-->
+      <xs:attributeGroup name="SlotProd.attlist"/>
+	<xs:group name="SlotProd.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="SlotProd.type">
+		<xs:group ref="SlotProd.content"/>
+		<xs:attributeGroup ref="SlotProd.attlist"/>
+	</xs:complexType>
+	<xs:element name="SlotProd" type="SlotProd.type"/>
+
+</xs:schema>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.tsheringML.com" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.tsheringML.com"
+>
+
+	<xs:redefine schemaLocation="TsheringML.xsd">
+
+		<xs:group name="Break.content">
+			<xs:sequence>
+				<xs:group ref="Break.content"/>
+				<xs:element ref="Organizer"/>	
+			</xs:sequence>
+		</xs:group>
+		
+	</xs:redefine>
+	
+	<xs:attributeGroup name="Organizer.attlist"/>
+    <xs:group name="Organizer.content">	
+	    <xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Organizer.type" mixed = "true">
+		<xs:group ref="Organizer.content"/>
+		<xs:attributeGroup ref="Organizer.attlist"/>
+	</xs:complexType>
+	<xs:element name="Organizer" type="Organizer.type"/>
+	
+	
+	<!--
+	
+	<David></David>
+	
+	==>
+	
+	<David/>
+	
+	-->
+</xs:schema>

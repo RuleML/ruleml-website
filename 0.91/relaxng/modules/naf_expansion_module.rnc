@@ -1,0 +1,70 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Weak Negation (Negation as Failure) Formulas" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, negation, weak, formula" ]
+dc:description [ "The expansion module for weak negation formulas." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Naf.Node.def | weak.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <Naf>
+#            * <weak>
+# This module also declares the following RuleML choice patterns:
+#            * NegationAsFailure-node.choice
+#            * NafFormula.choice
+
+## an extension point for alternate spellings and internationalization of the weak negation tag name.  
+NegationAsFailure-node.choice |= Naf.Node.def
+Naf.Node.def =
+    # A "by default" negation of a logical atom (<Atom>) (i.e. "weak" negation or negation as failure). 
+    # The negated atom may be optionally surrounded by a <weak> role.
+    #        See http://www.ruleml.org/1.0/glossary/#gloss-Naf
+    element Naf { (Naf-datt.choice & reNaf.attlist), Naf.header, Naf.main }
+# The attribute list of the weak negation element will accept a scoped closure attribute at full first-order logic.
+reNaf.attlist &= mapClosure-att-fo.choice?
+
+## Negation As Failure formulas optionally accept the header pattern of general formulas.
+Naf.header &= CompoundFormula.header?
+# For the declaration of the compound formula header, see the con/disjunction module (andor_module).
+
+## Negation As Failure formulas contain a single role.
+Naf.main |= weak-edge.choice
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the weak tag name in weak negations. 
+weak-edge.choice |= weak.edge.def
+weak.edge.def =
+    # A role used for negation as failure (<Naf>).
+    #        See http://www.ruleml.org/1.0/glossary/#gloss-weak
+    element weak { weak.content }
+
+## The negation role contains a single formula. 
+weak.content |= NafFormula.choice
+
+## formulas allowed to belong to weak negation formulas include atomic forumulas. 
+NafFormula.choice |=
+    SimpleFormula-node.choice
+    | And-fo-node.choice
+    | Or-fo-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-fo-node.choice
+    | Forall-fo-node.choice
+    | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+Node.choice |= Naf.Node.def
+edge.choice |= weak.edge.def
+# 
+
+
+

@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><title>RuleML Initial Steps</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head><body bgcolor="#EEEEEE">
+    <center>
+      <big>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+--&gt;</pre></b></td></tr></table>
+        <table bgcolor="#FFCCCC" border="1" cellpadding="5"><tr><td>R u l e M L</td></tr></table>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+&lt;--</pre></b></td></tr></table>
+      </big>
+      <br> <br>
+
+<h1>RuleML Initial Steps</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a></h2>
+<h2>2002-08-22: Version 1.0</h2>
+    </center>
+
+<br> <br> <br>
+
+<p>
+Some initial steps taken by the RuleML Initiative have been
+to structure the <i>area of rule markup</i>,
+to raise issues and identify tasks, and
+to propose tentative rule tags/attributes.
+</p>
+  <table align="center" border="0" cellpadding="0" cellspacing="7" width="100%"><tr><td bgcolor="#FFFFFF" valign="TOP" width="30%"></td><td bgcolor="#FFFFFF" valign="TOP" width="40%"></td><td bgcolor="#FFFFFF" valign="TOP" width="30%"></td></tr><tr><td bgcolor="#FFCCCC" valign="TOP" width="30%"><h2>Contents</h2><ul><li><a href="#Steps Towards RuleML">Steps Towards RuleML</a></ul></td><td align="left" valign="TOP" width="40%"></td><td bgcolor="#CCCCFF" valign="TOP" width="30%"></td></tr></table><h2><a name="Steps Towards RuleML">Steps Towards RuleML</a></h2>
+
+<p>
+<ol>
+  <li>Web research: What related work exists?
+Preliminary results are collected in this page.
+Who else should be involved?
+For example, members of the
+<a href="http://www.ghgcorp.com/clips/CLIPS.html">CLIPS</a>/<a href="http://herzberg1.ca.sandia.gov/jess/">Jess</a>
+(forward rules),
+<a href="http://archive.comlab.ox.ac.uk/logic-prog.html">Prolog</a>
+(backward rules),
+and related AI-language communities already
+expressed their interest.
+Feel free to <a href="index.html#Contact">contact</a> us, send URLs, etc.
+  
+  <li>Proposal comparison: Which ones cover what kinds of rules?
+Where are overlaps between the proposals? The result should be a
+'family tree' of rule markup languages, preparing rule translations,
+language revisions, etc.
+For exemplary tag comparisons by alignment see sections 3 and 4 of
+<a href="http://www.dsic.upv.es/~wflp2000/paper25.ps.gz">Markup Languages for Functional-Logic Programming</a>.
+  
+  <li>DTD translation: Can (revised) proposals of participants' rule
+languages (often described by DTDs) be
+(<a href="http://www.w3.org/TR/xslt">XSLT</a>-)translated into each other?
+In which cases will only partial translations be possible?
+  
+  <li>Markup harmonization: If different XML tag or attribute names
+have been used for the same rule parts, which names should be chosen in RuleML?
+The current tentative RuleML kernel comprised the tags
+<b><tt>&lt;imp&gt;</tt></b> ... <b><tt>&lt;/imp&gt;</tt></b> for derivation rules with
+unspecified use direction
+(possibly employing the 'attributed'
+<b><tt>&lt;imp direction=&quot;forward&quot;&gt;</tt></b> ... <b><tt>&lt;/imp&gt;</tt></b>,
+<b><tt>&lt;imp direction=&quot;backward&quot;&gt;</tt></b> ... <b><tt>&lt;/imp&gt;</tt></b>
+and
+<b><tt>&lt;imp direction=&quot;bidirectional&quot;&gt;</tt></b> ... <b><tt>&lt;/imp&gt;</tt></b>
+for the specified use directions),
+<b><tt>&lt;_head&gt;</tt></b> ... <b><tt>&lt;/_head&gt;</tt></b>
+and
+<b><tt>&lt;_body&gt;</tt></b> ... <b><tt>&lt;/_body&gt;</tt></b>
+for the rule <b><tt>_head</tt></b> ('then'-part, conclusion, consequent)
+and <b><tt>_body</tt></b> ('if'-part, premise, antecedent),
+and
+<b><tt>&lt;var&gt;</tt></b> ... <b><tt>&lt;/var&gt;</tt></b>
+for rule variables.
+Besides the top-level rule elements
+<b><tt>_head</tt></b> and <b><tt>_body</tt></b>,
+further ones may be needed such as <b><tt>_trigger</tt></b> conditions
+for forward rules and
+<b><tt>_exception</tt></b> (unless) conditions
+for <a href="#Non-Monotonic">non-monotonic logics</a>.
+There now exists an initial RuleML <a href="index.html#Design">design</a>
+and a Version 0.8 system of <a href="index.html#DTDs-Schemas">DTDs</a>
+for basic RuleML sublanguages.
+  
+  <li>Rule syntaxes: Rules with 1 <i>conc</i>lusion and
+<i>N</i> conjoined <i>prem</i>ises could be written equivalently as
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+or as
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>.
+Should we also allow rules with <i>M</i>&gt;1 conjoined <i>conc</i>lusions, <b><tt>&lt;and&gt;</tt></b> <i>conc1</i> ... <i>concM</i> <b><tt>&lt;/and&gt;</tt></b>, as for forward rules (rather than the disjoined <b><tt>&lt;or&gt;</tt></b> <i>conc1</i> ... <i>concM</i> <b><tt>&lt;/or&gt;</tt></b>
+for Gentzen sequents)? They could be written equivalently as
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>conc1</i> ... <i>concM</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+or as
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>conc1</i> ... <i>concM</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>.
+<a name="Example-RuleML"></a>
+Here is an (<a href="#XHTML-Paragraph">XHTML-<b><tt>p</tt></b>-containing</a>, semiformal) <a href="#Example-English">example</a>
+with <i>M</i>=<i>N</i>=1, in the
+first of the two equivalent syntaxes:
+<b><tt>&lt;imp&gt; &lt;_body&gt; &lt;p&gt;You want to review rule principles&lt;/p&gt; &lt;/_body&gt;
+&lt;_head&gt; &lt;p&gt;You may look at
+&lt;a href=&quot;http://www.cs.nott.ac.uk/~sxp/ES3/index.htm&quot;&gt;Rule-Based Expert Systems&lt;/a&gt;&lt;/p&gt; &lt;/_head&gt; &lt;/imp&gt;</tt></b>.
+Once in this semiformal markup, the example could be refined into
+more and more formal markups, up to a rule in some &quot;logic of recommendation&quot;.
+  
+  <li>Rule modules: A rule module, set, package, or base
+can be enclosed by explicit tags such as
+<b><tt>&lt;rulebase&gt;</tt></b> ... <b><tt>&lt;/rulebase&gt;</tt></b>.
+Its elements would constitute an ordered or unordered set of
+<b><tt>rule</tt></b>s.
+Attributes could specify this and
+<a href="#Rule-Semantics">additional properties</a>
+of a <b><tt>rulebase</tt></b> besides giving it a name, version number, etc.
+  
+  <li>Rule application: How should rules be called?
+Will we need
+<b><tt>&lt;iterate&gt;</tt></b> <i>rulebase-to-be-iterated</i> <b><tt>&lt;/iterate&gt;</tt></b>
+and
+<b><tt>&lt;goal&gt;</tt></b> <i>query-to-be-proved</i> <b><tt>&lt;/goal&gt;</tt></b>
+'statements' for forward and backward rules?
+Or should, e.g., <b><tt>goal</tt></b> be identified with <b><tt>_body</tt></b>?
+Besides such deduction rules,
+will certain rules also be called implicitly for
+checking integrity constraints?
+  
+  <li>Rule expressiveness: What should be supported in the
+classical logic spectrum
+of propositional, Horn, negated-premise, implicational-premise,
+full-first-order, and higher-order rules?
+<a name="Non-Monotonic"></a>
+Should also non-classical logics with non-monotonicity
+(e.g., negation as failure) or
+rule prioritizing (e.g., Prolog-like cuts or control/meta rules) be supported?
+Alternatively, can we develop a
+<a href="http://lists.w3.org/Archives/Public/www-rdf-logic/2000Sep/0007.html">new logic for the Web</a>,
+which is open, uncertain, and paraconsistent?
+Besides such (extended) logic rules, what kinds of transformation rules
+should be supported? A deductive-transformational bridge could be
+directed conditional equations as discussed in the
+<a href="http://www.informatik.uni-kiel.de/~mh/curry/mailinglist.html">Curry Mailing List</a>.
+Besides the easier <i>derivation</i> or state-preserving ('read-only') rules,
+what should be supported in the
+spectrum of <i>reaction</i> rules, from state-changing ('write-enabled') rules that
+assert and retract instances/facts or rules,
+to planning rules that generate action sequences effecting changes in some
+(modeled or real) environment,
+to reactive rules that are directly coupled to (softbot/robot) effectors
+operating on the (virtual/physical) world?
+  
+  <li><a name="Rule-Semantics"></a>Rule semantics:
+Should we try to fix some (declarative) rule semantics?
+Should we incorporate, on the <b><tt>rulebase</tt></b> level,
+(operational) semantics attributes
+such as for
+conflict resolution (textual vs. specificity order,
+&quot;don't care&quot; vs. &quot;don't know&quot; non-determinism) or
+search strategies (backtracking, iterative deepening,
+best-first search),
+or should we leave most of these issues to the receivers of rulebases?
+For a related discussion of deductive-transformational systems see section 7 of
+<a href="http://www.dsic.upv.es/~wflp2000/paper25.ps.gz">Markup Languages ..</a>.
+  
+  <li>RDF rules: Should we try to avoid
+rule markup/inferencing to diverge into
+<a href="http://www.w3.org/RDF/">Resource Description Framework</a>
+applications and other XML applications?
+E.g., should a sequential conjunction of <i>N</i>&gt;1 <i>prem</i>ises
+of a rule
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+be represented with binary relations via RDF's
+<b><tt>Seq</tt></b>uence <a href="http://www.w3.org/TR/REC-rdf-syntax/#containers">container</a>?
+Discussions of this and many more &quot;RDF-logic&quot; issues started with
+<a href="http://lists.w3.org/Archives/Public/www-rdf-logic/2000Sep/0001.html">RDF and Logic Programming</a>.
+There now is a typical example
+(<a href="http://www.ruleml.org/exa/0.8/creator.ruleml">creator.ruleml</a>,
+<a href="http://www.ruleml.org/exa/0.8/creator.ruleml.txt">creator.ruleml.txt</a>)
+and a DTD for RDF triples
+(<a href="http://www.ruleml.org/dtd/0.8/ruleml-urcbindatagroundfact.dtd">ruleml-urcbindatagroundfact.dtd</a>,
+<a href="http://www.ruleml.org/dtd/0.8/ruleml-urcbindatagroundfact.dtd.txt">ruleml-urcbindatagroundfact.dtd.txt</a>).
+  
+  <li>Ontology coupling: How are rules best coupled to (the taxonomy part of)
+an ontology?
+The <a href="http://www.cs.umd.edu/projects/plus/SHOE/">SHOE language</a>
+appears to be the first to have achieved such a coupling on the Web.
+Building on this,
+<a href="http://www.daml.org/">DAML</a> and
+<a href="http://www.ontoknowledge.org/oil/">OIL</a>
+may lead the way on how to achieve
+such a coupling, starting from the ontology side of the dichotomy.
+  
+  <li>Rule validation: Which XML tools can we use for rule validation?
+Conversely, which static-analysis tools for the validation and verification
+of rules could be of interest to the XML community at large? One candidate
+may be cross-referencing/call-graph programs.
+This can be seen as
+complementing rule induction and the markup of its results, as supported by
+<a href="http://www.dmg.org/html/assocrules.html">PMML's association rules</a>.
+  
+  <li>Rule compilation: Should we classify rules according to the compilation
+targets that can be used for executing them more efficiently,
+e.g. Rete networks, decisions trees, WAM code, etc.?
+We could employ markup languages also for these intermediate and
+low-level rule representations.
+  
+  <li>XML stylesheets:
+What (<a href="http://www.w3.org/TR/xslt">XSLT</a>) stylesheets
+should be used for external (browser)
+presentations of rules
+(cf. <a href="http://www.relfun.org/rfml/">RFML</a>'s
+<a href="http://www.relfun.org/rfml/rfmlsp.xsl">stylesheet</a>)?
+Which one should be the standard presentation, if any?
+Should some preprocessing, with XSLT, transform certain restricted rule forms
+into XSLT rules?
+  
+  <li><a name="XHTML-Paragraph"></a>Semiformal rules: How should natural-language rules be incorporated
+into RuleML? Within
+<b><tt>&lt;_head&gt;</tt></b> ... <b><tt>&lt;/_head&gt;</tt></b> conclusions
+and
+<b><tt>&lt;_body&gt;</tt></b> ... <b><tt>&lt;/_body&gt;</tt></b> premises,
+we could, <a href="#Example-RuleML">as illustrated</a>, use <a href="http://www.w3.org/TR/xhtml1/">XHTML</a>'s
+<b><tt>p</tt></b>aragraph tags with informal content as an alternative to
+formal-language tags
+(the RuleML DTD/Schema would have to accommodate this via something like
+&quot;<b><tt>p | formala</tt></b>&quot;).
+Should we allow informal-formal mixtures not only within rulebases
+but also within individual rules
+(say, one premise is still expressed in English, while all other
+rule parts are formalized in Horn logic)?
+How can we use XML's (natural) language encodings for the natural languages
+used in semiformal rules, or even in (relation, constant, variable names of)
+formal rules?
+  
+  <li>Rule documents: On the level of entire XML documents,
+how do we best mix rulebases with
+(<a href="http://www.w3.org/TR/xhtml1/">XHTML</a>) texts?
+How can rulebases be made '(inter)active' in such mixed documents,
+with users running the rules while reading the accompanying texts?
+This would involve declaring both RuleML and XHTML
+<a href="http://www.w3.org/TR/REC-xml-names/">namespaces</a>
+as well as a suitable plug-in for a <a href="index.html#Engines">rule engine</a>.
+  
+</ol>
+</p>
+<br>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2002-08-22
+
+<br><br><br>
+
+      <a name="Practice-Preach"></a><small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/insteps.xml">insteps.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/insteps.xml.txt">insteps.xml.txt</a>);
+      <br>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a href="http://xml.apache.org/cocoon/index.html" target="_self"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"></a></xhtml>
+  </body></html>
+<!-- This page was served in 1946 milliseconds by Cocoon 1.8 -->

@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+	<!-- based on 2006-08-02 meeting with Harold -->
+
+
+	<!--
+		*** RuleML ***
+		The n-ary top-level of a RuleML document.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-RuleML
+
+		content model:
+		( oid?, (Assert | Query | Protect)* )
+	-->
+	<xs:attributeGroup name="RuleML.attlist"/>
+	<xs:group name="RuleML.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Assert"/>		
+			</xs:choice>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="RuleML.type">
+		<xs:group ref="RuleML.content"/>
+		<xs:attributeGroup ref="RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="RuleML" type="RuleML.type"/>
+
+	
+	<!--
+		*** Assert ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		asserted, making an 'implicit <And>' assumption.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Assert 
+
+		content model:
+		( oid?, (formula | Atom | Implies | Equivalent | Forall)* )
+	-->
+	<xs:attributeGroup name="Assert.attlist">
+	</xs:attributeGroup>	
+	<xs:group name="Assert.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<!-- for simplicity, assume testing (as if in body of a rule) -->
+				<xs:element name="Equal" type="Equal-testing.type"/>
+				<!-- <xs:element name="Equal" type="Equal-defining.type"/> -->
+			</xs:choice>	
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Assert.type">
+		<xs:group ref="Assert.content"/>
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:complexType>
+	<xs:element name="Assert" type="Assert.type"/>
+	
+<!--
+	with Equal-testing above, we get:
+	
+	Schema representation errors
+	Detected during instance validation
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:114:5: Invalid: illegal redeclaration of {http://www.ruleml.org/0.91/xsd}:Expr
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:112:4: Invalid: illegal redeclaration of {http://www.ruleml.org/0.91/xsd}:Fun
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:121:2: Invalid: non-deterministic content model for type Expr.type: {http://www.ruleml.org/0.91/xsd}:Fun/{http://www.ruleml.org/0.91/xsd}:Fun
+	
+-->
+
+<!--
+	with Equal-defining above, we get:
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:144:5: Invalid: illegal redeclaration of {http://www.ruleml.org/0.91/xsd}:Expr
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:142:4: Invalid: illegal redeclaration of {http://www.ruleml.org/0.91/xsd}:Fun
+
+	http://www.ruleml.org/temp/cs-attributes-4.xsd:151:2: Invalid: non-deterministic content model for type Expr.type: {http://www.ruleml.org/0.91/xsd}:Fun/{http://www.ruleml.org/0.91/xsd}:Fun
+		
+-->
+
+	<xs:attributeGroup name="Equal.attlist"/>
+	<xs:group name="Equal-testing.content">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="Expr"/>
+					<xs:element ref="Ind"/>
+					<xs:element ref="Data"/>
+				</xs:choice>
+				<xs:choice>
+					<xs:element ref="Expr"/>
+					<xs:element ref="Ind"/>
+					<xs:element ref="Data"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Equal-defining.content">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="lhs" type="lhs-interpreted.type"/>
+				<xs:element ref="rhs"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Equal-testing.type">
+		<xs:group ref="Equal-testing.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Equal-defining.type">
+		<xs:group ref="Equal-defining.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	
+	
+	<xs:attributeGroup name="Expr.attlist"/>
+	<xs:group name="Expr.content">
+		<xs:choice>
+			<xs:group ref="Expr-interpreted.extend"/>
+			<xs:group ref="Expr-uninterpreted.extend"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Expr-uninterpreted.content">
+		<xs:choice>
+			<xs:group ref="Expr-uninterpreted.extend"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Expr-interpreted.content">
+		<xs:choice>
+			<xs:group ref="Expr-interpreted.extend"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Expr-interpreted.extend">
+		<xs:sequence>
+			<xs:element name="Fun" type="Fun-interpreted.type"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Expr"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<!-- other terms omitted -->
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Expr-uninterpreted.extend">
+		<xs:sequence>
+			<xs:element name="Fun" type="Fun-uninterpreted.type"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Expr" type="Expr-uninterpreted.type"/>				
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<!-- other terms omitted -->
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Expr.type">
+		<xs:group ref="Expr.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>
+	<!-- used to enforce passive-only in passive -->
+	<xs:complexType name="Expr-uninterpreted.type">
+		<xs:group ref="Expr-uninterpreted.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>
+	<!-- used in Equal-defining -->
+	<xs:complexType name="Expr-interpreted.type">
+		<xs:group ref="Expr-interpreted.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>
+	<xs:element name="Expr" type="Expr.type"/>
+	
+	
+	<xs:attributeGroup name="Fun-uninterpreted.attlist">
+		<xs:attributeGroup ref="in-uninterpreted.attrib"/>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="Fun-interpreted.attlist">
+		<xs:attributeGroup ref="in-interpreted.attrib"/>
+	</xs:attributeGroup>	
+	<xs:attributeGroup name="Fun-either.attlist">
+		<xs:attributeGroup ref="in.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Fun.content">
+            <xs:sequence/>
+      </xs:group>
+	<xs:complexType name="Fun-uninterpreted.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-uninterpreted.attlist"/>
+	</xs:complexType>		
+	<xs:complexType name="Fun-interpreted.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-interpreted.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="Fun-either.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-either.attlist"/>
+	</xs:complexType>
+	
+	
+	<xs:attributeGroup name="in-uninterpreted.attrib">
+		<xs:attribute name="in" use="optional" default="no"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="in-interpreted.attrib">
+		<xs:attribute name="in" use="optional" default="yes"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="yes"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="in.attrib">
+		<xs:attribute name="in" use="optional" default="semi">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="semi"/>				
+					<xs:enumeration value="yes"/>
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!-- ############################################################# -->
+
+	<xs:attributeGroup name="lhs.attlist"/>
+	<xs:group name="lhs.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Expr"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<!-- other terms omitted -->
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="lhs-interpreted.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Expr" type="Expr-interpreted.type"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<!-- other terms omitted -->
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="lhs.type">
+		<xs:group ref="lhs.content"/>
+		<xs:attributeGroup ref="lhs.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="lhs-interpreted.type">
+		<xs:group ref="lhs-interpreted.content"/>
+		<xs:attributeGroup ref="lhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="lhs" type="lhs.type"/>
+	
+	<xs:attributeGroup name="rhs.attlist"/>
+	<xs:group name="rhs.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Expr"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<!-- other terms omitted -->
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="rhs.type">
+		<xs:group ref="rhs.content"/>
+		<xs:attributeGroup ref="rhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="rhs" type="rhs.type"/>
+
+	<!-- ############################################################# -->
+	
+	
+	<!--
+		*** Ind ***
+		An individual constant, as in predicate logic, which can also be considered to
+		be a fixed argument like RDF resources.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Ind
+		
+		content model: (#PCDATA)
+	-->
+       <xs:attributeGroup name="Ind.attlist">
+       </xs:attributeGroup>
+	<xs:group name="Ind.content">
+		<xs:sequence/>
+	</xs:group>	
+	<xs:complexType name="Ind.type" mixed="true">
+		<xs:group ref="Ind.content"/>
+		<xs:attributeGroup ref="Ind.attlist"/>
+	</xs:complexType>
+	<xs:element name="Ind" type="Ind.type"/>
+
+	<!--
+		*** Data ***
+		A fixed argument like RDF literals.  It may be optionally associated with an XML Schema
+		built-in datatype (see http://www.w3.org/TR/xmlschema-2/#built-in-datatypes) using the
+		xsi:type attribute.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Data
+		
+		content model: (#PCDATA) [optionally datatyped]
+	-->
+	<xs:element name="Data" type="xs:anySimpleType"/>
+	
+	
+</xs:schema>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hohornlog.xsd">
+
+<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+
+<Assert mapClosure="universal">
+
+
+		<!-- variables over function symbols -->
+
+	    <Hterm>
+	       <op><Var>X</Var></op>
+	       <Con>a</Con>
+	       <Var>Y</Var>
+	    </Hterm>
+
+	    <Hterm>
+	       <op><Var>X</Var></op>
+	       <Con>a</Con>
+	       <Hterm>
+	          <op><Var>Y</Var></op>
+	          <Var>X</Var>
+	       </Hterm>
+	    </Hterm>
+
+
+
+		<!-- parameterized function symbols -->
+
+
+	    <Hterm>
+	       <op>
+	          <Hterm>
+	             <op><Con>f</Con></op>
+	             <Var>X</Var>
+	             <Con>a</Con>
+	          </Hterm>
+	       </op>
+	       <Con>b</Con>
+	       <Hterm>
+	          <op><Var>X</Var></op>
+	          <Con>c</Con>
+	       </Hterm>
+	    </Hterm>
+
+
+
+	    <Hterm>
+	       <op>
+	          <Hterm>
+	             <op><Var>Z</Var></op>
+	             <Var>X</Var>
+	             <Con>a</Con>
+	          </Hterm>
+	       </op>
+	       <Con>b</Con>
+	       <Hterm>
+	          <op>
+	             <Hterm>
+                        <op><Var>X</Var></op>
+                        <Var>Y</Var>
+	             </Hterm>
+	          </op>
+	          <Con>d</Con>
+	       </Hterm>
+	    </Hterm>
+	  
+
+	    <Hterm>
+	       <op>
+	          <Hterm>
+	             <op>
+                        <Hterm>
+                           <op><Var>Z</Var></op>
+                           <Con>f</Con>
+                        </Hterm>
+	             </op>
+	             <Con>g</Con>
+	             <Con>a</Con>
+	          </Hterm>
+	       </op>
+	       <Con>p</Con>
+	       <Var>X</Var>
+	    </Hterm>
+	  
+
+
+
+
+					<Hterm>
+						<Con uri="test">unequal</Con>
+      					<slot><Con>label</Con><Con>an example fact</Con></slot>
+						<resl><Var>test</Var></resl>
+					</Hterm>
+
+
+
+
+				<Equivalent>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+				</Equivalent>
+				
+				<Forall>
+					<Var>x</Var>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+
+				</Forall>
+
+
+
+
+
+		<Implies>
+			<head>
+					<Hterm>
+						<op>
+							<Con>friend</Con>
+						</op>
+						<slot>
+							<Con>t</Con>
+							<Con>b</Con>
+						</slot>
+						<Var>x</Var>
+						<Var>y</Var>
+						<Con>Steph</Con>
+					</Hterm>
+		
+			</head>
+			<body>
+				<And>
+				<Or>
+				<Hterm>
+					<Con>unequal</Con>
+					<Var>x</Var>
+					<Var>person</Var>
+				</Hterm>
+				</Or>
+				</And>
+
+			</body>
+		</Implies>
+
+
+
+<Implies>
+  <head>
+     <Hterm>
+      <op><Con>friend</Con></op>
+      <slot><Con>t</Con><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Con>Steph</Con>
+     </Hterm>
+  </head>
+  <body>
+    <And>
+    <Hterm>
+      <op><Con>friend</Con></op>
+      <Con>Jane</Con>
+      <Con>Joan</Con>
+      <Con>Jack</Con>
+      <Var>y</Var>
+      <Con>Frank</Con>
+      <slot><Con>yar</Con><Hterm>
+          <op><Con>constructor</Con></op>
+		<Con>yar2</Con><Var>c</Var>
+        </Hterm></slot>
+    </Hterm>
+    </And>
+  </body>
+</Implies>
+
+</Assert>
+
+</RuleML>

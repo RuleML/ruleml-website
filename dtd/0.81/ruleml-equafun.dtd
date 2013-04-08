@@ -1,0 +1,70 @@
+<!-- An XML DTD for a (Flat) Equational-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2002-07-10 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % equalog.module "INCLUDE">
+
+
+<!-- Originally, a flat equational logic (without function nestings) was defined here. -->
+<!-- Now, our nested equational logic requires an atom version, called 'atomv', -->
+<!-- with embedded applications, generalizing the flat atoms defined earlier; -->
+<!-- analogously, a nano version with embedded applications is called 'nanov'. -->
+<!-- We hence need two kinds of equational formulas, 'eq' and 'eqv', as well as -->
+<!-- two kinds of conjunctions, 'and' and 'andv'. You can still do flatting, -->
+<!-- which may now use 'eq' or 'eqv' variables. The 'v' always stands for 'by value' -->
+
+
+<![%equalog.module;[
+
+<!-- an expression is usable within equational formulas -->
+<!-- expr uses ind, var, or cterm terms or nano formulas -->
+<!-- exprv also uses nanov formulas -->
+
+<!ENTITY % expr "(ind | var | cterm | nano)">
+<!ENTITY % exprv "(ind | var | cterm | nano | nanov)">
+
+]]>
+
+
+<!ENTITY % datalog-and-hornlog.module "IGNORE">
+
+<!ENTITY % hornfun SYSTEM "ruleml-hornfun.dtd">
+%hornfun;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- _body role is usable within 'imp' rules -->
+<!-- _body uses some atomic formula, some equational formula, or some 'and' -->
+<!-- 'eq' in head and body permits an equational logic -->
+
+<!ELEMENT _body (atom | atomv | eq | eqv | and | andv)>
+
+
+<!-- an 'and' is usable within a body -->
+<!-- and uses zero or more atomic or equational formulas -->
+
+<!ELEMENT and ((atom | eq)*)>
+
+
+<!-- an 'andv' is usable within a body -->
+<!-- and uses zero or more atomic formulas or atomic 'by-value' formulas, -->
+<!-- or equational formulas or equational 'by-value' formulas -->
+
+<!ELEMENT andv ((atom | atomv | eq | eqv)*)>
+
+
+
+<!-- an 'eq' is usable within a head, a body, and an 'and' -->
+<!-- and uses two exprs -->
+<!-- an 'eqv' is usable within a body, and an 'andv' -->
+<!-- and uses two exprvs -->
+
+<!ELEMENT eq (%expr;, %expr;)>
+<!ELEMENT eqv (%exprv;, %exprv;)>

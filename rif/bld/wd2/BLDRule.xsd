@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+ <xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: BLDRule.xsd,v 0.8 2008-04-09 dhirtle/hboley">
+ 
+  <xs:annotation>
+    <xs:documentation>
+    This is the XML schema for the Rule Language as defined by
+    Working Draft 2 of the RIF Basic Logic Dialect.
+    
+    The schema is based on the following EBNF for the RIF-BLD Rule Language:
+  
+  Document ::= Group
+  Group    ::= 'Group' IRIMETA? '(' (RULE | Group)* ')'
+  IRIMETA  ::= Frame
+  RULE     ::= 'Forall' Var+ '(' CLAUSE ')' | CLAUSE
+  CLAUSE   ::= Implies | ATOMIC
+  Implies  ::= ATOMIC ':-' FORMULA
+    
+    Note that this is an extension of the syntax for the RIF-BLD Condition Language (BLDCond.xsd).
+    </xs:documentation>
+  </xs:annotation>
+ 
+  <!-- The Rule Language includes the Condition Language-->
+  <xs:include schemaLocation="BLDCond.xsd"/>
+ 
+  <xs:element name="Document">
+    <!--
+  Document ::= Group
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Group"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Group">
+    <!--
+  Group    ::= 'Group' IRIMETA? '(' (RULE | Group)* ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="meta" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="sentence" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="meta">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="IRIMETA">
+    <!--
+  IRIMETA  ::= Frame
+    -->
+    <xs:sequence>
+      <xs:element ref="Frame"/>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:element name="sentence">
+   <xs:complexType>
+     <xs:choice>
+       <xs:element ref="Group"/>
+       <xs:group ref="RULE"/>
+     </xs:choice>
+   </xs:complexType>
+ </xs:element>
+  
+  <xs:group name="RULE">
+    <!--
+  RULE     ::= 'Forall' Var+ '(' CLAUSE ')' | CLAUSE
+    -->
+    <xs:choice>
+      <xs:element ref="Forall"/>
+      <xs:group ref="CLAUSE"/>
+    </xs:choice>
+  </xs:group>
+ 
+  <xs:element name="Forall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <!-- note different from formula in And, Or and Exists -->
+        <xs:element name="formula">
+          <xs:complexType>
+            <xs:group ref="CLAUSE"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="CLAUSE">  
+    <!--
+  CLAUSE   ::= Implies | ATOMIC
+    -->
+    <xs:choice>
+      <xs:element ref="Implies"/>
+      <xs:group ref="ATOMIC"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Implies">
+    <!--
+  Implies  ::= ATOMIC ':-' FORMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="if"/>
+        <xs:element ref="then"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="then">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="ATOMIC"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+ </xs:schema>

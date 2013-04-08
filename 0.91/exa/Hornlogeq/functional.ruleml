@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<!-- examples from http://www.ruleml.org/fun/ruleml-fun.pdf -->
+
+<Assert>
+
+	<!-- example 1 -->
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Fun in="no">first-born</Fun>
+			<Ind>John</Ind>
+			<Ind>Mary</Ind>
+		</Expr>
+	</Atom>
+	
+	<!-- example 2 -->
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Fun in="yes" val="0..">children</Fun>
+			<Ind>John</Ind>
+			<Ind>Mary</Ind>
+		</Expr>
+	</Atom>
+	
+	<!-- example 3 -->
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Fun in="no">age</Fun>
+			<Expr>
+				<Fun in="yes">first-born</Fun>
+				<Ind>John</Ind>
+				<Ind>Mary</Ind>
+			</Expr>
+		</Expr>
+	</Atom>
+
+	
+	<!-- example 4 -->
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Fun in="no">age</Fun>
+			<Expr>
+				<Fun in="yes" val="0..">children</Fun>
+				<Ind>John</Ind>
+				<Ind>Mary</Ind>
+			</Expr>
+		</Expr>
+	</Atom>
+	
+	<!-- example 5 -->
+	<Equal oriented="yes">
+		<lhs>
+			<Expr>
+				<Fun in="yes">first-born</Fun>
+				<Ind>John</Ind>
+				<Ind>Mary</Ind>
+			</Expr>
+		</lhs>
+		<rhs>
+			<Ind>Jory</Ind>
+		</rhs>
+	</Equal>
+	
+	<!-- example 6 -->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">first-born</Fun>
+			<Ind>John</Ind>
+			<Ind>Mary</Ind>
+		</Expr>
+		<Ind>Jory</Ind>
+	</Equal>
+
+	
+	<!-- example 7 -->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">age</Fun>
+			<Expr>
+				<Fun in="no">first-born</Fun>
+				<Ind>John</Ind>
+				<Ind>Mary</Ind>
+			</Expr>
+		</Expr>
+		<Expr>
+			<Fun in="yes">subtract</Fun>
+			<Expr>
+				<Fun in="yes">current-year</Fun>
+			</Expr>
+			<Data>1993</Data>
+		</Expr>
+	</Equal>
+
+	
+	<!-- example 8 -->
+	<Implies>
+		<Equal oriented="no">
+			<Var>Byear</Var>
+			<Expr>
+				<Fun in="yes">birth-year</Fun>
+				<Var>Person</Var>
+			</Expr>
+		</Equal>
+		<Equal oriented="yes">
+			<Expr>
+				<Fun in="yes">age</Fun>
+				<Var>Person</Var>
+			</Expr>
+			<Expr>
+				<Fun in="yes">subtract</Fun>
+				<Expr>
+					<Fun in="yes">current-year</Fun>
+				</Expr>
+				<Var>Byear</Var>
+			</Expr>
+		</Equal>
+	</Implies>
+	
+	<!-- example 9 -->
+	<Implies>
+		<Atom>
+			<Rel>lessThanOrEqual</Rel>
+			<Expr>
+				<Fun in="yes">age</Fun>
+				<Var>Person</Var>
+			</Expr>
+			<Data>15</Data>
+		</Atom>
+		<Equal oriented="yes">
+			<Expr>
+				<Fun in="yes">discount</Fun>
+				<Var>Person</Var>
+				<Var>Flight</Var>
+			</Expr>
+			<Data>30</Data>
+		</Equal>
+	</Implies>
+
+	<!-- example 10 (higher order) -->
+	<!--
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Fun>Compose</Fun>
+			<Fun in="yes">age</Fun>
+			<Fun in="no">first-born</Fun>
+		</Expr>
+	</Atom>
+	-->
+	
+	<!-- example 11 (higher order) -->
+	<!--
+	<Atom>
+		<Rel/>
+		<Expr>
+			<Expr>
+				<Fun>Compose</Fun>
+				<Fun in="no">age</Fun>
+				<Fun in="yes">first-born</Fun>
+			</Expr>
+			<Ind>John</Ind>
+			<Ind>Mary</Ind>
+		</Expr>
+	</Atom>
+	-->
+	
+	<!-- example 12 (higher order) -->
+	<!--
+		<Atom>
+		<Lambda>
+			<Var>X</Var>
+			<Var>Y</Var>
+			<Expr>
+				<Fun in="no">age</Fun>
+				<Expr>
+					<Fun in="yes">first-born</Fun>
+					<Var>X</Var>
+					<Var>Y</Var>
+				</Expr>
+			</Expr>
+		</Lambda>
+	</Atom>
+	-->
+
+</Assert>
+	
+</RuleML>

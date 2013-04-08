@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+ <xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: FLDBaseline.xsd, v. 1.2, 2009-06-25, hboley/dhirtle">
+
+ <xs:import namespace='http://www.w3.org/XML/1998/namespace'
+            schemaLocation='http://www.w3.org/2001/xml.xsd'/> 
+ 
+  <xs:annotation>
+    <xs:documentation>
+
+    This is the Baseline module of FLD. It is the foundation of the full schema
+    defined through the Skyline module. The Baseline XML schema is based on the
+    following EBNF (compared to the full EBNF of RIF-FLD, Group and Document are
+    omitted, and 'Implies' is missing from the productions for FORMULA and TERMULA).
+    
+    The nonterminals starting with NEW provide extensions points for FLD
+    (cf. Section 4 XML Serialization Framework).
+ 
+  FORMULA        ::= IRIMETA? CONNECTIVE '(' FORMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' FORMULA ')' |
+                     IRIMETA? 'Neg' FORMULA |
+                     IRIMETA? 'Naf' FORMULA |
+                     IRIMETA?  FORMULA '@' MODULEREF |
+                     FORM
+  FORM           ::= IRIMETA? (Var | ATOMIC |
+                               'External' '(' ATOMIC LOCATOR? ')')
+  ATOMIC         ::= Const | Atom | Equal | Member | Subclass | Frame
+  Atom           ::= UNITERM
+  UNITERM        ::= TERMULA '(' (TERMULA* | (Name '->' TERMULA)*) ')'
+  Equal          ::= TERMULA '=' TERMULA
+  Member         ::= TERMULA '#' TERMULA
+  Subclass       ::= TERMULA '##' TERMULA
+  Frame          ::= TERMULA '[' (TERMULA '->' TERMULA)* ']'
+  TERMULA        ::= IRIMETA? CONNECTIVE '(' TERMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' TERMULA ')' |
+                     IRIMETA? 'Neg' TERMULA |
+                     IRIMETA? 'Naf' TERMULA |
+                     IRIMETA? TERMULA '@' MODULEREF |
+                     TERM
+  TERM           ::= IRIMETA? (Var | EXPRIC | List |
+                               'External' '(' EXPRIC LOCATOR? ')' |
+                               AGGREGATE | NEWTERM)
+  EXPRIC         ::= Const | Expr | Equal | Member | Subclass | Frame
+  Expr           ::= UNITERM
+  List           ::= 'List' '(' TERM* ')' | 'List' '(' TERM+ '|' TERM ')'
+  AGGREGATE      ::= AGGRFUNC '{' Var ('[' Var+ ']')? '|' FORMULA '}'
+  Const          ::= '"' UNICODESTRING '"^^' SYMSPACE | CONSTSHORT
+  MODULEREF      ::= Var | Const | Expr
+  CONNECTIVE     ::= 'And' | 'Or' | NEWCONNECTIVE
+  QUANTIFIER     ::= ('Exists' | 'Forall' | NEWQUANTIFIER) Var*
+  AGGRFUNC       ::= 'Min' | 'Max' | 'Sum' | 'Prod' | 'Avg' | 'Count' |
+                     'Set' | 'Bag' | NEWAGGRFUNC
+  Name           ::= UNICODESTRING
+  Var            ::= '?' UNICODESTRING
+  SYMSPACE       ::= ANGLEBRACKIRI | CURIE
+  LOCATOR        ::= ANGLEBRACKIRI
+  
+  IRIMETA        ::= '(*' Const? (Frame | 'And' '(' Frame* ')')? '*)'
+
+
+    </xs:documentation>
+  </xs:annotation>
+  
+  <xs:group name="FORMULA">  
+    <!--
+                              'Implies' omitted from Baseline schema, allowing its modular use 
+  FORMULA        ::= IRIMETA? CONNECTIVE '(' FORMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' FORMULA ')' |
+                     IRIMETA? 'Neg' FORMULA |
+                     IRIMETA? 'Naf' FORMULA |
+                     IRIMETA?  FORMULA '@' MODULEREF
+                     FORM
+  CONNECTIVE     ::= 'And' | 'Or' | NEWCONNECTIVE
+  QUANTIFIER     ::= ('Exists' | 'Forall' | NEWQUANTIFIER) Var* 
+             rewritten as
+  FORMULA        ::= IRIMETA? 'And' '(' FORMULA* ')' |
+                     IRIMETA? 'Or' '(' FORMULA* ')' |
+                     IRIMETA? 'NEWCONNECTIVE' '(' FORMULA* ')' |
+                     IRIMETA? 'Exists' Var* '(' FORMULA ')' |
+                     IRIMETA? 'Forall' Var* '(' FORMULA ')' |
+                     IRIMETA? 'NEWQUANTIFIER' Var* '(' FORMULA ')' |
+                     IRIMETA? 'Neg' FORMULA |
+                     IRIMETA? 'Naf' FORMULA |
+                     IRIMETA? 'Remote' '(' FORMULA MODULEREF ')'
+                     FORM
+    -->
+    <xs:choice>
+      <xs:element name="And" type="And-FORMULA.type"/>
+      <xs:element name="Or" type="Or-FORMULA.type"/>
+      <xs:element name="NEWCONNECTIVE" type="NEWCONNECTIVE-FORMULA.type"/>
+      <xs:element name="Exists" type="Exists-FORMULA.type"/>
+      <xs:element name="Forall" type="Forall-FORMULA.type"/>
+      <xs:element name="NEWQUANTIFIER" type="NEWQUANTIFIER-FORMULA.type"/>    
+      <xs:element name="Neg" type="Neg-FORMULA.type"/>
+      <xs:element name="Naf" type="Naf-FORMULA.type"/>
+      <xs:element name="Remote" type="Remote-FORMULA.type"/>
+      <xs:group ref="FORM"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="And-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="formula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Or-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="formula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NEWCONNECTIVE-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="formula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Exists-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="formula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Forall-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="formula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NEWQUANTIFIER-FORMULA.type">
+  <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="formula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Neg-FORMULA.type">
+    <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="formula" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Naf-FORMULA.type">
+    <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="formula" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Remote-FORMULA.type">
+    <!-- sensitive to FORMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="formula"/>
+      <xs:element ref="internal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="internal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="External-FORMULA.type">
+    <!-- sensitive to FORMULA (Atom | Frame) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-FORMULA.type"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="content-FORMULA.type">
+    <!-- sensitive to FORMULA (Atom | Frame) context-->
+    <xs:sequence>
+      <xs:choice>
+        <xs:element ref="Atom"/>
+        <xs:element ref="Frame"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="formula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="FORM">  
+    <!--
+  FORM           ::= IRIMETA? (Var | ATOMIC |
+                               'External' '(' ATOMIC LOCATOR? ')')
+    -->
+    <xs:choice>
+      <xs:element ref="Var"/>
+      <xs:group ref="ATOMIC"/>
+      <xs:element name="External" type="External-FORM.type"/>
+    </xs:choice>
+  </xs:group>
+ 
+  <xs:complexType name="External-FORM.type">
+    <!-- sensitive to FORM (ATOMIC) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-FORM.type"/>
+      <xs:element ref="location" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="content-FORM.type">
+    <!-- sensitive to FORM (ATOMIC) context-->
+    <xs:sequence>
+      <xs:group ref="ATOMIC"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:group name="ATOMIC">
+    <!--
+  ATOMIC         ::= Const | Atom | Equal | Member | Subclass | Frame
+    -->
+    <xs:choice>
+      <xs:element ref="Const"/>
+      <xs:element ref="Atom"/>
+      <xs:element ref="Equal"/>
+      <xs:element ref="Member"/>
+      <xs:element ref="Subclass"/>
+      <xs:element ref="Frame"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Atom">
+    <!--
+  Atom           ::= UNITERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="UNITERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+  <xs:group name="UNITERM">
+    <!--
+  UNITERM        ::= TERMULA '(' (TERMULA* | (Name '->' TERMULA)*) ')'
+    -->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="op"/>
+      <xs:choice>
+        <xs:element ref="args" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="slot" type="slot-UNITERM.type" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:element name="op">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="args">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:complexType name="slot-UNITERM.type">
+    <!-- sensitive to UNITERM (Name) context-->
+    <xs:sequence>
+      <xs:element ref="Name"/>
+      <xs:group ref="TERMULA"/>
+    </xs:sequence>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+ 
+  <xs:element name="Equal">
+    <!--
+  Equal          ::= TERMULA '=' TERMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="left"/>
+        <xs:element ref="right"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="left">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="right">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Member">
+    <!--
+  Member         ::= TERMULA '#' TERMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="instance"/>
+        <xs:element ref="class"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Subclass">
+    <!--
+  Subclass       ::= TERMULA '##' TERMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="super"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="instance">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="sub">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="super">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+    
+  <xs:element name="Frame">
+    <!--
+  Frame          ::= TERMULA '[' (TERMULA '->' TERMULA)* ']'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="object"/>
+        <xs:element name="slot" type="slot-Frame.type" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:complexType name="slot-Frame.type">
+    <!-- sensitive to Frame (TERMULA) context-->
+    <xs:sequence>
+      <xs:group ref="TERMULA"/>
+      <xs:group ref="TERMULA"/>
+    </xs:sequence>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+
+  <xs:group name="TERMULA">  
+    <!--
+                              'Implies' omitted from Baseline schema, allowing its modular use
+  TERMULA        ::= IRIMETA? CONNECTIVE '(' TERMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' TERMULA ')' |
+                     IRIMETA? 'Neg' TERMULA |
+                     IRIMETA? 'Naf' TERMULA |
+                     IRIMETA? TERMULA '@' MODULEREF |
+                     TERM
+  CONNECTIVE     ::= 'And' | 'Or' | NEWCONNECTIVE
+  QUANTIFIER     ::= ('Exists' | 'Forall' | NEWQUANTIFIER) Var* 
+             rewritten as
+  TERMULA        ::= IRIMETA? 'And' '(' TERMULA* ')' |
+                     IRIMETA? 'Or' '(' TERMULA* ')' |
+                     IRIMETA? 'NEWCONNECTIVE' '(' TERMULA* ')' |
+                     IRIMETA? 'Exists' Var* '(' TERMULA ')' |
+                     IRIMETA? 'Forall' Var* '(' TERMULA ')' |
+                     IRIMETA? 'NEWQUANTIFIER' Var* '(' TERMULA ')' |
+                     IRIMETA? 'Neg' TERMULA |
+                     IRIMETA? 'Naf' TERMULA |
+                     IRIMETA? 'Remote' '(' TERMULA MODULEREF ')'
+                     TERM
+    -->
+    <xs:choice>
+      <xs:element name="And" type="And-TERMULA.type"/>
+      <xs:element name="Or" type="Or-TERMULA.type"/>
+      <xs:element name="NEWCONNECTIVE" type="NEWCONNECTIVE-TERMULA.type"/>
+      <xs:element name="Exists" type="Exists-TERMULA.type"/>
+      <xs:element name="Forall" type="Forall-TERMULA.type"/>
+      <xs:element name="NEWQUANTIFIER" type="NEWQUANTIFIER-TERMULA.type"/>    
+      <xs:element name="Neg" type="Neg-TERMULA.type"/>
+      <xs:element name="Naf" type="Naf-TERMULA.type"/>
+      <xs:element name="Remote" type="Remote-TERMULA.type"/>
+      <xs:group ref="TERM"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="And-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="termula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Or-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="termula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NEWCONNECTIVE-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="termula" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Exists-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="termula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Forall-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="termula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NEWQUANTIFIER-TERMULA.type">
+  <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="termula"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Neg-TERMULA.type">
+    <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="termula" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Naf-TERMULA.type">
+    <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="termula" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Remote-TERMULA.type">
+    <!-- sensitive to TERMULA context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="termula"/>
+      <xs:element ref="internal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="termula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="TERM">  
+    <!--
+  TERM           ::= IRIMETA? (Var | EXPRIC | List |
+                               'External' '(' EXPRIC LOCATOR? ')' |
+                               AGGREGATE | NEWTERM)
+    -->
+    <xs:choice>
+      <xs:element ref="Var"/>
+      <xs:group ref="EXPRIC"/>
+      <xs:element ref="List"/>
+      <xs:element name="External" type="External-TERM.type"/>
+      <xs:element ref="AGGREGATE"/>
+      <xs:element ref="NEWTERM"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="List">  
+    <!--
+  List           ::= 'List' '(' TERM* ')' | 'List' '(' TERM+ '|' TERM ')'
+             rewritten as
+  List           ::= 'List' '(' LISTELEMENTS? ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="LISTELEMENTS" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="LISTELEMENTS">
+    <!--
+  LISTELEMENTS   ::= TERM+ ('|' TERM)?
+    -->
+    <xs:sequence>
+      <xs:group ref="TERM" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element ref="rest" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:element name="rest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="External-TERM.type">
+    <!-- sensitive to TERM (EXPRIC) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-TERM.type"/>
+      <xs:element ref="location" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="content-TERM.type">
+    <!-- sensitive to TERM (EXPRIC) context-->
+    <xs:sequence>
+      <xs:group ref="EXPRIC"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:group name="EXPRIC">
+    <!--
+  EXPRIC         ::= Const | Expr | Equal | Member | Subclass | Frame
+    -->
+    <xs:choice>
+      <xs:element ref="Const"/>
+      <xs:element ref="Expr"/>
+      <xs:element ref="Equal"/>
+      <xs:element ref="Member"/>
+      <xs:element ref="Subclass"/>
+      <xs:element ref="Frame"/>
+    </xs:choice>
+  </xs:group>
+ 
+  <xs:element name="Expr">
+    <!--
+  Expr           ::= UNITERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="UNITERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AGGREGATE" abstract="true">
+    <!--
+  AGGREGATE      ::= AGGRFUNC '{' Var ('[' Var+ ']')? '|' FORMULA '}'
+  AGGRFUNC       ::= 'Min' | 'Max' | 'Sum' | 'Prod' | 'Avg' | 'Count' |
+                     'Set' | 'Bag' | NEWAGGRFUNC
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="declare" minOccurs="2" maxOccurs="unbounded"/>
+        <xs:element ref="formula"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Min" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Max" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Sum" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Prod" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Avg" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Count" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Set" substitutionGroup="AGGREGATE"/>
+  <xs:element name="Bag" substitutionGroup="AGGREGATE"/>
+  <xs:element name="NEWAGGRFUNC" substitutionGroup="AGGREGATE"/>
+ 
+  <xs:element name="NEWTERM">
+    <!--
+    This uses the XSD wildcard schema component, any, allowing a NEWTERM
+    to have zero or more child elements (role tags).
+    -->
+    <xs:complexType>
+     <xs:sequence>
+      <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+     </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+ 
+  <xs:element name="Const">
+    <!--
+  Const          ::= '"' UNICODESTRING '"^^' SYMSPACE | CONSTSHORT
+    -->
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="type" type="xs:anyURI" use="required"/> 
+      <xs:attribute ref="xml:lang"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Name" type="xs:string">
+    <!--
+  Name           ::= UNICODESTRING
+    -->
+  </xs:element>
+ 
+  <xs:element name="Var">
+    <!--
+  Var            ::= '?' UNICODESTRING
+    -->
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:group name="IRIMETA">
+    <!--
+  IRIMETA   ::= '(*' Const? (Frame | 'And' '(' Frame* ')')? '*)'
+    -->
+    <xs:sequence>
+      <xs:element ref="id" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="meta" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:element name="id">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="meta">
+    <xs:complexType>
+     <xs:choice>
+       <xs:element ref="Frame"/>
+       <xs:element name="And" type="And-meta.type"/>
+     </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="And-meta.type">
+  <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element name="formula" type="formula-meta.type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="formula-meta.type">
+    <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element ref="Frame"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="IRICONST.type" mixed="true">
+    <!-- sensitive to location/id context-->
+    <xs:sequence/>
+    <xs:attribute name="type" type="xs:anyURI" use="required" fixed="http://www.w3.org/2007/rif#iri"/>
+  </xs:complexType>
+
+  <xs:element name="location">  
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="LOCATOR"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="LOCATOR">
+    <xs:sequence>
+      <xs:element name="Const" type="ANYURICONST.type"/>   <!-- type="&xs;anyURI" -->
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="ANYURICONST.type" mixed="true">
+    <!-- sensitive to location/profile context-->
+    <xs:sequence/>
+    <xs:attribute name="type" type="xs:anyURI" use="required" fixed="http://www.w3.org/2001/XMLSchema#anyURI"/>
+  </xs:complexType>
+ 
+ </xs:schema>

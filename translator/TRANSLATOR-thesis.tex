@@ -1,0 +1,1540 @@
+\documentclass[12pt]{report}
+
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{covington} % useful DRS macros
+\usepackage{color}
+\usepackage{alltt}
+\usepackage{listings}
+\usepackage{geometry}
+\geometry{left=1.26in, right=1.26in, height=9in}
+\usepackage[pdftitle={TRANSLATOR}, pdfauthor={David Z. Hirtle},
+colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue,
+pdfstartview=FitV]{hyperref}
+% 
+\begin{document}
+
+\title{CS4997\\\ \\Honours Thesis\\\ \\\textbf{TRANSLATOR:\\A TRANSlator from LAnguage TO Rules}}
+\author{David Z. Hirtle}
+
+\maketitle
+
+\begin{abstract}
+One explanation as to why the Semantic Web has not quite caught on yet is that the barrier to entry is too high. This paper describes TRANSLATOR, a free tool available as a Java Web Start application designed to allow anyone, even non-experts, to write facts and rules in formal representation for use on the Semantic Web. This is accomplished by automatically translating natural language sentences written in Attempto Controlled English into the Rule Markup Language, using the Attempto Parsing Engine Web service as a backend. Representation in RuleML has several advantages, not least of which is compatibility with existing Semantic Web standards.
+\end{abstract}
+
+\pagenumbering{roman}
+
+\tableofcontents
+\newpage
+%\listoffigures
+%\newpage
+
+%\listoftables
+
+\pagenumbering{arabic}
+
+\setlength{\parskip}{0.85\baselineskip}
+\setlength{\parindent}{0.0in}
+
+\chapter{Introduction}
+The Semantic Web, often described as the next generation of the existing Web, is a highly collaborative effort with the ultimate goal of making it easier for humans and computers to work together~\cite{berners-lee}. The key is enriching the current Web, which is understandable by humans alone, with machine-interpretable (meta)data in the form of facts, rules and ontologies.
+
+Enabling standards such as the Web Ontology Language (OWL) and Resource Description Framework (RDF) have already been defined by the World Wide Web Consortium (W3C), and work toward a Rule Interchange Format (RIF) is now in progress. Despite all of this activity, the Semantic Web has yet to see widespread adoption. There is some concern (e.g.,~\cite{haustein}) that the barrier to entry is too high: understanding such formal languages is a challenge for the vast majority of individuals. The RIF Working Group charter\footnote{\url{http://www.w3.org/2005/rules/wg/charter}}, for example, openly acknowledges that users are unlikely to use it first-hand, but rather ``are expected to work with tools or rule languages which are transformed to and from this format.''
+
+This stands in stark contrast to the original Web, where ordinary users could experiment with HTML (even simpler at the time) and get results relatively quickly and easily. The result is a cycle wherein each person who recognizes the benefits and decides to participate actually makes the Web more useful and therefore attractive to others. Similarly, tools (e.g., HTML editors) are created as participation increases, further lowering the barrier to entry.
+
+One way of achieving this desirable cyclical effect in the Semantic Web is to lower the barrier to entry by offering a more user-friendly format. While the intuitiveness and expressiveness of natural language makes it a logical candidate, it is inherently ambiguous and has therefore largely been ignored for formal applications.
+
+Fortunately, recent work has shown that principles from computational linguistics can be applied to translate between language and machine-interpretable logic. This is accomplished by using a subset of language that remains completely natural. One such \textit{controlled} language is Attempto Controlled English (ACE)~\cite{ace}, whose development over the past ten years has also included its own Attempto Parsing Engine (APE)~\cite{ape}.
+
+The focus of this work is using ACE as the means to author formal rules for the Semantic Web via a newly-developed application called TRANSLATOR (TRANSlator from LAnguage TO Rules). Specifically, rules written in ACE are taken as input, parsed (using the APE Web service) into a variant of first-order logic known as a Discourse Representation Structure (DRS) and then mapped into formal representation in the XML-based Rule Markup Language (RuleML)~\cite{boley}. RuleML is the product of a long-standing effort toward standardizing rule markup on the Web and is compatible with other Semantic Web languages.
+
+TRANSLATOR, available as a Java Web Start application\footnote{\url{http://www.ruleml.org/translator}}, allows non-programmers to write their own rules on the Semantic Web via familiar natural language. As a trivial example, users may write:
+\begin{quote}
+\textit{If the customer is a student then he/she receives a discount.}
+\end{quote}
+instead of something formal like the following (the corresponding DRS in logical notation):
+\begin{quote}
+$
+\forall ABCDE : structure(D, atomic) \land \\
+quantity(D, cardinality, count\_unit, E, eq, 1) \land \\
+object(D, customer, person) \land object(A, student, person) \land \\
+quantity(A, cardinality, count\_unit, B, eq, 1) \land \\
+structure(A, atomic) \land predicate(C, state, be, D, A) \\
+\rightarrow \exists FGH : object(F, discount, object) \land \\
+quantity(F, cardinality, count\_unit, G, eq, 1) \land \\
+structure(F, atomic) \land predicate(H, unspecified, receive, A, F)
+$
+\end{quote}
+
+The idea of controlled language dates back to the late 1920s when Basic English was developed as a universally accessible language. Decades later, industry (e.g., the European Association of Aerospace Manufacturers, Boeing and General Motors) began to realize the benefits of controlled languages: documentation that is more readable, consistent and (machine) translatable. Only relatively recently have controlled languages begun to focus primarily on computer processability.
+
+The existing work most related to TRANSLATOR includes the following:
+\begin{description}
+	\item[Pseudo Natural Language (PNL)]~\\PNL is an interface for Metalog, probably the first proposal for lowering the barrier to entry of the Semantic Web~\cite{metalog}. Metalog and PNL focus exclusively on RDF. Like ACE, PNL is unambiguous, but its grammar appears to be much less expressive (and therefore less natural).
+	\item[Semantics of Business Vocabulary and Business Rules (SBVR)]~\\SBVR includes a ``Meaning and Representation Vocabulary'' that is similar to RDF and can be mapped to OWL in addition to a Structured English notation~\cite{sbvr}. A limitation, however, is its lack of support for anaphoric references.
+	\item[Common Logic Controlled English (CLCE)]~\\CLCE~\cite{clce} is syntactically similar to but slightly less natural than ACE. While it includes an ontology for sets, sequences and integers, CLCE does not handle plurals.
+	\item[Controlled English to Logic Translation (CELT)]~\\CELT~\cite{celt} was originally inspired by ACE, but its lexicon is imported from WordNet (including default word senses) and mapped to the Suggested Upper Merged Ontology (SUMO). The intent of CELT is to simplify ontology-based knowledge representation. It also does not support plurals.
+	\item[Processable ENGlish (PENG)]~\\Like CLCE and CELT, PENG is also quite similar to ACE though lacking plurals. Unlike them, however, work has been done on relating PENG to the existing Semantic Web standards of OWL and RDF (e.g., ~\cite{peng}). Also of interest is ECOLE~\cite{ecole}, a look-ahead text editor that guides the author of PENG texts on-the-fly with syntactic hints, meaning he or she need not learn the rules explicitly.
+\end{description}
+
+
+\chapter{Input: Attempto Controlled English}
+The input accepted by TRANSLATOR has the appearance of plain English but is in fact a formal language in the same vein as the relatively esoteric OWL and RDF. Known as Attempto Controlled English (ACE), it is a tractable subset of full English that can be unambiguously translated into first-order logic. In this way, ACE combines the ease of use and familiarity of natural language with the ease of processing and precision of formal language.
+
+\section{Overview}
+
+The language of ACE remains as natural as possible while avoiding ambiguity. To this end, the grammar of ACE excludes certain imprecise phrasings, e.g.,
+\begin{quote}
+\textit{Students hate annoying professors.}
+\end{quote}
+(Do students hate their professors, who are annoying, or do they hate to annoy their professors?) Remaining ambiguity is handled by predefined rules favouring one interpretation over others. Consider the following sentence:
+\begin{quote}
+\textit{The student brings a friend who is an alumnus and receives a discount.}
+\end{quote}
+This is ambiguous in full natural language: does the student or the friend receive the discount? In ACE, on the other hand, the sentence has the interpretation that it is the student who receives the discount, i.e. the coordination is outside the relative phrase. The alternative interpretation (the friend receives the discount) can be expressed in ACE by simply repeating the relative pronoun:
+\begin{quote}
+\textit{The student brings a friend who is an alumnus and \textbf{who} receives a discount.}
+\end{quote}
+The vocabulary of ACE consists of predefined and user-defined elements. Function words such as articles (e.g., \textit{a}, \textit{the}), prepositions (e.g., \textit{in}, \textit{to}) and pronouns (e.g., \textit{they}, \textit{itself}, \textit{everyone}) as well as fixed phrases (e.g., \textit{it is not the case that...}) are all predefined, having syntactic roles to play. The default lexicon of nearly 100 000 content words (nouns, verbs, adjectives and adverbs) can be supplemented by user-defined (e.g., domain-specific) lexicons. Also, users can (temporarily) provide missing words using word class prefixes as follows:
+\begin{quote}
+\textit{p:Alexander is a a:self-proclaimed n:autodidact. He a:indubitably v:defenestrates himself during every lecture.}
+\end{quote}
+This brief overview of ACE has not covered several significant features such as anaphoric references and plurals. Complete details on ACE, including further publications, are available from the Attempto project website\footnote{\url{http://www.ifi.unizh.ch/attempto}}.
+
+\section{Expressible Rules}
+While all ACE sentences are accepted English, the opposite is not true. Since TRANSLATOR focuses on translating language (i.e., ACE) to rules, a pertinent question becomes, ``What kinds of rules are expressible in ACE?''
+
+First, the notion of a rule is introduced. Knowledge is divisible into two categories: facts (e.g., \textit{John is human}) and rules, which allow inferring new facts from existing ones (e.g., \textit{All humans are mortal}, giving the new fact \textit{John is mortal}). The typical logic programming (e.g., Prolog) representation of a rule is as a left-hand side (the head, i.e., conclusion) separated from a right-hand side (the body, i.e., one or more conditions) by a special ``is implied'' symbol, e.g.,
+\begin{quote}
+\texttt{mortal(X) :- human(X).}
+\end{quote}
+This is roughly equivalent to the above rule; it can be translated to English as \textit{X is mortal if X is human}, or, in the opposite direction, \textit{if X is human then X is mortal}. The representation of a fact just has a left-hand side, e.g.,
+\begin{quote}
+\texttt{human(John).}
+\end{quote}
+In other words, \textit{John is human} (if nothing). The absence of any conditions in the body means that the conclusion is unconditionally true. Therefore facts are just a special kind of rule and rules can be considered as conditional facts. It should be no surprise, then, that ACE and RuleML (and thus TRANSLATOR) support both facts and rules; however, as implied by the name ``TRANSlator from LAnguage TO Rules'', (conditional) rules are the more interesting case and are therefore discussed in greater detail. Conversely, a query is essentially a rule with no conclusion (cf. a fact, which is somehow the opposite) and may likewise be considered a special kind of rule.
+
+It is important to realize that rules are expressible in natural language in a variety of (possibly ambiguous) ways. Indeed, the same general rule can be expressed in many syntactically different forms, e.g.,
+\begin{quote}
+\textit{Everyone is mortal.\\
+All humanity is mortal.\\
+Every human being is mortal.\\
+For each person the person is mortal.\\
+If there is a member of the human race then he/she is mortal.}
+\end{quote}
+The answer to the question ``what kinds of rules are expressible in ACE?'' in this case is ``all of the above''---all of the rules are valid ACE. Furthermore, each such pattern of rule can be further embellished with negation, relative clauses, etc. For example:
+\begin{quote}
+\textit{Every honest student who does not procrastinate receives a good mark and always passes the course easily.}
+\end{quote}
+TRANSLATOR also adds support for ``infix'' implication of the form:
+\begin{quote}
+\texttt{Y ( and Y )* if X ( and X )*}
+\end{quote}
+The conclusions on the right-hand side are swapped with the conditions on the left-hand side and the word \textit{then} is inserted, yielding the following equivalent (but now valid ACE) version:
+\begin{quote}
+\texttt{If X ( and X )* then Y ( and Y )*}
+\end{quote}
+More concretely, 
+\begin{quote}
+\textit{The student is happy if there is no class.}
+\end{quote}
+e.g., becomes,
+\begin{quote}
+\textit{If there is no class then the student is happy.}
+\end{quote}
+This preprocessing step is done before the input is sent to the APE Web service so that it never sees the original version. The rearrangement is not guaranteed to work (e.g., there may be anaphoric reference complications) but it is surely an improvement over the sentence being immediately rejected by APE.
+
+The distinction between a fact and rule in natural language is sometimes a fine one. Consider this example business rule:
+\begin{quote}
+\textit{A gold customer is a customer who has more than 50 total purchases.}
+\end{quote}
+The above is indeed a rule but the Attempto Parsing Engine makes the (rather unlikely) interpretation that it is a fact. The rule can be more clearly stated as follows:
+\begin{quote}
+\textit{If a customer has more than 50 total purchases then he/she is a gold customer.}
+\end{quote}
+This ``if \ldots then \ldots'' construction seems to be the most natural and easily-recognizable way to express rules in natural language. Sometimes the \textit{then} is omitted in favour of a comma in such rules; however, this is not valid ACE since the comma is reserved for specifying non-default precedence for sentence coordination.
+
+There are actually several different kinds of rules; the examples so far have been derivation rules (also known as inference or deductive rules), which are primarily used for reasoning applications and do not invoke any actions. This category of rules is the focus for TRANSLATOR since RuleML is already well-developed in this area and the DRSs output by APE directly support this kind of implication.
+
+Another type of rule is the integrity constraint, commonly found in databases. This type of rule simply expresses that something must always be true. For example:
+\begin{quote}
+\textit{The driver must be 16 years old.}
+\end{quote}
+Since ACE does not currently support modality (in this case, necessity), integrity constraints are not easily expressed, but extensions are being investigated.
+
+Another common type is reaction rules, also known as ECA rules because they consist of an event, a condition and an action. The action is only performed when the event and condition are satisfied. A typical example is the following:
+\begin{quote}
+\textit{When a share price significantly drops and the company changes management then sell the stock.}
+\end{quote}
+In ACE, sentences beginning with ``when'' are interpreted as questions, so this example is not valid. Even if the sentence is rephrased to 
+\begin{quote}
+\textit{If a share price significantly drops and the company changes management then sell the stock.}
+\end{quote}
+there is still the issue of the imperative verb \textit{sell}. In fact, this makes expressing any sort of action in rules difficult in ACE. Production rules, perhaps the most common among businesses, also involve actions (and conditions, but not events). As with modality, extending ACE with imperatives is being looked into.
+
+Unfortunately, there is currently a discrepancy introduced by the implementation of plurals as implications in ACE~\cite{schwertel}. This results in apparent rules where there may not intuitively be any. However, the representation of plural nouns is currently being simplified, so this may no longer be an issue.
+
+\section{Discourse Representation Structures}
+
+The parsing engine APE, accessed as a Web service by TRANSLATOR, translates ACE texts into a syntactic variant of first-order logic called a Discourse Representation Structure (DRS). The utility of DRSs is a result of Discourse Representation Theory, a formal method of dealing with contextual meaning across multiple sentences~\cite{kamp}. In particular, DRSs provide a solution to the problem of anaphora resolution, e.g., whether \textit{it} refers to the cat or the dog below:
+\begin{quote}
+\textit{The owner separates the cat from the dog. It growls.}
+\end{quote}
+While only a brief introduction is given here, complete details are available in an Attempto report dedicated to DRSs~\cite{drs}.
+
+A single DRS represents an entire discourse (group of sentences). Each entity (e.g., noun, verb) of the discourse is assigned a discourse referent (variable), which is listed at the top of the DRS. Below the referents is a list of related conditions (logical atoms). For example, a DRS for the discourse above might have referents \verb|F|, \verb|B| and \verb|D| and five conditions:
+\begin{quote}
+\ttfamily
+[F B D]\\
+owner(F)\\
+cat(B)\\
+dog(D)\\
+separate(F,B,D)\\
+growl(D)
+\end{quote}
+\normalfont
+(Notice that it is the dog \verb|D| that growls---the anaphor has been resolved.)
+
+The conventional way to format a DRS is as a box:
+\begin{quote}
+\drs{F B D}
+{
+owner(F)\\
+cat(B)\\
+dog(D)\\
+separate(F,B,D)\\
+growl(D)
+}
+\end{quote}
+In the Attempto system, the notation is a little different. Most importantly, predefined condition names are used so that, e.g., \verb|cat(B)| becomes \verb|object(B, cat, object)|:
+\begin{quote}
+\drs{A B C D E F G H}
+{
+structure(F, atomic)-1\\
+quantity(F, cardinality, count\_unit, G, eq, 1)-1\\
+object(F, \textbf{owner}, person)-1\\
+structure(B, atomic)-1\\
+quantity(B, cardinality, count\_unit, C, eq, 1)-1\\
+object(B, \textbf{cat}, object)-1\\
+structure(D, atomic)-1\\
+quantity(D, cardinality, count\_unit, E, eq, 1)-1\\
+object(D, \textbf{dog}, object)-1\\
+predicate(A, unspecified, \textbf{separate}, F, B)-1\\
+modifier(A, origin, from, D)-1\\
+predicate(H, unspecified, \textbf{growl}, D)-2
+}
+\end{quote}
+This ``reified'' representation allows using first-order logic where higher-order would normally be required. The Attempto representation also clearly introduces additional referents and conditions to provide additional detail (e.g., quantity information). The integer at the end of each condition is just an index indicating the number of the corresponding sentence within the discourse.
+
+The conditions so far have all been simple, but complex ones can be formed with nested DRSs and logical implication ($\Rightarrow$), negation ($\neg$) and disjunction ($\lor$). For example, the ACE text
+\begin{quote}
+\textit{If the dog barks or the cat hisses then the owner is not happy.}
+\end{quote}
+is translated into the following DRS:
+
+\begin{quote}
+\drs{~}
+{
+ \downifdrs{~}
+ {
+  \ordrs{A B C}
+  {
+   structure(B, atomic)-1\\
+   quantity(B, \ldots C, eq, 1)-1\\
+   object(B, \textbf{dog}, object)-1\\
+   predicate(A,\ldots \textbf{bark}, B)-1
+  }
+  {D E F}
+  {
+   predicate(D, \ldots \textbf{hiss}, E)-1\\
+   structure(E, atomic)-1\\
+   quantity(E, \ldots F, eq, 1)-1\\
+   object(E, \textbf{cat}, object)-1
+  }
+ }
+ {G H}
+ {
+  structure(G, atomic)-1\\
+  quantity(G, \ldots H, eq, 1)-1\\
+  object(G, \textbf{owner}, person)-1\\
+  \negdrs{I J}
+  {
+   property(I, \textbf{happy})-1\\
+   predicate(J, \ldots \textbf{be}, G, I)-1
+  }
+ }
+}
+\end{quote}
+
+TRANSLATOR translates such DRSs into RuleML. The DRS-RuleML mapping is described in section 4.3.
+
+\chapter{Translation}
+Translating English into RuleML is complicated. Fortunately, the APE Web service greatly simplifies the task. Since details on the Attempto parser are already published~\cite{ape}, the focus here is on the user interface of TRANSLATOR and the series of steps that comprise the translation process. The actual DRS-RuleML mapping is exemplified in the next chapter.
+
+\section{User Interface}
+
+The two primary design goals of TRANSLATOR were that it be
+\begin{itemize}
+	\item widely accessible, and
+	\item user friendly.
+\end{itemize}
+In fact, both goals are satisfied by its availability as a Java Web Start application: TRANSLATOR can be accessed (cross-platform) online and provides users with an easy to use graphical user interface depicted in Figure~\ref*{fig:gui}.
+
+\begin{figure}[htbp]
+	\begin{center}
+	  \includegraphics[scale=0.8]{translator_gui.png}
+		%\includegraphics[width=0.8\textwidth]{translator_gui.png}
+	\caption{The graphical user interface of TRANSLATOR.}
+	\label{fig:gui}
+	\end{center}
+\end{figure}
+
+The user interface is divided into an input pane on the top and an output pane on the bottom. The input pane contains a scrolling textarea where the user may enter an ACE text as well as the translation button, which may also be activated by shortcuts \verb|Ctrl-Enter| or \verb|Alt-T|. While translation is in progress (i.e., the APE Web service is being accessed), the translation button is temporarily disabled, a message is displayed below and the wait cursor is visible. The interface is multi-threaded in order to remain responsive to the user during this time.
+
+The output pane consists of four checkboxes, a non-editable scrolling textarea where the translation results are displayed, a help button and a save button. The checkboxes allow the user to customize what additional output (if any) is displayed within a comment at the top of the valid RuleML (e.g., the original ACE text, DRS, etc). Each can be independently checked or unchecked before translation or even after translation, in which case the output in the textbox is instantly updated accordingly. The help button (\verb|Alt-H|) directs the user's browser to the TRANSLATOR webpage where additional information, helpful links and contact information are available. Finally, the save button (\verb|Alt-S|) will save the current output to a file on the user's local machine for convenience. (Copying and pasting from the output textarea is another option, of course.) Note that the save button is disabled when there is no output to be saved.
+
+\section{Procedure}
+
+The translation process can be broken down into the following eight steps:
+\begin{enumerate}
+\item
+Accept the ACE text input by the user.
+\item
+Preprocess the user input:
+	\begin{itemize}
+	\item Reject any queries (ending with ``?'') since they are currently unsupported.
+	\item Add final ``.'' if omitted. (Valid ACE sentences end with a period.)
+	\item If ``infix implication'' found, rearrange \verb|Y if X| $\Rightarrow$ \verb|If X then Y|.
+	\end{itemize}
+\item
+Encode the input in a querystring and use it to access the APE Web service.
+\item
+Retrieve XML-wrapped result from APE. (This may take several seconds.)
+\item
+Parse result to get messages (if any), DRS, paraphrase, etc.
+\item
+Display messages from APE, if any. End here if the result is otherwise empty (i.e. input was invalid ACE).
+\item
+Traverse the DRS to build RuleML/XML.
+\item
+Display the pretty-printed RuleML (and optional user-configurable extras) to the user.
+\end{enumerate}
+An open source tree-based API called XOM is used for processing XML. The task of parsing the DRS in step 7 is simplified by JavaCC, another open source tool.
+
+\chapter{Output: Rule Markup Language}
+The goal of the international Rule Markup Initiative is to define a canonical language for publishing and sharing rules on the Web. The result is the XML-based Rule Markup Language (RuleML), used for derivation, query, transformation, integrity checking and reactive behavior. RuleML is implemented with XML Schema, XSL Transformations (XSLT) and reasoning engines~\cite{impl}. The RuleML Initiative collaborates with several standards bodies including W3C, OMG and OASIS.
+
+\section{Advantages}
+First of all, why RuleML as the target formalism? There are, in fact, several advantages to representation in RuleML.
+
+RuleML inherits several benefits directly from XML, the open standard that forms the basis for its syntax. These include platform independence and interoperability, since the format is essentially structured text. Exchange is simplified because conformance to the RuleML specification (defined in XML Schema) can be confirmed using a validator such as the W3C's XSV. RuleML is also extensible, a prime example being its combination with OWL to form the Semantic Web Rule Language (SWRL)~\cite{swrl}.
+
+Another significant benefit to representation in RuleML is compatibility with other Semantic Web standards via XSL Transformations (XSLT). Translation from OWL, for example, is possible with OWLTrans\footnote{\url{http://www.ag-nbi.de/research/owltrans}}. Translators also exist for RuleML and RDF. Finally, RuleML is a major input to the W3C's upcoming RIF standard and compatibility is probable.
+
+Other tools besides translators are available for RuleML and more are being developed all the time. Reasoning engines, such as OO jDREW~\cite{ball}, Mandarax\footnote{\url{http://mandarax.sourceforge.net}} and NxBRE\footnote{\url{http://www.agilepartner.net/oss/nxbre}}, are a good example. RuleML is also a major part of an integrated toolkit for the Semantic Web called SweetRules\footnote{\url{http://sweetrules.projects.semwebcentral.org}}.
+Another useful tool is a bidirectional converter between RuleML and the more compact positional-slotted (POSL) syntax~\cite{posl} combining Prolog and F-logic.
+
+Another strength of RuleML is that its modular design can accommodate the diverse needs of its users. For example, rule subcommunities requiring a certain feature (e.g., negation-as-failure) are not burdened by others (e.g., complex terms) that they do not want. Some features, however, are built-in (but always optional) in RuleML, e.g., slots, datatypes and weights.
+
+\section{Modularization}
+
+The Rule Markup Language is actually a family of sublanguages realized with modular XML Schemas, following the general software engineering principle of modularity. A refined view of the modularization\footnote{For the complete picture, see \url{http://www.ruleml.org/modularization}} of RuleML is shown in Figure~\ref*{fig:m12n}.
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[scale=0.8]{m12n.png}
+	\caption{The modularization of RuleML.}
+	\label{fig:m12n}
+	\end{center}
+\end{figure}
+
+Each sublanguage, represented as an unshaded rectangle, corresponds to a well-known rule system (e.g., datalog and hornlog), allowing users to pick and choose according to their specific needs. TRANSLATOR, for instance, uses the first-order logic sublanguage ``folog''. The shaded rectangles in the figure represent groups of related sublanguages. If ACE is later extended to handle negation-as-failure, the sublanguage ``naffolog'' (part of ``FOL+'') would be the best choice for representation in RuleML. As in the Unified Modeling Language (UML), a diamond-headed arrow indicates an aggregation association (e.g., ``datalog is \textit{part of} hornlog'') while a regular-headed arrow indicates generalization.
+
+\section{DRS-RuleML Mapping}
+
+There are many possible mappings between DRSs and RuleML. An important criterion when selecting the mapping was reversibility in order to accommodate the future possibility of translation from RuleML back to ACE. Therefore, it is important that there be no loss of information; in particular, all details of the extended DRS notation used in the Attempto system should be preserved.
+
+A direct mapping is therefore best. For example, the ACE text
+\begin{quote}
+\textit{The professor is mortal.}
+\end{quote}
+with the following DRS
+\begin{quote}
+\drs{A B C D}
+{
+ structure(C, atomic)-1\\
+ quantity(C,~\ldots~1)-1\\
+ object(C, \textbf{professor}~\ldots)-1\\
+ property(A, \textbf{mortal})-1\\
+ predicate(\ldots~\textbf{be}, C, A)-1
+}
+\end{quote}
+is straightforwardly mapped into RuleML as follows:
+
+\newcommand{\dave}[1]
+{\rmfamily\normalsize\emph{\textbf{#1}}\ttfamily\small}
+
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent <Exists>\\
+\indent \indent \indent <Var>A</Var><Var>B</Var><Var>C</Var><Var>D</Var>\\
+\indent \indent \indent <And>\\
+\indent \indent \indent \indent <Atom><Rel>structure</Rel><Var>C</Var><Ind>atomic</Ind></Atom>\\
+\indent \indent \indent \indent <Atom><Rel>quantity</Rel><Var>C</Var>\ldots	<Data>1</Data></Atom>\\
+\indent \indent \indent \indent <Atom><Rel>object</Rel><Var>C</Var><Ind>\dave{professor}</Ind>\ldots</Atom>\\
+\indent \indent \indent \indent <Atom><Rel>property</Rel><Var>A</Var><Ind>\dave{mortal}</Ind></Atom>\\
+\indent \indent \indent \indent <Atom>\\
+\indent \indent \indent \indent \indent <Rel>predicate</Rel>\ldots <Ind>\dave{be}</Ind><Var>C</Var><Var>A</Var>\\
+\indent \indent \indent \indent </Atom>\\
+\indent \indent \indent </And>\\
+\indent \indent </Exists>\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+RuleML has a so-called ``striped syntax'' of class-like type tags and method-like role tags. The mapping by default uses the compact type-only (``role-skipped'') syntax (as above), but an XSLT stylesheet exists to automatically reconstruct skipped role tags to arrive at the expanded form, which has the advantage of increased compatibility with RDF. As an illustration, the above \verb|property| atom in expanded form becomes:
+
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<formula>\\
+\indent <Atom>\\
+\indent \indent <op><Rel>property</Rel></op>\\
+\indent \indent <arg index="1"><Var>A</Var></arg>\\
+\indent \indent <arg index="2"><Ind>\dave{mortal}</Ind></arg>\\
+\indent </Atom>\\
+</formula>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+
+RuleML also supports non-positional ``slotted'' notation where each position in an atom is explicitly given a name. However, the positional form is instead used in order to be consistent with the DRSs. The content of each position of all the predefined predicates used in the extended DRS notation of Attempto is fully documented in the appendix of the DRS report~\cite{drs}.
+
+Finally, the quantification of variables is made explicit in RuleML for clarity. It is implicit in a DRS that all variables are existentially quantified; RuleML has the \verb|<Exists>| tag for this purpose. The only exceptions are variables on the condition side of an implication, which are universally quantified. In RuleML, these are placed within a \verb|<Forall>| tag.
+
+As a concrete example, the ACE text
+\begin{quote}
+\textit{Every student is mortal.}
+\end{quote}
+results in the DRS
+\begin{quote}
+\drs{~}
+{
+	\ifdrs{A B}
+	{
+	object(A, \textbf{student}~\ldots)-1\\
+	quantity(A,~\ldots~1)-1\\
+	structure(A, atomic)-1
+	}
+	{C D}
+	{
+	property(C, \textbf{mortal})-1\\
+	predicate(\ldots~\textbf{be}, A, C)-1
+	}
+}
+\end{quote}
+whose quantification is made explicit in the mapping to RuleML as follows (where the quantification tags are boxed for clarity):
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent \fbox{<Forall>}\\
+\indent \indent \indent <Var>A</Var><Var>B</Var>\\
+\indent \indent \indent <Implies>\\
+\indent \indent \indent \indent <And>\\
+\indent \indent \indent \indent \indent <Atom><Rel>object</Rel><Var>A</Var><Ind>\dave{student}</Ind>\ldots</Atom>\\
+\indent \indent \indent \indent \indent <Atom><Rel>quantity</Rel><Var>A</Var>\ldots<Data>1</Data></Atom>\\
+\indent \indent \indent \indent \indent <Atom><Rel>structure</Rel><Var>A</Var><Ind>atomic</Ind></Atom>\\
+\indent \indent \indent \indent </And>\\
+\indent \indent \indent \indent \fbox{<Exists>}\\
+\indent \indent \indent \indent \indent <Var>C</Var><Var>D</Var>\\
+\indent \indent \indent \indent \indent <And>\\
+\indent \indent \indent \indent \indent \indent <Atom><Rel>property</Rel><Var>C</Var><Ind>\dave{mortal}</Ind></Atom>\\
+\indent \indent \indent \indent \indent \indent <Atom>\\
+\indent \indent \indent \indent \indent  \indent \indent <Rel>predicate</Rel>\ldots<Ind>\dave{be}</Ind><Var>A</Var><Var>C</Var>\\
+\indent \indent \indent \indent \indent  \indent </Atom>\\
+\indent \indent \indent \indent \indent </And>\\
+\indent \indent \indent \indent \fbox{</Exists>}\\
+\indent \indent \indent </Implies>\\
+\indent \indent \fbox{</Forall>}\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+
+A complete colour-coded example is given in Appendix A. The grammar for TRANSLATOR's DRS parser, which implements this DRS-RuleML mapping, is included as Appendix B.
+
+A more standard non-reified representation in RuleML (e.g., with nouns and verbs as relations) could be derived from the version above using XSLT translation. One possibility is as follows:
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent <Implies>\\
+\indent \indent \indent <Atom><Rel>\dave{student}</Rel><Var>A</Var></Atom>\\
+\indent \indent \indent <And>\\
+\indent \indent \indent \indent <Atom><Rel>\dave{mortal}</Rel><Var>C</Var></Atom>\\
+\indent \indent \indent \indent <Equal><Var>A</Var><Var>C</Var></Equal>\\
+\indent \indent \indent </And>\\
+\indent \indent </Implies>\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+Note that the explicit quantification and extra atoms are gone, and that the remaining atoms have been un-reified (to have a more meaningful relation name). Finally, an \verb|<Equal>| element has replaced the following atom:
+\begin{quote}
+\small
+\ttfamily
+<Atom><Rel>predicate</Rel>\ldots<Ind>\dave{be}</Ind><Var>A</Var><Var>C</Var></Atom>
+\normalfont
+\end{quote}
+For regular verbs, however, this extra measure would not be necessary.
+
+\chapter{Future Work}
+
+There are several possible avenues of future development for TRANSLATOR, most of which involve continued collaboration with the Attempto project.
+
+\section{Queries}
+The only aspect of ACE not currently supported by TRANSLATOR is questions. Normally these would be mapped to \verb|<Query>| in RuleML, but currently the DRS for the query
+\begin{quote}
+\textit{Does the man enter a card?}
+\end{quote}
+is identical to the DRS for
+\begin{quote}
+\textit{The man enters a card.}
+\end{quote}
+and it would be impossible to identify when to use \verb|<Query>| versus \verb|<Assert>|. If the DRS included a \verb|query| predicate as the DRS for, e.g., ``who'', ``what'', ``when'' and ``where'' questions already does, this would not be an issue.
+
+\section{Translators}
+Once represented in RuleML, the rules can be automatically translated to other XML-based languages using XSLT (e.g., OWL and RDF). There are also useful opportunities for translation within RuleML, e.g., simplifying the ``enriched'' representation as sketched at the end of section 4.3.
+
+\section{Verbalization}
+A prototype tool called DRACE is already available for translating a DRS into ACE (subject to some limitations)~\cite{verbal}. If this tool were accessible (e.g., as a Web service), TRANSLATOR could be extended to be bidirectional, supporting translation from RuleML back to ACE by reversing the DRS-RuleML mapping.
+
+\section{ACE Extensions}
+The Attempto team is extending ACE in several ways as part of the EU Network of Excellence Reasoning on the Web with Rules and Semantics (REWERSE). Planned extensions include:
+\begin{itemize}
+\item
+negation-as-failure to supplement the existing logical negation~\cite{naf}
+\item
+modality, for expressing, e.g., possibility (\textit{can}, \textit{may}), necessity (\textit{must}, \textit{always}), obligation (\textit{should}, \textit{shall}), etc.~\cite{modality}
+\item
+imperatives, useful, e.g., for dialogue systems and expressing action rules~\cite{flairs}
+\end{itemize}
+
+Once implemented, these new features should, of course, also be supported by TRANSLATOR.
+
+\chapter{Conclusion}
+
+TRANSLATOR is an open source tool that allows anyone to write facts and rules in formal representation for use on the Semantic Web. It accomplishes this by taking input written in ACE, accessing the APE Web service and then translating the generated DRS into RuleML. The hope is that this user-friendly front-end will help lower the barrier to entry of the Semantic Web and encourage non-experts to get involved; this seems to have been a critical factor in the success of the original Web.
+
+One potential use of TRANSLATOR is to construct real-world use cases, e.g., for company policies. One open issue is that the output of TRANSLATOR, as first-order logic, is undecidable and therefore not supported by reasoning engines. However, reorganization into a decidable subset should be possible, e.g., by factoring out multiple conclusions of a rule.
+
+While TRANSLATOR is already useful, in its present form it is mostly restricted to derivation rules (and, of course, facts). This limitation is inherited from ACE and RuleML, but extensions already in progress will grant the increased expressivity necessary for integrity constraints, reaction rules, etc. Extending TRANSLATOR to be bidirectional, i.e., also capable of translating RuleML into ACE, is also planned.
+
+Meanwhile, development of the RIF standard continues. Fortunately, the future challenge of relating TRANSLATOR to RIF (once defined) should be straightforward since RuleML will most likely be translatable to RIF. TRANSLATOR would therefore be one of the tools referred to in the Working Group charter that obviate the need for users to work directly with RIF.
+
+TRANSLATOR is available as a Java Web Start application at \url{http://www.ruleml.org/translator} and is also linked to from the Attempto website\footnote{\url{http://www.ifi.unizh.ch/attempto/tools}}. Further collaboration with the Attempto team is anticipated.
+
+\bibliographystyle{plain}
+\bibliography{TRANSLATOR}
+
+\appendix
+%\definecolor{turq}{rgb}{0,0.8,0.4}
+\definecolor{turq}{rgb}{0.1,0.7,0.1}
+\definecolor{orange}{rgb}{1.0,0.4,0} 
+\definecolor{brown}{rgb}{0.6,0.4,0.2}
+%\definecolor{peach}{rgb}{0.85,0.7,0.4}
+\definecolor{peach}{rgb}{0.6,0.6,0.0}
+
+\chapter{Colour-coded ACE-DRS-RuleML Example}
+\newpage
+\textbf{ACE sentence:}\begin{quote}
+\textit{\textcolor{turq}{Every} \textbf{\textcolor{blue}{honest student}} who does \textcolor{red}{not} \textbf{\textcolor{cyan}{procrastinate}} \textcolor{magenta}{\textbf{receive}s} \textcolor{orange}{a \textbf{good mark}} and \textcolor{brown}{\textbf{easily pass}es} \textcolor{peach}{the \textbf{course}}.}\end{quote}
+
+\textbf{DRS:}
+\begin{quote}
+\drs{~}
+{
+ \turqdownifdrs{\textcolor{blue}{A B}}
+ {
+   \textcolor{blue}{object(A, \textbf{student}, person)-1}\\
+   \textcolor{blue}{quantity(A, cardinality, count\_unit, B, eq, 1)-1}\\
+   \textcolor{blue}{structure(A, atomic)-1}\\
+   \textcolor{blue}{property(A, \textbf{honest})-1}\\
+   \rednegdrs{\textcolor{cyan}{C}}
+   {
+    \textcolor{cyan}{predicate(C, unspecified, \textbf{procrastinate}, A)-1}
+   }
+ }
+ {
+ 	\textcolor{orange}{D E}
+ 	\textcolor{magenta}{F} \textcolor{brown}{G}
+ 	\textcolor{peach}{H I}
+ }
+ {
+   \textcolor{peach}{structure(H, atomic)-1}\\
+   \textcolor{peach}{quantity(H, cardinality, count\_unit, I, eq, 1)-1}\\
+   \textcolor{peach}{object(H, \textbf{course}, object)-1}\\
+   \textcolor{orange}{object(D, \textbf{mark}, object)-1}\\
+   \textcolor{orange}{quantity(D, cardinality, count\_unit, E, eq, 1)-1}\\
+   \textcolor{orange}{structure(D, atomic)-1}\\
+   \textcolor{orange}{property(D, \textbf{good})-1}\\
+   \textcolor{magenta}{predicate(F, unspecified, \textbf{receive}, A, D)-1}\\
+   \textcolor{brown}{predicate(G, unspecified, \textbf{pass}, A, H)-1}\\
+   \textcolor{brown}{modifier(G, manner, none, \textbf{easily})-1}
+ }
+}
+\end{quote}
+
+\newpage
+\textcolor{black}{\textbf{RuleML:}}
+\small
+\begin{quote}\begin{alltt}
+<RuleML
+ xsi:schemaLocation="http://www.ruleml.org/0.9/xsd
+                     http://www.ruleml.org/0.9/xsd/folog.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.ruleml.org/0.9/xsd">
+   <Assert>
+      <Forall>
+         \textcolor{blue}{<Var>A</Var>
+         <Var>B</Var>}
+         \textcolor{turq}{<Implies>}
+            <And>
+               \textcolor{blue}{<Atom>
+                  <Rel>object</Rel>
+                  <Var>A</Var>
+                  <Ind>\dave{student}</Ind>
+                  <Ind>person</Ind>
+               </Atom>
+               <Atom>
+                  <Rel>quantity</Rel>
+                  <Var>A</Var>
+                  <Ind>cardinality</Ind>
+                  <Ind>count_unit</Ind>
+                  <Var>B</Var>
+                  <Ind>eq</Ind>
+                  <Data>1</Data>
+               </Atom>
+               <Atom>
+                  <Rel>structure</Rel>
+                  <Var>A</Var>
+                  <Ind>atomic</Ind>
+               </Atom>
+               <Atom>
+                  <Rel>property</Rel>
+                  <Var>A</Var>
+                  <Ind>\dave{honest}</Ind>
+               </Atom>}
+               \textcolor{red}{<Neg>}
+                  <Exists>
+                     \textcolor{cyan}{<Var>C</Var>}
+                     <And>
+                        \textcolor{cyan}{<Atom>
+                           <Rel>predicate</Rel>
+                           <Var>C</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>\dave{procrastinate}</Ind>}
+                           \textcolor{cyan}{<Var>A</Var>
+                        </Atom>}
+                     </And>
+                  </Exists>
+               \textcolor{red}{</Neg>}
+            </And>
+            <Exists>
+               \textcolor{orange}{<Var>D</Var>
+               <Var>E</Var>}
+               \textcolor{magenta}{<Var>F</Var>}
+               \textcolor{brown}{<Var>G</Var>}
+               \textcolor{peach}{<Var>H</Var>
+               <Var>I</Var>}
+               <And>
+                  \textcolor{peach}{<Atom>
+                     <Rel>structure</Rel>
+                     <Var>H</Var>
+                     <Ind>atomic</Ind>
+                  </Atom>
+                  <Atom>
+                     <Rel>quantity</Rel>
+                     <Var>H</Var>
+                     <Ind>cardinality</Ind>
+                     <Ind>count_unit</Ind>
+                     <Var>I</Var>
+                     <Ind>eq</Ind>
+                     <Data>1</Data>
+                  </Atom>
+                  <Atom>
+                     <Rel>object</Rel>
+                     <Var>H</Var>
+                     <Ind>\dave{course}</Ind>
+                     <Ind>object</Ind>
+                  </Atom>}
+                  \textcolor{orange}{<Atom>
+                     <Rel>object</Rel>
+                     <Var>D</Var>
+                     <Ind>\dave{mark}</Ind>
+                     <Ind>object</Ind>
+                  </Atom>
+                  <Atom>
+                     <Rel>quantity</Rel>
+                     <Var>D</Var>
+                     <Ind>cardinality</Ind>
+                     <Ind>count_unit</Ind>
+                     <Var>E</Var>
+                     <Ind>eq</Ind>}
+                     \textcolor{orange}{<Data>1</Data>
+                  </Atom>
+                  <Atom>
+                     <Rel>structure</Rel>
+                     <Var>D</Var>
+                     <Ind>atomic</Ind>
+                  </Atom>
+                  <Atom>
+                     <Rel>property</Rel>
+                     <Var>D</Var>
+                     <Ind>\dave{good}</Ind>
+                  </Atom>}
+                  \textcolor{magenta}{<Atom>
+                     <Rel>predicate</Rel>
+                     <Var>F</Var>
+                     <Ind>unspecified</Ind>
+                     <Ind>\dave{receive}</Ind>
+                     <Var>A</Var>
+                     <Var>D</Var>
+                  </Atom>}
+                  \textcolor{brown}{<Atom>
+                     <Rel>predicate</Rel>
+                     <Var>G</Var>
+                     <Ind>unspecified</Ind>
+                     <Ind>\dave{pass}</Ind>
+                     <Var>A</Var>
+                     <Var>H</Var>
+                  </Atom>
+                  <Atom>
+                     <Rel>modifier</Rel>
+                     <Var>G</Var>
+                     <Ind>manner</Ind>
+                     <Ind>none</Ind>
+                     <Var>\dave{easily}</Var>
+                  </Atom>}
+               </And>
+            </Exists>
+         \textcolor{turq}{</Implies>}
+      </Forall>
+   </Assert>
+</RuleML>
+\end{alltt}\end{quote}
+\normalfont
+
+%\chapter{Table of Rule ACE-DRS Mappings}
+
+%\begin{tabular}{|c|c|}
+%\hline
+
+%if X is human then X is mortal
+%all humans are mortal
+%\textit{Everyone is mortal.\\
+%All humanity is mortal.\\
+%Every human being is mortal.\\
+%For each person the person is mortal.\\
+%If there is a member of the human race then he/she is mortal.}
+
+%\hline
+%\end{tabular}
+
+\chapter{Grammar for DRS Parser}
+
+The following file, \verb|DRSParser.jj|, is a grammar for DRSs used by the open source tool JavaCC to generate the actual DRS parser used by TRANSLATOR. The notation used is similar to standard BNF except that actions are also embedded in the grammar\footnote{The notation is documented at \url{https://javacc.dev.java.net/doc/javaccgrm.html}}. These actions are Java statements surrounded by braces (e.g., \verb|{ System.out.println("start"); }|) that are executed when traversed in order to simultaneously build the RuleML representation and parse the DRS.
+
+\begin{lstlisting}[language=java, showstringspaces=false, tabsize=2]
+
+options { JAVA_UNICODE_ESCAPE = true; }
+
+PARSER_BEGIN(DRSParser)
+
+	package org.ruleml.translator.parser;
+	import nu.xom.*;
+	import java.util.*;
+	
+	public class DRSParser
+	{
+		final static String RULEML_NAMESPACE =
+			"http://www.ruleml.org/0.9/xsd";
+	}
+
+PARSER_END(DRSParser)
+
+SKIP : /* white space */
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+TOKEN : /* punctuation and logical connectors */
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACK: "[" >
+| < RBRACK: "]" >
+| < QUOTE: "'" >
+| < COMMA: "," >
+| < IMPLIES: "=>" >
+| < DASH: "-" >
+| < OR: "v" > 
+}
+
+TOKEN : /* keywords */
+{
+  < DRS: "drs" >
+| < NEG_DRS: "-drs" >
+| < KG: "kg" >
+| < CM: "cm" >
+| < EQ: "eq" >
+| < OF: "of" >
+| < DOM: "dom" >
+| < LEQ: "leq" >
+| < GEQ: "geq" >
+| < SIZE: "size" >
+| < TIME: "time" >
+| < MASS: "mass" >
+| < LESS: "less" >
+| < UNIT: "unit" >
+| < STATE: "state" >
+| < GROUP: "group" >
+| < LITER: "liter" >
+| < EVENT: "event" >
+| < ATOMIC: "atomic" >
+| < VOLUME: "volume" >
+| < LENGTH: "length" >
+| < PERSON: "person" >
+| < WEIGHT: "weight" >
+| < GREATER: "greater" >
+| < DIMENSION: "dimension" >
+| < COUNT: "count_unit" >
+| < CARDINALITY: "cardinality" >
+| < UNSPECIFIED: "unspecified" >
+}
+
+TOKEN : /* predicates (note that query is not supported) */
+{
+  < OBJECT: "object" >
+| < NAMED: "named" >
+| < STRUCTURE: "structure" >
+| < QUANTITY: "quantity" >
+| < PREDICATE: "predicate" >
+| < PROPERTY: "property" >
+| < QUOTED: "quoted_string" >
+| < MODIFIER: "modifier" >
+| < PROPER: "proper_part_of" >
+| < PART: "part_of" >
+| < RELATION: "relation" >
+| < SUM: "sum_of" >
+}
+
+TOKEN :
+{
+  < REFERENT: ["A"-"Z"] (<INTEGER>)? >
+| < INTEGER: ( ["1"-"9"] (<DIGIT>)* | "0" ) >
+| < QUOTED_STRING: <QUOTE> <STRING> <QUOTE> >
+| < STRING: (<LETTER> | "-")+ >
+| < #DIGIT: ["0"-"9"] >
+| < #LETTER:
+      [
+       "\u0024",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+}
+
+TOKEN :
+{
+ <
+	QUOTED_SPACED_STRING:
+	<QUOTE> (<LETTER> | "-") ( (" ")* (<LETTER> | "-") )* <QUOTE>
+ >
+}
+
+Element Start() :
+{
+	Element elem;
+	Element as = new Element("Assert", RULEML_NAMESPACE);
+}
+{
+	{ System.out.println("DRS parser started"); }
+	elem = DRS()
+	<EOF>
+	{
+		as.appendChild(elem);
+		return as;
+	}
+}
+
+Element DRS() :
+{
+	List vars = null;
+	Element exists = new Element("Exists", RULEML_NAMESPACE);
+	Element and, child;
+}
+{ 
+	<DRS>
+	<LPAREN>
+	<LBRACK>
+	( vars = Referents()
+		{
+			if (vars != null)
+			{
+				for (int i=0; i < vars.size(); i++)
+					exists.appendChild((Element)vars.get(i));
+			}
+		}
+	)?
+	<RBRACK>
+	<COMMA>
+	<LBRACK>
+		and = Conditions()
+	<RBRACK>
+	<RPAREN>
+	{
+		// skip over empty exists elements
+		if ((vars == null) && (and.getChildCount() == 1))
+		{
+			child = (Element)and.getChild(0);
+			child.detach();
+			return child;
+		}
+		else
+		{
+			exists.appendChild(and);
+			return exists;
+		}
+	}
+}
+
+Element NegDRS() :
+{
+	List vars = null;
+	Element exists = new Element("Exists", RULEML_NAMESPACE);
+	Element neg = new Element("Neg", RULEML_NAMESPACE);
+	Element and, child;
+}
+{ 
+	<NEG_DRS>
+	<LPAREN>
+	<LBRACK>
+	( vars = Referents()
+		{
+			if (vars != null)
+			{
+				for (int i=0; i < vars.size(); i++)
+					exists.appendChild((Element)vars.get(i));
+			}
+		}
+	)?
+	<RBRACK>
+	<COMMA>
+	<LBRACK>
+		and = Conditions()
+	<RBRACK>
+	<RPAREN>
+	{
+		// skip over empty exists elements
+		if ((vars == null) && (and.getChildCount() == 1))
+		{
+			child = (Element)and.getChild(0);
+			child.detach();
+			neg.appendChild(child);
+			return neg;
+		}
+		else
+		{
+			exists.appendChild(and);
+			neg.appendChild(exists);
+			return neg;
+		}
+	}
+}
+
+// for universally quantified DRSs in the body of an implication
+Element RDRS() :
+{
+	List vars = null;
+	Element forall = new Element("Forall", RULEML_NAMESPACE);
+	Element and;
+	Element implies = new Element("Implies", RULEML_NAMESPACE);
+}
+{
+	<DRS>
+	<LPAREN>
+	<LBRACK>
+	( vars = Referents()
+		{
+			if (vars != null)
+			{
+				for (int i=0; i < vars.size(); i++)
+					forall.appendChild((Element)vars.get(i));
+			}
+		}
+	)?
+	<RBRACK>
+	<COMMA>
+	<LBRACK>
+		and = Conditions()
+	<RBRACK>
+	<RPAREN>
+	{
+		implies.appendChild(and);
+		if (vars != null)
+		{
+			forall.appendChild(implies);
+			return forall;
+		}
+		else return implies;
+	}
+}
+
+List Referents() :
+{ 
+	List refs = new ArrayList();
+	Token t;
+	Element var;
+}
+{
+	t = <REFERENT>
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(t.image);
+			refs.add(var);
+		}
+	(
+		<COMMA> t = <REFERENT>
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(t.image);
+			refs.add(var);
+		}
+	)*
+	{
+		return refs;
+	}
+}
+
+Element Conditions() :
+{
+	List conditions = new ArrayList();
+	Element elem = null;
+	Element and = new Element("And", RULEML_NAMESPACE);
+}
+{
+	elem = Condition() { conditions.add(elem); }
+	( <COMMA> elem = Condition() { conditions.add(elem); } )*
+	{
+		for (int i=0; i < conditions.size(); i++)
+			and.appendChild((Element)conditions.get(i));
+		return and;
+	}
+}
+
+Element Condition() :
+{ Element atom = null, elem = null; }
+{
+	atom=SimpleCondition() { return atom; }
+|
+	elem=ComplexCondition() { return elem; }
+}
+
+Element SimpleCondition() :
+{ Element atom; }
+{
+	atom = Predicate() 
+	"-"<INTEGER>
+	{ return atom; }
+}
+
+Element ComplexCondition() :
+{
+	Element neg, element, exists, exists2, implies, or;
+}
+{
+	neg=NegDRS()
+	{ return neg; }
+| LOOKAHEAD( DRS() <OR> ) // syntactic lookahead
+	exists=DRS() <OR> exists2=DRS()
+	{
+		or = new Element("Or", RULEML_NAMESPACE);
+		or.appendChild(exists);
+		or.appendChild(exists2);
+		return or;
+  }
+| 
+  element=RDRS() <IMPLIES> exists=DRS()
+  {
+		if (element.getLocalName().equals("Implies"))
+		{
+			element.appendChild(exists);
+		}
+		else // element is "forall"
+		{
+			implies =
+			 element.getChildElements("Implies",RULEML_NAMESPACE).get(0);
+			implies.appendChild(exists);
+		}
+		return element;
+  }
+}
+
+Element Predicate() :
+{ Element atom; }
+{
+	(	atom = NamedPred()
+	|	atom = StructurePred()
+	|	atom = QuantityPred()
+	|	atom = ObjectPred()
+	|	atom = PredicatePred()
+	|	atom = PropertyPred()
+	|	atom = QuotedPred()
+	|	atom = ModifierPred()
+	|	atom = ProperPred()
+	|	atom = PartPred()
+	|	atom = RelationPred()
+	|	atom = SumPred()
+	)
+	{ return atom; }
+}
+
+Element NamedPred() :
+{ Element atom, rel, var, ind; Token r,s,t; }
+{
+	r = <NAMED> <LPAREN>
+	s = <REFERENT> <COMMA>
+	( t = <QUOTED_STRING> | t=<STRING> )
+	<RPAREN>
+	{
+		System.out.println("Recognized named");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		return atom;
+	}
+}
+
+Element StructurePred() :
+{ Element atom, rel, var, ind; Token r,s,t; }
+{
+	r = <STRUCTURE> <LPAREN>
+	s = <REFERENT> <COMMA> 
+	( t=<ATOMIC> | t=<GROUP> | t=<MASS> | t=<DOM> )
+	<RPAREN>
+	{
+		System.out.println("Recognized structure");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		return atom;
+	} 
+}
+
+Element QuantityPred() :
+{ Element atom, rel, var, ind, data; Token r,s,t,u,v,w,x; }
+{
+	r = <QUANTITY> <LPAREN>
+	s = <REFERENT> <COMMA>
+	
+	// {cardinality, weight, size, ...}
+	( t=<STRING> | t=AnyReservedWord() ) <COMMA>
+	
+	// {count_unit, kg, cm, ...}
+	( u=<STRING> | u=AnyReservedWord() ) <COMMA>
+	
+	v = <REFERENT> <COMMA>
+	( w=<EQ> | w=<LEQ> | w=<GEQ> | w=<GREATER> | w=<LESS> ) <COMMA>
+	( x=<INTEGER> | x=<UNSPECIFIED> )
+	<RPAREN>
+	{
+		System.out.println("Recognized quantity");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(u.image);
+		atom.appendChild(ind);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(v.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(w.image);
+		atom.appendChild(ind);
+		data = new Element("Data", RULEML_NAMESPACE);
+		data.appendChild(x.image);
+		atom.appendChild(data);
+		return atom;
+	}
+}
+
+Element ObjectPred() :
+{ Element atom, rel, var, ind; Token r,s,t,u; }
+{
+	r = <OBJECT> <LPAREN>
+	s = <REFERENT> <COMMA>
+	
+	// noun
+	( t=<STRING> | t=<QUOTED_STRING> | t=AnyReservedWord() ) <COMMA>
+	
+	( u=<PERSON> | u=<OBJECT> | u=<TIME> | u=<UNSPECIFIED> )
+	<RPAREN>
+	{
+		System.out.println("Recognized object");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(u.image);
+		atom.appendChild(ind);
+		return atom;
+	}
+}
+
+Element PropertyPred() :
+{ Element atom, rel, var, ind; Token r,s,t,u=null,v=null; }
+{
+	r = <PROPERTY> <LPAREN>
+	s = <REFERENT> <COMMA>
+	
+	// adjective/comparative
+	( t=<STRING> | t=<QUOTED_STRING> | t=AnyReservedWord() )
+	
+	( <COMMA> u = <REFERENT> (<COMMA> v = <REFERENT>)? )?
+	<RPAREN> 
+	{
+		System.out.println("Recognized property");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		if (u != null)
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(u.image);
+			atom.appendChild(var);
+		}
+		if (v != null)
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(v.image);
+			atom.appendChild(var);
+		}
+		return atom;
+	}
+}
+
+Element PredicatePred() :
+{ Element atom, rel, var, ind; Token r,s,t,u,v,w=null,x=null; }
+{
+	r = <PREDICATE> <LPAREN>
+	s = <REFERENT> <COMMA>
+	( t=<EVENT> | t=<STATE> | t=<UNSPECIFIED> ) <COMMA>
+	
+	// verb
+	( u=<STRING> | u=<QUOTED_STRING> | u=AnyReservedWord() ) <COMMA>
+	
+	v = <REFERENT>
+	( <COMMA> w=<REFERENT> (<COMMA> x=<REFERENT>)? )?
+	<RPAREN>
+	{
+		System.out.println("Recognized predicate");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(u.image);
+		atom.appendChild(ind);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(v.image);
+		atom.appendChild(var);
+		if (w != null)
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(w.image);
+			atom.appendChild(var);
+		}
+		if (x != null)
+		{
+			var = new Element("Var", RULEML_NAMESPACE);
+			var.appendChild(x.image);
+			atom.appendChild(var);
+		}
+		return atom;
+	}
+}
+
+Element QuotedPred() :
+{ Element atom, rel, var, ind; Token r,s,t; }
+{
+	r = <QUOTED> <LPAREN>
+	s = <REFERENT> <COMMA>
+	( t=<QUOTED_SPACED_STRING> | t=AnyReservedWord() )
+	<RPAREN>
+	{
+		System.out.println("Recognized quoted_string");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		return atom;
+	}
+}
+
+Element ModifierPred() :
+{ Element atom, rel, var, ind; Token r,s,t,u,v; }
+{
+	r = <MODIFIER> <LPAREN>
+	s = <REFERENT> <COMMA>
+	
+	// { location, origin, ...}
+	( t=<STRING> | t=AnyReservedWord() ) <COMMA>
+	
+	// preposiion
+	( u=<STRING> | u=<QUOTED_STRING> | u=AnyReservedWord() ) <COMMA>
+	
+	// referent or adverb
+	(
+		v=<REFERENT> | v=<STRING> |
+		v=<QUOTED_STRING> | v=AnyReservedWord()
+	)
+	
+	<RPAREN>
+	{
+		System.out.println("Recognized modifier");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(u.image);
+		atom.appendChild(ind);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(v.image);
+		atom.appendChild(var);
+		return atom;
+	}
+}
+
+Element ProperPred() :
+{ Element atom, rel, var; Token r,s,t; }
+{
+	r = <PROPER> <LPAREN>
+	s = <REFERENT> <COMMA>
+	t = <REFERENT>
+	<RPAREN>
+	{
+		System.out.println("Recognized proper_part_of");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(t.image);
+		atom.appendChild(var);
+		return atom;
+	}
+}
+
+Element PartPred() :
+{ Element atom, rel, var; Token r,s,t; }
+{
+	r = <PART> <LPAREN>
+	s = <REFERENT> <COMMA>
+	t = <REFERENT>
+	<RPAREN>
+	{
+		System.out.println("Recognized part_of");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(t.image);
+		atom.appendChild(var);
+		return atom;
+	}
+}
+
+Element RelationPred() :
+{ Element atom, rel, ind, var; Token r,s,t,u,v; }
+{
+	r = <RELATION> <LPAREN>
+	s = <REFERENT> <COMMA>
+	( t=<STRING> | t=AnyReservedWord() ) <COMMA>
+	u = <OF> <COMMA>
+	v = <REFERENT>
+	<RPAREN>
+	{
+		System.out.println("Recognized relation");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(t.image);
+		atom.appendChild(ind);
+		ind = new Element("Ind", RULEML_NAMESPACE);
+		ind.appendChild(u.image);
+		atom.appendChild(ind);        
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(v.image);
+		atom.appendChild(var);
+		return atom;
+	}
+}
+
+Element SumPred() :
+{
+	Element atom, rel, plex, var; Token r,s,t;
+	List refs = new ArrayList();
+}
+{
+	r = <SUM> <LPAREN>
+	s = <REFERENT> <COMMA>
+	<LBRACK> t = <REFERENT>
+	{
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(t.image);
+		refs.add(var);
+	}
+	( <COMMA> t = <REFERENT>
+	 {
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(t.image);
+		refs.add(var);
+	 }  
+	)* <RBRACK>
+	<RPAREN>
+	{
+		System.out.println("Recognized sum_of");
+		atom = new Element("Atom", RULEML_NAMESPACE);
+		rel = new Element("Rel", RULEML_NAMESPACE);
+		rel.appendChild(r.image);
+		atom.appendChild(rel);
+		var = new Element("Var", RULEML_NAMESPACE);
+		var.appendChild(s.image);
+		atom.appendChild(var);
+		plex = new Element("Plex", RULEML_NAMESPACE);
+		atom.appendChild(plex);
+		if (refs != null)
+		{
+			for (int i=0; i < refs.size(); i++)
+			plex.appendChild((Element)refs.get(i));
+		}
+		return atom;
+	}
+}
+
+Token AnyReservedWord() :
+{ Token t; }
+{
+	(
+		t=<OBJECT> | t=<NAMED> | t=<STRUCTURE> | t=<QUANTITY> |
+		t=<PREDICATE> |	t=<PROPERTY> | t=<QUOTED> | t=<MODIFIER> |
+		t=<PROPER> | t=<PART> |	t=<RELATION> | t=<SUM> | t=<DRS> |
+		t=<KG> | t=<CM> | t=<EQ> | t=<OF> | t=<DOM> | t=<LEQ> |
+		t=<GEQ> | t=<SIZE> | t=<TIME> | t=<MASS> | t=<LESS> |
+		t=<UNIT> | t=<STATE> | t=<GROUP> | t=<LITER> | t=<EVENT> |
+		t=<ATOMIC> | t=<VOLUME> | t=<LENGTH> | t=<PERSON> |
+		t=<WEIGHT> | t=<GREATER> | t=<DIMENSION> | t=<COUNT> |
+		t=<CARDINALITY> | t=<UNSPECIFIED>
+	)
+	{ return t; }
+}
+\end{lstlisting}
+
+\end{document}

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Con -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Higher-Order Logic RuleML sublanguage
+			File: hohornlog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hilog includes the 'holog' module -->
+	<xs:include schemaLocation="modules/holog_module.xsd"/>
+
+	<!--
+		note the replacement of Atom and Expr by Hterm, the neutralization of
+		Ind, Rel and Ctor into Con, and the addition of Neg
+	-->
+	<xs:redefine schemaLocation="_nafhornlog-to-hohornlog.xsd">
+
+		<!-- add Hterm and Neg to formula-assert -->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:group ref="formula-assert.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds Hterm and Neg to Assert so that its content model is:
+			( oid?, (formula | Rulebase | Hterm | Neg | Implies | Equivalent | Entails | Forall)* )
+		-->	
+
+		<!-- add Hterm to formula-rulebase -->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:group ref="formula-rulebase.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds Hterm and Neg to Rulebase so that its content model is:
+			( oid?, (formula | Hterm | Neg | Implies | Equivalent | Forall)* )
+		-->	
+
+		<!-- add Hterm to strong -->
+		<!--
+			And is also added to strong; this is only necessary for integrity constraints in SWSL,
+			but limiting it to the second Rulebase of an Entails would require a lot of context
+			sensitivity. Therefore these SWSL XSDs are extra permissive in this respect.
+		-->
+		<xs:group name="strong.content">
+			<xs:choice>
+				<xs:group ref="strong.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element name="And" type="And-inner.type"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm to Neg so that its content model is:
+			( oid?, (strong | Hterm | And) )
+		-->
+
+		<!-- add Hterm to weak -->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="Hterm"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm to Naf so that its content model is:
+			( oid?, (strong | Hterm) )
+		-->
+
+		<!-- add Hterm and Con to arg -->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Con"/>
+				<xs:element ref="Hterm"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm to slot fillers:
+			( (), (Con | Hterm | Skolem | Var | Reify) )
+		-->
+		
+		<!--
+			add Hterm and Con to slot names:
+			( (Con | Hterm), (Con | Hterm | Skolem | Var | Reify) )
+		-->
+		<xs:group name="slot-name.extend">
+			<xs:choice>
+				<xs:group ref="slot-name.extend"/>
+				<xs:element ref="Con"/>
+				<xs:element ref="Hterm"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Con and Hterm to oid so that its content model is:
+			(Con | Hterm | Skolem | Var | Reify)
+		-->		
+		<xs:group name="oid.content">
+			<xs:choice>
+				<xs:group ref="oid.content"/>
+				<xs:element ref="Con"/>				
+				<xs:element ref="Hterm"/>
+			</xs:choice>
+		</xs:group>		
+
+		<!-- add Hterm and Neg to body -->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>				
+			</xs:choice>
+		</xs:group>	
+		
+		<!-- add Hterm and Neg to head -->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>				
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm and Neg to Implies so that its content model is:
+			( oid?, (head, body) | (body, head) | ( (Hterm | And | Or | Neg | Naf), (Hterm | Neg) ) )
+		-->	
+		
+		<!-- add Hterm to torso -->
+		<xs:group name="torso.content">
+			<xs:choice>
+				<xs:group ref="torso.content"/>
+				<xs:element ref="Hterm"/>				
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds Hterm to Equivalent so that its content model is:
+			( oid?, ( (torso, torso) | (Hterm, Hterm) ) )	
+		-->			
+
+		<!-- add Hterm and Neg to formula-and-or -->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>	
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds Hterm and Neg to And/Or so that their content model is:
+			( oid?, (formula | Hterm | And | Or | Neg | Naf)* )
+		-->
+
+		<!-- add Hterm and Neg to formula-query -->		
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:group ref="formula-query.content"/>
+				<xs:element ref="Hterm"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds Hterm to Query so that its content model is:
+			( oid?, (formula | Hterm | Rulebase | And | Or | Entails | Exists | Neg | Naf)* )
+		-->
+		
+		<!-- add Hterm to formula-forall -->	
+		<xs:group name="formula-forall.content">
+			<xs:choice>
+				<xs:group ref="formula-forall.content"/>
+				<xs:element ref="Hterm"/>			
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm to Forall so that its content model is:
+			( oid?, (declare | Var)+, (formula | Hterm | Implies | Equivalent | Forall) )
+		-->
+		
+		<!-- add Hterm to formula-exists -->
+		<xs:group name="formula-exists.content">
+			<xs:choice>
+				<xs:group ref="formula-exists.content"/>
+				<xs:element ref="Hterm"/>	
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Hterm to Exists so that its content model is:
+			( oid?, (declare | Var)+, (formula | Hterm | And | Or | Exists) )
+		-->							
+
+	</xs:redefine>
+
+</xs:schema>

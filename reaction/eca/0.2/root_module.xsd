@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd" elementFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Root module part of RBSLA.
+			This is the XML Schema root element for RBSLA.
+			File: root_module.xsd
+			Version: 0.2
+			Last Modification: 2005-11-26
+			
+			* RBSLA		
+			
+			This schema declares the following RBSLA elements and attributes:   
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!--
+	 *** RBSLA ***
+
+	content model: oid?, ( Assert | Retract | Query | Protect )*
+-->
+	<xs:attributeGroup name="RBSLA.attlist"/>
+	<xs:group name="RBSLA.content">
+	 <xs:sequence>
+	  	<xs:element ref="oid" minOccurs="0" /> 
+	 	<xs:choice minOccurs="1" maxOccurs="unbounded">
+	  		<xs:element ref="Assert" /> 
+	  		<xs:element ref="Retract" /> 
+	  		<xs:element ref="Query" /> 
+	  		<xs:element ref="Protect" /> 
+	  	</xs:choice>
+	  </xs:sequence>
+
+	</xs:group>
+	<xs:complexType name="RBSLA.type">
+		<xs:group ref="RBSLA.content"/>
+		<xs:attributeGroup ref="RBSLA.attlist"/>
+	</xs:complexType>
+	<xs:element name="RBSLA" type="RBSLA.type"/>
+</xs:schema>

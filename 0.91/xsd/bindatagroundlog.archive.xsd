@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Binary Ground-Datalog RuleML sublanguage
+			File: bindatagroundlog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="bindatalog.xsd">
+		<!--
+			remove Var so that arg's content model is: (Ind | Data | Skolem | Reify)
+
+			note that this automatically removes Var from Atom so that its content model is:
+			(
+				(oid)?, (op | Rel), (slot)*,
+				( (arg|Ind|Data|Skolem|Reify), (arg|Ind|Data|Skolem|Reify), (slot)* )?
+			)
+		-->		
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Data"/>
+				<xs:element ref="Skolem"/>
+				<xs:element ref="Reify"/>					
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			remove Forall (since ground) so that Assert's content model is:
+			( oid?, (formula | Rulebase | Atom | Implies | Equivalent | Entails)* )
+		-->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:element ref="Rulebase"/>
+				<xs:element name="Atom" type="Atom.type"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Entails"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			remove Forall (since ground) so that Rulebase's content model is:
+			( oid?, (formula | Atom | Implies | Equivalent)* )
+		-->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:element name="Atom" type="Atom.type"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			similarly, remove Exists (since ground) so that Query's content model is:
+			( oid?, (formula | Rulebase | And | Or | Atom | Entails)* )
+		-->
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:element ref="Rulebase"/>
+				<xs:element name="And" type="And-query.type"/>
+				<xs:element name="Or" type="Or-query.type"/>
+				<xs:element name="Atom" type="Atom.type"/>
+				<xs:element ref="Entails"/>
+			</xs:choice>
+		</xs:group>	
+
+	</xs:redefine>
+
+</xs:schema>

@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML performatives.
+			File: performative_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-17
+						
+			This module declares the following RuleML elements:
+			* RuleML
+			* Assert
+			* Retract
+			* Query
+			* formula
+
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** RuleML ***
+		The n-ary top-level of a RuleML document.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-RuleML
+
+		content model:
+		( oid?, (Assert | Retract | Query)* )
+	-->
+	<xs:attributeGroup name="RuleML.attlist"/>
+	<xs:group name="RuleML.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Assert"/>
+				<xs:element ref="Retract"/>
+				<xs:element ref="Query"/>
+			</xs:choice>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="RuleML.type">
+		<xs:group ref="RuleML.content"/>
+		<xs:attributeGroup ref="RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="RuleML" type="RuleML.type"/>
+	
+	<!--
+		*** Assert ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		asserted, making an 'implicit <Rulebase>' assumption.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Assert 
+
+		content model:
+		( oid?, (formula | Rulebase | Atom | Implies | Equivalent | Entails | Forall)* )
+	-->
+	<xs:attributeGroup name="Assert.attlist">
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+		<xs:attributeGroup ref="mapMaterial.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Assert.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-assert.type"/>
+				<xs:group ref="formula-assert.content"/>
+			</xs:choice>	
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Assert.type">
+		<xs:group ref="Assert.content"/>
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:complexType>
+	<xs:element name="Assert" type="Assert.type"/>
+	
+	<!--
+		*** Retract ***
+		A performative similar to KQML's 'untell' that acts as a wrapper specifying that its
+		content is to be deleted, making an 'implicit <Rulebase>' assumption.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Retract
+
+		content model:
+		( oid?, (formula | Rulebase | Atom | Implies | Equivalent | Entails | Forall)* )
+	-->
+	<xs:attributeGroup name="Retract.attlist">
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+		<xs:attributeGroup ref="mapMaterial.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Retract.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-assert.type"/>
+				<xs:group ref="formula-assert.content"/>
+			</xs:choice>	
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Retract.type">
+		<xs:group ref="Retract.content"/>
+		<xs:attributeGroup ref="Retract.attlist"/>
+	</xs:complexType>
+	<xs:element name="Retract" type="Retract.type"/>
+	
+	<!--
+		*** Query ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		queried, making an 'implicit <Rulebase>' assumption.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Query 
+
+		content model:
+		( oid?, (formula | Rulebase | Atom | And | Or | Entails | Exists)* )
+	-->
+	<xs:attributeGroup name="Query.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Query.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-query.type"/>		
+				<xs:group ref="formula-query.content"/>
+			</xs:choice>	
+		</xs:sequence>	
+	</xs:group>
+	<xs:complexType name="Query.type">
+		<xs:group ref="Query.content"/>
+		<xs:attributeGroup ref="Query.attlist"/>
+	</xs:complexType>
+	<xs:element name="Query" type="Query.type"/>
+	
+	<!--
+		*** formula ***
+		The formula role of a performative (<Assert>, <Retract> or <Query>).
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-formula
+
+		content model (below Assert): (Rulebase | Atom | Implies | Equivalent | Entails | Forall)
+		content model (below Query): (Rulebase | Atom | And | Or | Entails | Exists)
+
+		Other (context-sensitive) versions of <formula> are in the
+		connective and quantifier modules.
+	-->
+	<!-- the (empty) attribute list is declared in the connective module -->
+	<xs:group name="formula-assert.content">
+		<xs:choice>
+			<xs:element ref="Rulebase"/>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element ref="Implies"/>
+			<xs:element ref="Equivalent"/>
+			<xs:element ref="Entails"/>
+			<xs:element ref="Forall"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="formula-query.content">
+		<xs:choice>
+			<xs:element ref="Rulebase"/>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-query.type"/>
+			<xs:element name="Or" type="Or-query.type"/>
+			<xs:element ref="Entails"/>
+			<xs:element ref="Exists"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="formula-assert.type">
+		<xs:group ref="formula-assert.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="formula-query.type">
+		<xs:group ref="formula-query.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+
+</xs:schema>

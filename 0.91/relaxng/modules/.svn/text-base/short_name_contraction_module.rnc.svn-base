@@ -1,0 +1,33 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Long Names" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, long names" ]
+dc:description [ "The expansion module for human-readable names." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+card.attrib.def &= notAllowed
+in.attrib.def &= notAllowed
+val.attrib.def &= notAllowed
+Rel.Node.def &= notAllowed
+Expr.Node.def &= notAllowed
+Fun.Node.def &= notAllowed
+Naf.Node.def &= notAllowed
+Neg.Node.def &= notAllowed
+Equal.Node.def &= notAllowed
+Var.Node.def &= notAllowed
+Ind.Node.def &= notAllowed
+op_Atom.edge.def &= notAllowed
+oid.edge.def &= notAllowed
+op_Expr.edge.def &= notAllowed
+arg.edge.def &= notAllowed
+lhs.edge.def &= notAllowed
+rhs.edge.def &= notAllowed
+repo.edge.def &= notAllowed
+resl.edge.def &= notAllowed

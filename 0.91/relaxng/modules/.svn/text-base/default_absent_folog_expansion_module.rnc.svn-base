@@ -1,0 +1,16 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Optional Default-Valued Attributes" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, optional default-valued attributes" ]
+dc:description [ "The expansion module to allow attributes with default values to be optional." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+mapMaterial-att-fo.choice |= empty
+mapDirection-att-fo.choice |= empty

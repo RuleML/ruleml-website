@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/urdatalog.xsd">
+
+<!-- Example for a strawman WSDL RDF model used by Eric Prud'hommeaux in an
+Implementation Survey comparing various RDF Query languages, incl. RuleML.
+For details see his http://www.w3.org/2001/11/13-RDF-Query-Rules/ -->
+
+<Query>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"/></opr>
+        <Var>service</Var>
+        <Ind href="http://schemas.xmlsoap.org/wsdl/service"/>
+      </Atom>
+      <Atom>
+        <opr><Rel href="http://schemas.xmlsoap.org/wsdl/hasPort"/></opr>
+        <Var>service</Var>
+        <Var>port</Var>
+      </Atom>
+      <Atom>
+        <opr><Rel href="http://schemas.xmlsoap.org/wsdl/binding"/></opr>
+        <Var>port</Var>
+        <Var>binding</Var>
+      </Atom>
+      <Atom>
+        <opr><Rel href="http://schemas.xmlsoap.org/wsdl/soap/style"/></opr>
+        <Var>binding</Var>
+        <Ind href="http://schemas.xmlsoap.org/wsdl/soap/document"/>
+      </Atom>
+      <Atom>
+        <opr><Rel href="http://schemas.xmlsoap.org/wsdl/name"/></opr>
+        <Var>binding</Var>
+        <Var>bindingName</Var>
+      </Atom>
+    </And>
+  </body>
+</Query>
+
+</Rulebase>

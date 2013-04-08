@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+ <xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: BLDRule.xsd,v 0.85 2008-06-10 dhirtle/hboley">
+ 
+  <xs:annotation>
+    <xs:documentation>
+    This is the XML schema for the Rule Language as defined by
+    Working Draft 2 of the RIF Basic Logic Dialect.
+    
+    The schema is based on the following EBNF for the RIF-BLD Rule Language:
+  
+  Document  ::= IRIMETA? 'Document' '(' DIRECTIVE* Group? ')'
+  DIRECTIVE ::= Import | Prefix | Base
+  Import    ::= 'Import' '(' IRI Profile? ')'
+  Prefix    ::= 'Prefix' '(' Name IRI ')'
+  Base      ::= 'Base' '(' IRI ')'
+  Group     ::= IRIMETA? 'Group' '(' (RULE | Group)* ')'
+  RULE      ::= (IRIMETA? 'Forall' Var+ '(' CLAUSE ')') | CLAUSE
+  CLAUSE    ::= Implies | ATOMIC
+  Implies   ::= IRIMETA? (ATOMIC | 'And' '(' ATOMIC* ')') ':-' FORMULA
+  IRIMETA   ::= '(*' Const? (Frame | 'And' '(' Frame* ')')? '*)'
+  IRI       ::= UNICODESTRING
+  Profile   ::= UNICODESTRING
+      
+    Note that this is an extension of the syntax for the RIF-BLD Condition Language (BLDCond.xsd).
+    </xs:documentation>
+  </xs:annotation>
+ 
+  <!-- The Rule Language includes the Condition Language-->
+  <xs:include schemaLocation="BLDCond.xsd"/>
+ 
+  <xs:element name="Document">
+    <!--
+  Document  ::= IRIMETA? 'Document' '(' DIRECTIVE* Group? ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="directive" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="payload" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="directive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="DIRECTIVE"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="payload">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Group"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="DIRECTIVE">
+    <!--
+  DIRECTIVE ::= Import |   Prefix and Base represented directly in XML
+    -->
+    <xs:choice>
+      <xs:element ref="Import"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Import">
+    <!--
+  Import    ::= 'Import' '(' IRI Profile? ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="location"/>
+        <xs:element ref="profile" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="location">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>   <!-- type="&rif;iri" -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="profile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Profile"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Group">
+    <!--
+  Group     ::= IRIMETA? 'Group' '(' (RULE | Group)* ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="sentence" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="sentence">
+   <xs:complexType>
+     <xs:choice>
+       <xs:group ref="RULE"/>
+       <xs:element ref="Group"/>
+     </xs:choice>
+   </xs:complexType>
+ </xs:element>
+  
+  <xs:group name="RULE">
+    <!--
+  RULE      ::= (IRIMETA? 'Forall' Var+ '(' CLAUSE ')') | CLAUSE
+    -->
+    <xs:choice>
+      <xs:element ref="Forall"/>
+      <xs:group ref="CLAUSE"/>
+    </xs:choice>
+  </xs:group>
+ 
+  <xs:element name="Forall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <!-- different from formula in And, Or and Exists -->
+        <xs:element name="formula">
+          <xs:complexType>
+            <xs:group ref="CLAUSE"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="CLAUSE">  
+    <!--
+  CLAUSE   ::= Implies | ATOMIC
+    -->
+    <xs:choice>
+      <xs:element ref="Implies"/>
+      <xs:group ref="ATOMIC"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Implies">
+    <!--
+  Implies   ::= IRIMETA? (ATOMIC | 'And' '(' ATOMIC* ')') ':-' FORMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="if"/>
+        <xs:element ref="then"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="then">
+    <xs:complexType>
+     <xs:choice>
+       <xs:group ref="ATOMIC"/>
+       <xs:element name="And" type="And-then.type"/>
+     </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:complexType name="And-then.type">
+    <!-- sensitive to then (ATOMIC) context-->
+    <xs:sequence>
+      <xs:element name="formula" type="formula-then.type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="formula-then.type">
+    <!-- sensitive to then (ATOMIC) context-->
+    <xs:sequence>
+      <xs:group ref="ATOMIC"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:element name="Profile" type="xs:string">
+    <!--
+  Profile        ::= UNICODESTRING
+    -->
+  </xs:element>
+ 
+  <xs:group name="IRIMETA">
+    <!--
+  IRIMETA   ::= '(*' Const? (Frame | 'And' '(' Frame* ')')? '*)'
+    -->
+    <xs:sequence>
+      <xs:element ref="id" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="meta" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:element name="id">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>   <!-- type="&rif;iri" -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="meta">
+    <xs:complexType>
+     <xs:choice>
+       <xs:element ref="Frame"/>
+       <xs:element name="And" type="And-meta.type"/>
+     </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="And-meta.type">
+  <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element name="formula" type="formula-meta.type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="formula-meta.type">
+    <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element ref="Frame"/>
+    </xs:sequence>
+  </xs:complexType>
+    
+ </xs:schema>

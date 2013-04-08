@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.85/dtd/urequalog.dtd">
+
+<rulebase
+xmlns="http://www.ruleml.org/inspec"
+xsi:schemaLocation="http://www.ruleml.org/inspec http://www.ruleml.org/0.85/xsd/urequalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+<!-- a uri expander -->
+
+<fact>
+ <_head>
+  <eq>
+    <nano>
+      <_opf>
+        <fun>uriexp</fun>
+      </_opf>
+      <ind>daml</ind>
+    </nano>
+    <ind href="http://www.daml.org/"/>
+  </eq>
+ </_head>
+</fact>
+
+<fact>
+ <_head>
+  <eq>
+    <nano>
+      <_opf>
+        <fun>uriexp</fun>
+      </_opf>
+      <ind>oil</ind>
+    </nano>
+    <ind href="http://www.ontoknowledge.org/oil/"/>
+  </eq>
+ </_head>
+</fact>
+
+<fact>
+ <_head>
+  <eq>
+    <nano>
+      <_opf>
+        <fun>uriexp</fun>
+      </_opf>
+      <ind>w3c</ind>
+    </nano>
+    <ind href="http://www.w3.org/"/>
+  </eq>
+ </_head>
+</fact>
+
+</rulebase>

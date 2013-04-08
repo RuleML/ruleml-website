@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: urcbindatagroundfact.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatagroundlog.xsd">
+		<!--
+			remove imps so that rulebase's content model is:
+			( ((_rbaselab, (fact | query)*) | ((fact | query)+, _rbaselab?))? )
+		-->
+		<xs:group name="rulebase.content">
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="_rbaselab"/>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="fact"/>
+						<xs:element ref="query"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:sequence minOccurs="0">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="fact"/>
+						<xs:element ref="query"/>
+					</xs:choice>
+					<xs:element ref="_rbaselab" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:group>		
+
+	</xs:redefine>
+	
+</xs:schema>

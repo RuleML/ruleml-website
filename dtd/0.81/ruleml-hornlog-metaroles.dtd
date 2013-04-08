@@ -1,0 +1,29 @@
+<!-- An XML DTD for a Horn-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-07-07 -->
+
+
+. . .
+
+
+<!ELEMENT roli  ((_arole)*)>
+
+<!-- "_arole" role (role in the sense of DTD) is short for "argument role", 
+     which for now actually specifies a PAIR of both an argument role and an argument VALUE (an implicit "aval" element) -->
+<!-- "role" here means relative to its parent "roli", which itself may be the single argument, say, of an atom or cterm -->
+<!-- its attribute "arn" is short for the "argument role name" -->
+<!-- E.g., an atom whose rel is "purchase order" might have as arguments a roli consisting of three _arole's: -->
+<!-- the first has role name "buyer", the second has role name "seller", and the third has role name "po_number" -->
+<!-- the argument role value can be an ind, var, cterm, tup, or roli; this is general -->
+
+<!-- SYNTACTIC REQUIREMENT BEYOND DTD:  The argument role name must not be emptily defined;
+     formally:  it is prohibited for {the name attribute string to be empty AND the href attribute to be omitted}. -->
+
+<!-- SYNTACTIC REQUIREMENT BEYOND DTD:  Within a given roli, the argument roles 
+     (i.e., the argument role names) must be UNIQUE -->
+
+<!ELEMENT _arole (ind | var | cterm | tup | roli)>
+
+<!ATTLIST _arole arn CDATA #REQUIRED>
+
+
+. . .

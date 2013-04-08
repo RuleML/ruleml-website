@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified">
+	
+<!-- note that elementFormDefault is qualified because of local declarations -->
+	
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hornlog includes the 'expr' and 'rest' modules -->
+	<xs:include schemaLocation="modules/expr_module.xsd"/>
+	<xs:include schemaLocation="modules/rest_module.xsd"/>
+	
+	<!-- note the addition of Expr and Plexs from the expr module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			add Exprs and Plexs so that arg's content model is:
+			(Ind | Data | Skolem | Var | Reify | Expr | Plex)
+		-->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Expr"/>
+				<xs:element name="Plex" type="Plex.type"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Expr and Plex to Atom so that its content model is:
+			(
+				(oid)?, (op | Rel), (slot)*,
+				( (arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)+, (slot)* )?
+			)
+			
+			... as well as to slot so that its content model is:
+	   		( (Ind|Data), (Ind|Data|Skolem|Var|Reify|Expr|Plex) )
+		-->
+		
+		<!--
+			add Exprs and Plexs so that slot's content model is:
+			( (Ind|Data|Expr|Plex), (Ind|Data|Skolem|Var|Reify|Expr|Plex) )
+		-->
+		<xs:group name="slot-name.extend">
+			<xs:choice>
+				<xs:group ref="slot-name.extend"/>
+				<xs:element ref="Expr"/>
+				<xs:element name="Plex" type="Plex.type"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add Expr and Plex to oid so that its content model is:
+			(Ind | Data | Var | Skolem | Reify | Expr | Plex)
+		-->
+		<xs:group name="oid.content">
+			<xs:choice>
+				<xs:group ref="oid.content"/>
+				<xs:element ref="Expr"/>
+				<xs:element name="Plex" type="Plex.type"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add repo and resl so that Atom's content model is:
+			(
+				(oid)?, (op | Rel), (slot)*, (resl)?,
+				( 
+					( 
+						((arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)+, (repo)?)
+						|
+						(repo)
+					),
+					(slot)*, (resl)?
+				)?
+			)			
+		-->
+		<xs:group name="Atom-repo.extend">
+			<xs:choice>
+				<xs:group ref="Atom-repo.extend"/>
+				<xs:element ref="repo"/>
+			</xs:choice>
+		</xs:group>
+		<xs:group name="Atom-arg.extend">
+			<xs:sequence>
+				<xs:group ref="Atom-arg.extend"/>
+				<xs:element ref="repo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:group>
+		<xs:group name="Atom-slots.extend">
+			<xs:sequence>
+				<xs:group ref="Atom-slots.extend"/>
+				<xs:element ref="resl" minOccurs="0"/>
+			</xs:sequence>
+		</xs:group>
+		
+	</xs:redefine>
+</xs:schema>

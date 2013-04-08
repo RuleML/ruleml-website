@@ -1,0 +1,42 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML closure attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, closure" ]
+dc:description [ "The expansion module for the optional closure attribute." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= closure.edge.def | mapClosure.edge.def
+# This module declares the following RuleML attribute:
+#    * @closure
+#    * @mapClosure
+# Schema Design Pattern Key: see andor_expansion_module.rnc
+
+## an extension point for alternate spellings and internationalization of the implicit closure attribute name.  
+closure-att.choice |= closure.attrib.def
+closure.attrib.def =
+    
+    ## An attribute indicating how the contained free variables are quantified. 
+    ## Allowed values are "universal" and "existential".
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-@closure
+    attribute closure { closure.value }
+closure.value |= "universal" | "existential"
+
+## an extension point for alternate spellings and internationalization of the scope  implicit closure attribute name.  
+mapClosure-att.choice |= mapClosure.attrib.def
+mapClosure.attrib.def =
+    
+    ## An attribute indicating how the free variables falling within its scope (i.e. child elements) are quantified. 
+    ## Allowed values are "universal" and "existential".
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-@mapClosure
+    attribute mapClosure { mapClosure.value }
+mapClosure.value |= closure.value
+#
+closure.edge.def = element closure { closure.content }
+closure.content |= closure.value
+mapClosure.edge.def = element mapClosure { mapClosure.content }
+mapClosure.content |= mapClosure.value

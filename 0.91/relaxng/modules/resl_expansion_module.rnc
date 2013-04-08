@@ -1,0 +1,46 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML slotted rest variables" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, rest, slot" ]
+dc:description [ "The expansion module for slotted rest variables." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= resl.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <resl>
+
+## an extension point for alternate spellings and internationalization of the slotted rest tag name. 
+## Stripe-skipping is not allowed for slotted rest variables.  
+restOfSlots-edge.choice |= resl.edge.def
+resl.edge.def =
+    
+    ## A slotted rest variable used in <Atom>s, <Expr>s and <Plex>s. 
+    ## Note that <Plex>s are generated, so <resl>s are only available above the Datalog sublanguage.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-resl
+    element resl { resl.content }
+
+## The content model of a slotted rest variable is a single term.
+resl.content |= reslTerm.choice
+
+## terms allowed in slotted rest variables. 
+reslTerm.choice |= SlotSequenceMarker.choice
+
+## Generalized lists of a restricted type are allowed terms in slotted rest variables.
+reslTerm.choice |= Plex_resl-node.choice
+# For the declaration of generalized lists (plexes), see the generalized list module (plex-module).
+
+## Sequence markers are represented as ordinary variables.
+SlotSequenceMarker.choice |= Variable-node.choice
+# For the declaration of variables, see the quantification module (quantifier-module).
+#
+edge.choice |= resl.edge.def
+
+
+

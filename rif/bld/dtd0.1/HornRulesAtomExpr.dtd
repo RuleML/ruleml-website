@@ -1,0 +1,40 @@
+<!ENTITY % TERM "(Con | Var | Expr)">
+<!ENTITY % LITFORM "(Atom | Equal)">
+<!ENTITY % QUANTIF "(Exists)">
+<!ENTITY % CONDIT "(%LITFORM; | %QUANTIF; | And | Or)">
+
+<!ENTITY % CLAUSE "(Forall)">
+
+<!ELEMENT Con  (#PCDATA)>
+<!ELEMENT Var  (#PCDATA)>
+
+<!ELEMENT Expr (Con, (%TERM;)*)>
+
+<!ELEMENT Atom (Con, (%TERM;)*)>
+<!ELEMENT Equal (%TERM;, %TERM;)>
+
+<!ELEMENT Exists ((declare+, formula) | (Var+, %CONDIT;))>
+<!ELEMENT Forall ((declare+, formula) | (Var+, (Implies | %LITFORM;)))>
+<!--                                       stripe-skipping               -->
+
+<!ELEMENT declare (Var)>
+<!ELEMENT formula ( (%CONDIT;) | (Implies) )>  <!-- " | %LITFORM;" via "%CONDIT;"-->
+<!-- DTD tolerant:    Exists       Forall
+     XSD can discriminate content models context-sensitively:
+     <!ELEMENT formula-in-Exists (%CONDIT;)>
+     <!ELEMENT formula-in-Forall (Implies | %LITFORM;)>
+-->
+
+<!ELEMENT And ((%CONDIT;)*)>
+<!ELEMENT Or  ((%CONDIT;)*)>
+
+<!ELEMENT Implies ((head, body) | (body, head) | ( %CONDIT;, %LITFORM;))>
+<!--                                                 stripe-skipping     -->
+
+<!ELEMENT head (%LITFORM;)>
+<!ELEMENT body (%CONDIT;)>
+
+<!ELEMENT Ruleset ((%CLAUSE;)*)>
+
+<!ATTLIST Con type CDATA #IMPLIED>
+<!ATTLIST Var type CDATA #IMPLIED>

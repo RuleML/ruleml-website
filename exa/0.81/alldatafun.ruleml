@@ -1,0 +1,295 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.uni-kl.de/ruleml/dtd/0.81/ruleml-datafun.dtd">
+
+<!--
+DATALOG FUNCTIONAL RULES IN RuleML                  Harold Boley, 9 Jul. 2002
+
+
+This is a test file for Datalog functional (transformational) rules in RuleML.
+It attempts to give all relevant examples via the systematic combination of
+Datafun features.
+-->
+
+
+<rulebase>
+
+<!-- individual a transforms into itself -->
+<query>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</query>
+
+<!-- f(a) transforms into value of built-in or user-defined-function f (applied to a)-->
+<query>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <ind>a</ind>
+    </nano>
+  </_foot>
+</query>
+
+<!-- with successful relation call r(a),
+     f(a) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <atom>
+      <_opr><rel>r</rel></_opr>
+      <ind>a</ind>
+    </atom>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <ind>a</ind>
+    </nano>
+  </_foot>
+</query>
+
+<!-- with successful bindings of relation calls r(x) and s(x),
+     f(x) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>r</rel></_opr>
+        <var>x</var>
+      </atom>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <var>x</var>
+      </atom>
+    </and>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_foot>
+</query>
+
+<!-- f(g(a)) transforms into value of built-in or user-defined-function f
+     applied to value of g(a) -->
+<query>
+  <_foot>
+    <nanov>
+      <_opf><fun>f</fun></_opf>
+      <nano>
+        <_opf><fun>g</fun></_opf>
+        <ind>a</ind>
+      </nano>
+    </nanov>
+  </_foot>
+</query>
+
+<!-- f(g(h(a))) transforms into value of built-in or user-defined-function f
+     applied to value of g(h(a)) -->
+<query>
+  <_foot>
+    <nanov>
+      <_opf><fun>f</fun></_opf>
+      <nanov>
+        <_opf><fun>g</fun></_opf>
+        <nano>
+          <_opf><fun>h</fun></_opf>
+          <ind>a</ind>
+        </nano>
+      </nanov>
+    </nanov>
+  </_foot>
+</query>
+
+<!-- with successful relation call r(f(a)), r applied to the transformation result
+     of f(a), transforms into a -->
+<query>
+  <_body>
+    <atomv>
+      <_opr><rel>r</rel></_opr>
+      <nano>
+        <_opf><fun>f</fun></_opf>
+        <ind>a</ind>
+      </nano>
+    </atomv>
+  </_body>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</query>
+
+<!-- with successful bindings of relation calls r(f(x)) and s(x),
+     f(x) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <andv>
+      <atomv>
+        <_opr><rel>r</rel></_opr>
+        <nano>
+          <_opf><fun>f</fun></_opf>
+          <var>x</var>
+        </nano>
+      </atomv>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <var>x</var>
+      </atom>
+    </andv>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_foot>
+</query>
+
+<!-- (user-)define function f to transform every argument x into individual a -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x into what it is transformed
+     by function g -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_foot>
+    <nano>
+      <_opf><fun>g</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x, with successful bindings of
+     relation call r(x), into individual a -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_body>
+    <atom>
+      <_opr><rel>r</rel></_opr>
+      <var>x</var>
+    </atom>
+  </_body>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x, with successful bindings of
+     relation calls r(x) and s(x), into individual a -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>r</rel></_opr>
+        <var>x</var>
+      </atom>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <var>x</var>
+      </atom>
+    </and>
+  </_body>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x into value of built-in or
+     user-defined-function g applied to value of h(a) -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_foot>
+    <nanov>
+      <_opf><fun>g</fun></_opf>
+      <nano>
+        <_opf><fun>h</fun></_opf>
+        <ind>a</ind>
+      </nano>
+    </nanov>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x, with successful bindings of
+     relation call r(g(x)) over g(x), into individual a -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_body>
+    <atomv>
+      <_opr><rel>r</rel></_opr>
+      <nano>
+        <_opf><fun>g</fun></_opf>
+        <var>x</var>
+      </nano>
+    </atomv>
+  </_body>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument x, with successful bindings of
+     relation calls r(f(x)) and s(x), into individual a -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <var>x</var>
+    </nano>
+  </_headf>
+  <_body>
+    <andv>
+      <atomv>
+        <_opr><rel>r</rel></_opr>
+        <nano>
+          <_opf><fun>f</fun></_opf>
+          <var>x</var>
+        </nano>
+      </atomv>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <var>x</var>
+      </atom>
+    </andv>
+  </_body>
+  <_foot>
+    <ind>a</ind>
+  </_foot>
+</trans>
+
+</rulebase>

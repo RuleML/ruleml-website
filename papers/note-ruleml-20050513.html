@@ -1,0 +1,857 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+      "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>RuleML - Semantic Web Rule Markup Language</title>
+  <style type="text/css">
+<!--
+.highlighted {background:silver}
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+  </style>
+  <link rel="stylesheet" type="text/css"
+  href="http://www.w3.org/StyleSheets/TR/W3C-NOTE">
+</head>
+
+<body>
+
+<div class="head">
+<h1><span style="color: #000000">DISCLAIMER</span></h1>
+
+<h2><span style="color: #000000">The information presented in this document
+is intended for the sole use of the RuleML Steering Committee. This is not a
+public document. Its distribution without prior written permission by its
+authors is strictly prohibited.</span></h2>
+</div>
+
+<p></p>
+
+<div class="head">
+<h1><a id="top1" name="top1">RuleML - Semantic Web Rule Markup
+Language</a></h1>
+
+<h2><a id="date1" name="date1">W3C Working Note Draft, 13 May 2005</a></h2>
+<dl>
+  <dt>This version:</dt>
+    <dd><a
+      href="http://www.ruleml.org/papers/note-ruleml-20050513.html">http://www.ruleml.org/papers/note-ruleml-20050513.html</a></dd>
+  <dt>Latest version:</dt>
+    <dd><a
+      href="http://www.ruleml.org/papers/note-ruleml.html">http://www.ruleml.org/papers/note-ruleml.html</a></dd>
+  <dt>Authors:</dt>
+    <dd>Harold Boley (<a
+      href="http://www.cs.unb.ca/~boley">http://www.cs.unb.ca/~boley</a>)</dd>
+    <dd>Benjamin Grosof (<a
+      href="http://ebusiness.mit.edu/bgrosof">http://ebusiness.mit.edu/bgrosof</a>)</dd>
+    <dd>Said Tabet (<a
+      href="http://home.comcast.net/~stabet">http://home.comcast.net/~stabet</a>)</dd>
+</dl>
+
+<p></p>
+
+<p class="copyright">Copyright 2000-2005, <a
+href="http://www.ruleml.org/">The RuleML Initiative</a>. This document is
+available under the <a
+href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C Document
+License</a>, see the <a
+href="http://www.w3.org/Consortium/Legal/ipr-notice">W3C Intellectual Rights
+Notices and Disclaimers</a> for additional information.</p>
+<hr title="Separator for header">
+</div>
+
+<h2><a id="section-abstract" name="section-abstract">Abstract</a></h2>
+
+<p>This document describes RuleML, the Rule Markup Language. RuleML is a
+markup language for publishing and sharing rule bases on the World Wide Web.
+RuleML builds a hierarchy of rule sublanguages upon XML, RDF, XSLT, and
+OWL.</p>
+
+<div id="statusid">
+<h2><a id="section-status" name="section-status"></a>Status of this
+document</h2>
+
+<p>This NOTE has not yet been publicly submitted to the <a
+href="http://www.w3.org/">World Wide Web Consortium</a>. Once submitted, it
+is our intention that the W3C use it as a basis for furthering the work.</p>
+
+<p>This document is a working NOTE draft, made available by the RuleML
+Initiative for discussion only. This document is a work in progress and may
+be updated, replaced, or rendered obsolete by other documents at any time.</p>
+</div>
+
+<h2><a id="section-toc" name="section-toc">Table of Contents</a></h2>
+<ol>
+  <li>Abstract and Brief Summary (BG-ST-HB) 
+    <ol>
+      <li>Goal of interoperable rules over/on the Web to support integration
+        of knowledge bases comprised of rules and facts</li>
+      <li>Design approach based on declarative logic programs</li>
+      <li>Webized to use URI's, namespaces, and XML</li>
+      <li>Encode rulebases in XML or RDF syntax</li>
+      <li>Various expressive extensions done; more possible, some already in
+        progress</li>
+      <li>Synergizes with other aspects of Web standards, especially Semantic
+        Web (RDF, OWL) and Web Services (Web Choreography, DAML-S);
+        anticipated with Semantic Web Services in near future -- to be
+        coordinated with Joint Committee</li>
+    </ol>
+  </li>
+  <li><a href="#section_1">Background (ST-BG-HB)</a> 
+    <ol>
+      <li><a href="#section_1_1">The need for Rules on the Web</a></li>
+      <li><a href="#section_1_2">Earlier work on interoperable Web rules
+        using XML markup</a></li>
+      <li><a href="#section_1_3">The Rule Markup Initiative</a></li>
+      <li>Rules in the Semantic Web</li>
+      <li>Rules in Web Services</li>
+      <li>Later: Rules in other W3C efforts, e.g., P3P/APPEL, XQuery, XSLT;
+        SWSC)</li>
+      <li>Why standardize rules now</li>
+    </ol>
+  </li>
+  <li>RuleML Goals, Requirements, and Design Approach -- to be shortened
+    (BG-ST-HB) 
+    <ol>
+      <li>Goal of interoperable rules over/on the Web to support integration
+        of knowledge bases comprised of rules and facts</li>
+      <li>Based on underlying KR with well-understood semantics,
+        interoperation with semantic equivalence</li>
+      <li>Initially targeted families of rule systems are currently
+        commercially the most important (later: FOL theorem-prover fragments) 
+        <ol>
+          <li>Relational DB's, SQL-99</li>
+          <li>ISO Prolog</li>
+          <li>Production rule systems (from OPS5 to Jess)</li>
+          <li>ECA rules</li>
+          <li>OCL (constraint part of UML)</li>
+        </ol>
+      </li>
+      <li>Requirements for both forward and backward inferencing</li>
+      <li>Requirements for negation: Negation as failure (NAF), strong
+        negation (NEG), and - most declaratively - NAF-NEG-neutral negation
+        (NOT)</li>
+      <li>Requirements for prioritized conflict handling</li>
+      <li>Design approach: based on declarative logic programs start with
+        Datalog as kernel, then add extensions guided by research/development
+        maturity, practical importance, strategic/evolutionary
+      considerations</li>
+      <li>General objectives 
+        <ol>
+          <li>Be in spirit of the Web, accomodate its openness, exploit its
+            other aspects: esp. URI's, namespaces, XML as syntactic
+          vehicle</li>
+          <li>Design approach of Webizing: name relations and functions,
+            rules, rule subsets/modules -- by using URI's and namespaces</li>
+          <li>Bridge XML and RDF data models, be able to exploit RDF and
+            harmonize with it (this might help speed RDF in rules world)</li>
+          <li>Tasks: inferencing, (XSLT) translation, static analysis</li>
+          <li>Applications: business policies, business process automation
+            and workflow, e-contracting, security/authorization/trust</li>
+        </ol>
+      </li>
+      <li>Aim to support RDF, and also to support XML directly for those not
+        (directly) dealing with RDF</li>
+      <li>Design approach: abstract (graph-theoretical) data model with
+        labeled arcs and minimal ordered arcs; inspired by software/data
+        engineering practice, and by RDF, alternative syntactic encodings in
+        XML and RDF; in-progress also in OWL -- to be coordinated with Joint
+        Committee</li>
+      <li>Pursue: multiple KR expressiveness classes, which form a partial
+        order</li>
+      <li>Design approach: hierarchy of expressive classes, syntax
+        specification (incl. DTDs and later XML Schema) for each 
+        <ol>
+          <li>Some defined already, others in progress, even more ones
+            provided from RuleML community</li>
+          <li>Need syntactic mechanics for this: e.g., in DTDs and XML
+          Schema</li>
+          <li>In progress: it's useful to think in terms of a few different
+            rules types: not just derivation and transformation, but also:
+            action/reaction; however, these not yet well worked out wrt
+            consensus way to view them, nor in some ways wrt the fundamental
+            research understanding</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#section_3">Language Structure (HB-ST)</a> 
+    <ol>
+      <li><a href="#section_3_1">Rule Types: Derivation, Transformation, and
+        <span style="color: #000000">(in progress)</span> Reaction</a></li>
+      <li><a href="#section_3_4">Webized Logic: URIrefs for constants,
+        relations, and functions</a></li>
+      <li><a href="#section_3_2">The Hierarchy of expressive classes</a> 
+        <ol>
+          <li>Example: diamond formed by Datalog, Horn, Datalog+NAF,
+          Horn+NAF</li>
+          <li>Overview of some others: UR versions + RDF versions</li>
+        </ol>
+      </li>
+      <li><a href="#section_3_6">Plugging in Different Sets of Relational and
+        Functional Built-ins (ISO Prolog, CommonRules, CommonLogic/KIF, Jess,
+        etc.)</a></li>
+    </ol>
+  </li>
+  <li><a href="#section_4">The Kernel Datalog Sublanguage (HB-BG-ST)</a> 
+    <ol>
+      <li><a href="#section_4_1">Datalog Facts</a></li>
+      <li><a href="#section_4_2">Datalog Rules</a></li>
+    </ol>
+  </li>
+  <li><a href="#section_5">The Full Horn Sublanguage (HB)</a> 
+    <ol>
+      <li><a href="#section_6_1">Complex Terms</a></li>
+      <li>List Terms as a special case</li>
+    </ol>
+  </li>
+  <li><a href="#section_6">The Transformational Sublanguage (HB)</a> 
+    <ol>
+      <li>Function calls via nano elements</li>
+      <li>Call-by-value nestings</li>
+      <li><a href="#section_7_2">Function definitions through trans
+        elements</a></li>
+    </ol>
+  </li>
+  <li><a href="#section_7">Negation as Failure (NAF), Normal Logic Programs
+    (BG-HB-ST)</a> 
+    <ol>
+      <li>English explanation: What it does, relationships to NEG and NOT</li>
+      <li>Explain the need: For W3C, IR, rules, and database communities</li>
+      <li>Explain the restriction: Failure Negation appearing only on
+        selected body atoms</li>
+      <li>Allowed uses of NAF and conjunctions in the body</li>
+    </ol>
+  </li>
+  <li><a href="#section_8">The Prioritized Sublanguage</a> (BG-ST-HB) 
+    <ol>
+      <li><a href="#section_8">Rule labels</a></li>
+      <li>Partial order for rule prioritization</li>
+      <li>Later: Certainty factors and their transformation into a partial
+        order</li>
+    </ol>
+  </li>
+  <li><a href="#section_10">The Object-Centered Sublanguage (HB-ST-BG)</a> 
+    <ol>
+      <li><a href="#section_10_1">Concept; a metarole for user-defined role
+        names; relationship to OO</a></li>
+      <li><a href="#section_10_2">Relationships to positionalized
+        sublanguages</a></li>
+      <li>Modeling RDF resources and OWL instances -- to be coordinated with
+        Joint Committee</li>
+      <li>Later: Modeling instances of F-Logic <a href="#section_10_4">and
+        Case-based reasoning</a></li>
+      <li>Later: Types and inheritance as in OWL classes and Description LP
+        -- to be coordinated with Joint Committee</li>
+    </ol>
+  </li>
+  <li>Lloyd-Topor Logic Programs: More First-Order Logic Features (BG-ST-HB) 
+    <ol>
+      <li>Lloyd-Topor Transformation without, then with NAF</li>
+      <li>Disjunction and conjunction in body</li>
+      <li>Conjunction in head</li>
+      <li>Later: Existentials in body</li>
+      <li>Later: Universals in head</li>
+      <li>Later: Universals in body</li>
+      <li>Later: Negation</li>
+    </ol>
+  </li>
+  <li>Rulebases, Queries, and Turnstiles (HB-BG) 
+    <ol>
+      <li>The rulebase element for expressing and transmitting assertions</li>
+      <li>The query element for expressing and transmitting queries</li>
+      <li>The turnstile element for posing a query to a rulebase</li>
+      <li>Relationships to DAML Query, RDF Query, and XML Query</li>
+    </ol>
+  </li>
+  <li><a href="#section_11">Local Modules and Global Inclusions
+    (ST-BG-HB)</a> 
+    <ol>
+      <li><a href="#section_11_1">Modules: Using turnstile elements in rule
+        bodies</a></li>
+      <li>Inclusions: Loading external rulebases</li>
+    </ol>
+  </li>
+  <li>Reaction Rules (cf. "V1 Draft" of Reaction Rules Subgroup) 
+    <ol>
+      <li>Notion of Event</li>
+      <li>Notion of Condition (from Derivation Rules)</li>
+      <li>Notion of Action</li>
+      <li>Notion of Postcondition (for declarative state change)</li>
+      <li>Event-Condition-Action-Postcondition (ECAP) Rules</li>
+    </ol>
+  </li>
+  <li><a href="#section_12">Reference Implementations</a> (HB-BG-ST) 
+    <ol>
+      <li><a>Concepts: translation, querying and inferencing, authoring,
+        application</a></li>
+      <li>XSLT Translators 
+        <ol>
+          <li>Translators between sublanguages</li>
+          <li><a href="#section_12_2">Translators to other languages</a></li>
+          <li>Translators to (X)HTML for customized human-oriented
+          renderings</li>
+        </ol>
+      </li>
+      <li>Query and Inference Engines</li>
+      <li>Graphical Editors</li>
+      <li>RuleML-based Applications</li>
+    </ol>
+  </li>
+  <li><a href="#section_16">Use Cases / RuleML-Based Applications
+    (ST-BG-HB)</a> 
+    <ol>
+      <li><a href="#section_16_1">Another document in progress, i.e., from
+        Joint Committee</a></li>
+      <li><a href="#section_16_2">Animals Rulebase</a></li>
+      <li><a href="#section_16_3">GEDCOM</a></li>
+      <li><a href="#section_16_4">RACSA</a></li>
+      <li><a href="#section_16_5">Supply Chain e-Contracting</a></li>
+      <li><a href="#section_16_6">Rental car business rules</a></li>
+      <li><a href="#section_16_7">Book Pricing</a></li>
+      <li><a href="#section_16_8">Authorization</a></li>
+    </ol>
+  </li>
+  <li><a href="#section_14">Appendices (BG-ST-HB)</a> 
+    <ol>
+      <li><a href="#section_14_2">Appendix A. The RDF-XML-Integrating Data
+        Model for the Abstract Syntax: Types and Roles (HB)</a></li>
+      <li><a href="#section_14_3">Appendix B. The Hierarchy of DTDs with
+        Specs for all Sublanguages (HB-ST-BG)</a> 
+        <ol>
+          <li>Abstract Syntax</li>
+          <li>Associated Semantics</li>
+          <li>Complete DTDs / XML Schemas</li>
+          <li>RDF Syntax</li>
+          <li>Later: N3 Syntax</li>
+        </ol>
+      </li>
+      <li><a href="#section_14_4">Appendix C. The Standard Built-Ins Based on
+        XML Schema, Part II, Datatypes (ST-BG-HB)</a></li>
+      <li><a href="#section_14_5">Appendix D. Notes (HB-BG-ST)</a></li>
+      <li><a href="#section_14_6">Appendix E. Index of All Language Elements
+        (HB-BG-ST)</a></li>
+    </ol>
+  </li>
+</ol>
+
+<h2><a id="section_1" name="section_1">1. Background</a></h2>
+
+<h3><a id="section_1_1" name="section_1_1">1.1 The need for Rules on the
+Web</a></h3>
+
+<p>Rules have traditionally been used in theoretical computer science,
+compiler technology, databases, logic programming, and Artificial
+Intelligence. <a href="http://www.w3.org/2001/sw/">The Semantic Web</a>tries
+to represent information in the World Wide Web such that it can be used by
+machines not just for display purposes, but for automation, integration,
+sharing and reuse across applications. Rule Markup for the Semantic Web has
+been a hot topic since rules were identified as one of its <a
+href="http://www.w3.org/DesignIssues/Rules.html">design issues</a>.</p>
+
+<p>However, Semantic Web rules have been less systematically studied than the
+corresponding ontology (actually, taxonomy) markup. The Rule Markup
+Initiative tries to fill the gap by exploring rule systems (e.g., extended
+Horn logics) suitable for the Web, their (<a
+href="http://www.w3.org/XML/">XML</a> and <a
+href="http://www.w3.org/RDF/">RDF</a>) syntax, semantics,
+tractability/efficiency, and transformation and compilation. Both derivation
+rules (which may be evaluated bottom-up as in deductive databases, top-down
+as in logic programming, or by tabled resolution as in <a
+href="http://xsb.sourceforge.net/">XSB</a>) and reaction rules (also called
+"ECA" - "Event-Condition-Action" -- or "trigger" rules), as well as possible
+combinations, are being considered.</p>
+
+<p>In the context of the Semantic Web, rules may be built on F-logic for <a
+href="http://www.w3.org/RDF/">RDF</a> inference, as pioneered by <a
+href="http://ontobroker.semanticweb.org/silri/">SiLRI</a>. This work has
+recently been extended for rules with expressive bodies (full FOL syntax) in
+<a href="http://triple.semanticweb.org/">TRIPLE</a>. Rules may also be used
+to enhance the content of Web pages and XML documents in various ways. E.g.,
+derivation rules allow the dynamic inclusion of derived facts, while reaction
+rules allow the specification of behavior in response to browser events.</p>
+
+<h3><a id="section_1_2" name="section_1_2">1.2 Earlier work on XML markup for
+Web rules</a></h3>
+
+<p>RuleML started on the basis of pre-existing rule markup languages and has
+already inspired further rule-markup projects. As examples, we just sketch
+our RFML, URML, and BRML languages here, but refer readers to <a
+href="http://www.dfki.uni-kl.de/ruleml/#Participants">The RuleML Participants
+List</a> for the complete picture. Our effort also includes integration with
+the RDFZ Query and Ontology Web Language (<a
+href="http://www.w3.org/TR/owl-ref/">OWL</a>).</p>
+
+<p><strong>RFML</strong> (Relational-Functional Markup Language) is a
+(Web-)output format for relational-functional knowledge bases and
+computations implemented as part of the Relfun system. The (Web-)input
+translation of RFML markup into Relfun's Prologlike syntax is implemented via
+an XSLT stylesheet.</p>
+
+<p><strong>URML</strong> was initially a project to Webize the ART and
+ARTScript Rule Language. URML is pushing the effort further to integrate
+Object Oriented Rule-based programming with XML and RDF and provide a basis
+for the implementation of Web objects and their manipulation in industrial
+rule systems.</p>
+
+<p><strong>BRML</strong> (Business Rules Markup Language) is an 'XML Rule
+Interlingua for Agent Communication, based on Courteous/Ordinary Logic
+Programs.' It has been used in connection with 'CommonRules' from IBM, and
+was developed in connection with IBM's Business Rules for E-Commerce
+Project.</p>
+
+<p>Recent work in OWL and RDF Query is being considered</p>
+
+<p>Participants in the RuleML Initiative have expressed an urgent need for a
+standard rule markup language, with translators in and out along with further
+tools. This need provided the impetus for the RuleML effort.</p>
+
+<h3><a id="section_1_3" name="section_1_3">1.3 The Rule Markup
+Initiative</a></h3>
+
+<p>The RuleML Initiative started in August 2000 during the Pacific Rim
+International Conference on Artificial Intelligence (<a
+href="http://www3.cm.deakin.edu.au/pricai/frames/main.html">PRICAI 2000</a>).
+It has brought together expert teams from several countries, including
+leaders in Knowledge Representation and Markup Languages, from both academia
+and industry. The RuleML Initiative is developing an open, vendor neutral
+XML/RDF-based rule language. This will allow for the exchange of rules
+between various systems including distributed software components on the Web,
+heterogeneous client-server systems found within large corporations, etc. The
+RuleML language offers XML syntax for rules Knowledge Representation,
+interoperable among major commercial and non-commercial rules systems.</p>
+
+<p>Among our industrial participants are rules engine vendors, Web technology
+vendors, XML/RDF tools vendors and also technology users such as financial
+corporations, telecom companies and some of the major Web portals and ASPs.
+The RuleML Initiative is collaborating with numerous related efforts such as
+the complementary Java Rules Engine API specification, the W3C RDF working
+group, the DAML group, W3C P3P Activity, PMML, and many others. This
+collaboration will enable RuleML to share mechanisms and provide a rules
+language to existing and emerging industry standards such as the Semantic Web
+and RDF, P3P, CC/PP and EDI (Electronic Data Interchange). The scenario in
+Appendix 1 exemplifies some inferential and metadata uses of RuleML for the
+Semantic Web.</p>
+
+<h2><a id="section_2" name="section_2">2. Bridging two W3C Activities</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_3" name="section_3">3. Language Structure</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_4" name="section_4">4. The Kernel Datalog
+Sublanguage</a></h2>
+
+<p>The Datalog (constructor-function-free) sublanguage of Horn logic is the
+foundation for the kernel of <a href="http://www.ruleml.org/">RuleML</a>.
+Datalog is the language in the intersection of <a
+href="http://www.sql.org/">SQL</a> and <a
+href="http://pauillac.inria.fr/~deransar/prolog/docs.html">Prolog</a>. It can
+thus be considered as the subset of logic programming needed for representing
+the information of null-value-free relational databases, including
+(recursive) views. That is, in Datalog we can define <span
+style="font-style: italic">facts</span> corresponding to explicit rows of
+relational tables and <span style="font-style: italic">rules</span>
+corresponding to tables defined implictly by views.</p>
+
+<p>RuleML Datalog, being a markup language, can conveniently represent
+relational information where all of the columns are natural-language phrases.
+To explain the Datalog features we will develop a small example formalizing
+natural-language business rules in RuleML. This example correspond to the
+'Eligibility' Category of Terry Moriarty's <a
+href="http://www.w3.org/2004/12/rules-ws/paper/35/">Business Rule
+Classification</a>.</p>
+
+<p>Consider the English sentence</p>
+
+<p><span style="font-style: italic">"Peter Miller's spending has been min
+5000 euro in the previous year."</span></p>
+
+<p>It can be marked up as the following RuleML Datalog fact:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;spending&lt;/Rel&gt;
+  &lt;Ind&gt;Peter Miller&lt;/Ind&gt;
+  &lt;Ind&gt;min 5000 euro&lt;/Ind&gt;
+  &lt;Ind&gt;previous year&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>This markup can be regarded as a kind of parse tree, where tags correspond
+to non-terminals labeling both inner nodes (oval, RDF-like anonymous
+resources), e.g. with 'Atom', and leaf nodes (rectangular, RDF-like literals
+containing PCDATA that correspond to terminals), e.g. with 'Rel':</p>
+
+<p> <img src="http://www.ruleml.org/papers/spending_atom.GIF"></p>
+
+<p>Going through the tags from inside out, we find that <span
+style="font-style: italic">"spending"</span> is marked up as the relation
+name (table name) for the fact: <span
+style="font-family: courier">&lt;Rel&gt;spending&lt;/Rel&gt;</span>. On the
+same level, the three phrases <span style="font-style: italic">"</span><span
+style="font-style: italic">Peter Miller"</span>, <span
+style="font-style: italic">"min 5000 euro"</span>, and <span
+style="font-style: italic">"previous year"</span> are marked up as individual
+constants that are the three arguments (table columns) of the relation, in
+the given sequence: <span style="font-family: courier">&lt;Ind&gt;Peter
+Miller&lt;/Ind&gt;, &lt;Ind&gt;min 5000 euro&lt;/Ind&gt;, and
+&lt;Ind&gt;previous year&lt;/Ind&gt;</span>. The entire relation application
+constitutes an atomic formula, marked up by <span
+style="font-family: courier">&lt;Atom&gt;</span> ... <span
+style="font-family: courier">&lt;/Atom&gt;</span>.</p>
+
+<p>In the above Datalog markup, the three<span
+style="font-family: courier; font-style: italic"></span><span
+style="font-style: italic">"spending"</span> arguments are not further
+analyzed; they are considered as just names of individual constants. For
+identification purposes, they would need to be repeated verbatim by a query
+that is to retrieve the above fact (as illustrated by the query in the body
+of rule below). A step-wise refining analysis could exhibit the internal
+structure and natural-language meaning of the basic three arguments using
+further, auxiliary, arguments, or going beyond Datalog, with all steps marked
+up in RuleML.</p>
+
+<p>Notice that in the RuleML Datalog kernel a relation can be n-ary, i.e.
+have any fixed number, n = 0, 1, 2, 3, ..., of arguments. The unary/binary
+restriction of Datalog is an important special case, e.g. for combining
+RuleML with <a href="http://www.w3.org/TR/owl-ref/">OWL</a>, as in <a
+href="http://www.w3.org/Submission/2004/SUBM-SWRL-20040521/">SWRL</a>. While
+the above markup uses one 3-ary<span
+style="font-family: courier; font-style: italic"></span><span
+style="font-style: italic">"spending"</span> relation, it could also be
+reduced to three binary relations branching off from an individual constant
+that stands for the ternary relationship, as shown in a <a
+href="http://www.w3.org/TR/swbp-n-aryRelations/">W3C Working Draft</a>.
+Moreover, RuleML Datalog provides for the markup of null values via empty
+individuals, &lt;Ind/&gt;.</p>
+
+<p>Now consider the English sentence</p>
+
+<p><span style="font-style: italic">"A customer is premium if their spending
+has been min 5000 euro in the previous year."</span></p>
+
+<p>This can be marked up as the following RuleML Datalog rule (an
+implication):</p>
+<pre>&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;premium&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+    &lt;/At//atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;spending&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Ind&gt;min 5000 euro&lt;/Ind&gt;
+      &lt;Ind&gt;previous year&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;</pre>
+
+<p>Like for the fact, this rule markup can be viewed as a parse tree:</p>
+
+<p> <img src="http://www.ruleml.org/papers/premium_implies.GIF"></p>
+
+<p>Looking at these tags, notice that RuleML follows the Java
+class-vs.-method naming convention by distinguishing upper-case <em>type
+tags</em> from lower-case <em>role tags</em>. The atomic formula within the
+&lt;body&gt; role of the &lt;Implies&gt; is like the &lt;Atom&gt;
+constituting the above fact, except that <span>&lt;Ind&gt;Peter
+Miller&lt;/Ind&gt;</span> is replaced by <span
+style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span>, the
+markup of a variable named <span
+style="font-style: italic; font-family: courier">"customer"</span>. This
+variable also occurs in an &lt;Atom&gt; within the &lt;head&gt; role of the
+&lt;Implies&gt;, which applies the unary relation<span
+style="font-family: courier; font-style: normal">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+to &lt;Var&gt;customer&lt;/Var&gt;<span
+style="font-style: normal">.</span></p>
+
+<p>The rule and the fact can be used together for a first derivation example:
+The rule's body matches the fact, binding <span
+style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span>;
+using this binding to instantiate the same variable in the rule's head, a new
+&lt;Atom&gt; is derived expressing that <span
+style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span> is a
+<span style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+customer.</p>
+
+<p>Besides using a single atomic formula in the body, a RuleML Datalog rule
+can also use an entire conjunction of atoms. This will allow complex
+conditions via 'and-ed' atoms, which can involve various variables.</p>
+
+<p>As an example with a body 'and-ing' two atoms, consider the English
+sentence</p>
+
+<p><span style="font-style: italic">"The discount for a customer buying a
+product is 7.5 percent if the customer is premium and the product is
+luxury."</span></p>
+
+<p>It can be marked up as the following RuleML Datalog (implication) rule:</p>
+<pre>&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;discount&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Var&gt;product&lt;/Var&gt;
+      &lt;Ind&gt;7.5 percent&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;premium&lt;/Rel&gt;
+        &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;luxury&lt;/Rel&gt;
+        &lt;Var&gt;product&lt;/Var&gt;
+      &lt;/Atom&gt;
+    &lt;/And&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;</pre>
+
+<p>Viewed as a parse tree, this markup contains an 'and' branch with atomic
+subtrees:</p>
+
+<p> <img src="http://www.ruleml.org/papers/discount_implies.GIF"></p>
+
+<p>The main &lt;Implies&gt; tag here has a body whose &lt;And&gt; conjoins
+the <span style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+atom of the earlier rule and a similar <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> atom; they
+are used for tests over two different variables. The rule's head is an atom
+applying a <span style="font-style: italic">"discount"</span> relation to
+these two variables and to an individual constant that marks up <span
+style="font-style: italic">"7.5 percent"</span>.</p>
+
+<p>While <span
+style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span> was
+defined by our first rule, <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> could be
+(partially) defined as</p>
+
+<p>"A Porsche is luxury."</p>
+
+<p>by another RuleML Datalog fact:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;luxury&lt;/Rel&gt;
+  &lt;Ind&gt;Porsche&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>Again, this fact markup can be viewed as a parse tree:</p>
+
+<p> <img src="http://www.ruleml.org/papers/luxury_atom.GIF"></p>
+
+<p>The new rule and fact can augment our earlier rule and fact for a <span
+style="font-style: italic">chaining</span> derivation example as follows: The
+first conjunct of the <span
+style="font-family: courier">&lt;Rel&gt;discount&lt;/Rel&gt;</span> rule's
+body chains to the <span
+style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span> rule,
+which succeeds as shown earlier, binding<span
+style="font-family: courier"></span><span
+style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span>. The
+second conjunct just matches the <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> fact,
+binding <span
+style="font-family: courier">&lt;Var&gt;product&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Porsche&lt;/Ind&gt;</span>. So, the
+<span style="font-family: courier">&lt;Rel&gt;discount&lt;/Rel&gt;</span>
+rule succeeds with those bindings, proving an atom shown here with its
+translation to English:</p>
+
+<p><span style="font-style: italic">"The discount for Peter Miller buying a
+Porsche is 7.5 percent."</span></p>
+
+<p>This derived atom markup may be stored for further processing:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;discount&lt;/Rel&gt;
+  &lt;Ind&gt;Peter Miller&lt;/Ind&gt;
+  &lt;Ind&gt;Porsche&lt;/Ind&gt;
+  &lt;Ind&gt;7.5 percent&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>As always, such markup can be viewed as a parse tree:</p>
+
+<p> <img src="http://www.ruleml.org/papers/discount_atom.GIF"></p>
+
+<p>Notice that we explained the first rule in a bottom-up manner and the
+second rule in a top-down manner. Actually, each rule can be used in both
+ways; the RuleML kernel is neutral with respect to any use direction.</p>
+
+<p>RuleML uses Datalog as the kernel of its <a
+href="http://www.ruleml.org/modularization/#Model">family of
+sublanguages</a>. Its syntax is defined by an <a
+href="http://www.ruleml.org/0.88/xsd/datalog.xsd">XML Schema</a>. Its
+semantics is defined via Herbrand models. Various RuleML Datalog
+implementations exist, including one as part of <a
+href="http://www.jdrew.org/">jDREW</a>.</p>
+
+<h2><a id="section_5" name="section_5">5. The Kernel Datalog
+Sublanguage</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_6" name="section_6">6. The Full Horn Sublanguage</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_7" name="section_7">7. The Transformational
+Sublanguage</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_8" name="section_8">8. Negation as Failure, General Logic
+Programs</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_9" name="section_9">9. The Prioritized Sublanguage</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_10" name="section_10">10. The Object-Centered
+Sublanguage</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_11" name="section_11">11. Lloyd-Topor Logic
+Programs</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_12" name="section_12">12. Rulebases, Queries, and
+Turnstyles</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_13" name="section_13">13. Local Modules and Global
+Inclusions</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_14" name="section_14">14. Reaction Rules</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_15" name="section_15">15. Reference
+Implementations</a></h2>
+
+<p>Add text here...</p>
+
+<h2><a id="section_16" name="section_16">16. Use Cases: RuleML-Based
+Applications</a></h2>
+
+<p>The RuleML Initiative offers decades of collective industrial and academic
+experience of its members in the development and deployment of rule-based
+applications in various domains such as finance, retail, product
+configuration, e-contracting, personalization, help desk, electronic
+commerce, etc.</p>
+
+<p>During the last few years, the Initiative lead an effort to collect use
+cases and prototype rule bases to be used for testing and refining the
+requirements of the RuleML family of sublanguages. A library of use cases is
+available at the <a href="http://www.ruleml.org">RuleML Web Site</a></p>
+. 
+
+<p>The use cases presented in this section illustrate some of the RuleML
+Language features and serve as a repository for further tests and
+requirements on RuleML tools.</p>
+
+<h3><a id="section_16_1" name="section_16_1">16.1 Another document in
+progress, i.e., from Joint Committee</a></h3>
+
+<p>Add text here...</p>
+
+<h3><a id="section_16_2" name="section_16_2">16.2 Animals Rulebase</a></h3>
+
+<p>The animals rulebase is a simple rulebase with a good number of rules of
+average complexity. This use case illustrates the implementation of a RuleML
+rulebase that can be used in both forward and backward chaining engines. The
+animals rulebase also lends itself to a query rules engine implementation. It
+is a also a good starting point for people to get used to the RuleML basic
+concepts and syntax.</p>
+
+<p>The rulebase contains 6 initial facts and 15 rules. The fact <em>"Stretch
+chews cud"</em> is implemented in RuleML as follows:</p>
+<pre>&lt;Atom&gt;
+  &lt;oid&gt;&lt;Ind&gt;fact2&lt;/Ind&gt;&lt;/oid&gt;
+  &lt;Rel&gt;chews&lt;/Rel&gt;
+  &lt;Ind&gt;Stretch&lt;/Ind&gt;
+  &lt;Ind&gt;cud&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>The following rule: "If an animal X gives milk then X is a mammal" is
+implemented in RuleML 0.8 as follows:</p>
+<pre>&lt;Implies&gt;
+   &lt;oid&gt;&lt;Ind&gt;AnimalsRule2&lt;/Ind&gt;&lt;/oid&gt;
+   &lt;head&gt;
+      &lt;Atom&gt;
+         &lt;Rel&gt;isa&lt;/RerererRel&gt;
+         &lt;Var&gt;x&lt;/Var&gt;
+         &lt;Ind&gt;mammal&lt;/Ind&gt;
+      &lt;/Atom&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      &lt;Atom&gt;
+         &lt;Rel&gt;gives&lt;/Rel&gt;
+         &lt;Var&gt;x&lt;/Var&gt;
+         &lt;Ind&gt;milk&lt;/Ind&gt;
+      &lt;/Atom&gt;
+   &lt;/body&gt;
+&lt;/Implies&gt;</pre>
+
+<p>The rule label AnimalsRule2 can be used for conflict handling and for
+other needs specific to engine implementations.</p>
+
+<p>The RuleML source code for the animals rulebase is available <a
+href="http://home.attbi.com/~stabet/ruleml/usecases/AnimalsKBRuleML0.8.xml">here</a>.</p>
+
+<p>We also provide a sample <a
+href="http://home.attbi.com/~stabet/ruleml/demo/animals.html">demo</a> of
+this rulebase implemented in Java and <a
+href="http://herzberg.ca.sandia.gov/jess/">the Java Expert System
+Shell</a></p>
+
+<p></p>
+
+<h3><a id="section_16_3" name="section_16_3">16.3 GEDCOM Rulebase</a></h3>
+
+<p>The GEnealogical Data COMmunication (GEDCOM) is a data model, normalized
+with no information duplicated between Individual and Family instances. The
+<a href="http://www.daml.org/2001/01/gedcom/gedcom.daml">DAML gedcom
+ontology</a> was based on this data model. With GEDCOM, Mike Dean created the
+first operational RuleML (0.7) rulebase, later ported to RuleML 0.8 by Harold
+Boley. GEDCOM implements rules on family relationships (child, spouse, etc.),
+run via XSLT translators to the <a
+href="http://xsb.sourceforge.net/home.php">XSB</a>, <a
+href="http://herzberg.ca.sandia.gov/jess/">JESS</a>, and <a
+href="http://www.w3.org/2000/10/swap/doc/cwm">n3/cwm</a> engines. Besides
+indirectly, via translators, RuleML implementations should also be done
+directly, via rules inference engines and query applications.</p>
+
+<p>The GEDCOM rulebase RuleML source code is available <a
+href="http://home.attbi.com/~stabet/ruleml/usecases/GedcomRuleML0.8.xml">here</a>.</p>
+
+<p></p>
+
+<h2><a id="section_17" name="section_17">17. Appendices (BG-ST-HB)</a></h2>
+
+<p>Add text here...</p>
+</body>
+</html>

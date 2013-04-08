@@ -1,0 +1,227 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Initializing Base Patterns" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, initialize, base patterns" ]
+dc:description [ "expansion module for initializing base patterns." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+# .content
+arg.content |= notAllowed
+op_Atom.content |= notAllowed
+op_Expr.content |= notAllowed
+head_Implies.content |= notAllowed
+body_Implies.content |= notAllowed
+head_Entails.content |= notAllowed
+body_Entails.content |= notAllowed
+torso.content |= notAllowed
+lhs.content |= notAllowed
+rhs.content |= notAllowed
+formula_And.content |= notAllowed
+formula_Or.content |= notAllowed
+formula_Forall.content |= notAllowed
+formula_Exists.content |= notAllowed
+formula_AssertRetract.content |= notAllowed
+formula_Query.content |= notAllowed
+formula_Rulebase.content |= notAllowed
+declare.content |= notAllowed
+weak.content |= notAllowed
+strong.content |= notAllowed
+Rel.content |= notAllowed
+Fun.content |= notAllowed
+Var.content |= notAllowed
+Ind.content |= notAllowed
+oid.content |= notAllowed
+repo.content |= notAllowed
+resl.content |= notAllowed
+# Nonlinear Interaction of Stripe-skipping and Positional Independence
+body_Implies-ss.content |= notAllowed
+head_Implies-ss.content |= notAllowed
+body_Entails-ss.content |= notAllowed
+head_Entails-ss.content |= notAllowed
+# 
+# ATTRIBUTE LISTS
+reRuleML.attlist &= empty
+reNeg.attlist &= empty
+reRel.attlist &= empty
+reFun.attlist &= empty
+reNaf.attlist &= empty
+reInd.attlist &= empty
+reVar.attlist &= empty
+reExpr.attlist &= empty
+reEqual.attlist &= empty
+reEntails.attlist &= empty
+rePlex.attlist &= empty
+reData.attlist &= empty
+rearg.attlist &= empty
+Resource.attlist &= empty
+Type.attlist &= empty
+# 
+# SEQUENCES
+slotTermsForAtoms.sequence |= empty
+slotTermsForExpressions.sequence |= empty
+termsForAtoms.sequence |= empty
+termsForExpressions.sequence |= empty
+slotsForExpressions.sequence |= empty
+argumentsForExpressions.sequence |= empty
+positionalArgumentsForExpressions.sequence |= empty
+# 
+# HEADERS
+Performative.header &= empty
+Object.header &= empty
+SimpleFormula.header &= empty
+CompoundFormula.header &= empty
+Formula.header &= empty
+Fuzzy.header &= empty
+FuzzyFormula-header.choice |= empty
+Equal.header &= empty
+Expr.header &= empty
+Naf.header &= empty
+Neg.header &= empty
+#
+# MAIN
+Atom.main |= notAllowed
+Equal.main |= notAllowed
+Expr.main |= notAllowed
+Implies.main |= notAllowed
+Entails.main |= notAllowed
+Naf.main |= notAllowed
+Neg.main |= notAllowed
+# 
+# ATTRIBUTES
+cardinality-att.choice |= notAllowed
+closure-att.choice |= notAllowed
+mapClosure-att.choice |= notAllowed
+mapClosure-att-fo.choice |= notAllowed
+direction-att.choice |= notAllowed
+direction-att-inf.choice |= notAllowed
+mapDirection-att.choice |= notAllowed
+mapDirection-att-inf.choice |= notAllowed
+mapDirection-att-fo.choice |= notAllowed
+interpretation-att.choice |= notAllowed
+interpretation-att-inf.choice |= notAllowed
+material-att.choice |= notAllowed
+material-att-inf.choice |= notAllowed
+mapMaterial-att.choice |= notAllowed
+mapMaterial-att-inf.choice  |= notAllowed
+mapMaterial-att-fo.choice |= notAllowed
+oriented-att.choice |= notAllowed
+oriented-att-inf.choice |= notAllowed
+singlevalued-att.choice |= notAllowed
+singlevalued-att-inf.choice |= notAllowed
+weight-att.choice |= notAllowed
+#
+# ATTRIBUTES WITH DEFAULT VALUES
+And-datt.choice |= notAllowed
+Or-datt.choice |= notAllowed
+And-Query-datt.choice |= notAllowed
+Or-Query-datt.choice |= notAllowed
+Atom-datt.choice |= empty
+Equal-datt.choice |= notAllowed
+Equivalent-datt.choice |= notAllowed
+Expr-datt.choice |= notAllowed
+Implies-datt.choice |= notAllowed
+Entails-datt.choice |= empty
+Rulebase-datt.choice |= notAllowed
+Naf-datt.choice |= notAllowed
+Neg-datt.choice |= notAllowed
+RuleML-datt.choice |= empty
+AssertRetract-datt.choice |= notAllowed
+Query-datt.choice |= notAllowed
+Plex-datt.choice |= empty
+Forall-datt.choice |= notAllowed
+Exists-datt.choice |= notAllowed
+Rel-datt.choice |= empty
+Fun-datt.choice |= notAllowed
+Var-datt.choice |= empty
+Ind-datt.choice |= empty
+slot-datt.choice |= empty
+Data-datt.choice |= empty
+Skolem-datt.choice |= empty
+arg-datt.choice |= notAllowed
+# 
+# TERM CHOICE PATTERNS
+DataTerm.choice |= notAllowed
+SimpleKeyTerm.choice |= notAllowed
+SimpleConstantTerm.choice |= notAllowed
+CompoundKeyTerm.choice |= notAllowed
+CompoundTerm.choice |= notAllowed
+IrregularKeyTerm.choice |= notAllowed
+AnyTerm.choice |= notAllowed
+leftTerm.choice |= notAllowed
+rightTerm.choice |= notAllowed
+slotKeyTerm.choice |= notAllowed
+slotFillerTerm.choice |= notAllowed
+SimpleQuantifiableTerm.choice |= notAllowed
+repoTerm.choice |= notAllowed
+reslTerm.choice |= notAllowed
+SequenceMarker.choice |= notAllowed
+SlotSequenceMarker.choice |= notAllowed
+# 
+# Node renaming and internationalizatio
+And-node.choice |= notAllowed
+And-fo-node.choice |= notAllowed
+And-Query-node.choice |= notAllowed
+Or-node.choice |= notAllowed
+Or-dis-node.choice |= notAllowed
+Or-fo-node.choice |= notAllowed
+Or-Query-node.choice |= notAllowed
+SimpleFormula-node.choice |= notAllowed
+Data-node.choice |= notAllowed
+Data_any-node.choice |= notAllowed
+Data_simple-node.choice |= notAllowed
+Equal-node.choice |= notAllowed
+Equivalent-node.choice |= notAllowed
+Expression-node.choice |= notAllowed
+Implication-node.choice |= notAllowed
+Implication-fo-node.choice |= notAllowed
+Rulebase-node.choice |= notAllowed
+Entails-node.choice |= notAllowed
+NegationAsFailure-node.choice |= notAllowed
+Negation-node.choice |= notAllowed
+Negation-fo-node.choice |= notAllowed
+Plex_Any-node.choice |= notAllowed
+Plex_repo-node.choice |= notAllowed
+Plex_resl-node.choice |= notAllowed
+Forall-node.choice |= notAllowed
+Forall-fo-node.choice |= notAllowed
+Exists-node.choice |= notAllowed
+Exists-fo-node.choice |= notAllowed
+Variable-node.choice |= notAllowed
+Reify-node.choice |= notAllowed
+Skolem-node.choice |= notAllowed
+#
+NegationAsFailure-node.notallowed &= notAllowed
+# 
+# FORMULA CHOICE PATTERNS
+ConclusionFormula.choice |= notAllowed
+# 
+# role re-naming and stripe-skipping choice patterns
+operatorForAtoms-edge.choice |= notAllowed
+objectIdentifier-edge.choice |= notAllowed
+operatorForExpressions-edge.choice |= notAllowed
+degree-edge.choice |= notAllowed
+body_Implies.name.choice |= notAllowed
+head_Implies.name.choice |= notAllowed
+body_Entails.name.choice |= notAllowed
+head_Entails.name.choice |= notAllowed
+restOfPositionalArguments-edge.choice |= notAllowed
+restOfSlots-edge.choice |= notAllowed
+positionalArgument-edge.choice |= notAllowed
+# 
+# ATTRIBUTE VALUES
+cardinality.value |= notAllowed
+interpretation.value |= notAllowed
+val.value |= notAllowed
+#
+# Choice patterns for all Nodes, all edges.
+# Used for start and Reify
+Node.choice |= notAllowed
+edge.choice |= notAllowed

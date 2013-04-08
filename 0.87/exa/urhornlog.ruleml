@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/urhornlog.xsd" direction="backward">
+
+<!-- a trivial example rulebase for testing the 'UR' Hornlog RuleML sublanguage -->
+
+<Imp>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Slot><Ind>t</Ind><Var>b</Var></Slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind href="some_URI">Steph</Ind>
+     </Atom>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind href="some_URI">Jane</Ind>
+      <Ind href="another_URI">Joan</Ind>
+      <Ind href="another_URI">Jack</Ind>
+      <Var>y</Var>
+      <Ind href="another_URI">Frank</Ind>
+      <Slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor href="another_URI">constructor</Ctor></opc>
+          <Plex>
+            <Var>z</Var>
+            <Slot><Ind>yar2</Ind><Var>c</Var></Slot>
+          </Plex>
+        </Cterm></Slot>
+    </Atom>
+    </And>
+  </body>
+</Imp>
+
+<Query>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel href="some_URI">some relation</Rel></opr>
+        <Slot><Ind>role_name1</Ind><Ind>role 1</Ind></Slot>
+        <Ind>constant a</Ind>
+        <Ind href="another_URI">constant b</Ind>
+        <Slot><Ind>role_name2</Ind><Ind href="another_URI">role 2</Ind></Slot>
+      </Atom>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind href="another_URI">constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind href="another_URI">constant h</Ind>
+            <Cterm>
+              <opc><Ctor href="empty_URI">empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+    </And>
+  </body>
+  <rlab><Ind>rule (query) label</Ind></rlab>
+</Query>
+
+<Fact>
+  <rlab>
+    <Cterm>
+      <opc><Ctor href="ctor_URI">rule label</Ctor></opc>
+      <Slot><Ind>label</Ind><Ind>an example fact</Ind></Slot>
+    </Cterm>
+  </rlab>
+  <head>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <Slot><Ind>role_name3</Ind><Ind>role 3</Ind></Slot>
+    </Atom>
+  </head>
+</Fact>
+
+<rbaselab>
+  <Cterm>
+    <opc><Ctor>rulebase label</Ctor></opc>
+    <Slot><Ind>label</Ind><Ind>an example rulebase</Ind></Slot>
+  </Cterm>
+</rbaselab>
+
+</Rulebase>

@@ -1,0 +1,358 @@
+%%%%%%%%%%%%%%%%%%%%
+%
+% Policies for submission phase
+%
+%%%%%%%%%%%%%%%%%%%%
+
+% initiate and terminate axioms for submission phases of abstracts, papers, demos
+initiates(startAbstractSubmission,openAbstractSubmission,T).
+terminates(closeAbstractSubmission,openAbstractSubmission,T).
+initiates(startPaperSubmission,openPaperSubmission,T).
+terminates(closePaperSubmission,openPaperSubmission,T).
+initiates(startDemoSubmission,openDemoSubmission,T).
+terminates(closeDemoSubmission,openDemoSubmission,T).
+
+% axioms for submission state of author(s): "submitted abstract", "submitted paper", "submitted demo"
+initiates(submit(Author,abstract(Authors,Title,Abstract)), submitted(Author,abstract(Authors,Title, Abstract)),T).
+initiates(submit(Author,paper(Authors,Title,Paper)), submitted(Author,paper(Authors,Title, Paper)),T).
+initiates(submit(Author,demo(Authors, Title, Demo)), submitted(Author,demo(Authors,Title, Demo)),T).
+
+% withdraw of submission terminates all submission states.
+terminates(withdraw(Author, Submission), submitted(Author, abstract(Authors, Title, Abstract))).
+terminates(withdraw(Author, Submission), submitted(Author, paper(Authors, Title, Paper))).
+terminates(withdraw(Author, Submission), submitted(Author, demo(Authors, Title, Demo))).
+
+
+% permission policy for submissions
+
+% permit author to submit an abstract during the abstract submission phase
+permit(Author,submit(Author,abstract(Authors, Title, Abstract))) :- 
+    sysTime(T), 
+    holdsAt(openAbstractSubmission,T).
+
+% permit author to submit a paper during paper submission phase, if he has already submitted an abstract
+permit(Author,submit(Author,paper(Authors, Title, Paper))) :- 
+    sysTime(T), 
+    holdsAt(openPaperSubmission,T),
+    holdsAt(submitted(Author,abstract(Authors, Title, Abstract)),T).
+
+% permit author to submit a demo during demo submission phase
+permit(Author,submit(Author,demo(Authors, Title, Demo))) :- 
+    sysTime(T), 
+    holdsAt(openDemoSubmission,T).
+
+
+
+% A submission is submitted if the Author submitted abstract and paper.
+submitted(submission(ContactAuthor,Title,Authors, Abstract,Paper)) :-
+    sysTime(T), 
+    holdsAt(submitted(ContactAuthor, abstract(Authors,Title, Abstract)),T),
+    holdsAt(submitted(ContactAuthor,paper(Authors,Title, Paper)),T).
+% A submission is submitted (completed) if the Author submitted abstract and demo.
+submitted(submission(ContactAuthor,Title,Authors, Abstract,Demo)) :-
+    sysTime(T), 
+    holdsAt(submitted(ContactAuthor,abstract(Authors,Title, Abstract)),T),
+    holdsAt(submitted(ContactAuthor,demo(Authors,Title, Demo)),T).
+    
+    
+    
+
+%%%%%%%%%%%%%%%%%%%%
+%
+% Policies for review phase
+%
+%%%%%%%%%%%%%%%%%%%%
+
+
+% axioms for review phase
+initiates(startReview,openReview,T).
+terminates(closeReview,openReview,T).
+
+% axioms for submission state of reviews from Reviewers 
+initiates(submit(Reviewer,review(Submission, Review)), submitted(Reviewer,review(Submission,Review)),T).
+terminates(delete(Reviewer,review(Submission, Review)), submitted(Reviewer,review(Submission,Review)),T).
+
+
+% "A Reviewer is obliged to review assigned submissions during review phase until he submitted
+% a review for them
+obliged(Reviewer,submit(Reviewer,review(Submission,Review))) :-
+     sysTime(T),
+     holdsAt(openReview,T),
+     assigned(Reviewer,Submission),
+     not(holdsAt(submitted(Reviewer,review(Submission,Review)),T)).
+
+% "A Reviewer is forbidden to review his own submissions"
+forbid(Reviewer,review(submission(Reviewer,Title,Authors, Abstract,Paper),Review)) :-
+     submitted(submission(Reviewer,Title,Authors, Abstract,Paper)).
+forbid(Reviewer,review(submission(Author,Title,Authors, Abstract,Paper),Review)) :-
+     submitted(submission(Author,Title,Authors, Abstract,Paper)),
+     member(Reviewer,Authors). % Reviewer is in list of authors
+
+  
+
+% Acceptance policy for submissions       
+
+%TODO: might be based on average score of all categories computed by easy chair
+% build relation between categories (demo,short,full) and required average score.
+% Dummy rule
+accepted(Submission):-submitted(Submission).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Policies for final submission phase
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% axioms for final submission phase
+initiates(startFinalSubmission,openFinalSubmission,T).
+terminates(closeFinalSubmission,openFinalSubmission,T).
+
+% permit Author to change a submission if he has submitted the submission and if the submission is accepted and if the final submission phase is open
+permit(Author, submit(Author, Submission)) :- 
+       sysTime(T),
+       holdsAt(openFinalSubmission,T),       
+       accepted(Submission).
+
+
+% include a final submission in the proceedings 
+% if the author has registered for RuleML
+% and the length of the submission is within the tolerance boundaries
+include(submission(ContactAuthor,Title,Authors, Abstract,Paper)):-
+      sysTime(T),
+      accepted(submission(ContactAuthor,Title,Authors, Abstract,Paper)),
+      member(Author,Authors),
+      registered(Author), % author has registered
+      acceptableLength(Paper). % acceptable length?
+      
+% TODO: Implement acceptableLength function      
+acceptableLength(Paper). % Dummy
+            
+
+% create proceedings
+proceedings([]). % start with empty proceedings.
+create(Proceedings):-
+      accepted(Submission),
+      include(Submission),
+      proceedings(CurrentProceedings),
+      append(Submission,CurrentProceedings,Proceedings),
+      update(proceedings(Proceedings)). 
+          
+          
+% currently open RuleML-2007 phases
+% and dates of RuleML-2007 phases          
+open(finalSubmission):-
+       sysTime(T),
+       holdsAt(openFinalSubmission,T).
+dates(finalSubmission,Start,End):-
+       happens(startFinalSubmission,Start),
+       happens(closeFinalSubmission,End).       
+          
+open(review):-
+       sysTime(T),
+       holdsAt(openReview,T).
+dates(review,Start,End):-
+       happens(startReview,Start),
+       happens(closeReview,End).
+       
+open(demoSubmission):-
+       sysTime(T),
+       holdsAt(openDemoSubmission,T).
+dates(demoSubmission,Start,End):-
+       happens(startDemoSubmission,Start),
+       happens(closeDemoSubmission,End).              
+       
+open(paperSubmission):-
+       sysTime(T),
+       holdsAt(openPaperSubmission,T).              
+dates(paperSubmission,Start,End):-
+       happens(startPaperSubmission,Start),
+       happens(closePaperSubmission,End). 
+
+open(abstractSubmission):-
+       sysTime(T),
+       holdsAt(openAbstractSubmission,T).           
+dates(abstractSubmission,Start,End):-
+       happens(startAbstractSubmission,Start),
+       happens(closeAbstractSubmission,End). 
+       
+                  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Event facts from RuleML-2007 calendar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Access to RuleML-2007 calendar
+calendar(Calendar):-gdata(Calendar),!.
+calendar(Calendar):-
+  fopen('/use_caseRuleML-2007/RuleML-2007_ProgramChair1/access.pwd',Reader),  
+  U = Reader.readLine(),
+  P = Reader.readLine(),
+  service(Calendar,U,P,"http://www.google.com/calendar/feeds/p38lnrtgnc8pfpmtup9dgndh3s%40group.calendar.google.com/private/full"),
+  assert(gdata(Calendar)).  
+% use cached event facts
+
+
+% Events for Final Submission Phase
+
+happens(startAbstractSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Abstract Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getStartTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH), 
+		assert(cachedEvent(startAbstractSubmission,T)).			
+happens(closeAbstractSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Abstract Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(closeAbstractSubmission,T)). 
+		
+		
+% Events for Paper Submission Phase
+			
+happens(startPaperSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Paper Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getStartTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(startPaperSubmission,T)). 
+happens(closePaperSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Paper Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(closePaperSubmission,T)).   
+		
+		
+% Events for Demo Submission Phase
+		
+happens(startDemoSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Demo Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getStartTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(startDemoSubmission,T)). 
+happens(closeDemoSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Demo Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(closeDemoSubmission,T)).  
+
+
+% Events for Review Phase
+
+happens(startReview, T):-
+        calendar(Calendar),
+		events(Calendar, "Review", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getStartTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(startReview,T)). 
+happens(closeReview, T):-
+        calendar(Calendar),
+		events(Calendar, "Review", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(closeReview,T)).  
+
+
+% Event for Notification of Acceptance
+
+happens(notification, T):-
+        calendar(Calendar),
+		events(Calendar, "Notification of Acceptance", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(notification,T)). 
+
+
+% Events for Final Submission Phase
+
+happens(startFinalSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Final Submission", Events),
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getStartTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(startFinalSubmission,T)). 
+happens(closeFinalSubmission, T):-
+        calendar(Calendar),
+		events(Calendar, "Final Submission", Events),	
+		member(Event,Events),
+		EventInterval = Event.getTimes(),
+		Times = EventInterval.get(0),
+		DateTime = Times.getEndTime(),
+		EPOCH = DateTime.getValue(),
+		datetime_epoch(T, EPOCH),
+		assert(cachedEvent(closeFinalSubmission,T)).
+
+% use cached event facts
+happens(E,T):-cachedEvent(E,T),!. 
+
+% Test assertions 
+
+happens(submit("Adrian Paschke",abstract(["Adrian Paschke","Ben Craig"],"Rule Responder", "Rule Responder Abstract")),datetime(2007,6,10,0,0,0)).
+happens(submit("Adrian Paschke",demo(["Adrian Paschke","Ben Craig"],"Rule Responder", "Rule Responder Demo")),datetime(2007,6,10,0,0,0)).
+
+assigned("Ben Craig",submission("Adrian Paschke","Rule Responder",["Adrian Paschke","Ben Craig"], "Rule Responder Abstract","Rule Responder Demo")). % assign Reviewer
+
+%:-solve(holdsAt(openAbstractSubmission,datetime(2007,5,10,0,0,0))). 
+%:-solve(holdsAt(openPaperSubmission,datetime(2007,6,10,0,0,0))).
+%:-solve(holdsAt(openDemoSubmission,datetime(2007,7,1,0,0,0))).
+
+%:-solve(holdsAt(submitted(Author,abstract(Authors,Title, Abstract)),datetime(2007,7,1,0,0,0))).
+%:-solve(holdsAt(submitted(Author,demo(Authors,Title, Demo)),datetime(2007,7,1,0,0,0))).
+%:-solve(submitted(Submission)).        
+%:-solve(permit("Adrian Paschke",Actions)).
+%:-solve(holdsAt(openFinalSubmission,datetime(2007,7,20,0,0,0))).
+
+%:-solve(holdsAt(openReview,datetime(2007,7,1,0,0,0))).
+%:-solve(obliged("Ben Craig",Action)).
+% Remark: note the conflict between obligation and prohibition
+% The conflict would be detected and solved by a denotic logic axiomatization
+%:-solve(forbid("Ben Craig",Action)).
+
+%:-solve(holdsAt(openFinalSubmission,datetime(2007,7,10,0,0,0))).  
+%:-solve(create(Proceedings)).
+%:-solve(open(Phase)).
+%:-solve(dates(Phase,Start,End)).

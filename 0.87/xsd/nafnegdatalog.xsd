@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including both explicit
+				and default (strong/weak) negation
+			File: nafnegdatalog.xsd
+			Version: 0.87
+			Last Modification: 2004-08-11
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafnegdatalog includes the 'negation' module and redefines it slightly -->
+	<xs:redefine schemaLocation="modules/negation_module.xsd">
+
+		<!--
+			add Neg so that Naf's content model is:
+			(weak | Atom | Neg)
+		-->
+		<xs:group name="Naf.content">
+			<xs:choice>
+				<xs:group ref="Naf.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Neg so that weak's content model is:
+			(Atom | Neg)
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+
+
+	<!--
+		note the addition of Naf (Negation as failure) and Neg (classical Negation)
+		from the negation module
+	-->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+			add Neg so that head's content model is:
+			(Atom | Neg)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Neg so that Fact's content model is:
+			( (rlab, ( head | Atom | Neg) ) | ( (head | Atom | Neg), rlab?) )
+		-->
+		<xs:group name="Fact.extend">
+			<xs:choice>
+				<xs:group ref="Fact.extend"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that body's content model is:
+			(Atom | And | Or | Neg | Naf)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that Query's content model is:
+			( (rlab, (body | Atom | And | Or | Neg | Naf) ) | ( (body | Atom | And | Or | Neg | Naf), rlab?) )
+		-->
+		<xs:group name="Query.extend">
+			<xs:choice>
+				<xs:group ref="Query.extend"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>	
+		</xs:group>	
+
+		<!--
+			add Naf and Neg so that And's content model is:
+			((Atom | Or | Naf | Neg)*)
+		-->
+		<xs:group name="And.content">
+			<xs:choice>
+				<xs:group ref="And.content"/>
+				<xs:element ref="Naf"/>	
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that Or's content model is:
+			((Atom | And | Naf | Neg)*)
+		-->		
+		<xs:group name="Or.content">
+			<xs:choice>
+				<xs:group ref="Or.content"/>
+				<xs:element ref="Naf"/>	
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that wff's content model is:
+			((Atom | And | Or | Naf | Neg)*)
+		-->
+		<xs:group name="wff.content">
+			<xs:choice>
+				<xs:group ref="wff.content"/>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+		
+	</xs:redefine>
+	
+</xs:schema>

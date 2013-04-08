@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd" 
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Plex -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hornlog includes the 'cterm' and 'rest' modules -->
+	<xs:include schemaLocation="modules/cterm_module.xsd"/>
+	<xs:include schemaLocation="modules/rest_module.xsd"/>
+
+	<!-- note the addition of C(omplex )terms and Plexs from the cterm module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			add Cterms and Plexs so that arg's content model is:
+			(Ind | Data | Skolem | Var | Reify | Cterm | Plex)
+		-->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element name="Plex" type="Plex.type"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Cterm and Plex to Atom so that its content model is:
+			(
+				(oid)?, (op | Rel), (slot)*,
+				( (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (slot)* )?
+			)
+
+			... as well as to slot so that its content model is:
+	   		( (Ind|Data|Skolem|Var|Reify|Cterm|Plex), (Ind|Data|Skolem|Var|Reify|Cterm|Plex) )
+		-->
+		
+		<!--
+			add Cterm and Plex to oid so that its content model is:
+			(Ind | Data | Var | Skolem | Reify | Cterm | Plex)
+		-->		
+		<xs:group name="oid.content">
+			<xs:choice>
+				<xs:group ref="oid.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element name="Plex" type="Plex.type"/>
+			</xs:choice>
+		</xs:group>		
+				
+		<!--
+			add repo and resl so that Atom's content model is:
+			(
+				(oid)?, (op | Rel), (slot)*, (resl)?,
+				( 
+					( 
+						((arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (repo)?)
+						|
+						(repo)
+					),
+					(slot)*, (resl)?
+				)?
+			)			
+		-->
+		<xs:group name="Atom.extend.arg-repo">
+			<xs:choice>
+				<xs:group ref="Atom.extend.arg-repo"/>
+				<xs:element ref="repo"/>
+			</xs:choice>
+		</xs:group>				
+		<xs:group name="Atom.extend.arg">
+			<xs:sequence>
+				<xs:group ref="Atom.extend.arg"/>
+				<xs:element ref="repo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:group>			
+		<xs:group name="Atom.extend.slots">
+			<xs:sequence>
+				<xs:group ref="Atom.extend.slots"/>
+				<xs:element ref="resl" minOccurs="0"/>
+			</xs:sequence>
+		</xs:group>
+
+	</xs:redefine>
+
+</xs:schema>

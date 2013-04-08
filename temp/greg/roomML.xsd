@@ -1,0 +1,39 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.tsheringML.com" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.tsheringML.com"
+>
+
+	<xs:attributeGroup name="Room.attlist">
+		<xs:attribute name="kind" use="required"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="apartment"/>
+					<xs:enumeration value="house"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:group name="Room.content">
+		<xs:sequence>
+			<xs:element ref="Owner"/>
+			<xs:element ref="Occupant"/>	
+		</xs:sequence>
+	</xs:group>
+
+	<xs:complexType name="Room.type">
+		<xs:group ref="Room.content"/>
+		<xs:attributeGroup ref="Room.attlist"/>
+	</xs:complexType>
+
+	<xs:element name="Room" type="Room.type"/>	
+	<xs:element name="Owner" type="xs:owner"/>
+	<xs:element name="Occupant" type="xs:occupant"/>
+	
+	</xs:schema>	
+
+	

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://www.ruleml.org/0.91/xsd/naffolog.xsd"
+>
+
+<Assert>
+
+<Entails>
+
+ <Rulebase>
+   <!--
+   KB1 of http://www.dbis.informatik.uni-goettingen.de/PPSWR06/Slides/boley-RuleML-Family-PPSWR06-Slides.pdf,
+   slide 34
+   -->
+   <Atom>
+     <Rel>emp</Rel>
+     <Ind>Mary</Ind>
+   </Atom>
+ </Rulebase>
+
+ <Rulebase>
+   <Forall>
+     <Var>x</Var>
+     <Implies>
+       <Atom>
+         <Rel>emp</Rel>
+         <Var>x</Var>
+       </Atom>
+       <Exists>
+         <Var>y</Var>
+         <Atom>
+           <Rel>ssn</Rel>
+           <Var>x</Var>
+           <Var>y</Var>
+         </Atom>
+       </Exists>
+     </Implies>
+   </Forall>
+ </Rulebase>
+
+</Entails>
+
+<Entails>
+
+ <Rulebase>
+   <!--
+   KB2 of http://www.dbis.informatik.uni-goettingen.de/PPSWR06/Slides/boley-RuleML-Family-PPSWR06-Slides.pdf,
+   slide 34
+   -->
+   <Atom>
+     <Rel>emp</Rel>
+     <Ind>Mary</Ind>
+   </Atom>
+   <Atom>
+     <Rel>ssn</Rel>
+     <Ind>Mary</Ind>
+     <Data>1223</Data>
+   </Atom>
+ </Rulebase>
+
+ <Rulebase>
+   <Forall>
+     <Var>x</Var>
+     <Implies>
+       <Atom>
+         <Rel>emp</Rel>
+         <Var>x</Var>
+       </Atom>
+       <Exists>
+         <Var>y</Var>
+         <Atom>
+           <Rel>ssn</Rel>
+           <Var>x</Var>
+           <Var>y</Var>
+         </Atom>
+       </Exists>
+     </Implies>
+   </Forall>
+ </Rulebase>
+
+</Entails>
+
+</Assert>
+	
+</RuleML>

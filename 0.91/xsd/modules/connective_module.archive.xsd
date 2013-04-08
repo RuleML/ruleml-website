@@ -1,0 +1,496 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:sch="http://www.ascc.net/xml/schematron"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML connectives.
+			File: connective_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-23
+			
+			This module declares the following RuleML elements and attributes:
+			* Implies
+			* body
+			* head
+			* Entails
+			* Equivalent
+			* torso
+			* Rulebase
+			* And
+			* Or
+			* formula
+			* @mapMaterial
+			* @material
+			* @mapDirection
+			* @direction
+			* @mapClosure
+			* @closure
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+        <xs:appinfo>
+			<!-- necessary for schematron -->
+            <sch:ns prefix="r" uri="http://www.ruleml.org/0.91/xsd"/>
+        </xs:appinfo>
+	</xs:annotation>
+	
+	<!--
+		*** Implies ***
+		An implication rule.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Implies
+
+		content model:
+		( oid?, (head, body) | (body, head) | ( (Atom | Rulebase | And | Or), Atom ) )
+	-->
+	<xs:attributeGroup name="Implies.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+		<xs:attributeGroup ref="direction.attrib"/>
+		<xs:attributeGroup ref="material.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Implies.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="head"/>
+					<xs:element ref="body"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element ref="body"/>
+					<xs:element ref="head"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:group ref="body.content"/>
+					<xs:group ref="head.content"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Implies.type">
+		<xs:group ref="Implies.content"/>
+		<xs:attributeGroup ref="Implies.attlist"/>
+	</xs:complexType>
+	<xs:element name="Implies" type="Implies.type"/>
+	
+	<!-- 
+		*** body ***
+		The body of an implication rule containing the premise(s),
+		also known as the "antecedent" or "if" part of the rule.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-body
+
+		content model: (Atom | And | Or)
+	-->
+	<xs:attributeGroup name="body.attlist"/>
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-inner.type"/>
+			<xs:element name="Or" type="Or-inner.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="body-entails.content">
+		<xs:choice>
+			<xs:element ref="Rulebase"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="body.type">
+		<xs:group ref="body.content"/>
+		<xs:attributeGroup ref="body.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="body-entails.type">
+		<xs:group ref="body-entails.content"/>
+		<xs:attributeGroup ref="body.attlist"/>
+	</xs:complexType>
+	<xs:element name="body" type="body.type"/>	
+	
+	<!--
+		*** head ***
+		The head of an implication rule containing the conclusion,
+		also known as the "consequent" or "then" part of the rule.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-head
+
+		content model: (Atom)
+	-->
+	<xs:attributeGroup name="head.attlist"/>
+	<xs:group name="head.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="head-entails.content">
+		<xs:choice>
+			<xs:element ref="Rulebase"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="head.type">
+		<xs:group ref="head.content"/>
+		<xs:attributeGroup ref="head.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="head-entails.type">
+		<xs:group ref="head-entails.content"/>
+		<xs:attributeGroup ref="head.attlist"/>
+	</xs:complexType>
+	<xs:element name="head" type="head.type"/>
+	
+	<!--
+		*** Entails ***
+		Well-known in (meta-)logic (earlier called 'Turnstile', and 'Demo' in
+		Kowalski/Bowen's object/meta-level-amalgamated logic).
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Entails
+		
+		content model:
+		( oid?, (body | Rulebase), (head | Rulebase) )
+	-->
+	<xs:attributeGroup name="Entails.attlist"/>
+	<xs:group name="Entails.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="body" type="body-entails.type"/>
+				<xs:group ref="body-entails.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="head" type="head-entails.type"/>
+				<xs:group ref="head-entails.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Entails.type">
+		<xs:group ref="Entails.content"/>
+		<xs:attributeGroup ref="Entails.attlist"/>
+	</xs:complexType>
+	<xs:element name="Entails" type="Entails.type"/>
+	
+	<!--
+		*** Equivalent ***
+		An equivalence expression, which is "syntactic sugar" for a pair
+		of conjoined converse implication rules.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Equivalent
+
+		content model: ( oid?, ((torso, torso) | (Atom, Atom)) )
+	-->
+	<xs:attributeGroup name="Equivalent.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Equivalent.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="torso" minOccurs="2" maxOccurs="2"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:group ref="torso.content" minOccurs="2" maxOccurs="2"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Equivalent.type">
+		<xs:annotation>
+			<xs:appinfo>
+				<sch:pattern name="Equivalent">
+					<sch:rule context="r:Equivalent[count( descendant::r:Equal/r:Expr | descendant::r:Equal/r:lhs/r:Expr )=2]">
+						<sch:assert test=
+							"( descendant::r:Equal[1]/descendant::r:Fun[@in = 'no']
+							   and descendant::r:Equal[2]/descendant::r:Fun[@in = 'no'] )
+							 or
+							 ( descendant::r:Equal[1]/descendant::r:Fun[@in = 'yes']
+							   and descendant::r:Equal[2]/descendant::r:Fun[@in = 'yes'] )">
+						  Equalities within an equivalence expression must either both be interpreted or both uninterpreted.
+						</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:group ref="Equivalent.content"/>
+		<xs:attributeGroup ref="Equivalent.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equivalent" type="Equivalent.type"/>
+	
+	<!--
+		*** torso ***
+		A symmetric role used in an equivalence expression combining
+		the asymmetric <head> and <body>.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-torso
+
+		content model: (Atom)
+	-->
+	<xs:attributeGroup name="torso.attlist"/>
+	<xs:group name="torso.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="torso.type">
+		<xs:group ref="torso.content"/>
+		<xs:attributeGroup ref="torso.attlist"/>
+	</xs:complexType>
+	<xs:element name="torso" type="torso.type"/>
+	
+	<!--
+		*** Rulebase ***
+		A collection of rules that can be ordered or unordered, without or with duplicates.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Rulebase
+		
+		content model:
+		( oid?, (formula | Atom | Implies | Equivalent | Forall)* )
+	-->
+	<xs:attributeGroup name="Rulebase.attlist">
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapMaterial.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Rulebase.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-rulebase.type"/>
+				<xs:group ref="formula-rulebase.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Rulebase.type">
+		<xs:group ref="Rulebase.content"/>
+		<xs:attributeGroup ref="Rulebase.attlist"/>
+	</xs:complexType>
+	<xs:element name="Rulebase" type="Rulebase.type"/>	
+	
+	<!--
+		*** And ***
+		A conjunctive expression, where <And>Atom</And> is equivalent to Atom.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-And
+		
+		content model: ( oid?, (formula | Atom | And | Or)* )
+
+		Under Query, And may have attribute closure="existential"; elsewhere, it may
+		not have any attributes.
+	-->
+	<xs:attributeGroup name="And-inner.attlist"/>
+	<xs:attributeGroup name="And-query.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="And.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or.type"/>
+				<xs:group ref="formula-and-or.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="And-query.type">
+		<xs:group ref="And.content"/>
+		<xs:attributeGroup ref="And-query.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="And-inner.type">
+		<xs:group ref="And.content"/>
+		<xs:attributeGroup ref="And-inner.attlist"/>
+	</xs:complexType>
+	<xs:element name="And" type="And-inner.type"/>
+	
+	<!--
+		*** Or ***
+		A disjunctive expression, where <Or>Atom</Or> is equivalent to Atom.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Or
+		
+		content model: ( oid?, (formula | Atom | And | Or)* )
+
+		Under Query, Or may have attribute closure="existential"; elsewhere, it may not
+		have any attributes.
+	-->
+	<xs:attributeGroup name="Or-query.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Or-inner.attlist"/>
+	<xs:group name="Or.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or.type"/>
+				<xs:group ref="formula-and-or.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Or-query.type">
+		<xs:group ref="Or.content"/>
+		<xs:attributeGroup ref="Or-query.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Or-inner.type">
+		<xs:group ref="Or.content"/>
+		<xs:attributeGroup ref="Or-inner.attlist"/>
+	</xs:complexType>
+	<xs:element name="Or" type="Or-inner.type"/>
+	
+	<!--
+		*** formula ***
+		The formula role of a conjunctive/disjunctive expression or a rulebase.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-formula
+
+		content model (below And/Or): (Atom | And | Or)
+		content model (below Rulebase): (Atom | Implies | Equivalent | Forall)
+		
+		Other (context-sensitive) versions of <formula> are in the
+		performative and quantifier modules.
+	-->
+	<xs:attributeGroup name="formula.attlist"/>
+	<xs:group name="formula-and-or.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-inner.type"/>
+			<xs:element name="Or" type="Or-inner.type"/>
+		</xs:choice>
+	</xs:group>
+	<!--
+		In 0.91, Naf is not allowed in the consequent (second child) of Entails
+		because Integrity uses of Entails call for classical Neg
+		and Rulebase should not contain Naf in any other context (except Query).
+		Alternatives would have been to use And in the consequent of Entails
+		or to only allow Naf children within Rulebases that are used for Integrity
+		and querying, but this would require making the role tags explicit (i.e.
+		not skippable). Schematron could be used here to disallow Naf from other
+		Rulebases.
+	-->
+	<xs:group name="formula-rulebase.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="Implies"/>
+			<xs:element name="Equivalent"/>
+			<xs:element name="Forall"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="formula-and-or.type">
+		<xs:group ref="formula-and-or.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="formula-rulebase.type">
+		<xs:group ref="formula-rulebase.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+
+	<!--
+		*** @mapMaterial ***
+		An attribute indicating the kind of all implication rules 
+		falling within its scope (i.e. child elements).
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@mapMaterial
+	-->
+	<xs:attributeGroup name="mapMaterial.attrib">
+		<xs:attribute name="mapMaterial" use="optional" default="yes">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="yes"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @material ***
+		An attribute indicating the kind of an implication rule.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@material
+	-->
+	<xs:attributeGroup name="material.attrib">
+		<xs:attribute name="material" use="optional" default="yes">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="yes"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @mapDirection ***
+		An attribute indicating the intended direction of implication rule inferencing
+		of elements falling within its scope (i.e. child elements).
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@mapDirection
+	-->
+	<xs:attributeGroup name="mapDirection.attrib">
+		<xs:attribute name="mapDirection" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @direction ***
+		An attribute indicating the intended direction of an implication rule's inferencing.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@direction
+	-->
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @mapClosure ***
+		An attribute indicating how the free variables falling within
+		its scope (i.e. child elements) are quantified.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@mapClosure
+	-->
+	<xs:attributeGroup name="mapClosure.attrib">
+		<xs:attribute name="mapClosure" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="universal"/>
+					<xs:enumeration value="existential"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @closure ***
+		An attribute indicating how the contained free variables are quantified.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@closure		
+	-->
+	<xs:attributeGroup name="closure.attrib">
+		<xs:attribute name="closure" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="universal"/>
+					<xs:enumeration value="existential"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+</xs:schema>

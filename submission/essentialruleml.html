@@ -1,0 +1,684 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html lang="EN">
+<head>
+  <title>ESSENTIAL RuleML Illustrated with theDiscount Use Case</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+CODE {
+        FONT-FAMILY: monospace
+}
+DIV.constraint {
+        MARGIN-LEFT: 2em
+}
+DIV.issue {
+        MARGIN-LEFT: 2em
+}
+DIV.note {
+        MARGIN-LEFT: 2em
+}
+DIV.notice {
+        MARGIN-LEFT: 2em
+}
+DIV.exampleInner PRE {
+        MARGIN-TOP: 0em; MARGIN-BOTTOM: 0em; MARGIN-LEFT: 1em
+}
+DIV.exampleOuter {
+        BORDER-RIGHT: gray 4px double; PADDING-RIGHT: 0em; BORDER-TOP: gray 4px double; PADDING-LEFT: 0em; PADDING-BOTTOM: 0em; MARGIN: 0em; BORDER-LEFT: gray 4px double; PADDING-TOP: 0em; BORDER-BOTTOM: gray 4px double
+}
+DIV.exampleInner {
+        PADDING-RIGHT: 4px; BORDER-TOP: #d3d3d3 4px double; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN: 0em; PADDING-TOP: 4px; BORDER-BOTTOM: #d3d3d3 4px double; BACKGROUND-COLOR: #d5dee3
+}
+DIV.exampleWrapper {
+        MARGIN: 4px
+}
+DIV.exampleHeader {
+        FONT-WEIGHT: bold; MARGIN: 4px
+}
+TABLE.small {
+        FONT-SIZE: x-small
+}</style>
+  <link href="css/W3C-WD.css" type="text/css"
+  rel="stylesheet">
+</head>
+
+<body>
+
+<div class="head">
+<h1><a id="title" name="title"></a>ESSENTIAL RuleML</h1>
+
+<h2><a id="w3c-doctype" name="w3c-doctype"></a>The discount rulebase use
+case</h2>
+</div>
+
+<p></p>
+
+<div class="head">
+<dl>
+  <dt>This version:</dt>
+    <dd><a
+      href="http://home.comcast.net/~stabet/ruleml/essential/essentialruleml.html">http://home.comcast.net/~stabet/ruleml/essential/essentialruleml.html</a></dd>
+  <dt>Editors:</dt>
+    <dd>Said Tabet <a
+      href="mailto:stabet@attbi.com">mailto:stabet@attbi.com</a></dd>
+    <dd>Harold Boley, NRC <a
+      href="mailto:harold.boley@nrc.gc.ca">mailto:harold.boley@nrc.gc.ca</a></dd>
+    <dd>Benjamin Grosof, MIT Sloan <a
+      href="mailto:bgrosof@mit.edu">mailto:bgrosof@mit.edu</a></dd>
+</dl>
+
+<p class="copyright">.</p>
+</div>
+<hr>
+
+<div>
+<h2><a id="abstract" name="abstract"></a>Abstract</h2>
+
+<p></p>
+<p>
+This document is an introduction to RuleML essentials using examples of the popular discount use case. Each rule will be shown in four different format to illustrate the various syntaxes. The business ruls are implemented in RuleML 0.8 version of both Datalog and Hornlog.
+</p>
+<p></p>
+<p>The discount rulebase defines non-prioritized business rules on
+customer-and-product discounting and, using chaining, on premium customers.
+It also gives business facts on products and on a specific customer.</p>
+
+<p></p>
+
+<p>These examples could be easily extended with further categories of
+customers, product discounting conditions, etc.</p>
+
+<p></p>
+
+<p>The examples given in this use case are implemented in RuleML 0.8 and
+validate w.r.t the Datalog and Hornlog DTDs:</p>
+
+<p><a
+href="http://www.ruleml.org/dtd/0.8/ruleml-datalog.dtd">http://www.ruleml.org/dtd/0.8/ruleml-datalog.dtd</a></p>
+
+<p><a
+href="http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd">http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd</a></p>
+
+<p></p>
+
+<p>A RuleML Datalog schema is also available from the RuleML web site:</p>
+
+<p><a
+href="http://www.ruleml.org/ruleml/xsd/0.8/">http://www.ruleml.org/ruleml/xsd/0.8/</a></p>
+</div>
+
+<div>
+<h2><a id="status" name="status"></a></h2>
+</div>
+<hr>
+
+<div class="toc">
+<h2><a id="contents" name="contents"></a></h2>
+
+<h1>Table of Contents</h1>
+
+<h2></h2>
+
+<p class="toc">1. <a href="essentialruleml.html#section_1"><span
+style="COLOR: #0000b2">Introduction to the Customer Discount Use
+Case</span></a></p>
+
+<p>2. <span style="COLOR: #0000b2"><a
+href="essentialruleml.html#section_2">Customer Discount in RuleML
+Datalog</a></span></p>
+
+<p>3. <a href="essentialruleml.html#section_3">Customer Discount in RuleML
+Hornlog</a></p>
+
+<p>4. <a href="essentialruleml.html#section_4">More Formalizations and
+Extensions</a></p>
+</div>
+
+<p></p>
+<hr>
+
+<div class="body">
+
+<div class="div1">
+<h2><a id="section_1" name="section_1"></a>1. Introduction to the Customer
+Discount use case</h2>
+
+<div class="div2">
+<p>Consider the following business rules:</p>
+</div>
+
+<p></p>
+
+<p><strong>RULE 1:</strong></p>
+
+<div class="div2">
+<p><em>"<span style="font-size: 10pt">The discount for a customer buying a
+product is 5.0 percent if</span></em><em><span style="font-size: 10pt"> the
+customer is premium and the product is regular</span>"</em></p>
+
+<p></p>
+
+<p><strong>RULE 2:</strong></p>
+
+<p><em>"<span style="font-size: 10pt">A customer is premium
+if</span></em><em><span style="font-size: 10pt"> their spending has been high
+the previous year"</span></em></p>
+
+<p></p>
+
+<p>Also suppose there are some (obvious) facts.</p>
+
+<p>These clauses can be transcribed into Datalog with "..." constants still
+containing parts of the English meanings.</p>
+
+<p></p>
+
+<p>Below, we will present two implementations of this scenario using RuleML
+Datalog and RuleML Hornlog. Discussion on possible extensions will focus
+only, in this use case, on URI support.</p>
+</div>
+
+<p></p>
+
+<h2><a id="section_2" name="section_2">2. Customer Discount in RuleML
+Datalog</a></h2>
+
+<p></p>
+
+<div class="div2">
+<p>The customer discount scenario is a simple but non-trivial Datalog example
+- with rule chaining - and its model-theoretic semantics.</p>
+</div>
+</div>
+</div>
+
+<p>We will give 4 different formats for each rule, starting with an IF-THEN
+format borrowed from IBM CommonRules, followed by the RuleML encoding, and
+two encodings in Prolog (for backward chaining) and Jess (for forward
+chaining).</p>
+
+<p>A running implementation in Jess will be shown (trace viewed in a command
+line DOS window). The source code  is available by <a
+href="mailto:stabet@attbi.com">email request.</a></p>
+
+<p>A RuleML implication rule (&#x201c;imp&#x201d; element in the XML syntax)
+expresses an if-then rule (a.k.a. a &#x201c;clause&#x201d; in the LP KR
+literature). It is a kind of statement. An implication rule is a pure-belief
+rule that does not directly specify any procedural attachments for sensing or
+effecting. </p>
+
+<div class="body">
+
+<div class="div1">
+<p>The detailed implementation in RuleML 0.8 is available <a
+href="discountdatalog.ruleml.xml">here</a>.</p>
+</div>
+
+<div class="div1">
+
+<div class="div2">
+<h3><a id="xmp-dtd1111111" name="xmp-dtd1111111"><strong>Premium Customer
+Discount Rule</strong></a></h3>
+
+<p></p>
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Natural
+Language:</span></strong></h3>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><em><strong><span style="font-family: helvetica; font-size: 10pt">A premium customer buying a regular product gets a 5% discount.</span></strong></em></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In an
+IF-THEN format (a la SCLP syntax of CommonRules 3.0):</span></strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-weight: normal">IF   premium(?customer)
+AND  regular(?product)
+THEN discount(?customer, ?product, "5.0 percent");</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In
+RuleML:</span></strong></h3>
+
+<div class="exampleInner">
+<pre><imp><span style="font-size: 10pt; font-family: courier; color: #0000E5">&lt;imp&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_rlab&gt;<span style="font-weight: bold; color: #7F0041">discountrule1</span>&lt;/_rlab&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>discount</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>product</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;ind&gt;<strong><span style="color: #7F0041">5.0 percent</span></strong>&lt;/ind&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+            &lt;_opr&gt;<span style="color: #7F0041"><strong>premium</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+            &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+            &lt;_opr&gt;<span style="color: #7F0041"><strong>regular</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+            &lt;var&gt;<strong><span style="color: #7F0041">product</span></strong>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+&lt;/imp&gt;</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Prolog
+syntax:</span></strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(Customer,Product,"5.0 percent")  :-       
+   premium(Customer) , regular(Product). </span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h3 style="font-size: 12pt"><span
+style="font-weight: bold; font-size: 10pt">In Jess (forward chaining rules
+engine):</span></h3>
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier">(defrule discountrule1
+
+   (premium ?Customer)
+   (regular ?Product)
+=&gt;
+   (assert (discount ?Customer ?Product "5.0 percent"))      
+)</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+<div class="div1">
+
+<div class="div2">
+
+<div class="div3">
+<h3><strong>Customer Premium Status Rule</strong></h3>
+</div>
+</div>
+
+<p style="font-weight: bold"></p>
+
+<h3 style="font-size: 10pt"><strong>In Natural Language:</strong></h3>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><em><strong><span style="font-family: helvetica; font-size: 10pt">A customer is premium if their spending has been high the previous year.</span></strong></em></pre>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 10pt"><strong><span style="font-size: 10pt">In an
+IF-THEN format (a la SCLP syntax of CommonRules 3.0):</span></strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-weight: normal">IF   spending(?customer, "High", "previous year")
+THEN premium(?customer);</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In
+RuleML:</span></strong></h3>
+
+<div class="exampleInner">
+<pre><imp><span style="font-size: 10pt; font-family: courier; color: #0000E5">&lt;imp&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_rlab&gt;<span style="font-weight: bold; color: #7F0041">statusrule1</span>&lt;/_rlab&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>premium</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>spending</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;ind&gt;<span style="color: #7F0041"><strong>"high"</strong></span>&lt;/ind&gt;
+         &lt;ind&gt;<span style="color: #7F0041"><strong>"previous year"</strong></span>&lt;/ind&gt;
+      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+&lt;/imp&gt;</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Prolog
+(backward chaining):</span></strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(Customer) :-       
+   spending(Customer, "high", "previous year"). </span></pre>
+</div>
+</div>
+</div>
+
+<h3 style="font-size: 12pt"><span
+style="font-weight: bold; font-size: 10pt">In Jess (forward chaining rules
+engine):</span></h3>
+
+<div class="div2">
+
+<div class="div3">
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: normal">(defrule statusrule1
+   
+   (spending ?customer "high" "previous year")       
+=&gt;
+   (assert (premium ?customer)
+) </span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-dtd-q511111111111" name="xmp-dtd-q511111111111"></a></h4>
+
+<h3><strong>Facts</strong></h3>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt">spending("Peter Miller","high","previous year").
+
+regular("Honda").</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-data-q511111111111" name="xmp-data-q511111111111"></a></h4>
+
+<h3><strong>The Associated Herbrand Model</strong></h3>
+
+<div class="data">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt">{
+ discount("Peter Miller","Honda","5.0 percent"),
+ premium("Peter Miller"),
+ spending("Peter Miller","high","previous year"),  
+ regular("Honda")
+}</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-dtd-q911111111111" name="xmp-dtd-q911111111111"></a></h4>
+
+<h3 style="font-size: 12pt"><strong>Running the datalog discount in Jess (
+Java environment):</strong></h3>
+
+<p>The screen below shows the rules execution after the fact assertion to the
+working memory:</p>
+
+<p><img alt="RuleML Datalog Discount use case Run using Jess"
+src="img/discountrulemlrun.gif"></p>
+</div>
+
+<div class="div3">
+<h2><a id="section_3" name="section_3">3. Customer Discount in RuleML
+HornLog</a></h2>
+
+<p></p>
+
+<p>Some of the "..." constants can be further formalized in Hornlog with
+complex terms.</p>
+
+<p>Here's a simple but non-trivial Hornlog example - with rule chaining - and
+its model-theoretic semantics. Complex terms are presented in
+<strong>bold</strong> to distinguish them from relation applications in the
+IF-THEN SCLP encoding and in the Prolog syntax. In RuleML, these are
+implemented using the <span style="color: #0000E5">&lt;cterm&gt;</span>
+element.</p>
+
+<p></p>
+
+<p>The detailed implementation in RuleML 0.8 is available <a
+href="discounthornlog.ruleml.xml">here</a>.</p>
+
+<p></p>
+
+<h3>Premium Customer Discount rule</h3>
+
+<p></p>
+
+<h3 style="font-size: 10pt"><strong>In an IF-THEN syntax (a la
+SCLP):</strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">IF   premium(?customer)
+AND  regular(?product)
+THEN discount(?customer, ?product, <strong>percent(5.0)</strong>); </span></pre>
+</div>
+
+<p></p>
+
+<h3 style="font-size: 10pt"><strong>In RuleML:</strong></h3>
+
+<div class="exampleInner">
+<pre><imp><span style="font-size: 10pt; font-family: courier; color: #0000E5">&lt;imp&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_rlab&gt;<span style="font-weight: bold; color: #7F0041">discountrule1b</span>&lt;/_rlab&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>discount</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>product</strong></span>&lt;/var&gt;
+         &lt;cterm&gt;
+            &lt;_opc&gt;<span style="color: #7F0041"><strong>percent</strong></span>&lt;/_opc&gt;
+            &lt;ind&gt;<span style="color: #7F0041"><strong>5.0</strong></span>&lt;/ind&gt;
+         &lt;/cterm&gt;
+</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>premium</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;<span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>regular</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>product</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;/atom&gt;</span>
+   &lt;/_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+&lt;/imp&gt;</span></pre>
+</div>
+
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Prolog
+syntax:</span></strong></h3>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt">discount(Customer,Product,</span><strong style="font-size: 10pt">percent(5.0)</strong><span style="font-size: 10pt">)  :-
+   premium(Customer) , regular(Product).</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-data-q911111111111" name="xmp-data-q911111111111"></a></h4>
+
+<h3>Customer Premium Status rule:</h3>
+
+<p></p>
+
+<h3 style="font-size: 10pt"><strong>In Natural language:</strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt"><strong><em><span style="font-family: helvetica">A customer is premium if their spending during the previous year 
+was at least 5000 dollars. </span></em></strong></span></pre>
+</div>
+
+<p></p>
+
+<h3 style="font-size: 10pt"><strong>In an IF-THEN syntax (a la
+SCLP):</strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">IF   spending(?customer, <strong>a</strong><strong>tleast(dollar(5000))</strong>, "previous year")
+THEN premium(?customer); </span></pre>
+</div>
+
+<p></p>
+
+<h3><strong><span style="font-size: 10pt">In RuleML:</span></strong></h3>
+
+<div class="exampleInner">
+<pre><imp><span style="font-size: 10pt; font-family: courier; color: #0000E5">&lt;imp&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_rlab&gt;<span style="font-weight: bold; color: #7F0041">statusrule1b</span>&lt;/_rlab&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>premium</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;/_head&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+   &lt;_body&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>spending</strong></span>&lt;/_opr&gt;<span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;var&gt;<span style="color: #7F0041"><strong>customer</strong></span>&lt;/var&gt;</span>
+         &lt;cterm&gt;
+            &lt;_opc&gt;<span style="color: #7F0041"><strong>atleast</strong></span>&lt;/_opc&gt;
+            &lt;cterm&gt;
+               &lt;_opc&gt;<span style="color: #7F0041"><strong>dollar</strong></span>&lt;/_opc&gt;
+               &lt;ind&gt;<span style="color: #7F0041"><strong>5000</strong></span>&lt;/ind&gt;
+            &lt;/cterm&gt;
+         &lt;/cterm&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;ind&gt;<span style="color: #7F0041"><strong>"previous year"</strong></span>&lt;/ind&gt;
+      &lt;/atom&gt;
+   &lt;/body&gt;
+&lt;/imp&gt;</span></pre>
+</div>
+
+<h3><strong><span style="font-size: 10pt"></span><span
+style="font-size: 10pt">In Prolog syntax:</span></strong></h3>
+
+<div class="data">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt">premium(Customer)  :-
+   spending(Customer,</span><strong style="font-size: 10pt">atleast(dollar(5000))</strong><span style="font-size: 10pt">,"previous year").</span></pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-dtd-q1011111111111" name="xmp-dtd-q1011111111111"></a></h4>
+
+<h2><strong><span style="font-size: 14pt">Facts:</span></strong></h2>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre>spending("Peter Miller",<strong>atleast(dollar(5000)),</strong>"previous year").
+
+regular("Honda").</pre>
+</div>
+</div>
+</div>
+
+<div class="div3">
+<h4><a id="xmp-data-q1011111111111" name="xmp-data-q1011111111111"></a></h4>
+
+<h2><span style="font-size: 14pt"><strong>Associated Herbrand
+Model:</strong></span></h2>
+
+<div class="data">
+
+<div class="exampleInner">
+<pre>{
+ discount("Peter Miller","Honda",<strong>percent(5.0)</strong>),
+ premium("Peter Miller"),
+ spending("Peter Miller",<strong>atleast(dollar(5000))</strong>,"previous year"),  
+ regular("Honda")
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="body">
+
+<div class="div1">
+
+<div class="div2">
+
+<div class="div3">
+
+<div class="div4">
+<h2><a id="section_4" name="section_4">4. URI constant names feature</a></h2>
+
+<p></p>
+
+<p>Objects (resources) are inds (individual constants represented by the
+<span style="color: #0000E5">&lt;ind&gt;</span> element in RuleML) using a
+URL/URI as their OID, as in SHOE or RDF.</p>
+
+<p>In our use case, an href attribute can be defined for inds representing
+"Peter Miller" a customer or "Honda" a product. In RuleML hornlog, <span
+style="color: #0000E5">&lt;ctor&gt;</span> elements can also use an href
+attribute.</p>
+
+<p></p>
+
+<p>The fact:</p>
+
+<p>"<strong>Peter Miller</strong>" is a premium customer where "Peter Miller"
+is represented by its URI: <strong>
+http://customers.ebiz.com/petermiller</strong></p>
+
+<p>can be encoded as follows:</p>
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-weight: normal"><span style="color: #0000E5">&lt;fact&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+      &lt;atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;_opr&gt;<span style="color: #7F0041"><strong>premium</strong></span>&lt;/_opr&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+         &lt;ind href=<span style="color: #7F0041"><strong>"http://customers.ebiz.com/petermiller"</strong></span>/&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">      &lt;/atom&gt;</span><span style="font-size: 10pt; font-family: courier; color: #0000E5">
+</span><span style="color: #0000E5">&lt;/fact&gt;</span></span></pre>
+</div>
+
+<h3><strong><span></span></strong></h3>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

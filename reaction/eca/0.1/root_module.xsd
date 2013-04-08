@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd" elementFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Root module part of ECA-RuleML.
+			This is the XML Schema root element for ECA-RuleML.
+			File: root_module.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			* ECA-RuleML	
+			
+			This schema declares the following ECA-RuleML elements and attributes:   
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!--
+	 *** ECA-RuleML ***
+
+	content model: ( Assert*, Query*, Protect* )
+-->
+	<xs:attributeGroup name="ECA-RuleML.attlist"/>
+	<xs:group name="ECA-RuleML.content">
+		<xs:sequence>
+			<xs:element ref="Assert" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Query" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Protect" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ECA-RuleML.type">
+		<xs:group ref="ECA-RuleML.content"/>
+		<xs:attributeGroup ref="ECA-RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="ECA-RuleML" type="ECA-RuleML.type"/>
+</xs:schema>

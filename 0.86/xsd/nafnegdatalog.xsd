@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including both explicit and default (strong/weak) negation
+			File: nafnegdatalog.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafnegdatalog includes the 'negation' module and redefines it slightly -->
+	<xs:redefine schemaLocation="modules/negation_module.xsd">
+		<!--
+			add 'neg' so that naf's content model is:
+			(atom | neg)
+		-->
+		<xs:group name="naf.content">
+			<xs:choice>
+				<xs:group ref="naf.content"/>
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+	<!--
+		note the addition of 'naf' (negation as failure) and 'neg' (classical negation)
+		from the negation module
+	-->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+			add 'neg' so that _head's content model is:
+			(atom | neg)
+		-->
+		<xs:group name="_head.content">
+			<xs:choice>
+				<xs:group ref="_head.content"/>
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add 'naf' and 'neg' so that _body's content model is:
+			(atom | and | or | neg | naf)
+		-->
+		<xs:group name="_body.content">
+			<xs:choice>
+				<xs:group ref="_body.content"/>
+				<xs:element ref="naf"/>
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			add 'naf' and 'neg' so that and's content model is:
+			((atom | or | naf | neg)*)
+		-->
+		<xs:group name="and.content">
+			<xs:choice>
+				<xs:group ref="and.content"/>
+				<xs:element ref="naf"/>	
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add 'naf' and 'neg' so that or's content model is:
+			((atom | and | naf | neg)*)
+		-->		
+		<xs:group name="or.content">
+			<xs:choice>
+				<xs:group ref="or.content"/>
+				<xs:element ref="naf"/>	
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>			
+	</xs:redefine>
+	
+</xs:schema>

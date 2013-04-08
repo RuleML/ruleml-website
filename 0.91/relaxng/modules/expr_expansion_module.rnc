@@ -1,0 +1,73 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Expressions" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, expressions" ]
+dc:description [ "The expansion module for expressions." ]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Expr.Node.def | Fun.Node.def | op_Expr.edge.def
+Node.choice |= Expr.Node.def | Fun.Node.def
+edge.choice |= op_Expr.edge.def
+# 
+# This module declares the following RuleML elements and attributes:
+#            * <Expr>
+#            * <op>
+#            * <Fun>
+
+## an extension point for alternate spellings and internationalization of the expression tag name. 
+Expression-node.choice |= Expr.Node.def
+
+## A logical function of the form "f(...)" where f is a function name. 
+## The function name (<Fun>) is followed by a sequence of zero or more arguments (<arg>). 
+## Optional user-defined slots (<slot>) are also permitted before and/or after the arguments, just like an atom (<Atom>).	
+## Rest variables (<repo> and <resl>) are also permitted.
+Expr.Node.def =
+  
+  ## <Expr>: a functional expression. See 
+  ## http://www.ruleml.org/1.0/glossary/#gloss-Expr
+  element Expr {
+    (Expr-datt.choice & reExpr.attlist), Expr.header, Expr.main
+  }
+
+## Expressions optionally accept the attribute pattern of objects with user-defined types.
+reExpr.attlist &= Type.attlist?
+
+## Expressions accept the header pattern of general objects.
+Expr.header &= Object.header?
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the operator tag name in expressions. 
+operatorForExpressions-edge.choice |= op_Expr.edge.def
+
+## (context sensitive: see Also atom_backbone_module and holog_module)
+## An operator expression including a function name (<Fun>) of a (<Expr>).
+## http://www.ruleml.org/1.0/glossary/#gloss-op
+op_Expr.edge.def =
+  
+  ## Also an operator in functional expressions.
+  element op { op_Expr.content }
+
+## The operator role of an expression is filled by a functor.
+op_Expr.content |= Function-node.choice
+
+## an extension point for alternate spellings and internationalization of the function operator tag name. 
+Function-node.choice |= Fun.Node.def
+
+## A user-defined function name of an <Expr>. It is optionally surrounded by an operator (<op>).
+Fun.Node.def =
+  
+  ## <Fun>: a type of name for functional operators. See 
+  ## http://www.ruleml.org/1.0/glossary/#gloss-Fun
+  element Fun { (Fun-datt.choice & reFun.attlist), Fun.content }
+
+## functors accept the resource attribute list
+reFun.attlist &= Resource.attlist?
+# Fun.attlist = interpretation-att.option & singlevalued-att.option & Resource.attlist?
+
+## A functor contains text.
+Fun.content |= text

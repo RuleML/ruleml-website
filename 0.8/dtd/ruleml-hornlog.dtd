@@ -1,0 +1,102 @@
+<!-- An XML DTD for a Horn-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-07-10 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % datalog-and-hornlog.module "INCLUDE">
+<!ENTITY % datalog.module "IGNORE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- complex, compound, or constructor terms are usable within other cterms, tups, rolis, and atoms -->
+<!-- cterm element uses _opc ("operator of constructors") role followed by sequence of five kinds of arguments, -->
+<!-- or vice versa, much like atoms (explained below) -->
+ 
+<!ELEMENT cterm ((_opc, (ind | var | cterm | tup | roli)*) | ((ind | var | cterm | tup | roli)+, _opc))>
+
+
+<!-- _opc is usable within c(onstructor )terms -->
+<!-- _opc uses c(onstruc)tor symbol -->
+
+<!ELEMENT _opc (ctor)>
+
+
+<!-- constructors -->
+<!ELEMENT ctor (#PCDATA)>
+
+
+<!-- NOTICE: tups and rolis are still very preliminary -->
+
+<!-- n-tuples are usable within other tups, rolis, cterms, and atoms -->
+<!-- tup element uses sequence of five kinds of arguments -->
+
+<!ELEMENT tup   ((ind | var | cterm | tup | roli)*)>
+
+
+<!-- "roli" is short for "role list" -->
+<!-- sequence is not (syntactically) significant among its children, i.e., it is sequence-free -->
+
+<!ELEMENT roli ((_arv)*)>
+<!ELEMENT _arv ((arole, (ind | var | cterm | tup | roli)) | ((ind | var | cterm | tup | roli), arole)) >
+<!ELEMENT arole (#PCDATA)>
+
+
+<!-- "_rbaselab" is is short for "rulebase label"; may be ind(ividual) or c(onstructor )term;
+     this allows naming of an entire individual rulebase in a fashion that is accessible
+     within the knowledge representation; -->
+<!-- e.g., this can help for representing prioritization between rulebases, or perhaps
+     to enable forward inferencing of selected rulebase(s)  -->
+
+<!-- SYNTACTIC REQUIREMENT BEYOND DTD:  for now, must be GROUND (e.g., if cterm) -->
+
+<!-- FUTURE DESIGN:  might permit to be non-ground;
+     e.g., to instantiate a personal messaging agent to the particular user; 
+     but that would require that coincidence of variable names be significant ACROSS rules,
+     and there are expressively simpler ways to achieve the same effect -->
+
+<!ELEMENT _rbaselab (ind | cterm)>
+
+
+<!-- "_rlab" is short for "rule label"; may be ind(ividual) or c(onstructor )term;
+     this allows naming of a rule (either imp or fact) in a fashion that is accessible
+     within the knowledge representation; -->
+<!-- e.g., this can help for representing prioritization between rules -->
+
+<!-- NOTE:  rule labels are not required to be unique within a rulebase -->
+
+<!-- SYNTACTIC REQUIREMENT BEYOND DTD:  any logical variables (var elements)
+appearing within the rule label (i.e., within _rlab's cterm child) must also appear within
+the rule body and/or head --> 
+<!-- FUTURE DESIGN:  probably will want to permit even stronger restrictions on the
+appearance of variables, e.g., 
+"must appear within both the rule head and body" or
+"must appear within the rule body but not in any literal which has negation-as-failure,
+nor in any literal which can sensed" in OLP or CLP or SLP or SCLP -->
+
+<!-- NOTE:  rule label is not required to be ground; semantically, instantiating
+the rule label's logical variables corresponds to instantiating the (rest of the)
+rule's variables.  For example, if the rule says "Mortal(?x) if Man(?x)", and
+the rule label is "SocraticSyllogism(?x)", then "SocraticSyllogism(Joe)" 
+corresponds semantically to the rule label for "Mortal(Joe) if Man(Joe)".  
+ -->
+  
+<!ELEMENT _rlab (ind | cterm) >
+
+
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an: -->
+<!-- _opr ("operator of relations") role followed by a sequence of zero or more arguments, or similarly -->
+<!-- (since roles constitute unordered elements, and the zero-argument case must not cause ambiguity), -->
+<!-- a sequence of one or more arguments followed by an _opr role -->
+<!-- the arguments may be ind(ividual)s, var(iable)s, c(onstructor )terms, (n-)tup(le)s, or ro(le )li(st)s -->
+
+<!ELEMENT atom ((_opr, (ind | var | cterm | tup | roli)*) | ((ind | var | cterm | tup | roli)+, _opr))>

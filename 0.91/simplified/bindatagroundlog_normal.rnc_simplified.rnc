@@ -1,0 +1,168 @@
+default namespace ns1 = "http://www.ruleml.org/0.91/xsd"
+
+start =
+  RuleML
+  | Assert
+  | Retract
+  | Query
+  | Atom
+  | Rel
+  | And
+  | Or
+  | And_2
+  | Or_2
+  | Implies
+  | Rulebase
+  | Entails
+  | Equivalent
+  | Skolem
+  | Reify
+  | Ind
+  | formula
+  | formula_2
+  | op
+  | formula_3
+  | formula_4
+  | head
+  | body
+  | formula_5
+  | head_2
+  | body_2
+  | degree
+  | torso
+  | oid
+  | slot
+  | arg
+RuleML = element RuleML { oid?, (Assert | Retract | Query)* }
+Assert =
+  element Assert {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula*
+  }
+Retract =
+  element Retract {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula*
+  }
+Query =
+  element Query {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_2*
+  }
+Atom =
+  element Atom {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    degree?,
+    op,
+    (arg, arg)?,
+    slot*
+  }
+Rel =
+  element Rel {
+    attribute uri { xsd:anyURI }?,
+    text
+  }
+And = element And { oid?, formula_3* }
+Or = element Or { oid?, formula_4* }
+And_2 =
+  element And {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_3*
+  }
+Or_2 =
+  element Or {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_4*
+  }
+Implies =
+  element Implies {
+    (attribute direction { "bidirectional" | "forward" | "backward" }
+     & attribute material { "yes" | "no" }
+     & attribute closure { "universal" | "existential" }?),
+    oid?,
+    body,
+    head
+  }
+Rulebase =
+  element Rulebase {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula_5*
+  }
+Entails = element Entails { oid?, body_2, head_2 }
+Equivalent =
+  element Equivalent {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    torso,
+    torso
+  }
+Skolem =
+  element Skolem {
+    attribute type { xsd:string }?,
+    text
+  }
+Reify = element Reify { _1? }
+Ind =
+  element Ind {
+    (attribute uri { xsd:anyURI }?
+     & attribute type { xsd:string }?),
+    text
+  }
+formula =
+  element formula { Atom | Implies | Equivalent | Entails | Rulebase }
+formula_2 = element formula { Atom | And_2 | Or_2 | Entails | Rulebase }
+op = element op { Rel }
+formula_3 = element formula { Atom | And | Or }
+formula_4 = element formula { Atom | And | Or }
+head = element head { Atom }
+body = element body { Atom | And | Or }
+formula_5 = element formula { Atom | Implies | Equivalent }
+head_2 = element head { Rulebase }
+body_2 = element body { Rulebase }
+degree = element degree { Data }
+torso = element torso { Atom }
+oid = element oid { Skolem | Reify | Ind | Data }
+slot =
+  element slot {
+    (attribute card { xsd:nonNegativeInteger }?
+     & attribute weight {
+         xsd:decimal { minInclusive = "0.0" maxInclusive = "1.0" }
+       }?),
+    (Ind | Data),
+    (Skolem | Reify | Ind | Data)
+  }
+arg =
+  element arg {
+    attribute index { xsd:positiveInteger },
+    (Skolem | Reify | Ind | Data)
+  }
+_1 =
+  element ns1:* {
+    attribute * { text }*,
+    (text & _1*)
+  }
+Data = element Data { text & _2* }
+_2 =
+  element * {
+    attribute * { text }*,
+    (text & _2*)
+  }

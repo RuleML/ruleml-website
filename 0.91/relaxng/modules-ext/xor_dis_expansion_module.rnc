@@ -1,0 +1,23 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Disjunctive Logic Schema" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, disjunctive logic" ]
+dc:description [
+  "The expansion module for extending the conclusion pattern to include disjunctions."
+]
+dc:date [ "2011-10-01" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends the choice patterns for conclusions.
+#       Xor-dis-node.choice
+
+## Exclusive disjunctions are allowed in conclusions.
+Xor-dis-node.choice |= Xor-node.choice
+# For the declaration of exclusice disjunctive formula patterns, see the exclusive disjunction module (xor_module)
+Xor-node.choice |= notAllowed

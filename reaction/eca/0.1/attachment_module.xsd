@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            Attachment ECA-RuleML elements module.
+			This is the XML Schema procedural attachment module for ECA-RuleML.
+			File: attachment_module.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			This module declares the following ECA-RuleML elements and attributes:
+			
+			* Attachment
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	
+<!--
+	  *** Attachment ***
+	  An element used to bound procedural attachments as predicates or methods 
+	  that are implemented by an external procedure.
+		  
+	  content model: (oid?, (Ind | Var | Cterm), Ind)
+-->
+
+	<xs:attributeGroup name="Attachment.attlist"/>
+	<xs:group name="Attachment.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+			<xs:element ref="Ind"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Attachment.type">
+		<xs:group ref="Attachment.content"/>
+		<xs:attributeGroup ref="Attachment.attlist"/>
+	</xs:complexType>
+	<xs:element name="Attachment" type="Attachment.type"/>
+	
+</xs:schema>

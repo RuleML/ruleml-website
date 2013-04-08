@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd" 
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.88
+			Last Modification: 2005-01-19
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hornlog includes the 'cterm' module -->
+	<xs:include schemaLocation="modules/cterm_module.xsd"/>
+
+	<!-- note the addition of C(omplex )terms and Plexs from the cterm module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			add Cterms to oids so that their content model is:
+			(Ind | Cterm)
+		-->
+		<xs:group name="oid.content">
+			<xs:choice>
+				<xs:group ref="oid.content"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			note that adding Cterm and Plex to arg automatically adds Cterm and Plex to Atom so that its content model is:
+			(
+				( (opr | Rel), (slot)*, (arg | Ind | Var | Cterm | Plex)*, (slot)* ) |
+				( (slot)*, (arg | Ind | Var | Cterm | Plex)+, (slot)*, opr )
+	        )
+
+			this also indirectly adds Cterms and Plexs to slot so that its content model is:
+			(
+                ( (Ind | Var | Cterm | Plex), (Ind | Var | Cterm | Plex) )
+			)
+		-->
+
+		<!--
+			add Cterms and Plexs so that arg's content model is:
+			(Ind | Var | Cterm | Plex)
+		-->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Plex"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+
+</xs:schema>

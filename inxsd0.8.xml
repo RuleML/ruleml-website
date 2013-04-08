@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley "boley@informatik.uni-kl.de" -->
+
+<homepage>
+
+  <title>RuleML Schemas</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+<!--       <xhtml><big><b>RuleML Schemas</b></big></xhtml> -->
+<h1>RuleML Schemas</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>,  <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h2>Earlier Work: <a href="http://www.ruleml.org/indtd0.8.html">DTD Version 0.8</a></h2>
+<h2>Version History, 2001-09-25: <a href="http://www.ruleml.org/inxsd0.8.html">Version 0.8</a></h2>
+<h2>All Schemas: <a href="http://www.ruleml.org/xsd/0.8/">XSD Directory</a></h2>
+<h2>Some Examples: <a href="http://www.ruleml.org/exa/0.8/">Examples Directory</a></h2>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This is a preliminary XML Schema draft for RuleML 0.8.
+It partially reflects and partially refines the earlier DTD for RuleML 0.8.
+</p>
+
+  </opening>
+
+<section>
+<header>Changes</header>
+<p>
+The newly started Schema Version 0.8 differs from the earlier DTD Version 0.8
+in the more precise definition method. Of the many ways of using XML Schemas,
+we picked one that partially reflects the earlier DTD and partially refines it.
+We see some further places where the added expressive power of XML Schemas could help RuleML 0.8,
+in particular, XML Schema datatypes.
+</p>
+<p>
+The DTD files of RuleML 0.8 will be complemented, step by step, by
+more precise, XMLized, albeit quite a bit longer, XSD (Schema) files.
+We start here with the 'monolith' version of Datalog RuleML,
+which does not require any DTD refinement
+(<a href="#Appendix 1">Appendix 1</a>).
+This allows RuleML 0.8 users to put the DTD and Schema
+side by side, thus getting familiar with the new
+XML description method.
+</p>
+</section>
+
+<section>
+<header>Issues</header>
+<p>
+There are some open issues, in particular regarding XML Schema's extension mechanism.
+In reply to our request, <a href="http://www.research.ibm.com/people/s/bschloss/">Bob Schloss</a> proposed
+<a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2001Oct/0108.html">How to derive a type (in an extended schema using &lt;redefine>) effectively augmenting &lt;choice> or &lt;all> particles</a>.
+Issues of an XML Schema for RuleML 0.8 were also discussed at an invited talk (<a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht-talk">ruleml-mht-talk</a>) and paper (<a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.ps">ruleml-mht.ps</a>,
+<a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.pdf">ruleml-mht.pdf</a>) on
+<a href="http://www.ifcomputer.com/inap/inap2001/program/home_en.html">The Rule Markup Language: RDF-XML Data Model, XML Schema Hierarchy, and XSL Transformations</a> at the
+14th International Conference of Applications of Prolog,
+<a href="http://www.ifcomputer.com/inap/inap2001/">INAP2001</a>,
+in Tokyo, Japan, in October 2001.
+</p>
+</section>
+
+<section label="Appendix 1">
+<header>Appendix 1:  Schema for a Datalog subset of RuleML</header>
+<box bgcolor="#CCCCFF"><code><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- An XML Schema for a Datalog RuleML Sublanguage: Monolith Version -->
+<!-- Last Modification: 2001-09-25 -->
+
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+<!-- Top-level element Declaration -->
+
+<!-- 'rulebase' root element uses 'imp' rules and 'fact' assertions as top-level elements -->
+
+  <xsd:element name="rulebase">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element name="imp" type="impType"/>
+        <xsd:element name="fact" type="factType"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+
+
+<!-- complexType Definitions -->
+
+
+<!-- 'imp' rules are usable as general implications on the top-level -->
+<!-- 'imp' element uses a conclusion role _head followed by a premise role _body, or equivalently -->
+<!-- (since roles constitute unordered elements), uses a premise role _body followed by a conclusion role _head -->
+<!-- "<imp>_head _body</imp>" stands for "_head is implied by _body", i.e., "_head is true is implied by _body is true", or equivalently, -->
+<!-- "<imp>_body _head</imp>" stands for "_body implies _head", i.e., "_body is true implies _head is true" -->
+
+  <xsd:complexType name="impType">
+    <xsd:all>
+      <xsd:element name="_head" type="_headType"
+                   minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="_body" type="_bodyType"
+                   minOccurs="1" maxOccurs="1"/>
+    </xsd:all>
+  </xsd:complexType>
+
+
+<!-- 'fact' assertions are usable as degenerate rules on the top-level -->
+<!-- 'fact' element uses just a conclusion role _head -->
+<!-- "<fact>_head</fact>" stands for "_head is implied by true", i.e., "_head is true" -->
+
+  <xsd:complexType name="factType">
+    <xsd:sequence>
+      <xsd:element name="_head" type="_headType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+<!-- _head role is usable within 'imp' rules and 'fact' assertions -->
+<!-- _body role is usable within 'imp' rules -->
+<!-- _head uses an atomic formula -->
+<!-- _body uses an atomic formula or an 'and' -->
+
+  <xsd:complexType name="_headType">
+    <xsd:sequence>
+      <xsd:element name="atom" type="atomType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="_bodyType">
+    <xsd:choice>
+      <xsd:element name="atom" type="atomType"/>
+      <xsd:element name="and" type="andType"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+ 
+<!-- an 'and' is usable within _body's -->
+<!-- 'and' uses zero or more atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+
+  <xsd:complexType name="andType">
+    <xsd:sequence>
+      <xsd:element name="atom" type="atomType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+ 
+ 
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an: -->
+<!-- _opr ("operator of relations") role followed by a sequence of zero or more arguments, or similarly -->
+<!-- (since roles constitute unordered elements, and the zero-argument case must not cause ambiguity), -->
+<!-- a sequence of one or more arguments followed by an _opr role -->
+<!-- the arguments may be ind(ividual)s or var(iable)s -->
+
+<!-- Since xsd:all groups don't permit complex content, the following is not permitted ...
+
+  <xsd:complexType name="atomType">
+    <xsd:all>
+      <xsd:element name="_opr" type="_oprType"
+                   minOccurs="1" maxOccurs="1"/>
+      <xsd:sequence minOccurs="1" maxOccurs="1">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="ind" type="indType"/>
+          <xsd:element name="var" type="varType"/>
+        </xsd:choice>
+      </xsd:sequence>
+    </xsd:all>
+  </xsd:complexType>
+
+... hence must be circumscribed via xsd:choice, like in DTDs: -->
+
+
+  <xsd:complexType name="atomType">
+    <xsd:choice>
+      <xsd:sequence>
+        <xsd:element name="_opr" type="_oprType"/>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="ind" type="indType"/>
+          <xsd:element name="var" type="varType"/>
+        </xsd:choice>
+      </xsd:sequence>
+      <xsd:sequence>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="ind" type="indType"/>
+          <xsd:element name="var" type="varType"/>
+        </xsd:choice>
+        <xsd:element name="_opr" type="_oprType"/>
+      </xsd:sequence>
+    </xsd:choice>
+  </xsd:complexType>
+
+
+<!-- _opr is usable within atoms -->
+<!-- _opr uses rel(ation) symbol -->
+
+  <xsd:complexType name="_oprType">
+    <xsd:sequence>
+      <xsd:element name="rel" type="relType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+<!-- simpleType Definitions -->
+
+
+<!-- there is one kind of fixed argument -->
+ 
+<!-- individual constant, as in predicate logic -->
+
+  <xsd:simpleType name="indType">
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+ 
+ 
+<!-- there is one kind of variable argument -->
+ 
+<!-- logical variable, as in logic programming -->
+
+  <xsd:simpleType name="varType">
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+ 
+ 
+<!-- there are only fixed (first-order) relations -->
+ 
+<!-- relation or predicate symbol -->
+
+  <xsd:simpleType name="relType">
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+
+</xsd:schema>]]></code></box>
+</section>
+
+<section label="Appendix 2">
+<header>Appendix 2:  Example RuleML document:  a rulebase own.ruleml</header>
+<box bgcolor="#FFCCCC"><code><![CDATA[
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/dtd/0.8/ruleml-datalog-monolith.dtd">
+
+
+<!-- XML file refers both to DTD (above) and to equivalent Schema (below) -->
+
+
+<rulebase xsi:noNamespaceSchemaLocation="http://www.ruleml.org/xsd/0.8/ruleml-datalog-monolith.xsd"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">]]>
+. . .</code></box>
+<p>
+For the full file see <a href="http://www.ruleml.org/exa/0.8/own.ruleml">own.ruleml</a>
+(<a href="http://www.ruleml.org/exa/0.8/own.ruleml.txt">own.ruleml.txt</a>).
+</p>
+<box bgcolor="#FFCCCC"><code><![CDATA[. . .
+</rulebase>                                                                                                   ]]></code></box>
+</section>
+
+<section label="Appendix 3">
+<header>Appendix 3:  Instructions/Trace on Validating the example against the Schema</header>
+<box><code><![CDATA[
+Validating a RuleML 0.8 Sample Document: own.ruleml
+
+
+
+> Go to]]></code>
+<a href="http://www.w3.org/2000/09/webdata/xsv">http://www.w3.org/2000/09/webdata/xsv</a>
+<code><![CDATA[
+
+> Paste in at
+
+Address(es):
+http://www.ruleml.org/exa/0.8/own.ruleml
+
+> Select fallbacks for browsers ... (e.g.):
+text/html (styled server-side: suits Netscape, older IE)
+
+> Hit the 'Get Results' button
+> You should essentially get:
+
+* The schema(s) used for schema-validation had no errors
+* No schema-validity problems were found in the target
+]]></code></box>
+For the full XSV output see <a href="http://www.ruleml.org/xsv-out.html">xsv-out.html</a>.
+</section>
+
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2001-10-30
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/inxsd0.8.xml">inxsd0.8.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/inxsd0.8.xml.txt">inxsd0.8.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

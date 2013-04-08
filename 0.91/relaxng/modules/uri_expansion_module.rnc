@@ -1,0 +1,32 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML uri Attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, uri" ]
+dc:description [ "The expansion module for the International Resource Identifier (uri) attribute." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= uri.edge.def
+# This module declares the following RuleML attribute:
+#    * @uri
+
+## attribute list for resources includes and optional uri attribute.
+Resource.attlist &= uri-att.choice?
+
+## an extension point for alternate spellings and internationalization of the oriented equation attribute name.  
+uri-att.choice |= uri.attrib.def
+uri.attrib.def =
+    
+    ## An attribute for referring to a IRI.    
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-@uri
+    attribute uri { uri.value }
+uri.value |= xsd:anyURI
+#
+uri.edge.def = element uri { uri.content }
+uri.content |= uri.value

@@ -1,0 +1,69 @@
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/fologeq.xsd"
+>
+
+<!-- An Employee cannot get a salaryincrement of ten percent and twenty percent  
+     at the same time and also he cannot get more than one salary increment in a year -->
+
+<Assert>
+
+<Entails>
+
+    <Rulebase>
+      <Atom>
+        <Rel>employee</Rel>
+        <Ind>emp01</Ind>
+      </Atom>
+    </Rulebase>
+    <Rulebase>
+      <Neg>
+        <And>
+          <Atom>
+            <Rel>salaryincrement</Rel>
+            <Var>EMP</Var>
+            <Ind>tenpercent</Ind>
+          </Atom>
+          <Atom>
+            <Rel>salaryincrement</Rel>
+            <Var>EMP</Var>
+            <Ind>twentypercent</Ind>
+          </Atom>
+        </And>
+      </Neg>
+
+      <Implies material="yes">
+        <head>
+          <Neg>
+            <And>
+              <Atom>
+                <Rel>salaryincrement</Rel>
+                <Var>EMP</Var>
+                <Ind>year1</Ind>
+              </Atom>
+              <Atom>
+                <Rel>salaryincrement</Rel>
+                <Var>EMP</Var>
+                <Ind>year2</Ind>
+              </Atom>
+            </And>
+          </Neg>
+        </head>
+        <body>
+          <Neg>
+            <Equal>
+              <Ind>year1</Ind>
+              <Ind>year2</Ind>
+            </Equal>
+          </Neg>
+        </body>
+      </Implies>
+
+    </Rulebase>
+		
+</Entails>
+
+</Assert>
+
+</RuleML>

@@ -1,0 +1,133 @@
+<!-- RuleML V0.8 DTD, monolithic version (without included modules):  
+       for Hornlog (i.e., Horn Logic Programs),
+       with the URI constants feature ("ur"), and
+       with the object-oriented arguments collection feature ("roli's"),
+       but omitting the query statement ("query") that was defined in
+       some other versions of RuleML V0.8 Hornlog 
+        -->
+
+<!-- Version date:  2003-04-21 .  From:  http://www.ruleml.org  -->
+
+<!-- Please send any comments especially to 
+       Harold Boley      email: Harold.Boley@nrc.ca
+       Benjamin Grosof   email: bgrosof@mit.edu      -->
+
+<!-- fixes a small problem with ruleml-ur.dtd and ruleml-urhornlog.dtd:
+       omits defining an href attribute for "fun" element since there
+       is no "fun" element defined for Hornlog -->
+        
+
+<!ELEMENT rulebase (( (_rbaselab, (imp | fact)* ) 
+                            | ((imp | fact)+, _rbaselab?) )?) >
+
+<!ATTLIST rulebase direction (forward | backward | bidirectional) 
+                                                            "bidirectional">
+
+<!-- URI-valued (CDATA) attributes optionally specify an XML Schema 
+       on 'rulebase' root -->
+<!ATTLIST rulebase xsi:noNamespaceSchemaLocation %URI; #IMPLIED>
+<!ATTLIST rulebase xmlns:xsi %URI; #IMPLIED>
+
+<!ENTITY % URI "CDATA">
+
+<!ELEMENT _rbaselab (ind | cterm)>   
+
+<!ELEMENT imp ((_rlab, ((_head, _body) | (_body, _head))) |
+               (_head, ((_rlab, _body) | (_body, _rlab?))) |
+               (_body, ((_rlab, _head) | (_head, _rlab?)))) >
+
+<!ELEMENT fact ((_rlab, _head) | (_head, _rlab?)) >
+
+<!ELEMENT _rlab (ind | cterm) >   
+
+<!ELEMENT _head (atom)>
+
+<!ELEMENT _body (atom | and)>
+
+<!ELEMENT and (atom*)>
+
+<!ELEMENT atom ((_opr, (ind | var | cterm | tup | roli)*) | ((ind | var | cterm | tup | roli)+, _opr))>
+
+<!ELEMENT _opr (rel)>
+
+<!ELEMENT rel  (#PCDATA)>
+
+<!ELEMENT var  (#PCDATA)>
+ 
+<!ELEMENT ind  (#PCDATA)>
+ 
+
+
+<!ELEMENT cterm ((_opc, (ind | var | cterm | tup | roli)*) | ((ind | var | cterm | tup | roli)+, _opc))>
+
+<!ELEMENT _opc (ctor)>
+
+<!ELEMENT ctor (#PCDATA)>
+
+
+<!-- ff. are specific to supporting object-oriented arguments
+          collection feature -->
+
+<!ELEMENT tup   ((ind | var | cterm | tup | roli)*)>
+
+<!ELEMENT roli ((_arv)*)>
+
+<!ELEMENT _arv ((arole, (ind | var | cterm | tup | roli)) 
+                   | ((ind | var | cterm | tup | roli), arole)) >
+
+<!ELEMENT arole (#PCDATA)>
+
+
+<!-- ff. are specific to supporting the URI constants feature -->
+
+<!ATTLIST ind href %URI; #IMPLIED>
+
+<!ATTLIST rel href %URI; #IMPLIED>
+
+<!ATTLIST ctor href %URI; #IMPLIED>
+
+<!ATTLIST arole href %URI; #IMPLIED>
+
+
+<!-- Explanation of Abbreviations:
+
+  rulebase = knowledge base of rules.  
+  direction = intended direction of inferencing.  
+  _rbaselab = rulebase label.  Name of a rulebase.
+  imp = implication rule.  
+          (Note it does not employ *material* implication cf. classical logic.)
+  fact:  Can be viewed logically as an implication rule that has an empty body.
+  _head = head of a rule.  A.k.a. the "consequent" or "then" part of the rule.
+  _body = body of a rule.  A.k.a. the "antecedent" or "if" part of the rule.  
+  _rlab = rule label.  Name of a rule. 
+  and = conjunctive body expression.  The "and" of some body atoms.
+  atom = logical atom.  An expression formed from a predicate applied to a 
+            collection of its (logical) arguments.  
+  _opr = relational operator expression.  (This is for sake of upward
+           expressive extensibility.)  
+  rel = relation.  A logical predicate. 
+  var = variable.  A logical variable.
+  ind = individual.  A logical individual.  
+           (Can be viewed logically as logical function whose arity is zero.)
+  cterm = complex term.  A logical term of the form "f(...)" where f is a ctor.
+  _opc = constructor operator expression.  (Similar in spirit to _opr.)
+  ctor = constructor.  A logical function. 
+  tup = tuple of arguments.  An ordered collection of arguments.  
+  roli = role'd list of arguments.  An unordered collection of arguments, 
+           with each member of the collecion being distinguished by an 
+           argument role name (arole).
+  _arv = argument role-value pair.  An argument (value) together with its
+           indicating argument role (arole).
+  arole = argument role.  (See roli and _arv above.)
+
+  Note that in this DTD version, tup's and roli's can be nested.  This is an 
+    EXPERIMENTAL aspect of the object-oriented argument collections feature.  
+
+  -->  
+
+
+
+
+
+
+

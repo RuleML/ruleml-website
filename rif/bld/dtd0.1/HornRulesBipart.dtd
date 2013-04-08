@@ -1,0 +1,37 @@
+<!ENTITY % TERM "(Data | Ind | Var | Expr)">
+<!ENTITY % LITFORM "(Atom | Equal)">
+<!ENTITY % QUANTIF "(Exists)">
+<!ENTITY % CONDIT "(%LITFORM; | %QUANTIF; | And | Or)">
+
+<!ENTITY % CLAUSE "(Forall)">
+
+<!ELEMENT Ind  EMPTY>
+
+<!ELEMENT Data (#PCDATA)>
+<!ELEMENT Var  (#PCDATA)>
+<!ELEMENT Rel  (#PCDATA)>
+<!ELEMENT Fun  (#PCDATA)>
+
+<!ELEMENT Expr (Fun, (%TERM;)*)>
+
+<!ELEMENT Atom (Rel, (%TERM;)*)>
+<!ELEMENT Equal (%TERM;, %TERM;)>
+
+<!ELEMENT Exists (Var+, %CONDIT;)>
+<!ELEMENT Forall (Var+, (Implies | %LITFORM;))>
+
+<!ELEMENT And ((%CONDIT;)*)>
+<!ELEMENT Or  ((%CONDIT;)*)>
+
+<!ELEMENT head (%LITFORM;)>
+<!ELEMENT body (%CONDIT;)>
+
+<!ELEMENT Implies ((head, body) | (body, head) | ( %CONDIT;, %LITFORM;))>
+
+<!ELEMENT Ruleset ((%CLAUSE;)*)>
+
+<!ATTLIST Ind iri   CDATA #REQUIRED>
+
+<!ATTLIST Var  type CDATA #IMPLIED>
+<!ATTLIST Rel  iri  CDATA #IMPLIED>
+<!ATTLIST Fun  iri  CDATA #IMPLIED>

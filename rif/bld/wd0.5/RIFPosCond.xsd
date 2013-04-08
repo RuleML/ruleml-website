@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified">
+
+  <!--
+  
+  Based on the following Abstract EBNF
+  (see http://www.w3.org/2005/rules/wg/wiki/Core/Positive_Conditions):
+  
+  CONDITION  ::= 'And' '('  ('formula ->' CONDITION)*  ')'
+                 |
+               'Or'  '('  ('formula ->' CONDITION)*  ')'
+                 |
+               'Exists' '(' ('declare ->' Var)+  'formula ->' CONDITION ')'
+                 |
+               ATOMIC
+
+  ATOMIC     ::= Uniterm | Equal
+
+  Uniterm    ::= 'Uniterm' '(' 'op ->' Const  ('arg ->' TERM)* ')'
+  
+  Equal      ::= 'Equal' '(' 'side ->' TERM  'side ->' TERM ')'
+
+  TERM       ::= 'Const' ( '(' 'type ->' TYPENAME ')' )?  '(' CONSTNAME ')'
+                 |
+               'Var' '(' VARNAME ')'
+                 |
+               Uniterm
+
+  -->
+
+	<xs:group name="CONDITION">  
+    <!--
+		CONDITION  ::= 'And' '('  ('formula ->' CONDITION)*  ')'
+                   |
+                 'Or'  '('  ('formula ->' CONDITION)*  ')'
+                   |
+                 'Exists' '(' ('declare ->' Var)+  'formula ->' CONDITION ')'
+                   |
+                 ATOMIC
+		-->
+		<xs:choice>
+			<xs:element ref="And"/>
+			<xs:element ref="Or"/>
+      <xs:element ref="Exists"/>
+      <xs:group ref="ATOMIC"/>
+		</xs:choice>
+	</xs:group>
+
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="formula"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="formula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="CONDITION"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+
+  <xs:group name="ATOMIC">
+		<!--
+		ATOMIC     ::= Uniterm | Equal
+		-->
+		<xs:choice>
+			<xs:element ref="Uniterm"/>
+			<xs:element ref="Equal"/>
+		</xs:choice>
+	</xs:group>
+  
+  <xs:element name="Uniterm">  
+		<!--
+		Uniterm    ::= 'Uniterm' '(' 'op ->' Const  ('arg ->' TERM)* ')'
+		-->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="op"/>
+        <xs:element ref="arg" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="op">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="arg">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Equal">
+    <!--
+		Equal      ::= 'Equal' '(' 'side ->' TERM  'side ->' TERM ')'
+		-->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="side"/>
+        <xs:element ref="side"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="side">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+	<xs:group name="TERM">  
+    <!--
+		TERM       ::= 'Const' ( '(' 'type ->' TYPENAME ')' )?  '(' CONSTNAME ')'
+                 |
+               'Var' '(' VARNAME ')'
+                 |
+               Uniterm
+		-->
+		<xs:choice>
+			<xs:element ref="Const"/>
+			<xs:element ref="Var"/>
+      <xs:element ref="Uniterm"/>
+		</xs:choice>
+	</xs:group>
+  
+  <xs:element name="Const">
+    <xs:complexType mixed="true">
+      <xs:sequence/>
+      <xs:attribute name="type" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Var" type="xs:string"/>
+  
+</xs:schema>

@@ -1,0 +1,354 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            ECA-RuleML: Events RBSLA elements module.
+			This is the XML Schema complex event processing and state changes module for RBSLA.
+			File: events_module.xsd
+			Version: 0.2
+			Last Modification: 2005-11-26
+			
+			This module declares the following RBSLA elements and attributes:
+			
+			* fluent
+			* parameter
+			* fluent_event.content
+			* parameter_event.content
+			* Happens
+			* Planned
+			* Initially
+			* Initiates
+			* Terminates
+			* HoldsAt
+			* ValueAt
+			* interval	
+			* Occurs
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!-- ++++++++++++++++++++ Help constructs +++++++++++++++++++-->
+	<!--
+      *** fluent ***
+
+      content model: (Ind | Var | Cterm)
+-->
+	<xs:attributeGroup name="fluent.attlist"/>
+	<xs:group name="fluent.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="fluent.type">
+		<xs:group ref="fluent.content"/>
+		<xs:attributeGroup ref="fluent.attlist"/>
+	</xs:complexType>
+	<xs:element name="fluent" type="fluent.type"/>
+	<!--
+      *** parameter ***
+
+      content model: (Ind | Var | Cterm)
+-->
+	<xs:attributeGroup name="parameter.attlist"/>
+	<xs:group name="parameter.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="parameter.type">
+		<xs:group ref="parameter.content"/>
+		<xs:attributeGroup ref="parameter.attlist"/>
+	</xs:complexType>
+	<xs:element name="parameter" type="parameter.type"/>
+	<!--
+	*** ind_var_cterm_event.content ***
+-->
+	<xs:group name="ind_var_cterm_event.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Var"/>
+			<xs:element ref="Cterm"/>
+		</xs:choice>
+	</xs:group>
+	<!--
+	*** ind_var_cterm_time.content ***
+-->
+	<xs:group name="ind_var_cterm_time.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Var"/>
+			<xs:element ref="Cterm"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ++++++++++++++++++++ Persistent events +++++++++++++++++++-->
+	<!--
+	  *** Happens ***		 
+		  
+	  content model: (oid?, (event | Ind | Var | Cterm ), (time | Ind | Var | Cterm))
+-->
+	<xs:attributeGroup name="Happens.attlist"/>
+	<xs:group name="Happens.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:group ref="ind_var_cterm_event.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Happens.type">
+		<xs:group ref="Happens.content"/>
+		<xs:attributeGroup ref="Happens.attlist"/>
+	</xs:complexType>
+	<xs:element name="Happens" type="Happens.type"/>
+	<!-- ++++++++++++++++++++ Believed events +++++++++++++++++++-->
+	<!--
+	  *** Planned  ***		 
+		  
+	  content model: (oid?, (event | Ind | Var | Cterm ), (time | Ind | Var | Cterm))
+-->
+	<xs:attributeGroup name="Planned.attlist"/>
+	<xs:group name="Planned.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:group ref="ind_var_cterm_event.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Planned.type">
+		<xs:group ref="Planned.content"/>
+		<xs:attributeGroup ref="Planned.attlist"/>
+	</xs:complexType>
+	<xs:element name="Planned" type="Planned.type"/>
+	<!-- ++++++++++++++++++++ Effects of events +++++++++++++++++++-->
+	<!--
+      *** Initially ***
+
+      content model: (oid?, (fluent  | Ind | Var | Cterm))
+-->
+	<xs:attributeGroup name="Initially.attlist"/>
+	<xs:group name="Initially.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="fluent"/>
+				<xs:group ref="fluent.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Initially.type">
+		<xs:group ref="Initially.content"/>
+		<xs:attributeGroup ref="Initially.attlist"/>
+	</xs:complexType>
+	<xs:element name="Initially" type="Initially.type"/>
+	<!--
+      *** Initiates ***
+
+      content model: (oid?, (event | action | Ind | Var | Cterm), (fluent | Ind | Var | Cterm), (time | Ind | Var | Cterm))
+-->
+	<xs:attributeGroup name="Initiates.attlist"/>
+	<xs:group name="Initiates.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:element ref="action"/>
+				<xs:group ref="ind_var_cterm_event.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="fluent"/>
+				<xs:group ref="fluent.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Initiates.type">
+		<xs:group ref="Initiates.content"/>
+		<xs:attributeGroup ref="Initiates.attlist"/>
+	</xs:complexType>
+	<xs:element name="Initiates" type="Initiates.type"/>
+	<!--
+      *** Terminates ***
+
+      content model: (oid?, (event | Ind | Var | Cterm), (fluent | Ind | Var | Cterm | interval | Interval), (time | Ind | Var | Cterm | interval | Interval))
+-->
+	<xs:attributeGroup name="Terminates.attlist"/>
+	<xs:group name="Terminates.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:group ref="ind_var_cterm_event.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="fluent"/>
+				<xs:group ref="fluent.content"/>
+				<xs:element ref="interval"/>
+				<xs:element ref="Interval"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+				<xs:element ref="interval"/>
+				<xs:element ref="Interval"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Terminates.type">
+		<xs:group ref="Terminates.content"/>
+		<xs:attributeGroup ref="Terminates.attlist"/>
+	</xs:complexType>
+	<xs:element name="Terminates" type="Terminates.type"/>
+	<!-- ++++++++++++++++++++ Queries +++++++++++++++++++-->
+	<!--
+	  *** HoldsAt ***		 
+		  
+	  content model: (oid?, (fluent | Ind | Var | Cterm ), (time | Ind | Var | Cterm))
+-->
+	<xs:attributeGroup name="HoldsAt.attlist"/>
+	<xs:group name="HoldsAt.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="fluent"/>
+				<xs:group ref="fluent.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="HoldsAt.type">
+		<xs:group ref="HoldsAt.content"/>
+		<xs:attributeGroup ref="HoldsAt.attlist"/>
+	</xs:complexType>
+	<xs:element name="HoldsAt" type="HoldsAt.type"/>
+	<!--
+	  *** ValueAt ***		 
+		  
+	  content model: (oid?, (parameter | Ind | Var | Cterm ), (time | Ind | Var | Cterm), (Ind | Var | Cterm | Data))
+-->
+	<xs:attributeGroup name="ValueAt.attlist"/>
+	<xs:group name="ValueAt.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="parameter"/>
+				<xs:group ref="parameter.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:group ref="ind_var_cterm_time.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Data"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ValueAt.type">
+		<xs:group ref="ValueAt.content"/>
+		<xs:attributeGroup ref="ValueAt.attlist"/>
+	</xs:complexType>
+	<xs:element name="ValueAt" type="ValueAt.type"/>
+	
+<!--
+	  *** Occurs ***
+
+	  content model: ( oid?, event | Ind | Var | Cterm, interval | Interval | Plex | Var )
+-->
+
+<xs:attributeGroup name="Occurs.attlist"/>
+	<xs:group name="Occurs.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="interval"/>
+				<xs:element ref="Interval"/>
+				<xs:element ref="Plex"/>
+				<xs:element ref="Var"/>
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Occurs.type">
+		<xs:group ref="Occurs.content"/>
+		<xs:attributeGroup ref="Occurs.attlist"/>
+	</xs:complexType>
+	<xs:element name="Occurs" type="Occurs.type"/>
+	
+<!--
+	  *** HoldsInterval ***
+
+	  content model: ( oid?, interval | Interval | Plex | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic | Cterm, interval | Interval | Plex | Var )
+-->
+
+<xs:attributeGroup name="HoldsInterval.attlist"/>
+	<xs:group name="HoldsInterval.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="interval"/>
+				<xs:element ref="Interval"/>
+				<xs:element ref="Plex"/>
+				<xs:element ref="operator"/>
+				<xs:element ref="Sequence"/>
+				<xs:element ref="Disjunction"/>
+				<xs:element ref="Xor"/>
+				<xs:element ref="Conjunction"/>
+				<xs:element ref="Concurrent"/>
+				<xs:element ref="Not"/>
+				<xs:element ref="Any"/>
+				<xs:element ref="Aperiodic"/>
+				<xs:element ref="Periodic"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="interval"/>
+				<xs:element ref="Interval"/>
+				<xs:element ref="Plex"/>
+				<xs:element ref="Var"/>
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="HoldsInterval.type">
+		<xs:group ref="HoldsInterval.content"/>
+		<xs:attributeGroup ref="HoldsInterval.attlist"/>
+	</xs:complexType>
+	<xs:element name="HoldsInterval" type="HoldsInterval.type"/>
+	
+
+</xs:schema>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR' Horn-Logic RuleML sublanguage
+			File: urhornlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-21
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+	
+	<xs:redefine schemaLocation="hornlog.xsd">
+		<!-- add href attribute -->
+		<xs:attributeGroup name="rel.attlist">
+			<xs:attributeGroup ref="rel.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+
+		<!-- add href attribute -->
+		<xs:attributeGroup name="ind.attlist">
+			<xs:attributeGroup ref="ind.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+
+		<!-- add href attribute -->
+		<xs:attributeGroup name="ctor.attlist">
+			<xs:attributeGroup ref="ctor.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+
+</xs:schema>

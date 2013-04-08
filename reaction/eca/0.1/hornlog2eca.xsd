@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.9/xsd" xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            hornlog2eca part of ECA-RuleML.
+
+			File: hornlog2eca.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			This schema declares the following ECA-RuleML elements and attributes:
+				  
+				  * redefines Neg by adding Equal and Integrity by adding *
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="http://www.ruleml.org/0.9/xsd/modules/equality_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/root_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/testcases_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/update_module.xsd"/>
+
+<xs:redefine schemaLocation="http://www.ruleml.org/0.9/xsd/modules/neg_module.xsd">
+	
+<!--
+     The hornlog2eca schema redefines the Neg element by adding Equal element
+-->
+
+   <xs:group name="strong.content">
+     <xs:choice>
+		 <xs:group ref="strong.content" />
+		 <xs:element ref="Equal" />
+	</xs:choice>
+   </xs:group>
+   
+<!--
+	 note that the new content model of Neg is (Atom | Equal)
+-->
+
+</xs:redefine>
+
+
+<xs:redefine schemaLocation="http://www.ruleml.org/0.9/xsd/hornlog.xsd" >
+
+<!--
+     the hornlog2eca schema redefines the Integrity element 
+-->
+
+	<xs:group name="Integrity.extend">
+	 <xs:sequence>
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:group ref="Integrity.extend"  />
+		</xs:choice>	
+	 </xs:sequence>
+	</xs:group>
+
+<!--
+	 note that the new content model of Integrity is (oid?, (formula | Atom | And | Or)+ )
+-->
+
+</xs:redefine>	
+	
+
+	
+</xs:schema>

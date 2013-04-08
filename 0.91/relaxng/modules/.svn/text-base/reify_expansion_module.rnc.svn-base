@@ -1,0 +1,42 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Reification" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, reify, reification" ]
+dc:description [ "The expansion module for reification of RuleML objects." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Reify.Node.def
+# for modules
+
+# This module declares the following RuleML elements, attributes and patterns:
+#           * <Reify>
+
+## an extension point to allow alternate names and internationalization for reification
+Reify-node.choice |= Reify.Node.def
+Reify.Node.def =
+    
+    ## Supports reification (a kind of instantiation or quasi-quotation) as needed by SWSL. 
+    ## It allows any RuleML tag available within the current sublanguage as content, treating 
+    ## it as a term for performing reasoning on, e.g.
+    ## <Reify><Ind>John Doe</Ind></Reify>
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Reify
+    element Reify { Reify.content }
+Reify.content |= (Node.choice | edge.choice)?
+# FIXME This is still not right - RuleML can allow children from other namespaces within Data (Structure in 1.0).
+# Better to accumulate the patterns for all defined elements, and use that as the content model for Reify.
+# Reify.content |= Node.choice | edge.choice
+# AnyRML =
+#    element ruleml:* {
+#        (attribute * { text }
+#         | AnyRML
+#         | text)*
+#    }
+Node.choice |= Reify.Node.def
+# Optional initialization modules allows this module to be independently validated
+
+

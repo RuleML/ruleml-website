@@ -1,0 +1,22 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML First-Order Logic Extension" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, first-order logic" ]
+dc:description [
+  "The expansion module for the first-order logic extensions."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends patterns from Disjunctive Horn Logic to First-Order Logic
+And-fo-node.choice |= And-node.choice
+Or-fo-node.choice |= Or-node.choice
+Negation-fo-node.choice |= Negation-node.choice
+Implication-fo-node.choice |= Implication-node.choice
+Forall-fo-node.choice |= Forall-node.choice
+Exists-fo-node.choice |= Exists-node.choice
+mapClosure-att-fo.choice |= mapClosure-att.choice

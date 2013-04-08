@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a local active reaction rule with a strong condition (see also weak condition), i.e. if the strong condition fails the complete inline reaction rule is assigned
+false and the complete derivation rule fails.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+
+
+
+ -->
+ 
+<Assert>
+
+
+  <Implies>
+	
+	<head>
+	    <Atom>
+	      <Rel>available</Rel>
+	      <Var>Service</Var>
+	    </Atom>
+	</head>
+	
+	<body>
+	  <And>
+	
+	   <Atom> 
+	      <Rel>service</Rel>
+	      <Var>Service</Var>
+	    </Atom>
+	
+	   <Atom> 
+	      <Rel>sysTime</Rel>
+	      <Var>T</Var>
+	    </Atom>
+	
+	    <Reaction kind="eca" exec="active" eval="strong">
+	    	<event> <!-- role tag; can be omitted-->
+	           <Atom>
+	                <oid><Ind uri="rbsla.utils.WebService"/></oid> <!-- object / class-->
+	                <Rel in="yes" lang="java">ping</Rel> <!-- method-->
+	              	<Var>Service</Var> <!-- parameter -->
+	           </Atom>
+	        </event>
+	    
+	        <body> <!-- strong condition with default negation -->
+	           <Naf>
+	             <Atom>
+	                <Rel>maintenance</Rel>
+	                <Var>Service</Var>
+	             </Atom>   
+	           </Naf>
+	        </body>
+	    
+	        <action> 
+	           <Assert> 
+	              <oid><Ind>id1</Ind></oid>	              
+	                 <Atom>
+	                   <Rel>occurs</Rel>
+	                   <Expr in="no">
+	                      <Fun>alive</Fun>                  
+	                      <Var>Service</Var> 
+	                   </Expr>                       
+	                   <Var>T</Var>
+	                 </Atom>	              
+	           </Assert>         
+	        </action>       
+	      </Reaction>       
+	      
+	    </And>
+	 </body>
+   </Implies>
+
+
+</Assert>
+
+</RuleML>

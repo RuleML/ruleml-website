@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>Policy RuleML</title>
+
+
+<link rel="alternate" media="print" href="./rules-all.html">
+<link rel="section" href="./abstract.html">
+<link rel="section" href="./direct.html">
+<link rel="section" href="./examples.html">
+<link rel="section" href="./xmlsyntax.html">
+<link rel="section" href="./rdfsyntax.html">
+<link rel="section" href="./usage.html">
+
+<link rel="stylesheet" type="text/css" href="spec.css"/>
+<link rel="stylesheet" type="text/css" href="owl-xml.css" />
+
+</head>
+
+
+<body>
+
+<div class="head">
+
+<h1><a name="ST"></a>The Policy RuleML Technical Group</h1>
+
+<h2><a name="SST"></a>RuleML-powered Policy specification and interchange</h2> 
+
+<h2><a name="SW"></a>The RuleML Initiative, March 2004</h2> 
+
+<dl><dt>This version:</dt><dd> 
+<a href="http://policy.ruleml.org/">http://policy.ruleml.org/</a>
+</dd><dt>Latest version:</dt><dd> 
+<a href="http://policy.ruleml.org/">http://policy.ruleml.org/</a></dd>
+</dl>
+<hr/>
+
+</div>
+
+<h2><a id="abstract" name="abstract">Introduction</a></h2>
+
+<div class="abstract">
+<p>
+Today, business rules are the focus of various efforts in industry and academia. The recent work on e-business, web services, the Semantic Web, rights description and management, privacy, security and trust, is reinforcing the idea of a global approach to deal with the management, interchange and sharing of policies, regulations and business rules between various systems on the Web and in distributed environments.
+</p>
+<p>
+The RuleML Initiative is proposing the formation of a Policy RuleML Technical Committee and the use of RuleML as a way to interoperate between different Policy systems.
+</p>
+</div>
+
+<p>
+Please send any comments you may have to <a href="mailto:stabet@ruleml.org;bruce.spencer@nrc.ca">Said Tabet and Bruce Spencer</a>. The discussion should take place on <a href="http://mail.ruleml.org/pipermail/ruleml-all/2003-November/000000.html"> the RuleML Mailing List</a>.
+</p>
+
+<hr/>
+
+</div>
+
+<div class="toc">
+
+<h2><a id="contents" name="contents">Table of contents</a></h2>
+
+<ul class="toc">
+<li class="tocline1">1. <a href="#1">Introduction</a>
+    </li>
+<li class="tocline1">2. <a href="#2">Proposed Focus for Policy RuleML</a>
+    <ul class="toc">
+    <li class="tocline2">2.1 <a href="#2.1">The Concept:  RuleML-based Policy Interchange</a></li>
+    <li class="tocline2">2.2 <a href="#2.2">Initial Application Focus</a></li>
+    <li class="tocline2">2.3 <a href="#2.3">Goals of the Policy RuleML TC</a></li>
+    <li class="tocline2">2.4 <a href="#2.4">Technical Focus:  Deontic Logic</a></li>
+    </ul>
+    </li>
+<li class="tocline1">3 <a href="#3">Use Case Scenarios</a></li>
+</ul>
+
+<ul class="toc">
+<li class="tocline1"><a href="#references">References</a>
+	</li>
+</ul>
+
+<hr/>
+
+</div>
+
+<h2><a name="1"></a>1. Introduction </h2>
+<p>
+Today, business rules are the focus of various efforts in industry and academia. The recent work on e-business, web services, the Semantic Web, rights description and management, privacy, security and trust, is reinforcing the idea of a global approach to deal with the management, interchange and sharing of policies, regulations and business rules between various systems on the Web and in distributed environments.
+</p>
+<p>
+The RuleML Initiative is proposing the formation of a Policy RuleML Technical Committee and the use of RuleML as a way to interoperate between different Policy systems.
+</p>
+
+<hr/>
+
+
+<h2><a name="2"></a>2. Proposed Focus for Policy RuleML</h2>
+
+<p>
+The Policy RuleML TC will need to define a comprehensive prioritized list of focus areas.
+</p>
+
+<h3><a name="2.1"></a>2.1. The Concept:  RuleML-based Policy Interchange</h3>
+
+<p>
+The overall motivation for the proposed TC is that to employ RuleML as a semantic interoperation vehicle for heterogeneous policy languages, standards, protocols, and mechanisms, both currently existing and those developed in the near future. RuleML will provide intermediate markup syntax, with associated deep knowledge representation semantics, for interchange between those languages, standards and mechanisms. The RuleML TC will also develop translation and implementation tools for interchange between policy languages/standards/protocols/mechanisms that are already XML-based. This can, for instance, be achieved using XSL transformations (XSLT), e.g., to translate into and then out of RuleML.
+</p>
+
+<hr/>
+
+<h3><a name="2.2"></a>2.2. Initial Application Focus</h3>
+
+<p>
+The RuleML Initiative has been approached by a number of major players in the financial services area. We will discuss the relevance of financial services as an initial focus. As another application, we will look into manufacturing (supply chain and policies).
+</p>
+
+<hr/>
+
+<h3><a name="2.3"></a>2.3. Goals of the Policy RuleML TC </h3>
+
+<p>
+The initial goal of the TC is to investigate scenarios of usage of RuleML as an interchange vehicle for policy languages, and to develop standards for such interchange suitable for a useful set of such scenario areas.
+ Industry Vertical:  Financial Services
+Financial services represent a very good initial prospect. Other industry-vertical areas will also be explored to some extent in parallel, e.g., electronics/computer or automotive manufacturing supply chain.
+Financial services give us a unique opportunity to explore many areas and domain scenarios where policies are used. The Securities Exchange Commission (SEC) defines and produces many rules and regulations for trading and compliance. These can be of various complexities and usually implemented in many different policy systems. The results of the RuleML Policy TC can be directly applied to encode such policies from SEC and other government and regulation agencies. Furthermore, the RuleML Policy language will offer ways to translate and integrate between disparate Policy systems.
+The RuleML Policy TC is anticipated to work and collaborate with other policy and regulations efforts on this specific domain as well as with other standards committees. The RuleML Policy TC will deliver an interoperation vehicle between other standards' policy specifications.
+</pr>
+
+<hr/>
+
+<h3><a name="2.4"></a>2.4. Technical Focus:  Deontic Logic </h3>
+
+<p>
+Initially, we plan to use the current RuleML 0.85, with it's Object Oriented capabilities, to capture policies that can be encoded as derivation, constrained or reaction rules.
+For the long-term, we plan to extend RuleML towards incorporating deontic expressive features such as logics to capture rights, obligations and empowerments as aspects of policy rules. With this new concept, we will define a new category or class of rules in the RuleML hierarchy. Here are some examples of deontic rules:
+</p>
+<p>
+<ul>
+<li><strong>Permission and Prohibition Rules</strong>
+<p>
+There is a particular form of permission rule assigning exclusive rights having the following form:
+<br/>- Only an agent of type A has the right to perform actions of type a.
+<br/>Examples:
+<br/>- Branch managers are permitted to drive cars to the service station
+<br/>- Office clerks are prohibited to drive cars to the service station
+</p>
+</li>
+<li><strong>Duty Assignment Rules</strong>
+<p>
+Duty assignment rules have the following form:
+<br/>- Agents of type A have the duty to fulfill commitments (or to react to events, or to monitor claims) of a certain type.
+<br/>Examples:
+<br/>- Customer service clerks have the duty to react to reservation requests
+<br/>- Drivers have the duty to fulfill commitments to provide suitable cars to customers at specified locations
+<br/>- Financial accounting clerks have the duty to monitor claims against customers to pay their invoices on time
+</p>
+</li>
+<li><strong>Empowerment Rules</strong>
+<p>
+The general structure of an institutional power assignment rule, where a is a type of ritualized action for creating institutional facts of type F, is:
+<br/>- If agent i is of type A, and specified pre-conditions for the arguments x of a hold at time t, and i performs a(x) at time t, then F(x) holds at the immediate successor time point t' of t.
+</p>
+<p>
+As pointed out in [8, 9], the concept of institutional power has to be distinguished from the concept of permission. An agent may be empowered to create some institutional fact (or to perform some institutional action) without having the permission to do so.
+<br/>Examples of empowerment rules are:
+<br/>- A priest is empowered to marry a couple.
+<br/>- A department manager may be empowered to purchase office equipment, but, under certain circumstances, he may not have the permission to do so (e.g., there could be a temporary budget constraint).
+</p>
+</li>
+
+</ul>
+</p>
+<hr/>
+
+<h2><a name="3"></a>3. Use Case Scenarios</h2>
+
+<p>
+We propose, as a starting point, the following set of usage scenario as candidates for investigation.  We give these below in roughly descending order of priority to investigate:
+</P>
+<p>
+<ul>
+<li><strong>OASIS Legal XML</strong></li>
+<li><strong>OASIS Security Services</strong></li>
+<li><strong>XACML, ebXML, OASIS Rights Language</strong></li>
+<li><strong>Web Service Policies</strong></li>
+<li><strong>P3P APPEL</strong></li>
+<li><strong>DAML-Services and Semantic Web Services</strong></li>
+<li><strong>OMG Business Rules and Business Process Activities</strong></li>
+
+</ul>
+</p>
+<hr/>
+
+
+<h2><a id="references" name="references">References</a></h2>
+
+<dl><dt><a id="Ref-1">[1]</a></dt><dd> <cite><a
+href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.pdf">The Rule Markup Language: RDF-XML Data Model, XML Schema Hierarchy, and XSL Transformations</a></cite>.  Harold Boley. Invited Talk, INAP2001, Tokyo, October 2001.  </dd></dl>
+
+<dl><dt><a id="ref-2">[2]</a></dt><dd> <cite><a
+href="http://www.semanticweb.org/SWWS/program/full/paper20.pdf">Design Rationale of RuleML: A Markup Language for Semantic Web Rules</a></cite>.  Harold Boley, Said Tabet, and Gerd Wagner.  Proc. SWWS'01, Stanford, July/August 2001.
+</dd></dl>
+
+<dl><dt><a id="ref-3">[3]</a></dt><dd> <cite><a
+href="http://www.cs.unb.ca/ai2002/baseweb/BASeWEB2002_Paper1.pdf">An Agent Infrastructure based on Semantic Web Standards, Workshop on Business Agents and the Semantic Web</a></cite>.  Andreas Eberhart. Invited Talk at the AI 2002, Calgary, Canada.
+</dd></dl>
+
+<dl><dt><a id="ref-4">[4]</a></dt><dd>
+<cite><a href="http://www.i-u.de/schools/eberhart/wsdf">Towards Universal Web Service Clients</a></cite>. Andreas Eberhart. <a href="http://www.w3c.rl.ac.uk/Euroweb/">EuroWeb 2002 Conference</a>, St Anne's College Oxford, UK, December 17 and 18th 2002.
+</dd></dl>
+
+<dl><dt><a id="ref-5">[5]</a></dt><dd>
+<cite><a href="http://ebusiness.mit.edu/bgrosof/paps/wits01-extended-working-paper-12-01.pdf">Representing E-Business Rules for the Semantic Web: Situated Courteous Logic Programs in RuleML</a></cite>. Benjamin Grosof. Proc. Workshop on Information Technologies and Systems (WITS '01), New Orleans, December, 2001.
+</dd></dl>
+
+<dl><dt><a id="ref-6">[6]</a></dt><dd>
+<cite><a href="http://www.soi.city.ac.uk/~msch/conf/ruleml/grosof2.pdf">SweetJess: Translating DamlRuleML to Jess</a></cite>. Benjamin Grosof, Mahesh D. Gandhe, and Timothy W. Finin. Proc. International Workshop on Rule Markup Languages for Business Rules on the Semantic Web, Sardinia (Italy), June 2002.
+</dd></dl> 
+
+<dl><dt><a id="ref-7">[7]</a></dt><dd> 
+<cite><a href="http://www.soi.city.ac.uk/~msch/conf/ruleml/grosof2.pdf">Representing Agent Contracts with Exceptions using XML Rules, Ontologies, and Process Descriptions</a></cite>. Benjamin Grosof and Terrence Poon. Proc. International Workshop on Rule Markup Languages for Business Rules on the Semantic Web, Sardinia (Italy), June 2002.</dd></dl>
+
+<dl><dt><a id="ref-8">[8]</a></dt><dd> 
+<cite><a>A formal characterisation of institutionalised power</a></cite>. Andrew J. I. Jones and Marek Sergot. Journal of the IGPL, 4(3):427-443, 1996.</dd></dl>
+
+<dl><dt><a id="ref-9">[9]</a></dt><dd> 
+<cite><a>On the formal representation of rights relations</a></cite>. David Makinson. Journal of Philosophical Logic, 15:403-425, 1986.</dd></dl>
+
+<dl><dt><a id="ref-10">[10]</a></dt><dd> 
+<cite><a href="http://www.appdevadvisor.co.uk/Downloads/ADA6_5/ross6_5.pdf">Playing by the Rules</a></cite>. Steve Ross-Talbot, Harold Boley, and Said Tabet. Application Development Advisor 6(5), June 2002, 38-43
+</dd></dl>
+
+<dl><dt><a id="ref-11">[11]</a></dt><dd> 
+<cite><a href="http://ceur-ws.org/Vol-60/">Proceedings of the International Workshop on Rule Markup Languages for Business Rules on the Semantic Web</a></cite>. Michael Schroeder and Gerd Wagner (Eds.). Sardinia, Italy, June 14, 2002. CEUR-WS Publication Vol-60. 
+</dd></dl>
+
+<dl><dt><a id="ref-12">[12]</a></dt><dd> 
+<cite><a>Agent-Oriented Business Rules - Deontic Assignments</a></cite>. Taveter, K.; Wagner, G. In D'Atri, A.; Sølvberg, A.; Willcocks, L. (eds.): Proceedings of International Workshop on Open Enterprise Solutions - Systems, Experiences, and Organizations (OES-SEO2001), 14-15 Sep 2001, Rome, Italy. Luiss Edizioni, Rome, 2001, pp. 72-81.
+</dd></dl>
+
+<dl><dt><a id="ref-13">[13]</a></dt><dd> 
+<cite><a href="http://tmitwww.tm.tue.nl/staff/gwagner/myruleml/GRML.pdf">How to Design a General Rule Markup Language?</a></cite>. Gerd Wagner. Invited Talk, Workshop XML Technologien für das Semantic Web (XSW 2002), Berlin, June 2002.
+</dd></dl>
+
+<hr/>
+
+
+
+</body></html>

@@ -1,0 +1,65 @@
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd
+http://www.ruleml.org/0.9/xsd/nafhornlog.xsd">
+
+<Assert mapClosure="universal">
+
+<Implies>
+ <head>
+   <Atom>
+     <Rel>own</Rel>
+     <Var>person</Var>
+     <Cterm>
+       <Ctor>book</Ctor>
+	 <Var>title</Var>
+       <repo><Var>info</Var></repo>
+     </Cterm>
+   </Atom>
+ </head>
+ <body>
+   <And>
+     <Atom>
+       <Rel>buy</Rel>
+       <Var>person</Var>
+       <Var>merchant</Var>
+       <Cterm>
+         <Ctor>book</Ctor>
+         <Var>title</Var>
+         <repo><Var>info</Var></repo>
+       </Cterm>
+     </Atom>
+     <Naf>
+       <Atom>
+         <Rel>relinquish</Rel>
+         <Var>person</Var>
+         <Cterm>
+           <Ctor>book</Ctor>
+           <Var>title</Var>
+           <repo><Var>info</Var></repo>
+         </Cterm>
+       </Atom>
+     </Naf>
+   </And>
+ </body>
+</Implies>
+
+<Atom>
+ <Rel>buy</Rel>
+ <Ind>Mary</Ind>
+ <Ind>John</Ind>
+ <Cterm>
+   <Ctor>book</Ctor>
+   <Ind>XML Bible</Ind>
+   <Ind>Elliotte Rusty Harold</Ind>
+   <Ind>2001</Ind>
+ </Cterm>
+</Atom>
+
+<!-- No fact needed to fulfill second premise:
+    Naf relies on absence of relinquish fact. -->
+
+</Assert>
+
+</RuleML>

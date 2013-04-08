@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.7/dtd/ruleml-urdatalog.dtd">
+
+
+<rulebase>
+
+
+<!-- challenge rule from RuleML site -->
+
+<if>
+  <atom>
+    <rel>may look at</rel>
+    <var>you</var>
+    <ur label="Rule-Based Systems">http://www.cs.brandeis.edu/...</ur>
+  </atom>
+  <atom>
+    <rel>want to review</rel>
+    <var>you</var>
+    <ind>rule principles</ind>
+  </atom>
+</if>
+
+<if>
+  <atom>
+    <rel>want to review</rel>
+    <ind>fred</ind>
+    <ind>rule principles</ind>
+  </atom>
+  <and/>
+</if>
+
+
+</rulebase>

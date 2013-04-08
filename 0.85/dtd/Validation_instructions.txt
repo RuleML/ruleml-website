@@ -1,0 +1,8 @@
+Validation Instructions for RuleML 0.85 DTDs
+--------------------------------------------
+Last modified: December 18, 2003
+
+
+To validate these DTDs, direct your browser to
+http://www.ruleml.org/0.85/exa/ and follow the
+instructions in Validation_instructions_dtd.txt.

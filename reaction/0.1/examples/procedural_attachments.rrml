@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Procedural Attachments with constructor calls, object - variable bindings, static and dynamic method calls -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% rule example 1 with constructor call, variable binding and later method call
+files(Files) :- 
+	Dir=java.io.File("."),
+	Files=Dir.list().
+	
+% rule example 2 with static method call
+date(T) :-
+	T = java.util.Calendar.getInstance().
+	
+
+
+ -->
+
+
+
+	<Assert>
+	
+		<Implies>	
+			 <head>
+    			<Atom>
+      				<op><Rel>files</Rel></op>
+				    <Var>Files</Var>
+		       </Atom>
+			</head>
+		    <body>
+			    <And>
+			      <Equal>				  
+				      <Var>Dir</Var>
+				      <Expr>
+				        <oid><Ind uri="java.io"/></oid>
+				        <Fun in="yes" lang="java">File</Fun>
+				        <Ind>.</Ind>
+				      </Expr>
+				  </Equal>
+				  
+				  <Equal>				    
+				    <Var>Files</Var>
+				    <Expr>
+				       <oid><Var>Dir</Var></oid>
+				       <Fun in="yes" lang="java">list</Fun>
+				    </Expr>
+				  </Equal>
+ 			   </And>
+		  </body>
+		</Implies>
+		
+		
+		<Implies>	
+			 <head>
+    			<Atom>
+      				<op><Rel>date</Rel></op>
+				    <Var>T</Var>
+		       </Atom>
+			</head>
+		    <body>
+			    <And>
+			      <Equal>				  
+				      <Var>T</Var>
+				      <Expr>
+				        <oid><Ind uri="java.util.Calendar"/></oid>				           				        
+				        <Fun>getInstance</Fun>
+				      </Expr>
+				  </Equal>
+ 			   </And>
+		  </body>
+		</Implies>	
+	
+	</Assert>
+	
+</RuleML>

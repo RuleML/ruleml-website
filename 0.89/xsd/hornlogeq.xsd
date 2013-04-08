@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd" 
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage with equational logic
+			File: hornlogeq.xsd
+			Version: 0.89
+			Last Modification: 2005-04-12
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- equalog includes the 'equality' module -->
+	<xs:include schemaLocation="modules/equality_module.xsd"/>
+
+	<!-- note the addition of Equal and Nanos from the equality module -->
+	<xs:redefine schemaLocation="hornlog.xsd">
+
+		<!--
+			add Equal so that formula's content model (below top level And) is:
+			( Atom | Implies | Equivalent | Forall | Equal )
+		-->
+		<xs:group name="formula-top-and.content">
+			<xs:choice>
+				<xs:group ref="formula-top-and.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>	
+		</xs:group>
+		<!--		
+			note that the above indirectly adds Equal to top level And so that its content model is:
+			( oid?, (formula | Atom | Implies | Equivalent | Forall | Equal)* )	
+		-->
+
+		<!--
+			add Equal so that head's content model is:
+			(Atom | Equal)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add Equal so that body's content model is:
+			(Atom | And | Or | Equal)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Equal to Implies so that its content model is:
+			( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or | Equal), (Atom | Equal) ) )
+		-->		
+
+
+		<!--
+			add Equal so that formula's content model under Forall is:
+			( Atom | Implies | Equivalent | Forall | Equal )		
+		-->
+		<xs:group name="formula-forall.content">
+			<xs:choice>
+				<xs:group ref="formula-forall.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--		
+			note that the above indirectly adds Equal to Forall so that its content model is:
+			( oid?, (declare | Var)+, (formula | Atom | Implies | Equivalent | Forall | Equal) )
+		-->
+
+		<!--
+			add Equal so that formula's content model under Exists is:
+			( Atom | And | Or | Exists | Equal )		
+		-->
+		<xs:group name="formula-exists.content">
+			<xs:choice>
+				<xs:group ref="formula-exists.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--		
+			note that the above indirectly adds Equal to Exists so that its content model is:
+			( oid?, (declare | Var)+, (formula | Atom | And | Or | Exists | Equal) )
+		-->
+
+
+		<!--
+			add Equal so that content's content model (under Query) is:
+			(Atom | And | Or | Exists | Equal)
+		-->
+		<xs:group name="content-query.content">
+			<xs:choice>
+				<xs:group ref="content-query.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Equal to Query so that its content model is:
+			(content | Atom | And | Or | Exists | Equal)
+		-->		
+
+		<!--
+			add Equal so that formula's content model (below And & Or) is:
+			(Atom | And | Or | Equal)
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<xs:group name="formula-and-or-head.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or-head.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Equal to And & Or so that their content models are:
+			( (formula | Atom | And | Or | Equal)* )
+		-->
+
+		<!--
+			add Equal so that torso's content model is:
+			(Atom | Equal)
+		-->
+		<xs:group name="torso.content">
+			<xs:choice>
+				<xs:group ref="torso.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Equal to Equivalent so that its content model is:
+			( oid?, ( (torso, torso) | ( (Atom | Equal), (Atom | Equal) ) ) )
+		-->		
+		
+	</xs:redefine>
+
+</xs:schema>

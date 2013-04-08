@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/1.0/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/1.0/xsd http://www.ruleml.org/temp/1.0/xsd/datalog.xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<Assert>
+
+	<Atom>
+	<Rel></Rel>
+
+	<Reify>
+		<Implies>
+		  <head>
+		    <Atom>
+		      <op><Rel>buy</Rel></op>
+		      <Var>person</Var>
+		      <Var>merchant</Var>
+		      <Var>object</Var>
+		    </Atom>
+		  </head>
+		  <body>
+		    <Atom>
+		      <op><Rel>sell</Rel></op>
+		      <Var>merchant</Var>
+		      <Var>person</Var>
+		      <Var>object</Var>
+		    </Atom>
+		  </body>
+		</Implies>
+	</Reify>
+		
+	<Data>
+		Car loan.
+		<loan>
+			<date>
+				<Data xsi:type="xs:dateTime">2002-10-10T17:00:00Z</Data>
+			</date>
+			<amount currency="CDN">5000</amount>
+		</loan>
+	</Data>
+	
+	</Atom>
+	
+</Assert>
+
+</RuleML>

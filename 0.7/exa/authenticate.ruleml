@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.7/dtd/ruleml-urhornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- Tim Berners-Lee's authentication rule (without URI inspection):
+Any person who was some time in the last 2 months an employee of
+an organization which was some time in the last 2 months a W3C member
+may register -->
+
+<if>
+  <atom>
+    <rel>may register</rel>
+    <var>any</var>
+  </atom>
+  <and>
+    <atom>
+      <rel>person</rel>
+      <var>any</var>
+    </atom>
+    <atom>
+      <rel>organization</rel>
+      <var>org</var>
+    </atom>
+    <atom>
+      <rel>employee in</rel>
+      <var>any</var>
+      <var>org</var>
+      <cterm>
+        <ctor>last</ctor>
+        <cterm>
+          <ctor>month</ctor>
+          <ind>2</ind>
+        </cterm>
+      </cterm>
+    </atom>
+    <atom>
+      <rel>member in</rel>
+      <var>org</var>
+      <ur label="W3C">http://www.w3.org/</ur>
+      <cterm>
+        <ctor>last</ctor>
+        <cterm>
+          <ctor>month</ctor>
+          <ind>2</ind>
+        </cterm>
+      </cterm>
+    </atom>
+  </and>
+</if>
+
+
+</rulebase>

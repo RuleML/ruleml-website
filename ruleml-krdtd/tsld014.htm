@@ -1,0 +1,73 @@
+
+<HTML>
+
+<HEAD>
+
+<meta name="GENERATOR" content="Microsoft Internet Assistant for PowerPoint 97">
+ <TITLE>A Relational Language:</TITLE> 
+</HEAD>
+
+<BODY     >
+
+ <H1>A Relational Language:ruleml-datalog.dtd (I)</H1> 
+ <P><UL>
+&#060!-- An XML DTD for a Datalog RuleML Sublanguage --&#062
+</UL><UL>
+&#060!-- Last Modification: 2001-01-25 --&#062
+</UL><UL>
+
+</UL><UL>
+&#060!-- ENTITY Declarations --&#062
+</UL><UL>
+
+</UL><UL>
+&#060!-- in this ruleml-datalog.dtd, parameter entities set two *.module switches to INCLUDE --&#062
+</UL><UL>
+
+</UL><UL>
+&#060!ENTITY % datalog.module "INCLUDE"&#062
+</UL><UL>
+&#060!ENTITY % datalog-and-hornlog.module "INCLUDE"&#062
+</UL><UL>
+
+</UL><UL>
+&#060!-- hence all conditional sections "&#060![%*.module;[" . . . "]]&#062" activate their content; --&#062
+</UL><UL>
+&#060!-- in a stand-alone use of the current DTD "&#060![%*.module;[" and "]]&#062" are thus no-ops --&#062
+</UL><UL>
+
+</UL><UL>
+&#060![%datalog-and-hornlog.module;[
+</UL><UL>
+
+</UL><UL>
+&#060!-- a conclusion and premise will be usable within 'if' implications --&#062
+</UL><UL>
+&#060!-- in datalog and hornlog, conc element uses an atomic formula --&#062
+</UL><UL>
+&#060!-- in datalog and hornlog, prem element uses an atomic formula or an 'and' --&#062
+</UL><UL>
+
+</UL><UL>
+&#060!ENTITY % conc "atom"&#062
+</UL><UL>
+&#060!ENTITY % prem "(atom | and)"&#062
+</UL><UL>
+
+</UL><UL>
+]]&#062</UL></P>
+<P></P> 
+<P>
+<TABLE>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld013.htm">Vorherige Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld015.htm">Nächste Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="tsld001.htm">Zurück zur ersten Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="sld014.htm">Graphik-Version anzeigen</A> </TD>
+</TABLE>
+<BR>
+</P>
+
+
+
+</Body>
+</HTML>

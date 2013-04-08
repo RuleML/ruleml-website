@@ -1,0 +1,43 @@
+<?xml version='1.0' ?>
+
+<swrlx:Ontology
+  xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+  xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+  xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3.org/2003/11/swrlx http://www.ruleml.org/swrl/xsd/modular/swrlx.xsd"
+>
+  <owlx:Annotation>
+    <owlx:Documentation>SWRL Example 5.1-2</owlx:Documentation>
+  </owlx:Annotation>
+  <owlx:VersionInfo>$Id: example5.1-2.swrlx,v 1.1 2004/05/21 18:46:39 vivien Exp $</owlx:VersionInfo>
+
+<ruleml:var>x1</ruleml:var>
+<ruleml:var>x2</ruleml:var>
+<ruleml:var>x3</ruleml:var>
+
+<ruleml:imp> 
+  <ruleml:_rlab ruleml:href="#example2"/>
+  <ruleml:_body> 
+    <swrlx:individualPropertyAtom  swrlx:property="hasParent"> 
+      <ruleml:var>x1</ruleml:var>
+      <ruleml:var>x2</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="hasSibling"> 
+      <ruleml:var>x2</ruleml:var>
+      <ruleml:var>x3</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="hasSex"> 
+      <ruleml:var>x3</ruleml:var>
+      <owlx:Individual owlx:name="#male" />
+    </swrlx:individualPropertyAtom> 
+  </ruleml:_body> 
+  <ruleml:_head> 
+    <swrlx:individualPropertyAtom  swrlx:property="hasUncle"> 
+      <ruleml:var>x1</ruleml:var>
+      <ruleml:var>x3</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+</swrlx:Ontology>

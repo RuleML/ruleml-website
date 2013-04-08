@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Nano -->
+
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for equality-related RuleML elements.
+			File: equation_module.xsd
+			Version: 0.9
+			Last Modification: 2005-12-15
+			
+			This module declares the following RuleML elements:
+			* Equal
+			* side
+			* Nano
+			* op
+			* Fun
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Equal ***
+		An equational formula consisting of two expressions, each of which contains either an argument
+		or a <Nano> and may be optionally surrounded by a side (<side>) role.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Equal
+
+		content model:
+		(
+              (oid)?, (degree)?
+		  (side | Ind | Data | Skolem | Var | Reify | Cterm | Plex | Nano),
+		  (side | Ind | Data | Skolem | Var | Reify | Cterm | Plex | Nano)
+		)
+	-->
+	<xs:attributeGroup name="Equal.attlist"/>
+	<xs:group name="Equal.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="degree" minOccurs="0"/>
+			<xs:choice minOccurs="2" maxOccurs="2">
+				<xs:element ref="side"/>
+				<xs:group ref="side.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Equal.type">
+		<xs:group ref="Equal.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equal" type="Equal.type"/>
+
+	<!--
+		*** side ***
+		One of two expressions that together make an equational formula.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-side
+
+		content model: ( Ind | Data | Skolem | Var | Reify | Cterm | Plex | Nano )
+	-->
+	<xs:attributeGroup name="side.attlist"/>
+	<xs:group name="side.content">
+		<xs:choice>
+			<xs:group ref="arg.content"/>			
+			<xs:element ref="Nano"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="side.type">
+		<xs:group ref="side.content"/>
+		<xs:attributeGroup ref="side.attlist"/>
+	</xs:complexType>
+	<xs:element name="side" type="side.type"/>
+
+	<!--
+		*** Nano ***
+		A logical function usable within equational formulas of the form "f(...)" where f is a function name.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Nano
+
+		content model:
+		( oid?, (op | Fun), (arg | Ind | Data | Skolem | Var | Reify | Cterm | Plex)* )
+	-->
+	<xs:attributeGroup name="Nano.attlist"/>
+	<xs:group name="Nano.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="op" type="op-nano.type"/>
+				<xs:element ref="Fun"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="arg"/>
+				<xs:group ref="arg.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Nano.type">
+		<xs:group ref="Nano.content"/>
+		<xs:attributeGroup ref="Nano.attlist"/>
+	</xs:complexType>
+	<xs:element name="Nano" type="Nano.type"/>
+
+	<!--
+		*** op ***
+		An operator expression including the function name of a logical function. 
+		Note that this replaces <opf> from 0.89 and earlier.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-op
+
+		content model (within Nano): (Fun)
+		(other versions are in the following modules: atom, cterm and holog)
+
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<!-- the (empty) attribute list is declared in the atom module -->
+	<xs:group name="op-nano.content">
+		<xs:sequence>
+			<xs:element ref="Fun"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="op-nano.type">
+		<xs:group ref="op-nano.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+
+	<!--
+		*** Fun ***
+		A user-defined function name.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-Fun
+
+		content model: (#PCDATA)
+	-->
+	<xs:attributeGroup name="Fun.attlist">
+		<xs:attributeGroup ref="uri.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Fun.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Fun.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun.attlist"/>
+	</xs:complexType>
+	<xs:element name="Fun" type="Fun.type"/>
+	
+</xs:schema>

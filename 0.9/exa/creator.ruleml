@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd
+http://www.ruleml.org/0.9/xsd/bindatalog.xsd">
+
+<Assert mapClosure="universal">
+
+<!-- rel-ur-ind triple a la RDF report (http://www.w3.org/TR/REC-rdf-syntax/):
+"Ora Lassila  is the creator of  the resource http://www.w3.org/Home/Lassila."
+"http://www.w3.org/Home/Lassila  has creator  Ora Lassila." -->
+
+  <Atom>
+    <op>
+      <Rel uri="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </op>
+    <Ind uri="http://www.w3.org/Home/Lassila"/>
+    <Ind>Ora Lassila</Ind>
+  </Atom>
+
+</Assert>
+
+<!-- Ground query asking for that triple -->
+
+<Query>
+  <Atom>
+    <op>
+      <Rel uri="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </op>
+    <Ind uri="http://www.w3.org/Home/Lassila"/>
+    <Ind>Ora Lassila</Ind>
+  </Atom>
+</Query>
+
+<!-- Non-ground query asking for matching triples -->
+
+<Query>
+  <Atom>
+    <op>
+      <Rel uri="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </op>
+    <Var>home page</Var>
+    <Var>person</Var>
+  </Atom>
+</Query>
+
+</RuleML>

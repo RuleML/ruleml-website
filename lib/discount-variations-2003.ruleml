@@ -1,0 +1,214 @@
+<rulebase>
+
+
+<!-- Implication Rule 1:
+     Backward notation of _head and _body roles, as in Logic Programming
+     (ternary discount relation applied via atom)
+
+"The discount for a customer buying a product is 5.0 percent
+if the customer is premium and the product is regular."
+
+Notice that an individual constant can syntactically be an entire phrase
+like "5.0 percent". It will unify only with variables and with individuals
+having exactly the same spelling (incl. spaces). One could refine this markup
+by introducing a constructor term for "percent[5.0]", thus leaving Datalog
+towards full Horn logic.
+-->
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>discount</rel></_opr>
+      <var>customer</var>
+      <var>product</var>
+      <ind>5.0 percent</ind>
+    </atom>
+  </_head>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </atom>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+</imp>
+
+
+<!--  Implication Rule 1 (permuted):
+      Forward notation of _body and _head roles, similar to Production Systems
+      (role permutation does not affect the semantics) -->
+
+<imp>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </atom>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <atom>
+      <_opr><rel>discount</rel></_opr>
+      <var>customer</var>
+      <var>product</var>
+      <ind>5.0 percent</ind>
+    </atom>
+  </_head>
+</imp>
+
+
+<!--  Transformation Rule 1':
+      Conditional directed equation returns transformed value through _foot role
+      (binary discount function applied via nano)   -->
+
+<trans>
+  <_head>
+    <nano>
+      <_opf><fun>discount</fun></_opf>
+      <var>customer</var>
+      <var>product</var>
+    </nano>
+  </_head>
+  <_foot>
+    <ind>5.0 percent</ind>
+  </_foot>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </atom>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+</trans>
+
+
+<!--  Transformation Rule 1' (permuted):
+      Permute _foot and _body roles without affecting the semantics -->
+
+<trans>
+  <_head>
+    <nano>
+      <_opf><fun>discount</fun></_opf>
+      <var>customer</var>
+      <var>product</var>
+    </nano>
+  </_head>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </atom>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+  <_foot>
+    <ind>5.0 percent</ind>
+  </_foot>
+</trans>
+
+
+<!--  Reaction Rule 1a ("Event" and "Condition"):
+      On receiving premium notification _from management and if regular derivable
+      then derive discount -->
+
+<react>
+  <_body>
+    <and>
+      <receive>
+        <_from><ind>management</ind></_from>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </receive>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <atom>
+      <_opr><rel>discount</rel></_opr>
+      <var>customer</var>
+      <var>product</var>
+      <ind>5.0 percent</ind>
+    </atom>
+  </_head>
+</react>
+
+
+<!--  Reaction Rule 1b ("Condition" and "Action"):
+      If premium and regular derivable then send discount _to customer -->
+
+<react>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </atom>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <send>
+      <_to><var>customer</var></_to>
+      <_opr><rel>discount</rel></_opr>
+      <var>product</var>
+      <ind>5.0 percent</ind>
+    </send>
+  </_head>
+</react>
+
+
+<!--  Reaction Rule 1c ("Event", "Condition", and "Action"):
+      On receiving premium notification from management and if regular derivable
+      then send discount _to customer -->
+
+<react>
+  <_body>
+    <and>
+      <receive>
+        <_from><ind>management agent</ind></_from>
+        <_opr><rel>premium</rel></_opr>
+        <var>customer</var>
+      </receive>
+      <atom>
+        <_opr><rel>regular</rel></_opr>
+        <var>product</var>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <send>
+      <_to><var>customer</var></_to>
+      <_opr><rel>discount</rel></_opr>
+      <var>product</var>
+      <ind>5.0 percent</ind>
+    </send>
+  </_head>
+</react>
+
+
+</rulebase>

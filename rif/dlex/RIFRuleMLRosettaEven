@@ -1,0 +1,208 @@
+   RIF RuleML Rosetta Even: Variations on a Predicate Definition in Dlex
+
+               Harold Boley, NRC-IIT Canada, 24 August 2009
+
+
+We compare RuleML and RIF formulations of an 'even' predicate definition
+via relational and functional 'mod' builtins, exemplifying the Rosetta Ring
+paper: http://www.cs.unb.ca/~boley/papers/RIFRuleMLRosettaRing.pdf
+(to appear in RuleML-2009).
+
+A small sample rule -- defining 'even' through a 'mod' call -- is used
+to highlight variations between the RIF RuleML syntaxes of Dlex, which is
+the common sublanguage of Datalog RuleML and RIF-Core restricted
+to positional arguments and non-conjunctive rule conclusions, and allowing
+equality plus built-ins in rule premises (only).
+
+The RuleML version used is the 0.91 upgrade to 0.95.
+The RIF version used is the Last Call from 3 July 2009.
+ 
+
+
+RuleML/POSL with Relational SWRL Builtins:
+
+even(?N) :- mod(0:Integer,?N,2:Integer).
+
+
+RuleML/XML (Stripe-Skipped) with Relational SWRL Builtins:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML>
+  <Assert>
+    <Rulebase mapClosure="universal">
+      <Implies>
+         <Atom>
+            <Const>mod</Const>
+            <Const type="Integer">0</Const>
+            <Var>N</Var>
+            <Const type="Integer">2</Const>
+         </Atom>
+         <Atom>
+            <Const>even</Const>
+            <Var>N</Var>
+         </Atom>
+      </Implies>
+    </Rulebase>
+  </Assert>
+</RuleML>
+
+
+
+RuleML/POSL with Functional SWRL-like Builtins:
+
+even(?N) :- equal(0:Integer,mod(?N,2:Integer)).
+
+
+RuleML/XML (Stripe-Skipped) with Functional SWRL-like Builtins:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML>
+  <Assert>
+    <Rulebase mapClosure="universal">
+      <Implies>
+         <Equal>
+            <Const type="Integer">0</Const>
+            <Expr in="yes">
+               <Const>mod</Const>
+               <Var>N</Var>
+               <Const type="Integer">2</Const>
+            </Expr>
+         </Equal>
+         <Atom>
+            <Const>even</Const>
+            <Var>N</Var>
+         </Atom>
+      </Implies>
+    </Rulebase>
+  </Assert>
+</RuleML>
+
+
+RuleML/XML (Fully Striped) with Functional SWRL-like Builtins:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML>
+ <performative index="1">
+  <Assert>
+   <formula>
+    <Rulebase mapClosure="universal">
+     <formula>
+      <Implies>
+        <if>
+         <Equal>
+           <left>
+            <Const type="Integer">0</Const>
+           </left>
+           <right>
+            <Expr in="yes">
+              <op>
+               <Const>mod</Const>
+              </op>
+              <arg index="1">
+               <Var>N</Var>
+              </arg>
+              <arg index="2">
+               <Const type="Integer">2</Const>
+              </arg>
+            </Expr>
+           </right>
+         </Equal>
+        </if>
+        <then>
+          <Atom>
+           <op>
+            <Const>even</Const>
+           </op>
+           <arg index="1">
+            <Var>N</Var>
+           </arg>
+          </Atom>
+        </then>
+      </Implies>
+     </formula>
+    </Rulebase>
+   </formula>
+  </Assert>
+ </performative>
+</RuleML>
+
+
+
+RIF/Presentation Syntax with Functional RIF Builtins:
+
+Document(
+   Prefix(ex <http://example.com/example#>)
+   Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
+   Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
+   Prefix(xs <http://www.w3.org/2001/XMLSchema#>)
+   Group(
+      Forall ?x (
+         ex:even(?N) :- "0"^^xsd:integer = External(func:numeric-mod(?N "2"^^xsd:integer))
+      )
+
+   )
+)
+
+
+RIF/XML (Striped) with Functional RIF Builtins:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Document [
+  <!ENTITY rif  "http://www.w3.org/2007/rif#">
+  <!ENTITY xs   "http://www.w3.org/2001/XMLSchema#">
+  <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+]>
+
+<Document xmlns="&rif;">
+  <payload>
+    <Group>
+      <sentence>
+        <Forall>
+          <declare>
+            <Var>N</Var>
+          </declare>
+          <formula>
+            <Implies>
+              <if>
+                 <Equal>
+                      <left>
+                        <Const type="&xs;decimal">0</Const>
+                      </left>
+                      <right>
+                        <External>
+                         <content>
+                          <Expr>
+                              <op>
+                                <Const type="&rif;iri">http://www.w3.org/2007/rif-builtin-function#numeric-mod</Const>
+                              </op>
+                              <args>
+                                 <Var>N</Var>
+                                 <Const type="&xs;decimal">2</Const>
+                              </args>
+                          </Expr>
+                         </content>
+                        </External>
+                      </right>
+                 </Equal>
+              </if>
+              <then>
+                <Atom>
+                  <op>
+                    <Const type="&rif;iri">http://example.com/example#even</Const>
+                  </op>
+                  <args>
+                    <Var>N</Var>
+                  </args>
+                </Atom>
+              </then>
+            </Implies>
+          </formula>
+        </Forall>
+      </sentence>
+    </Group>
+  </payload>
+</Document>

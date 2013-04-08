@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protect xmlns="http://www.ruleml.org/0.89/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hohornlogeq.xsd">
+
+	<!-- This is a simple test file for testing 0.89 - 0.9 RuleML transformations.-->			
+						
+	<!-- Ad. 2 <Mutex> generalized as <Integrity> -->						
+		<Mutex>
+		   <oppo>		   
+			 <And>					   		 							
+			   <Hterm>
+				 <Con>pricediscount</Con>
+				 <Var>CUST</Var>
+				 <Var>Y</Var>
+			   </Hterm>
+			   <Hterm>
+					   <oid>
+							<Data>some oid of the Hterm</Data>
+						</oid>
+				 <Con>pricediscount</Con>
+				 <Var>CUST</Var>
+				 <Var>Z</Var>
+			   </Hterm>			   
+			 </And>
+		   </oppo>
+		   <mgiv>
+<!--			 <Neg> -->
+			   <Equal>
+				 <Var>Y</Var>
+				 <Var>Z</Var>
+			   </Equal>
+<!--			 </Neg> -->
+		   </mgiv>
+		 </Mutex>		 
+		 
+	<!--Ad. 5. <content> renamed to <formula> in <Assert>, <Query> and <Protect>
+         *** what we do we actually skip content element, as in case that And was a child of content, the formula would get multiple children-->
+		<content>
+			<And>
+				 <oid>
+						<Data>some data</Data>
+				</oid>
+			 </And>
+		 </content>
+		 
+	</Protect>
+	

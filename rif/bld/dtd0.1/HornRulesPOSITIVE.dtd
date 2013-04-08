@@ -1,0 +1,39 @@
+<!ENTITY % TERM      "(Const | Var | Uniterm)">
+<!ENTITY % POSITIVE  "(Uniterm | Equal)">
+<!ENTITY % CONDITION "(And | Or | Exists | %POSITIVE;)">
+<!ENTITY % CLAUSE    "(Forall)">
+
+<!ELEMENT Ruleset ((%CLAUSE;)*)>
+
+<!ELEMENT Forall ((declare+, formula) | (Var+, (Implies | %POSITIVE;)))>
+<!--                                       stripe-skipping               -->
+
+<!ELEMENT Exists ((declare+, formula) | (Var+, %CONDITION;))>
+<!--                                       stripe-skipping    -->
+
+<!ELEMENT declare (Var)>
+<!ELEMENT formula ( (%CONDITION;) | (Implies) )>  <!-- " | %POSITIVE;" via "%CONDITION;"-->
+<!-- DTD tolerant:      Exists        Forall
+     XSD can discriminate content models context-sensitively:
+     <!ELEMENT formula-in-Exists (%CONDITION;)>
+     <!ELEMENT formula-in-Forall (Implies | %POSITIVE;)>
+-->
+
+<!ELEMENT Implies ((then, if) | (if, then) | ( %CONDITION;, %POSITIVE;))>
+<!--                                               stripe-skipping        -->
+
+<!ELEMENT then (%POSITIVE;)>
+<!ELEMENT if   (%CONDITION;)>
+
+<!ELEMENT And ((%CONDITION;)*)>
+<!ELEMENT Or  ((%CONDITION;)*)>
+
+<!ELEMENT Uniterm (Const, (%TERM;)*)>
+
+<!ELEMENT Equal (%TERM;, %TERM;)>
+
+<!ELEMENT Const (#PCDATA)>
+<!ELEMENT Var   (#PCDATA)>
+
+<!ATTLIST Const sortal CDATA #IMPLIED>
+<!ATTLIST Var   sortal CDATA #IMPLIED>

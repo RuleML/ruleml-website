@@ -1,0 +1,34 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML equation orientation attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, orientation, oriented, equation" ]
+dc:description [ "The expansion module for the orientation attribute, used for equations" ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= oriented.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * @oriented
+# API
+# oriented-att.choice
+# oriented.value
+
+## an extension point for alternate spellings and internationalization of the oriented equation attribute name.  
+oriented-att.choice |= oriented.attrib.def
+oriented.attrib.def =
+    
+    ## An attribute indicating whether an equation (<Equal>) is oriented (directed) or unoriented (symmetric).    
+    ##    See http://www.ruleml.org/1.0/glossary/#gloss-@oriented
+    attribute oriented { oriented.value }
+oriented.value |= oriented_default.value | oriented_non-default.value
+## FIXME: move all such statements into initialization module.
+oriented_default.value |= notAllowed
+oriented_non-default.value |= notAllowed
+oriented.edge.def = element oriented { oriented.content }
+oriented.content |= oriented.value

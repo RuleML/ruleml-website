@@ -1,0 +1,23 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Asynchronous Stripe-Skipping for Entailments" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, stripe-skipping" ]
+dc:description [
+  "The expansion module for asynchronous stripe-skipping for entailments."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+
+## In RuleML 0.91, asynchronous stripe-skipping of entailment is not allowed in the (official) mixed serialization,
+## but is allowed in the complete serialization.
+Entails.main |= body_Entails-ss.content, head_Entails.name.choice
+Entails.main |= body_Entails.name.choice, head_Entails-ss.content

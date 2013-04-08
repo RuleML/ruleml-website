@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd
+http://www.ruleml.org/0.88/xsd/equalog.xsd">
+
+<!-- a flattened factorial definition -->
+
+<And innerclose="universal">
+
+    <Equal>
+      <Nano>
+        <opf>
+          <Fun>fac</Fun>
+        </opf>
+        <Ind>0</Ind>
+      </Nano>
+      <Ind>1</Ind>
+    </Equal>
+
+
+<Implies>
+  <head>
+    <Equal>
+      <Nano>
+        <opf>
+          <Fun>fac</Fun>
+        </opf>
+        <Var>n</Var>
+      </Nano>
+      <Var>r</Var>
+    </Equal>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <opr>
+          <Rel>greater</Rel>
+        </opr>
+        <Var>n</Var>
+        <Ind>0</Ind>
+      </Atom>
+      <Equal>
+        <Var>m</Var>
+        <Nano>
+          <opf>
+            <Fun>-</Fun>
+          </opf>
+          <Var>n</Var>
+          <Ind>1</Ind>
+        </Nano>
+      </Equal>
+      <Equal>
+        <Var>f</Var>
+        <Nano>
+          <opf>
+            <Fun>fac</Fun>
+          </opf>
+          <Var>m</Var>
+        </Nano>
+      </Equal>
+      <Equal>
+        <Var>r</Var>
+        <Nano>
+          <opf>
+            <Fun>*</Fun>
+          </opf>
+          <Var>n</Var>
+          <Var>f</Var>
+        </Nano>
+      </Equal>
+    </And>
+  </body>
+</Implies>
+
+</And>
+
+</Assert>

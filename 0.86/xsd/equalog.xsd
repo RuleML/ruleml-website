@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Equational-Logic RuleML sublanguage
+			File: equalog.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- equalog includes the 'equality' module -->
+	<xs:include schemaLocation="modules/equality_module.xsd"/>
+
+	<!-- note the addition of eq(uational formula) and nanos from the equality module -->
+	<xs:redefine schemaLocation="hornlog.xsd">
+
+		<!--
+			add eqs so that _head's content model is:
+			(atom | eq)
+		-->
+		<!-- _head is extended to permit eqs -->
+		<xs:group name="_head.content">
+			<xs:choice>
+			<xs:group ref="_head.content"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>		
+		
+		<!--
+			add eqs so that _body's content model is:
+			(atom | and | or | eq)
+		-->
+		<xs:group name="_body.content">
+			<xs:choice>
+				<xs:group ref="_body.content"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add eqs so that and's content model is:
+			((atom | or | eq)*)
+		-->
+		<xs:group name="and.content">
+			<xs:choice>
+				<xs:group ref="and.content"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add eqs so that or's content model is:
+			((atom | and | eq)*)
+		-->
+		<xs:group name="or.content">
+			<xs:choice>
+				<xs:group ref="or.content"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+</xs:schema>

@@ -1,0 +1,148 @@
+<!-- XML DTD for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage, including classical (aka strong) negation -->
+<!-- File: negurcbindatagroundfact.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- ================================================================================================ -->
+<!-- Technical Note: To realize the implementation of RuleML as a family of inheriting DTD modules -->
+<!-- (as in http://www.ruleml.org/indesign.html), every element is accompanied by a DTD-internal-only -->
+<!-- entity called a parameter entity which specifies the corresponding element's content model. -->
+<!-- This allows DTDs to not only include the contents of other DTDs (using externally-specified entities), -->
+<!-- but also to modify the contents of those DTDs after inheriting (much like overriding) by changing the -->
+<!-- appropriate parameter entity.  (This works because locally-specified entities overwrite external ones.) -->
+
+<!-- For example, in this DTD (urcbindatagroundfact), the rulebase element permits facts and queries, but in all -->
+<!-- subsequent DTDs in the hierarchy, rulebase allows imp(lication) rules as well.  This is accomplished by -->
+<!-- changing the parameter entity 'rulebase.content' in urcbindatagroundlog to include imps, and declaring the -->
+<!-- imp element.  Because DTD modules further down the hierarchy inherit from urcbindatagroundlog -->
+<!-- (which, in turn, inherits from this DTD), they all inherit the modified rulebase declaration which includes -->
+<!-- imps, facts and queries. -->
+
+<!-- DTDs are not robust enough to permit more intuitive inheritance, so this work around is necessary -->
+<!-- A similar situation is found in the W3C Recommendation "Modularization of XHTML" at: -->
+<!-- http://www.w3.org/TR/xhtml-modularization -->
+
+<!-- For the current inheritance relationships, see:-->
+<!-- http://198.164.40.138/ruleml/dtd/0.85/ruleml_0.85_inheritance_diagram.gif -->
+<!-- ================================================================================================ -->
+
+<!-- a Uniform Resource Identifier is currently CDATA, but see W3C's [RFC2396] -->
+<!ENTITY % URI "CDATA">
+
+<!-- 'rulebase' root element uses 'fact' assertions and 'query' tests as top-level elements -->
+<!-- ('imp' rules are added in 'UR'-Centered Binary Ground-Datalog sublanguage, urcbindatagroundlog) -->
+<!ENTITY % rulebase.content "(((_rbaselab, (fact | query)*) | ((fact | query)+, _rbaselab?))?)">
+<!ELEMENT rulebase %rulebase.content;>
+
+<!-- these attribute declarations are for upward compatibility with XML Schema -->
+<!-- e.g. RuleML files can be valid w.r.t. these DTDs and/or the XML Schema versions -->
+<!ATTLIST rulebase
+	xmlns %URI; #IMPLIED
+	xsi:schemaLocation %URI; #IMPLIED
+	xmlns:xsi %URI; #IMPLIED
+>
+
+<!-- rulebases have an optional label, '_rbaselab', allowing the naming of an entire -->
+<!-- individual rulebase in a fashion that is accessible within the knowledge representation -->
+<!-- e.g., this can help for representing prioritization between rulebases, or perhaps -->
+<!-- to enable forward inferencing of selected rulebase(s) -->
+<!ENTITY % _rbaselab.content "(ind)">
+<!ELEMENT _rbaselab %_rbaselab.content;>
+
+<!-- 'fact' assertions are usable as degenerate rules on the top-level -->
+<!-- 'fact' element uses just a conclusion role _head -->
+<!-- "<fact>_head</fact>" stands for "_head is implied by true", i.e., "_head is true" -->
+<!ENTITY % fact.content "((_rlab, _head) | (_head, _rlab?))">
+<!ELEMENT fact %fact.content;>
+
+<!-- 'query' elements are usable as degenerate rules on the rulebase top-level -->
+<!-- query uses just a premise role _body -->
+<!-- "<query>_body</query>" stands for "false is implied by _body", i.e., "_body cannot be proved", -->
+<!-- which is to be refuted by generating the bindings for free variables in _body -->
+<!ENTITY % query.content "((_rlab, _body) | (_body, _rlab?))">
+<!ELEMENT query %query.content;>
+
+<!-- a rule (either imp or fact) has an optional label, '_rlab', creating accessibility within the knowledge representation -->
+<!-- e.g. this can help for representing prioritization between rules -->
+<!-- NOTE: rule labels are not required to be unique within a rulebase -->
+<!ENTITY % _rlab.content "(ind)">
+<!ELEMENT _rlab %_rlab.content;>
+
+<!-- _head role is usable within 'fact' assertions, and later imps as well -->
+<!-- _head uses an atomic formula (which may be negated) -->
+<!ENTITY % _head.content "(atom | neg)">
+<!ELEMENT _head %_head.content;>
+
+<!-- _body role is usable within query tests, and later imps as well -->
+<!-- _body uses an atomic formula, an 'and', 'or' or 'neg' -->
+<!ENTITY % _body.content "(atom | neg | and | or)">
+<!ELEMENT _body %_body.content;>
+
+<!-- an 'and' uses zero or more atomic formulas, disjunctions, or negated atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+<!ENTITY % and.content "((atom | neg | or)*)">
+<!ELEMENT and %and.content;>
+
+<!-- an 'or' uses zero or more atomic formulas, conjunctions or negated atomic formulas -->
+<!-- "<or>atom</or>" is equivalent to "atom"-->
+<!ENTITY % or.content "((atom | neg | and)*)">
+<!ELEMENT or %or.content;>
+
+<!-- an atomic formula is usable within a _head or _body -->
+<!-- atom element uses an _opr  role followed by an ind with a REQUIRED href attribute -->
+<!-- followed by an ind with IMPLIED href attribute, or equivalently, with _opr at the end -->
+<!-- optional user-level metaroles are also permitted before and/or after the inds  -->
+<!-- note that this 'local' REQUIRED-vs.-IMPLIED constraint cannot be expressed by DTDs -->
+<!--                                    |href! |href?    -->
+<!ENTITY % atom.content "((_opr, (_slot)*, ind, ind, (_slot)*) | ((_slot)*, ind, ind, (_slot)*, _opr))">
+<!ELEMENT atom %atom.content;>
+
+<!-- the neg element negates the specified atom (explicitly, i.e. classical or "strong" negation) -->
+<!ENTITY % neg.content "(atom)">
+<!ELEMENT neg %neg.content;>
+
+<!-- _opr is usable within atoms -->
+<!-- _opr uses rel(ation) symbol -->
+<!ENTITY % _opr.content "(rel)">
+<!ELEMENT _opr %_opr.content;>
+
+<!-- user-level non-positional metaroles _slot with a required name attribute -->
+<!-- optional attributes include the role's card(inality) and relative weight -->
+<!ENTITY % _slot.content "(ind)">
+<!ELEMENT _slot %_slot.content;>
+<!ATTLIST _slot
+	name CDATA #REQUIRED
+	card CDATA #IMPLIED
+	weight CDATA #IMPLIED
+>
+
+<!-- there is one kind of fixed argument: ind(ividual) constant, as in predicate logic, generalizing RDF literals and resources -->
+<!ENTITY % ind.content "(#PCDATA)">
+<!ELEMENT ind %ind.content;>
+<!ATTLIST ind type CDATA #IMPLIED>
+
+<!-- there are only fixed (first-order) rel(ations) or predicates, generalizing EMPTY PCDATA of RDF predicates -->
+<!ENTITY % rel.content "(#PCDATA)">
+<!ELEMENT rel %rel.content;>
+
+<!-- this conditional block is ignored further down in the hierarchy by the Binary Datalog sublanguage (bindatalog) -->
+<!-- to prevent the declaration of UR-like href attributes -->
+<!ENTITY % href.attrib.module "INCLUDE">
+<![ %href.attrib.module; [
+
+<!-- fixed arguments to relations etc. normally enclose non-empty PCDATA content between ind(ividual) tags -->
+<!-- inds having empty content can be used like null values in databases -->
+
+<!-- fixed arguments to relations etc. can also have the character of objects (resources) -->
+
+<!-- objects (resources) are inds using a URL/URI as their OID, as in SHOE or RDF (cf. URML) -->
+<!-- named objects (resources) additionally enclose some non-empty PCDATA content between ind tags -->
+<!-- anonymous objects (resources) are inds having empty content -->
+
+<!-- like for XHTML anchors etc. a URI can be used under an optional href attribute of inds -->
+<!ATTLIST ind href %URI; #IMPLIED>
+
+<!-- such a URI can also be used under an optional href attribute of rel(ation)s, generalizing REQUIRED URIs of RDF predicates -->
+<!ATTLIST rel href %URI; #IMPLIED>
+]]> <!-- end href.attrib.module -->

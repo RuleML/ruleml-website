@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE rdf:RDF [
+         <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+         <!ENTITY ruleml 'http://www.ruleml.org/rdf#'>
+]>
+<rdf:RDF xmlns:rdf="&rdf;"
+         xmlns:ruleml="&ruleml;"
+	 xmlns="&ruleml;">
+
+<rulebase>
+ <_clauses>
+  <rdf:Seq>
+   <rdf:li>
+     <fact>
+       <_head>
+         <atom>
+           <_opr> <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/> </_opr>
+           <_arg>
+             <rdf:Seq>
+              <rdf:li> <ind href="http://www.w3.org/Home/Lassila"/> </rdf:li>
+              <rdf:li> <ind ruleml:cdata="Ora Lassila"/> </rdf:li>
+             </rdf:Seq>
+           </_arg>
+         </atom>
+       </_head>
+     </fact>
+   </rdf:li>
+  </rdf:Seq>
+ </_clauses>
+</rulebase>
+</rdf:RDF>

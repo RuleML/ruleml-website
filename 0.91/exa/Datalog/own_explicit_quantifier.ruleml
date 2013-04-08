@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/datalog.xsd">
+
+<Assert mapClosure="universal">
+
+<!--<oid><Ind>Example rule for expository purposes</Ind></oid>-->
+
+    <Forall>
+	<Var type="Person">x1</Var>
+	<Var type="Person">x2</Var>
+	<Var type="Person">x3</Var>
+	<Var type="Person">x4</Var>
+
+    	<Forall>
+		<Var type="Person">x1</Var>
+		<Var type="Person">x2</Var>
+		<Var type="Person">x3</Var>
+		<Var type="Person">x4</Var>
+	        <Atom>
+	               <op><Rel>rel1</Rel></op>
+        	       <Ind>1</Ind>
+	               <Ind>2</Ind>
+        	       <Ind>3</Ind>
+	               <Var>x5</Var>
+	        </Atom>
+   	  </Forall>
+    </Forall>
+
+</Assert>
+
+</RuleML>

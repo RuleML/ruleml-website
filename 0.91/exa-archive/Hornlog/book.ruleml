@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlog.xsd">
+
+<!-- non-ground-fact-like rule with 4-ary Expr as single argument -->
+
+<Assert>
+
+    <Atom closure="universal">
+      <op><Rel>book</Rel></op>
+      <Expr>
+        <Fun in="no">parts</Fun>
+        <Var>title</Var>
+        <Var>author</Var>
+        <Var>toc</Var>
+        <Var>chapters</Var>
+      </Expr>
+    </Atom>
+
+</Assert>
+
+</RuleML>

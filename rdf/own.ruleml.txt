@@ -1,0 +1,97 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/ruleml-datalog-standalone.dtd">
+<?xml-stylesheet href="ruledf.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+
+<rulebase>
+
+
+<!-- This example rulebase contains four rules.  The third and 
+fourth rules are actually facts. 
+
+In English:
+The first rule says that a person owns an object if that person buys
+the object from a merchant and the person keeps the object. -->
+
+
+<if>
+  <atom>
+    <rel>own</rel>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+  <!-- explicit 'and' -->
+  <and>
+    <atom>
+      <rel>buy</rel>
+      <var>person</var>
+      <var>merchant</var>
+      <var>object</var>
+    </atom>
+    <atom>
+      <rel>keep</rel>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </and>
+</if>
+ 
+
+
+<!-- 
+In English:
+The next rule says that a person buys an object from a merchant 
+if the merchant sells the object to the person. -->
+
+<if>
+  <atom>
+    <rel>buy</rel>
+    <var>person</var>
+    <var>merchant</var>
+    <var>object</var>
+  </atom>
+  <atom>
+    <rel>sell</rel>
+    <var>merchant</var>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+</if>
+ 
+ 
+<!-- The next rule is a fact that says, in English, that 
+John sells XMLBible to Mary. -->
+ 
+<if>
+  <atom>
+    <rel>sell</rel>
+    <ind>John</ind>
+    <ind>Mary</ind>
+    <ind>XMLBible</ind>
+  </atom>
+  <!-- empty 'and' -->
+  <and/>
+</if>
+ 
+<!-- The last rule is a fact that says, in English, that 
+Mary keeps XMLBible. 
+
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+ 
+<if>
+  <atom>
+    <rel>keep</rel>
+    <ind>Mary</ind>
+    <ind>XMLBible</ind>
+  </atom>
+  <and/>
+</if>
+ 
+ 
+</rulebase>

@@ -1,0 +1,423 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF profile for RuleML-2010 Program Chair Rules: **Disclaimer** these rules are experimental and not offical									    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF contact and personal information									                                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%FOAF facts about the Program Chair
+
+person(
+  symposiumChair[ruleML_2010,programChair],  
+  foafname[firstName[Antonino],lastName[Rotolo]],
+  foaftitle[title[Dr]],
+  foafmbox[email[antoninoDOTrotoloATuniboDOTit]],
+  exphones[telephoneNumbers[office[39051277242],cellPhone[]]]).
+
+person(
+  symposiumChair[ruleML_2010,programChair],  
+  foafname[firstName[John],lastName[Hall]],
+  foaftitle[title[Dr]],
+  foafmbox[email[johnhallmsAThotmailDOTcom]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+% FOAF facts about the Track Chairs
+% ToDo: Add chair contact details, besides first+last name
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Cross_Industry_trackChair],  
+  foafname[firstName[Tracy],lastName[Bost]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Cross_Industry_trackChair],  
+  foafname[firstName[Robert],lastName[Golan]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rule_Transformation_And_Extraction_trackChair],  
+  foafname[firstName[Mark],lastName[Linehan]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Uncertainty_trackChair],  
+  foafname[firstName[Davide],lastName[Sottara]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Uncertainty_trackChair],  
+  foafname[firstName[Nikolaus],lastName[Wulff]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Norms_trackChair],  
+  foafname[firstName[Thomas],lastName[Gordon]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Norms_trackChair],  
+  foafname[firstName[Guido],lastName[Governatori]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Inferencing_trackChair],  
+  foafname[firstName[Grigoris],lastName[Antoniou]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rules_And_Inferencing_trackChair],  
+  foafname[firstName[Antonis],lastName[Bikakis]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rulebased_Event_And_Reaction_trackChair],  
+  foafname[firstName[Alex],lastName[Kozlenkov]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rulebased_Event_And_Reaction_trackChair],  
+  foafname[firstName[Adrian],lastName[Paschke]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rulebased_Distributed_MAS_trackChair],  
+  foafname[firstName[Nick],lastName[Bassiliades]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,Rulebased_Distributed_MAS_trackChair],  
+  foafname[firstName[Costin],lastName[Badica]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,RuleML_ChallengeChair],  
+  foafname[firstName[Enrico],lastName[Francesconi]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,RuleML_ChallengeChair],  
+  foafname[firstName[Monica],lastName[Palmirani]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,RuleML_ChallengeChair],  
+  foafname[firstName[Omair],lastName[Shafiq]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+
+trackperson(
+  symposiumChair[ruleML_2010,RuleML_ChallengeChair],  
+  foafname[firstName[Fabio],lastName[Vitali]],
+  foaftitle[title[Dr]],
+  foafmbox[email[]],
+  exphones[telephoneNumbers[office[],cellPhone[]]]).
+  
+
+
+% Facts about tracks, respective topics (taken from CFP) and the names of the track chairs
+% This is the only viable solution, i.e. to have a single fact for each track and a list with all its topics
+% All other representation solutions (i.e. to have a single fact for each topic) have failed because they require
+% at some point to gather all the topics of a track into a list, which is not do-able due to lack of findall
+% A solution based on backtracking has the problem that created too many backtracking points, so it is very slow
+% NOTICE: Some characters have been replaced from the CFP because they caused problems
+%         ":" has been replaced by "-", "," by ";", and "." has been removed
+
+track("Rules; Semantic Technology; and Cross-Industry Standards":string,
+	["XBRL - Extensible Business Reporting Language":string,
+	 "MISMO - Mortgage Industry Standards Maintenance Org":string,
+	 "FIXatdl - FIX Algorithmic Trading Definition Language":string,
+	 "FpML - Financial products Markup Language":string,
+	 "HL7 - Health Level 7":string,
+	 "Acord - Association for Cooperative Operations Research and Development (Insurance Industry)":string,
+	 "Rules for Governance; Risk; and Compliance (GRC); eg; rules for internal audit; SOX compliance; enterprise risk management (ERM); operational risk; etc":string,
+	 "Rules and Corporate Actions":string],
+	 [foafname[firstName[Tracy],lastName[Bost]],
+	  foafname[firstName[Robert],lastName[Golan]]]).
+track("Rule Transformation and Extraction":string,
+	["Transformation and extraction with rule standards; such as SBVR; RIF and OCL":string,
+	 "Extraction of rules from code":string,
+	 "Transformation and extraction in the context of frameworks such as KDM (Knowledge Discovery meta-model)":string,
+	 "Extraction of rules from natural language":string,
+	 "Transformation or rules from one dialect into another":string],
+	[foafname[firstName[Mark],lastName[Linehan]]]).
+track("Rules and Uncertainty":string,
+	["Languages for the formalization of uncertainty rules":string,
+	 "Probabilistic; fuzzy and other rule frameworks for reasoning with uncertain or incomplete information":string,
+	 "Handling inconsistent or disparate rules using uncertainty":string,
+	 "Uncertainty extensions of event processing rules; business rules; reactive rules; causal rules; derivation rules; association rules; or transformation rules":string],
+	[foafname[firstName[Davide],lastName[Sottara]],
+	 foafname[firstName[Nikolaus],lastName[Wulff]]]).
+track("Rules and Norms":string,
+	["Methodologies for modeling regulations using both ontologies and rules":string,
+	 "Defeasibility and norms - modeling rule exceptions and priority relations among rules":string,
+	 "The relationship between rules and legal argumentation schemes":string,
+	 "Rule language requirements for the isomorphic modeling of legislation":string,
+	 "Rule based inference mechanism for legal reasoning":string,
+	 "E-contracting and automated negotiations with rule-based declarative strategies":string],
+	 [foafname[firstName[Thomas],lastName[Gordon]],
+	  foafname[firstName[Guido],lastName[Governatori]]]).
+track("Rules and Inferencing":string,
+	["From rules to FOL to modal logics":string,
+	 "Rule-based non-monotonic reasoning":string,
+	 "Rule-based reasoning with modalities":string,
+	 "Deontic rule-based reasoning":string,
+	 "Temporal rule-based reasoning":string,
+	 "Priorities handling in rule-based systems":string,
+	 "Defeasible reasoning":string,
+	 "Rule-based reasoning about context and its use in smart environments":string,
+	 "Combination of rules and ontologies":string,
+	 "Modularity":string],
+	[foafname[firstName[Grigoris],lastName[Antoniou]],
+	 foafname[firstName[Antonis],lastName[Bikakis]]]).
+track("Rule-based Event Processing and Reaction Rules":string,
+	["Reaction rule languages and engines (production rules; ECA rules; logic event action formalisms; vocabularies/ontologies)":string,
+	 "State management approaches and frameworks":string,
+	 "Concurrency control and scalability":string,
+	 "Event and action definition; detection; consumption; termination; lifecycle management":string,
+	 "Dynamic rule-based workflows and intelligent event processing (rule-based CEP)":string,
+	 "Non-functional requirements; use of annotations; metadata to capture those":string,
+	 "Design time and execution time aspects of rule-based (Semantic) Business Processes Modeling and Management":string,
+	 "Practical and business aspects of rule-based (Semantic) Business Process Management (business scenarios; case studies; use cases etc)":string],
+	[foafname[firstName[Alex],lastName[Kozlenkov]],
+	 foafname[firstName[Adrian],lastName[Paschke]]]).
+track("Rule-Based Distributed/Multi-Agent Systems":string,
+	["rule-based specification and verification of Distributed/Multi-Agent Systems":string,
+	 "rule-based distributed reasoning and problem solving":string,
+	 "rule-based agent architectures":string,
+	 "rules and ontologies for semantic agents":string,
+	 "rule-based interaction protocols for multi-agent systems":string,
+	 "rules for service-oriented computing (discovery; composition; etc)":string,
+	 "rule-based cooperation; coordination and argumentation in multi-agent systems":string,
+	 "rule-based e-contracting and negotiation strategies in multi-agent systems":string,
+	 "rule interchange and reasoning interoperation in heterogeneous Distributed/Multi-Agent Systems":string],
+	[foafname[firstName[Nick],lastName[Bassiliades]],
+	 foafname[firstName[Costin],lastName[Badica]]]).
+track("General Track":string,
+	["Rules and ontologies":string,
+	 "Execution models; rule engines; and environments":string,
+	 "Graphical processing; modeling and rendering of rules":string],
+	[foafname[firstName[Antonino],lastName[Rotolo]],
+	 foafname[firstName[John],lastName[Hall]]]).
+% RuleML 2010 Challenge is treated as one more track
+track("RuleML-2010 Challenge":string,
+	["benchmarks/evaluations; demos; case studies; use cases; experience reports; best practice solutions (design patterns; reference architectures; models)":string,
+	 "rule-based implementations; tools; applications; demonstrations engineering methods":string,
+	 "implementations of rule standards (RuleML; RIF; SBVR; PRR; rule-based Event Processing languages; BPMN and rules; BPEL and rules); rules and industrial standards (XBRL; MISMO; Accord) and industrial problem statements":string,
+	 "Modelling Rules in the Temporal and Geospatial Applications":string,
+	 "temporal modelling and reasoning; geospatial modelling and reasoning":string,
+	 "cross-linking between temporal and geospatial knowledge":string,
+	 "visualization of rules with graphic models in order to support end-user interaction":string,
+	 "Demos related to the RuleML-2010 Track Topics":string,
+	 "Extensions and implementations of W3C RIF":string,
+	 "Editing environments and IDEs for Web rules":string,
+	 "Benchmarks and comparison results for rule engines":string,
+	 "Distributed rule bases and rule services":string,
+	 "Reports on industrial experience about rule systems":string],
+	[foafname[firstName[Enrico],lastName[Francesconi]],
+	 foafname[firstName[Monica],lastName[Palmirani]],
+	 foafname[firstName[Omair],lastName[Shafiq]],
+	 foafname[firstName[Fabio],lastName[Vitali]]]).
+
+
+
+% This predicate implements the "Find Tracks relevant to Keywords" sample query
+% The predicate finds a track and scores it according to a list of keywords provided
+% by the asker through the OA. The list of keywords is in the format of a recursive complex term
+% keys[Key1,RestKeys], where RestKeys has the same structure, excepot for the empty key-list which is nil.
+% Example: keys[rule:String,keys[exceptions:string,nil]]
+% The list of keywords is given as a string that is decomposed to a list of keywords
+% according to an algorithm explained in the OA prova file.
+% The predicate returns the name of the track and a relevance score for the respective track, 
+% which must be more than 0 (o means completely irrelevant).
+% The scoring algorithm is explained below.
+
+score_tracks(?Keys,track[?Track,relevance[?Score]]) :-
+	track(?Track,?Topics,?),
+	score_track(?Keys,?Track,?Topics,?Score),
+	greaterThan(?Score,0:real).
+
+
+% To score each track, first score all the topics that fall under the track
+% then score the track string itself and combine all the scores together.
+% The score of the track string is doubled, because it is more important 
+% to find the keywords in the track string itself.
+
+score_track(?Keys,?track,?topics,?S) :-
+	score_topics(?Keys,?topics,?Scores),
+	score_one_topic(?Keys,?track,?Sc1),
+	multiply(?Sc2, ?Sc1, 2:integer),
+	calc_track_score([?Sc2|?Scores],?S).
+
+	
+% Iterate over all the topic list by scoring each one
+
+score_topics(?Keys,[],[]).
+score_topics(?Keys,[?Topic|?RestTopics],[?Score|?RestScores]) :- 
+	score_one_topic(?Keys,?Topic,?Score),
+	score_topics(?Keys,?RestTopics,?RestScores).
+
+
+% Each topic is scored by first counting how many keywords of the given list
+% are present inside the string of the topic (or the track).
+% Then this number is used as an input to the scoring function.
+
+score_one_topic(?Keys,?Topic,?Score) :-
+	countTopic(?Keys,?Topic,?N),
+	scoreTopic(?N, ?Score).
+
+
+% Iterate over all keywords in the list and increase the counter 
+% each time a keyword is found in the string.
+% Notice that when there is a weight associated with a keyword
+% then the comlex terms is keys/3 and the weight is multipled
+% with the number of found keywords.
+% When there is no associated weight, then the complex term
+% is keys/2 and weight=1 is assumed.
+
+countTopic(keys[?Key, nil], ?topic, ?X) :-
+	addContains(?Key, ?topic, 1:real, ?X).
+countTopic(keys[?Key,?weight, nil], ?topic, ?X) :-
+	addContains(?Key, ?topic, ?weight, ?X).
+countTopic(keys[?Key, ?RestKeys], ?topic, ?N1) :-
+	addContains(?Key, ?topic, 1:real, ?X),
+	countTopic(?RestKeys, ?topic, ?N),
+	add(?N1, ?N, ?X).
+countTopic(keys[?Key, ?weight, ?RestKeys], ?topic, ?N1) :-
+	addContains(?Key, ?topic, ?weight, ?X),
+	countTopic(?RestKeys, ?topic, ?N),
+	add(?N1, ?N, ?X).
+
+
+% If the keyword is found add 1, times the associated weight. 
+% If not found add 0.
+% Case is ignored.
+
+addContains(?Key, ?topic, ?weight, ?M)  :- 
+	containsIgnoreCase(?topic, ?Key),
+	multiply(?M, ?weight, 1:real).
+addContains(?Key, ?topic, ?weight, 0:real)  :- 
+	naf(containsIgnoreCase(?topic, ?Key)).
+
+
+% The scoring function implemented is sum_to_n
+% which sums all integers from 0 up to N.
+% e.g. sum_to_n(1,1)=1. sum_to_n(2,3)=1+2. sum_to_n(3,6)=1+2+3. etc.
+% The rationale behind it is that the value of finding two or more
+% keywords should not be linear, i.e. the existence of more than one keywords
+% should be rewarded.
+
+scoreTopic(?N, ?S) :-
+	sum_to_n(?N, ?S).
+
+sum_to_n(?N, ?S) :-
+	add(?N1, ?N, 1:integer),
+	multiply(?M, ?N1, ?N),
+	divide(?S, ?M, 2:integer).
+
+
+% This calculates the overall score of a track as the function of the scoes of the list of its topics (plus the track)
+% The scoring function is as follows:
+% Let Score(i) be the score of the i-th topic
+% We are mostly interested to reward the topic with the greatest score,
+% i.e. the one that contains the most keywords.
+% Thus we multiply the maximum of the scores max(Score(i)) with 1000.
+% However, we need to differentiate between two tracks that contain the same "best" topics,
+% but one of them contains more "good" topics than the other.
+% In order to do so, we add the sum of the scores of all topics (plus track)
+% The overall function is:
+% Score(track) = 1000*max(Score(track,i)) + sum(Score(track,i))
+
+calc_track_score(?Scores,?S) :-
+	find_max(?Scores,?Max),
+	sumlist(?Scores,?Sum),
+	multiply(?Mult, 1000:integer, ?Max),
+	add(?S, ?Mult, ?Sum).
+
+
+
+% This predicate implements the "Retrieve Track of a Topic" sample query
+% The predicate accepts a topic (string), iterates over the track/3 facts,
+% retrieves the corresponding list of topics and checks if the specific input topic belongs to this list
+
+getTrackOfATopic(?Topic,?Track) :-
+	track(?Track,?Topics,?),
+	member(?Topic,?Topics).
+
+
+% This predicate implements the "Retrieve Tracks" sample query
+
+getTrack(?Track) :-
+	track(?Track,?,?).
+
+
+% This predicate implements the "Retrieve Contact Details of Chairs for a specific track" sample query
+% The predicate accepts a track (string), retrieves the corresponding track/3 fact,
+% retrieves the list of chairs of the track, iterates over the list, retrieves the contact details of each track chair
+% from the trackperson/5 facts and returns their contact details
+
+getContactOfTrack(?Track,contactdetails[?Role,?Chair,?Title,?Email,?Phones]) :-
+	track(?Track,?,?Chairs),
+	member(?Chair,?Chairs),
+	trackperson(?Role,?Chair,?Title,?Email,?Phones).	
+
+
+
+% Auxiliary predicates
+
+% member of a list
+
+member(?X,[?X|?T]).
+member(?X,[?H|?T]) :- member(?X,?T).
+
+
+% find the maximum number in a list of numbers
+
+find_max([?X],?X).
+find_max([?H|?T],?Max) :-
+	find_max(?T,?Max1),
+	max(?H,?Max1,?Max).
+
+
+% find the maximum of two numbers
+
+max(?X,?Y,?X) :- greaterThan(?X,?Y).
+max(?X,?Y,?Y) :- lessThanOrEqual(?X,?Y).
+
+
+% sum a list of numbers
+
+sumlist([],0:integer).
+sumlist([?H|?T],?Sum) :-
+	sumlist(?T,?Temp),
+	add(?Sum,?Temp,?H).

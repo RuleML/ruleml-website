@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">]>
+<rdf:RDF   
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"  
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://example.org/schemas/vehicles">
+
+<rdfs:Class rdf:ID="animal"/>
+
+<rdfs:Class rdf:ID="plant"/>
+
+<rdfs:Class rdf:ID="grain">
+	<rdfs:subClassOf rdf:resource="#plant"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:ID="wolf">
+	<rdfs:subClassOf rdf:resource="#animal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:ID="fox">
+	<rdfs:subClassOf rdf:resource="#animal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:ID="bird">
+	<rdfs:subClassOf rdf:resource="#animal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:ID="caterpillar">
+	<rdfs:subClassOf rdf:resource="#animal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:ID="snail">
+	<rdfs:subClassOf rdf:resource="#animal"/>
+</rdfs:Class>
+
+</rdf:RDF>

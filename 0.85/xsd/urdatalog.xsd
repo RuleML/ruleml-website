@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/inspec"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR' Datalog RuleML sublanguage
+			File: urdatalog.xsd
+			Version: 0.85
+			Last Modification: 2003-12-17
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:redefine schemaLocation="urcdatalog.xsd">
+		<!--
+			atom's content model is further extended to permit 0 or more ind/vars:
+			"((_opr, (_slot)*, (ind | var)*, (_slot)*) | ((_slot)*, (ind | var)+, (_slot)*, _opr))"
+		-->	
+		<!-- NOTE: this doesn't validate with XSV -->
+		<xs:group name="atom.extend.extend">
+			<xs:choice>
+				<xs:group ref="atom.extend.extend" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+	
+</xs:schema>

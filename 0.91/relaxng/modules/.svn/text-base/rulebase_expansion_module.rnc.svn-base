@@ -1,0 +1,66 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Rulebase" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, rulebase" ]
+dc:description [ "The expansion module for the rulebase component." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Rulebase.Node.def
+# This module declares or extends the following RuleML elements and attributes:
+#            * <Rulebase>
+#            * <formula>
+
+## an extension point for alternate spellings and internationalization of the rulebase tag name.  
+Rulebase-node.choice |= Rulebase.Node.def
+Rulebase.Node.def =
+    
+    ## A collection of rules that can be ordered or unordered, without or with duplicates. 
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Rulebase
+    element Rulebase { (Rulebase-datt.choice & reRulebase.attlist), Rulebase.header, Rulebase.main }
+
+## Rulebases may have an optional scope quantification closure attribute.
+reRulebase.attlist &= mapClosure-att.choice?
+# For the declaration of the scope closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## Rulebases accept the header pattern of general formulas.
+Rulebase.header &= Object.header?
+# The object header may be positionally-dependent, 
+# see the position-(in)dependence serialization modules (orderstrict_module, orderlax_module).
+
+## Rulebases contain zero or more formulas.
+Rulebase.main |= formula_Rulebase-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in rulebases.  
+formula_Rulebase-edge.choice |= formula_Rulebase.edge.def
+formula_Rulebase.edge.def =
+    
+    ## The formula role of a conjunctive (<And>) or disjunctive (<Or>) expression, 
+    ## quantifier (<Forall> or <Exists>), or performative (<Assert>, <Query> or <Retract>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-formula
+    ## Within Rulebase ...
+    element formula { formula_Rulebase.content }
+formula_Rulebase.content |= RulebaseFormula.choice
+
+## formulas allowed to belong to a Rulebase: 
+## Atomic formulas are allowed in rulebases.
+RulebaseFormula.choice |=
+    SimpleFormula-node.choice
+    | And-fo-node.choice
+    | Or-fo-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-node.choice
+    | Forall-node.choice
+    | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+Node.choice |= Rulebase.Node.def
+edge.choice |= formula_Rulebase.edge.def

@@ -1,0 +1,1016 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html lang="EN">
+<head>
+  <title>Positional-Rolled Rule Syntax</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+CODE {
+        FONT-FAMILY: monospace
+}
+DIV.constraint {
+        MARGIN-LEFT: 2em
+}
+DIV.issue {
+        MARGIN-LEFT: 2em
+}
+DIV.note {
+        MARGIN-LEFT: 2em
+}
+DIV.notice {
+        MARGIN-LEFT: 2em
+}
+DIV.exampleInner PRE {
+        MARGIN-TOP: 0em; MARGIN-BOTTOM: 0em; MARGIN-LEFT: 1em
+}
+DIV.exampleOuter {
+        BORDER-RIGHT: gray 4px double; PADDING-RIGHT: 0em; BORDER-TOP: gray 4px double; PADDING-LEFT: 0em; PADDING-BOTTOM: 0em; MARGIN: 0em; BORDER-LEFT: gray 4px double; PADDING-TOP: 0em; BORDER-BOTTOM: gray 4px double
+}
+DIV.exampleInner {
+        PADDING-RIGHT: 4px; BORDER-TOP: #d3d3d3 4px double; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN: 0em; PADDING-TOP: 4px; BORDER-BOTTOM: #d3d3d3 4px double; BACKGROUND-COLOR: #d5dee3
+}
+DIV.exampleWrapper {
+        MARGIN: 4px
+}
+DIV.exampleHeader {
+        FONT-WEIGHT: bold; MARGIN: 4px
+}
+TABLE.small {
+        FONT-SIZE: x-small
+}</style>
+  <link href="css/W3C-WD.css" type="text/css"
+  rel="stylesheet">
+</head>
+
+<body>
+
+<div class="head">
+<h1><a id="title" name="title"></a>Positional-Rolled Shorthand and Presentation Syntax for Rules</h1>
+<h2>Working Draft 15 July 2003</h2>
+</div>
+
+<p></p>
+
+<div class="head">
+<dl>
+  <dt>This version:</dt>
+   <dd><a href="http://www.ruleml.org/submission/ruleml-shortation-20030715.html">http://www.ruleml.org/submission/ruleml-shortation-20030715.html</a></dd>
+  <dt>Latest version:</dt>
+    <dd><a href="http://www.ruleml.org/submission/ruleml-shortation.html">http://www.ruleml.org/submission/ruleml-shortation.html</a></dd>
+  <dt>Author:</dt>
+    <dd>Harold Boley, NRC <a
+      href="mailto:harold.boley@nrc.gc.ca">mailto:harold.boley@nrc.gc.ca</a></dd>
+</dl>
+
+<p class="copyright">.</p>
+</div>
+<hr>
+
+<div>
+<h2><a id="abstract" name="abstract"></a>Abstract</h2>
+
+<p></p>
+
+<p>This document describes a rule shorthand and presentation language that
+merges Prolog's positional and F-logic's rolled syntaxes.
+The positional-rolled (PR) syntax thus accomodates various propositional and object-oriented
+modeling styles.
+After an introduction, the document covers PR selectors,
+unification, webizing, typing, and implementation.
+The PR rule language is faster to
+write and easier to read than any XML syntax for rules. However, since a
+parser and generator map the PR syntax to Object-Oriented RuleML
+and back,
+the advantages of XML are fully preserved.</p>
+</div>
+
+<div>
+<h2><a id="status" name="status"></a></h2>
+</div>
+
+<h2><a id="acknowledge" name="acknowledge">Acknowledgments</a></h2>
+  
+<p>Said Tabet and the RuleML Initiative provided 
+valuable feedback during the evoluation of this document.
+The Joint Committee, in particular
+Mike Dean and Benjamin Grosof, encouraged me to present an earlier version.
+Sandro Hawke and Pat Hayes helped shaping the document through their questions.
+Bruce Spencer supported the development of OO RuleML, its implementations,
+as well as the PR rule language.
+Marcel Ball and Stephen Greene gave valuable hints and performed various OO RuleML and PR implementations.
+Michael Sintek helped me laying the groundwork of this Prolog/F-logic merger.
+The sponsoring of this work by the <a href="http://www.nrc-cnrc.gc.ca/">National Research Council</a>
+is gratefully acknowledged.
+</p>
+
+<hr>
+
+<div class="toc">
+<h2><a id="contents" name="contents"></a></h2>
+
+<h1>Table of Contents</h1>
+
+<h2></h2>
+
+<p class="toc">1. <a href="ruleml-shortation.html#section_1"><span
+style="COLOR: #0000b2">Introduction</span></a></p>
+
+<p>2. <span style="COLOR: #0000b2"><a
+href="ruleml-shortation.html#section_2">Selectors</a></span></p>
+
+<p>3. <a href="ruleml-shortation.html#section_3">Unification</a></p>
+
+<p>4. <a href="ruleml-shortation.html#section_4">Webizing</a></p>
+
+<p>5. <a href="ruleml-shortation.html#section_5">Typing</a></p>
+
+<p>6. <a href="ruleml-shortation.html#section_6">Implementation</a></p>
+
+<p>7. <a href="ruleml-shortation.html#section_7">Issues</a></p>
+</div>
+
+<p></p>
+<hr>
+
+<div class="body">
+
+<div class="div1">
+<h2><a id="section_1" name="section_1"></a>1. Introduction</h2>
+
+<div class="div2">
+<p>Let us consider a Datalog rule as follows.</p>
+</div>
+
+<p></p>
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Natural
+Language:</span></strong></h3>
+
+<div class="schema">
+
+<div class="exampleInner">
+<pre><em><strong><span style="font-family: helvetica; font-size: 10pt">The discount for a customer buying a product is 5.0 percent if
+     the customer is premium and the product is regular</span></strong></em></pre>
+</div>
+</div>
+</div>
+
+<div class="div2">
+
+<div class="div3">
+<h3 style="font-size: 12pt"><strong><span style="font-size: 10pt">In Prolog:</span></strong></h3>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(Customer,Product,"5.0 percent")  :-       
+   premium(Customer), regular(Product).</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+<p>
+Note that this is a positional (ternary) discount relation, where you have
+to remember -- e.g. for queries -- that the first argument is the customer, the second
+is the product, and the third is the rebate obtained. This is in the spirit
+of XML's ordered children. Also note that the comma infix within n-ary
+relation applications for n>1 can be regarded as the order-imposing sequence
+operator (while for n=0 and n=1 the sequencing degenerates).
+</p>
+
+<p>
+Reliance on order can be avoided in the spirit of RDF, DL and F-logic by
+introducing properties, attributes, or roles. For example, an F-logic-style
+version of the above rule can be written as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->Customer;prod->Product;rebate->"5.0 percent") :-
+   premium(cust->Customer), regular(prod->Product).</span></pre>
+</div>
+
+<p>
+Note that in this object-centered ('object-oriented') modeling of relations
+the semicolon infix indicates an unordered set of n slots, each consisting
+of a 'role->filler' pair. Queries can now be posed without need for any
+order information (however, knowledge of the role names cust, prod, rebate
+is needed instead): Generalized (role) unification takes care of pairing
+up identical roles before recursively unifying their fillers (we will go
+into the issue of implicit/explicit 'rest' variables in the Unification section). The query
+</p>
+
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(rebate->Amount;prod->"Honda";cust->"Peter Miller")</span></pre>
+</div>
+
+<p>
+thus succeeds if premium(cust->"Peter Miller") and regular(prod->"Honda")
+were stored as facts, binding Amount to "5.0 percent". 
+</p>
+
+<p>
+However, for unary relations like premium and regular, as well as for
+some binary relations, the role (->) syntax may become cumbersome.
+So in <a href="http://www.ruleml.org/indoo">Object-Oriented RuleML</a> we permit rules using both
+ordered and object-oriented relations as premises as well as conclusions.
+In the example, with an object-oriented discount relation and (degenerately)
+ordered premium and regular relations, we obtain the following rule:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->Customer;prod->Product;rebate->"5.0 percent") :-
+   premium(Customer), regular(Product).</span></pre>
+</div>
+
+<p>
+Finally, suppose we start again with positional Datalog rules, but then
+want to add optional spatio-temporal coordinates. Instead of extending
+the argument sequences of all affected relations by further ordered
+arguments, it may be preferable to add these extra bits in the unordered,
+object-oriented way. Restricting the rule scope to the region of MA and
+the period of 2003/04, our example thus becomes:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(Customer,Product,"5.0 percent";region->"MA";period->"2003/04") :-
+   premium(Customer;period->"2003/04"), regular(Product).</span></pre>
+</div>
+
+<p>
+Applying this rule, the query
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount("Peter Miller","Honda",Amount;period->When;region->Where)</span></pre>
+</div>
+
+<p>
+succeeds if premium("Peter Miller";period->"2003/04") and regular("Honda")
+were stored as facts, binding Amount to "5.0 percent", When to "2003/04",
+and Where to "MA".
+</p>
+
+<p>
+In general, we permit a single ordered sequence surrounded by two unordered subsets
+of slots. All arguments together can thus be viewed as the union of the left and right subsets
+and of the singleton set containing the slot seq->(ordered sequence) with the distinguished name 'seq'.
+We thus assume that the 'ordered infix' "," has precedence over the 'unordered
+infix' ";", so that the ordered ","-sequence <em>as a whole</em> is connected with the
+"->" slot subsets to its left and/or right via bordering ";" infixes.
+</p>
+
+<p>
+In the rule example, the ordered sequence (Customer,Product,"5.0 percent") has
+has the slot set {region->"MA";period->"2003/04"} to its right.
+</p>
+
+<p>
+Summarizing, an atom of the general form
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;...;rL->fL;e1,...,eM;rL+1->fL+1;...;rN->fN)</span></pre>
+</div>
+
+<p>
+can be viewed as
+</p>
+
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;...;rL->fL;(e1,...,eM);rL+1->fL+1;...;rN->fN)</span></pre>
+</div>
+
+<p>
+or as
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;...;rL->fL;seq->(e1,...,eM);rL+1->fL+1;...;rN->fN)</span></pre>
+</div>
+
+<br/>
+<br/>
+<p>
+For Hornlog rules, complex terms are enriched by roles in the same fashion.
+</p>
+
+<p>
+Originally 'complex terms' are exactly what Prolog calls 'structures'. However, for clarity,
+we use a distinction -- introduced in <a href="http://www.dfki.uni-kl.de/~vega/relfun.html">Relfun</a> -- between
+(round) parentheses for active calls and [square] brackets
+for passive structures; the latter can be seen as an obvious
+generalization of Prolog's list notation via a polyadic struct constructor, so that
+[e1,...,eM] is definable as struct[e1,...,eM].
+</p>
+
+<p>
+Moreover, in general, the struct constructor can contain rolled slots besides the ordered sequence:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">struct[r1->f1;...;rL->fL;e1,...,eM;rL+1->fL+1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+This can be abbreviated by omitting the distinguished constructor name 'struct':
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[r1->f1;...;rL->fL;e1,...,eM;rL+1->fL+1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+In Object-Oriented RuleML, we have permitted 'complex terms' with arbitrary constructors to <em>also</em>
+contain unordered roles with their fillers,  or -- as in F-logic -- to <em>only</em>
+contain such frame-like 'slots'. In that sense, this is a merger of Prolog and
+F-logic.
+</p>
+
+<p>
+In the example, the individual constant "5.0 percent" can be analyzed as the
+cterm percent["5.0"], and the constant "2003/04" can be analyzed as either a
+positional cterm interval["2003","2004"] or again as an object-oriented cterm
+interval[start->"2003";end->"2004"]. Note that square brackets are preferable
+here for cterms to clearly set them off from the parenthesized atoms.
+</p>
+
+<p>
+Consistently substituting one of these cterms for the constant occurrences in the
+above OO Datalog rule gives us either of the following OO Hornlog rules:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(Customer,Product,percent["5.0"];
+         region->"MA";
+         period->interval["2003","2004"])
+ :-
+    premium(Customer;period->interval["2003","2004"]),
+    regular(Product).</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(Customer,Product,percent["5.0"];
+         region->"MA";
+         period->interval[start->"2003";end->"2004"])
+ :-
+    premium(Customer;period->interval[start->"2003";end->"2004"]),
+    regular(Product).</span></pre>
+</div>
+
+<br/>
+<br/>
+<p>
+These options are offered to accomodate various positional and object-oriented
+modeling styles. They can all be marked up in OO RuleML.
+</p>
+
+
+<h2><a id="section_2" name="section_2">2. Selectors</a></h2>
+
+<p>
+A 'selector' in a unification-based language such as Prolog, Relfun, or
+F-logic can be represented by a local unification and variable dereferencing for
+the selected part of the complex data structure.
+</p>
+
+<p>
+So we can access the start date of interval["2003","2004"] by unifying it with
+interval[StartDate,EndDate] and dereferencing StartDate to "2003". Similarly, we
+can access the end date of interval[start->"2003";end->"2004"] via unification
+with interval[start->StartDate;end->EndDate] and dereferencing EndDate to "2004".
+Unification will be treated in detail in the next section.
+</p>
+
+<p>
+But instead of / in addition to this, we can introduce a 'universal' selector sel,
+parameterized by either a positive integer or a role name.
+</p>
+
+<p>
+sel[1](interval["2003","2004"]) would return "2003".
+<br/>
+sel[end](interval[start->"2003";end->"2004"]) would return "2004".
+</p>
+
+<p>
+The general sel definition is easier to explain for normalized OO cterms, although
+it also works for non-normalized ones.
+
+<p>
+Excluding rest variables, the most general kind of 'functional' OO cterms are 'left-and-right-rolled' cterms
+of the form
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[r1->f1;...;rL->fL;e1,...,eM;rL+1->fL+1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+where 'functionality' means that the role names rJ taken from {r1,...,rN} are all
+different.
+</p>
+
+<p>
+Notice that a single sequence of positional elements e1,...,eM is surrounded by two
+sets of unordered elements r1->f1;...;rL->fL and rL+1->fL+1;...;rN->fN.
+</p>
+
+<p>
+These can be normalized to a 'left-rolled' cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[r1->f1;...;rL->fL;rL+1->fL+1;...;rN->fN;e1,...,eM]</span></pre>
+</div>
+
+<p>
+or to a 'right-rolled' cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[e1,...,eM;r1->f1;...;rL->fL;rL+1->fL+1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+(Further normalization by lexicographic sorting of the role names rJ would permit
+'linear' term comparisons, but is out of scope here.)
+</p>
+
+<p>
+Now, without loss of generality, for any right-rolled cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">t = c[e1,...,eM;r1->f1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+we can introduce the universal selector sel, parameterized by either I or rJ:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">sel[I](t)  = eI    for  I  from {1,...,M}
+sel[rJ](t) = fJ    for  rJ from {r1,...,rN}</span></pre>
+</div>
+
+<p>
+As we have a direct representation of positional information in the e1,...,eM part,
+we don't need here positive integers as role names in the r1->f1;...;rN->fN part,
+although these or RDF's _1->e1;...;_M->eM could be used to simulate e1,...,eM.
+(The other way round, slot[r1,f1],...,slot[rN,fN] plus normalization could simulate
+r1->f1;...;rN->fN.)
+</p>
+
+
+<div class="div3">
+<h2><a id="section_3" name="section_3">3. Unification</a></h2>
+
+<p>
+Unification of 'single' variables was already mentioned in the previous section.
+This will be expanded here. Many languages with positional formulas such as Prolog use an explicit
+'rest' variable in lists.
+Some languages with rolled formulas such as F-logic use a convention of an implicit rest variable
+in rolled terms, atoms, etc.
+Proceeding to the PR syntax, both in the unification of both positional and rolled formulas, rest variables must be explicit.
+</p> 
+
+<p>
+Without explicit rest variables,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">interval[StartDate,EndDate] unifies with single variable X
+                          by binding X = interval[StartDate,EndDate]
+
+                          does not unify with the unary interval[X]
+
+                          unifies with the binary interval[X,Y]
+                          by binding StartDate = X, EndDate = Y
+
+                          does not unify with the ternary interval[X,Y,Z]</span></pre>
+</div>
+
+<p>
+In Prolog a positional rest variable -- only permitted in lists -- is indicated by
+separating it from previous elements via a "|" instead of the normal "," separator.
+Here, a positional rest variable -- permitted in lists, structures, atoms, etc. --
+is again indicated by a "|" instead of the normal "," separator; we
+will also allow a "!" instead of the normal ";" separator for
+unordered ('object-oriented') complex terms.
+</p>
+
+<p>
+With such explicit rest variables,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">interval[StartDate,EndDate|ResumeDates] unifies with variable X
+                          by binding X = interval[StartDate,EndDate|ResumeDates]
+
+                          does not unify with the unary interval[X]
+
+                          unifies with the binary interval[X,Y]
+                          by binding StartDate = X, EndDate = Y, ResumeDates = []
+
+                          unifies with the ternary interval[X,Y,Z]
+                          by binding StartDate = X, EndDate = Y, ResumeDates = [Z]
+
+                          unifies with the 4-ary interval[X,Y,Z,"2004"]
+                          by binding StartDate = X, EndDate = Y, ResumeDates = [Z,"2004"]
+
+                          unifies with the (1+n)-ary interval[X|Y]
+                          by binding StartDate = X, Y = [EndDate|ResumeDates]</span></pre>
+</div>
+
+<p>
+Dereferencing is performed at least during unification, before built-ins are called, and for result printouts
+(the issue of performing or not performing the 'occurs check' is orthogonal to this
+discussion).
+</p>
+
+<p>
+The object-oriented interval[start->A;end->B] does not unify with the positional
+interval[A,B]. However, an operation positionalize(interval[start->A;end->B]) can
+be defined to return the ordered interval[B,A] by omitting the role names after a
+lexicographic normalization (sorting) w.r.t. the role names. This interval[B,A] in
+turn would unify with the positional interval[A,B] by binding B = A.
+</p>
+
+<p>
+Likewise, interval[start->X;end->B] does not unify with interval[A,B]
+</p>
+
+<p>
+Neither do interval[start->a;end->b] and interval[X,b] unify, where
+the lower-case letters 'a' and 'b' are individual constants.
+Instantiation for positional cterms is defined as usual; for object-oriented cterms
+it is defined to apply the bindings of a substitution to the fJ of each slot rj->fJ
+(cf. remarks below on forbidding variables in the position of roles rJ).
+</p>
+
+<p>
+f[a->A] does not unify with f[a->A;b->B], since rest variables must be explicit
+also for object-oriented cterms.
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">With the '!'-separator introduced above, f[a->A!X] unifies with f[a->A;b->B]
+                                         by binding X = [b->B].
+
+Similarly,                               f[a->A!X] unifies with f[a->A;b->B;c->C]
+                                         by binding X = [b->B;c->C].</span></pre>
+</div>
+
+<p>
+Here, an existential is made explicit after the '!'-separator by a fresh variable X
+(so the collection of these rest roles can be referred to via X).
+Alternatively, an 'anonymous' variable can be employed (as in Prolog written as '_'):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">f[a->A!_] unifies with f[a->A;b->B]        without any bindings
+f[a->A!_] unifies with f[a->A;b->B;c->C]   without any bindings</span></pre>
+</div>
+
+<p>
+Applications for case and feature grammars, frame and description logics, RDF and OWL, etc. can thus be done
+equally well, and the more precise '!'-free OO cterms can enforce more restricted
+unifications where needed.
+</p>
+
+<p>
+In general, keeping unification deterministic,
+the arguments of an atom or cterm may contain a single ('|'-separated) rest variable
+for their positional part plus a single ('!'-separated) rest variable for their rolled part.
+</p>
+
+<p>
+For example, generalizing a query in the Introduction,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount("Peter Miller","Honda",Amount | Resequence;
+         period->When;region->Where ! Reslots)</span></pre>
+</div>
+
+<p>
+(deterministically) unifies with
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount("Peter Miller","Honda","5.0 percent","Auto Deals","full warranty";
+         region->"MA";period->"2003/04";payment->"6 months";limit->"1")</span></pre>
+</div>
+
+<p>
+with (a single mgu of) bindings Amount to "5.0 percent", Resequence = ["Auto Deals","full warranty"],
+When to "2003/04", Where to "MA", and
+Reslots = [payment->"6 months";limit->"1"].
+</p>
+
+<p>
+Inluding both kinds of rest variables, the most general kind of OO atoms/cterms are 'left-and-right-rolled' cterms
+of the (left-"!"-variable) forms
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;...;rL->fL!Vf;e1,...,eM|Ve;rL+1->fL+1;...;rN->fN)
+c[r1->f1;...;rL->fL!Vf;e1,...,eM|Ve;rL+1->fL+1;...;rN->fN]</span></pre>
+</div>
+
+<p>
+or, equivalently, of the (right-"!"-variable) forms
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;...;rL->fL;e1,...,eM|Ve;rL+1->fL+1;...;rN->fN!Vf)
+c[r1->f1;...;rL->fL;e1,...,eM|Ve;rL+1->fL+1;...;rN->fN!Vf]</span></pre>
+</div>
+
+<p>
+Variables are not permitted <em>as</em> roles for several reasons, two of which being:
+</p>
+
+<ul>
+  <li>The <a href="http://www.daml.org/listarchive/joint-committee/1366.html">functionality</a>
+of OO cterms could be lost, since initially different variables in two role
+positions could become unified when additionally used in a filler position.
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">For example, f[X->1;Y->2;c->g[X,Y]] would unify with f[U->1;V->2;c->g[Z,Z]]
+with non-functional common instance f[Z->1;Z->2;c->g[Z,Z]].</span></pre>
+</div>
+</li>
+
+<li>There would no longer be a unique most general unifier, so non-determinism
+would already arise during the unification phase of resolution.
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">For example, f[X->U;Y->V] would unify with f[a->1;b->2]
+by binding X = a, U = 1, Y = b, V = 2 or, equally general,
+by binding X = b, U = 2, Y = a, V = 1.</span></pre>
+</div>
+</li>
+</ul>
+
+
+<div class="div4">
+<h2><a id="section_4" name="section_4">4. Webizing</a></h2>
+
+<p>
+The PR language elements of individuals, constructors, and relations can be
+<a href="http://www.w3.org/DesignIssues/Webize.html">webized</a> by giving them URIs.
+It is important to notice that different occurrences of the same language element can
+thus be disambiguated by giving them different URIs.
+</p>
+
+<p>
+Also, we distinguish two kinds of URIs in the PR knowledge-representation language:
+An active URI meant to be dereferenced (the usual case) is enclosed in a pair of single quotes;
+a passive URI meant to stand for itself (the unusual case) is enclosed in a pair of double quotes
+</p>
+
+Syntactically, then, a language element occurrence is associated with an active URI
+using a "+>" infix. The "+>" operator glues together webized elements with maximum
+precedence, followed by the infix operators ":" (see Typing section) and "->" (see Introduction).
+</p>
+
+<p>
+For example, the individual symbol "Peter Miller" can be associated with a URI
+for the intended Peter Miller's homepage 'http://www.peter_miller.org' to obtain
+the following webized individual:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">"Peter Miller"+>'http://www.peter_miller.org'</span></pre>
+</div>
+
+<p>
+The unary positional fact
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium("Peter Miller").</span></pre>
+</div>
+
+<p>
+can now be webized using the above webized individual as the single argument as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium("Peter Miller"+>'http://www.peter_miller.org').</span></pre>
+</div>
+
+<p>
+Similarly, the unary rolled fact
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->"Peter Miller").</span></pre>
+</div>
+
+<p>
+can be webized using the webized individual as the filler of the single argument role as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->"Peter Miller"+>'http://www.peter_miller.org').</span></pre>
+</div>
+
+<p>
+The special case of an active URI not associated with any named language element is
+captured by just employing this URI in place of the language element.
+</p>
+
+<p>
+For example, Peter Miller's homepage can be directly
+used as an active URI in the positional or rolled facts, thus:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium('http://www.peter_miller.org').</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->'http://www.peter_miller.org').</span></pre>
+</div>
+
+<p>
+Contrast this with facts over the corresponding passive URI,
+stating a property of the URI string itself:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored("http://www.peter_miller.org").</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored(strng->"http://www.peter_miller.org").</span></pre>
+</div>
+
+<p>
+Besides associating a language element with an active URI and
+employing an active URI in place of a language element, the third possibility is
+just using the original language element as we did before webizing.
+The PR language thus supports a mix of all three options, so users
+can tune their degree of webizing.
+</p>
+
+<p>
+Let us proceed to webizing another language element, relations,
+employing active URIs in place of that language element.
+</p>
+
+<p>
+As an example consider two well-known RDF descriptions:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rdf:RDF>
+  &lt;rdf:Description about="http://www.w3.org/Home/Lassila">
+    &lt;s:Creator rdf:resource="http://www.w3.org/staffId/85740"/>
+  &lt;/rdf:Description>
+  &lt;rdf:Description about="http://www.w3.org/staffId/85740">
+    &lt;v:Name>Ora Lassila&lt;/v:Name>
+    &lt;v:Email>lassila@w3.org&lt;/v:Email>
+  &lt;/rdf:Description>
+&lt;/rdf:RDF>
+</span></pre>
+</div>
+
+<p>
+One PR version of these descriptions leads to two rolled facts,
+where the RDF subjects map to relations that are active URIs
+(we permit namespace prefixes for PR role names):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">'http://www.w3.org/Home/Lassila'(s:Creator->'http://www.w3.org/staffId/85740').
+'http://www.w3.org/staffId/85740'(v:Name->"Ora Lassila";v:Email->"lassila@w3.org").</span></pre>
+</div>
+
+
+<div class="div5">
+<h2><a id="section_5" name="section_5">5. Typing</a></h2>
+
+<p>
+Up to this point, only untyped individuals and variables were used.
+Here we proceed to an optional PR type extension expressed via
+<a href="http://www.w3.org/2001/tag/doc/qnameids-2002-04-30">QNames</a> that URI-reference
+RDF or OWL classes. Since it concerns individuals and variables wherever they occur,
+PR typing is orthogonal to the 'positional/rolled' distinction.
+</p>
+
+<p>
+Basically, individuals such as "Peter Miller" and variables such as Customer
+can be typed by prefixing them with a URI referencing their RDF or OWL member class,
+say 'http://e-biz.org/taxonomy#Custclass'. As in XML namespaces, this
+is performed with a colon separator between the typing namespace and the local name,
+which is an individual or a variable. In our case, we obtain QNames (Qualified Names)
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">'http://e-biz.org/taxonomy#Custclass':"Peter Miller"</span></pre>
+</div>
+
+or
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">'http://e-biz.org/taxonomy#Custclass':Customer</span></pre>
+</div>
+
+<p>
+The variables Customer and Product of our introductory Prolog-like discount example
+can be typed by prefixing each occurrence with such a URI reference:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount('http://e-biz.org/taxonomy#Custclass':Customer,
+         'http://e-biz.org/taxonomy#Prodclass':Product,
+         "5.0 percent")  :-       
+   premium('http://e-biz.org/taxonomy#Custclass':Customer),
+   regular('http://e-biz.org/taxonomy#Prodclass':Product).</span></pre>
+</div>
+
+<p>
+However, for such re-occurring URIs we can use
+'constant declarations' similar to XML namespace and N3 prefix declarations.
+For this we just use an ":=" infix,
+here declaring local names c and p for the Customer and Product types, respectively. These
+'shortcuts' are then employed, macro-like, instead of the full URIs:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c:='http://e-biz.org/taxonomy#Custclass'.
+p:='http://e-biz.org/taxonomy#Prodclass'.
+
+discount(c:Customer,p:Product,"5.0 percent")  :-       
+   premium(c:Customer), regular(p:Product).</span></pre>
+</div>
+
+<p>
+The direct typing use of URIs is also possible for our F-logic-like discount example:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->'http://e-biz.org/taxonomy#Custclass':Customer;
+         prod->'http://e-biz.org/taxonomy#Prodclass':Product;
+         rebate->"5.0 percent") :-
+   premium(cust->'http://e-biz.org/taxonomy#Custclass':Customer),
+   regular(prod->'http://e-biz.org/taxonomy#Prodclass':Product).</span></pre>
+</div>
+
+<p>
+But again 'URI declarations' are preferable here:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c:='http://e-biz.org/taxonomy#Custclass'.
+p:='http://e-biz.org/taxonomy#Prodclass'.
+
+discount(cust->c:Customer;prod->p:Product;rebate->"5.0 percent") :-
+   premium(cust->c:Customer), regular(prod->p:Product).</span></pre>
+</div>
+
+<p>
+For some PR formulas it will be advantageous to type certain individuals/variables directly
+-- e.g., single-occurrence variables -- and other ones via URI declarations.
+These typing possibilities are also available for all kinds of PR formulas,
+including combined positional/rolled formulas, facts, and queries.
+</p>
+
+
+
+
+<p>
+Typing can be combined with webizing as shown by the following example
+(the webizing "+>" has highest precedence, followed by the typing ":" and the rolling "->"):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->'http://e-biz.org/taxonomy#Custclass':"Peter Miller"+>'http://www.peter_miller.org').</span></pre>
+</div>
+
+
+
+
+<p>
+Type checking for individuals can be performed statically;
+for variables, it must normally be deferred to run-time.
+For RDF Schema and OWL Light class hierarchies, greatest-lower-bound techniques from
+order-sorted logics can be used for computing type intersections.
+In combination with OWL DL and OWL Full, techniques from description logic classifiers
+will become necessary.
+</p>
+
+<div class="div6">
+<h2><a id="section_6" name="section_6">6. Implementation</a></h2>
+
+<p>Marcel Ball has implemented a Java-based parser and generator to translate between the
+PR syntax and OO RuleML.
+
+<ul>
+  <li>The parser servlet is available online at <a href="http://198.164.40.138:8080/conv-20030715/servlet/AsciiToRuleML">http://198.164.40.138:8080/conv-20030715/servlet/AsciiToRuleML</a>.
+</li>
+
+<li>The generator servlet is available online at <a href="http://198.164.40.138:8080/conv-20030715/servlet/RuleMLtoAscii">http://198.164.40.138:8080/conv-20030715/servlet/RuleMLtoAscii</a>.
+</li>
+</ul>
+
+It will probably be easy to write such a parser in any other language as well.
+</p>
+
+<p>To go -- in both directions -- between positional and rolled forms, Stephen Greene
+has XSLT-implemented 'signature' declarations for preserving order and role information,
+which could also be extended to type and mode information; the
+development URL is <a href="http://198.164.40.138/ruleml/ooruleml-xslt/">http://198.164.40.138/ruleml/ooruleml-xslt/</a>, and a URI will later
+be reachable again via <a href="http://www.ruleml.org/indoo">http://www.ruleml.org/indoo</a>. The ideas of 'positionalizing'
+are based on earlier work Michael Sintek and I did at DFKI.</p>
+
+<p>While the rule shorthand syntax is expected to stay as
+a plain text (ASCII) syntax for convenient input and parsing (into OO RuleML),
+the presentation syntax will be able to exploit, with XSLT,
+the possibilities of XHTML (such as font and color
+to differentiate individuals, variables, relations, etc.).
+An early version of such a generator was XSLT-implemented for <a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.pdf">RFML rules</a>.
+Further possibilities arise Unicode and graphics (such as merging the
+two-character symbols ":-", "->", and "+>" into single characters,
+e.g. into a single-character two-shafted backarrow, a normal arrow,
+and a special 'hyperlink' symbol, respectively).
+</p>
+
+
+<div class="div7">
+<h2><a id="section_7" name="section_7">7. Issues</a></h2>
+
+<p>
+A solution for the following issue has been found:
+
+<ol>
+<li>Positional rest variables are separated from previous terms by a "|",
+as in Prolog (rather than using ",,").
+Rolled rest variables are separated from previous terms by a "!"
+(rather than using ";;"). Putting this information into the separator,
+rather than into the variable name, simplifies ensuring that there is
+at most one positional and one rolled rest variable on each level of a cterm
+or an atom; it also enables function expressions (see below) that are 'rest-valued'.
+</li>
+</ol>
+
+</p>
+
+<p>
+Ongoing work includes looking into the following issues,
+along with possible semantic ramifications:
+
+<ol>
+<li>Variables are currently distinguished from individuals using Prolog's first-letter-capitalizing
+convention. This can be easily augmented or replaced by Prolog's first-character-underscore convention. Other first-character conventions such as
+SCL's question mark are being considered as well.
+</li>
+
+<li>Active URIs are currently enclosed in single quotes.
+Other conventions such as N3's angular brackets are also being considered.
+</li>
+
+<li>Of the two-character symbols, ":-" has already been widely used for
+backward implications (even though "<-" has also been used instead),
+"->" has often been used for role-filler slots (but it has also
+been used for forward implications, not employed in PR), and "+>" has apparently
+not been used yet for webizing (and other options for the -- asymmetric -- association
+of language elements with URIs are also being evaluated).
+</li>
+
+<li>For describing objects -- e.g., for RDF's 'about' descriptions --
+active URIs are currently being employed in place of relations.
+Alternative ways of object description include <em>assigning</em> a rolled struct
+to an (active URI) object, <em>applying</em> the struct to it, etc.
+It remains to be worked out which option will be the semantically preferred one.
+</li>
+
+<li>A distinguished symmetric equality predicate could be easily introduced as an "=" infix (also see the next issue on the directed equality of function definitions).
+</li>
+
+<li>Only derivation rules are currently captured.
+Functions and their defining transformation rules will be easy.
+It should also be possible to incorporate certain kinds of reaction rules.
+</li>
+
+<li>Access to order-sorted types is currently being supported.
+The development of further extensions towards OWL DL and OWL Full should be doable.
+</li>
+<li>No <em>relevance</em> differentiations are currently performed for the roles within a given cterm
+or atom.
+The weighted extension of OO RuleML could be transferred to permitting optional role weights in the PR syntax.
+</li>
+</ol>
+
+</p>
+
+</body>
+</html>

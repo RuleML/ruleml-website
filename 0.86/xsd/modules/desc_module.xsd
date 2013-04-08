@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd"
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Description RuleML elements module.
+			This is the XML Schema description elements module for RuleML.
+			File: desc_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+			
+			This module declares the following description RuleML elements:
+			* _rbaselab
+			* _rlab
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** _rbaselab ***
+		content model: (ind)
+		
+		A rulebase label.
+	
+		Rulebases may have an optional label, '_rbaselab', allowing the naming of an entire
+		individual rulebase in a fashion that is accessible within the knowledge representation.
+		These labels use individual constants (or, in hornlog, complex terms).
+
+		For example, this can help for representing prioritization between rulebases, or perhaps
+		to enable forward inferencing of selected rulebase(s).
+	-->
+	<xs:attributeGroup name="_rbaselab.attlist"/>
+	<xs:group name="_rbaselab.content">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_rbaselab.type">
+		<xs:group ref="_rbaselab.content"/>
+		<xs:attributeGroup ref="_rbaselab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rbaselab" type="_rbaselab.type"/>
+	
+	<!--
+		*** _rlab ***
+		content model: (ind)
+
+		A rule label.
+
+		A rule (an imp, fact, or query) may have an optional label, '_rlab', creating accessibility
+		within the knowledge representation. This can help for representing prioritization between
+		rules, for example. These labels use individual constants (or, in hornlog, complex terms).
+		
+		NOTE: rule labels are not required to be unique within a rulebase.
+	-->
+	<xs:attributeGroup name="_rlab.attlist"/>
+	<xs:group name="_rlab.content">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_rlab.type">
+		<xs:group ref="_rlab.content"/>
+		<xs:attributeGroup ref="_rlab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rlab" type="_rlab.type"/>
+	
+</xs:schema>

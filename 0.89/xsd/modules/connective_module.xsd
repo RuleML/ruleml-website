@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of And -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Connective RuleML elements module.
+			This is the XML Schema connectives module for RuleML.
+			File: connective_module.xsd
+			Version: 0.89
+			Last Modification: 2005-05-24
+			
+			This module declares the following RuleML connectives:
+			* Implies
+			* body
+			* head
+			* Equivalent
+			* torso
+			* And
+			* Or
+			* formula			
+			* @mapDirection
+			* @direction
+			* @mapClosure
+			* @closure
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Implies ***
+		content model:
+		( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or), Atom ) )
+
+		An implication rule.
+
+		'Implies' rules are usable as general implications.  They use
+		a conclusion role 'head' followed by a premise role 'body', or, equivalently
+		(since roles constitute unordered elements), a premise role 'body'
+		followed by a conclusion role 'head'.  These roles may also be omitted,
+		the body coming first followed by the head as suggested by the tag name 'Implies'
+		(since the body implies the head).
+
+		e.g.
+		"<Imp>head body</Imp>" stands for "head is implied by body",
+		i.e., "head is true is implied by body is true" or, equivalently,
+		"<Imp>body head</Imp>" stands for "body implies head",
+		i.e., "body is true implies head is true".		
+	-->
+	<xs:attributeGroup name="Implies.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+		<xs:attributeGroup ref="direction.attrib"/>	
+	</xs:attributeGroup>
+	<xs:group name="Implies.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="head"/>
+					<xs:element ref="body"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element ref="body"/>
+					<xs:element ref="head"/>
+				</xs:sequence>			
+				<xs:sequence>
+					<xs:group ref="body.content"/>
+					<xs:group ref="head.content"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Implies.type">
+		<xs:group ref="Implies.content"/>
+		<xs:attributeGroup ref="Implies.attlist"/>
+	</xs:complexType>
+	<xs:element name="Implies" type="Implies.type"/>		
+
+	<!-- 
+		*** body ***
+		content model: (Atom | And | Or)
+	
+		The body of a rule, also known as the "antecedent" or "if" part of the rule.
+
+		The body role is only usable within implication rules.
+	-->
+	<xs:attributeGroup name="body.attlist"/>
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-inner.type"/>
+			<xs:element name="Or" type="Or-inner.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="body.type">
+		<xs:group ref="body.content"/>
+		<xs:attributeGroup ref="body.attlist"/>
+	</xs:complexType>
+	<xs:element name="body" type="body.type"/>
+	
+	<!--
+		*** head ***
+		content model: (Atom)
+		
+		The head of a rule, also known as the "consequent" or "then" part of the rule.
+
+		The head role is only usable within implication rules.
+	-->
+	<xs:attributeGroup name="head.attlist"/>
+	<xs:group name="head.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="head.type">
+		<xs:group ref="head.content"/>
+		<xs:attributeGroup ref="head.attlist"/>
+	</xs:complexType>
+	<xs:element name="head" type="head.type"/>	
+
+	<!--
+		*** Equivalent ***
+		content model:
+		( oid?, ( ( torso, torso) | ( Atom, Atom) ) )
+
+		Syntactic sugar for a pair of conjoined converse 'Implies' expressing equivalence.  An
+		'Equivalent' may have a pair of symmetric 'torso' roles (combining the asymmetric 'head'
+		and 'body').
+	-->
+	<xs:attributeGroup name="Equivalent.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Equivalent.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="torso" minOccurs="2" maxOccurs="2"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:group ref="torso.content" minOccurs="2" maxOccurs="2"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Equivalent.type">
+		<xs:group ref="Equivalent.content"/>
+		<xs:attributeGroup ref="Equivalent.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equivalent" type="Equivalent.type"/>
+	
+	<!--
+		*** torso ***
+		content model: (Atom)
+		
+		A symmetric role used in 'Equivalent' combining the asymmetric 'head' and 'body'.
+	-->
+	<xs:attributeGroup name="torso.attlist"/>
+	<xs:group name="torso.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="torso.type">
+		<xs:group ref="torso.content"/>
+		<xs:attributeGroup ref="torso.attlist"/>
+	</xs:complexType>
+	<xs:element name="torso" type="torso.type"/>	
+
+	<!--
+		*** And ***
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		content model (below Assert): ( oid?, (formula | Atom | Implies | Equivalent | Forall)* )
+		content model (below Query, Implies, Exists, And/Or): ( oid?, (formula | Atom | And | Or)* )
+		content model (below oppo): ( oid?, (formula | Atom), (formula | Atom) )
+
+		Note that below Assert, And can only meaningfully have mapClosure="universal", and
+		below Query, only closure="existential", but this constraint is not in the XSDs
+		(due to the difficulty of later relaxing this requirement in e.g. folog).
+
+		A conjunctive expression.
+
+		"<And>Atom</And>" is equivalent to "Atom", while "<And></And>"
+		is equivalent to "true".
+
+		Note that in naffolog and naffologeq, Naf cannot be prevented from
+		occurring within the head via And/Or due to XSD technical reasons:
+		the two types of the context sensitive tag both being in the content
+		model of Implies would violate the "Element Declarations Consistent" constraint
+		(http://www.w3.org/TR/xmlschema-1/#cos-element-consistent).
+
+		Because not all validators enforce this constraint (e.g. Saxon), the
+		modules and schemas retain the types and redefinitions to prevent Naf
+		from occurring, but they are commented out.
+	-->
+	<xs:attributeGroup name="And-assert.attlist">
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="And-query.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>	
+	<xs:attributeGroup name="And-inner.attlist"/>
+	<xs:group name="And-top.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>			
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-top-and.type"/>
+				<xs:group ref="formula-top-and.content"/>
+			</xs:choice>	
+		</xs:sequence>			
+	</xs:group>	
+	<xs:group name="And-inner.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or.type"/>		
+				<xs:group ref="formula-and-or.content"/>
+			</xs:choice>		
+		</xs:sequence>			
+	</xs:group>
+	<!-- The following content model is not actually used; see above. -->
+	<xs:group name="And-head.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or-head.type"/>		
+				<xs:group ref="formula-and-or-head.content"/>
+			</xs:choice>		
+		</xs:sequence>			
+	</xs:group>
+	<xs:group name="And-oppo.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>
+			<xs:choice minOccurs="2" maxOccurs="2">
+				<xs:element name="formula" type="formula-oppo.type"/>		
+				<xs:group ref="formula-oppo.content"/>		
+			</xs:choice>		
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="And-assert.type">
+		<xs:group ref="And-top.content"/>
+		<xs:attributeGroup ref="And-assert.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="And-query.type">
+		<xs:group ref="And-inner.content"/>
+		<xs:attributeGroup ref="And-query.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="And-inner.type">
+		<xs:group ref="And-inner.content"/>
+		<xs:attributeGroup ref="And-inner.attlist"/>
+	</xs:complexType>
+	<!-- The following type is not actually used; see above. -->
+	<xs:complexType name="And-head.type">
+		<xs:group ref="And-head.content"/>
+		<xs:attributeGroup ref="And-inner.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="And-oppo.type">
+		<xs:group ref="And-oppo.content"/>
+		<xs:attributeGroup ref="And-inner.attlist"/>
+	</xs:complexType>	
+	<xs:element name="And" type="And-inner.type"/>
+
+	<!--
+		*** Or ***
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.		
+		
+		content model: ( oid?, (formula | Atom | And | Or)* )
+		
+		Under Query, Or may have attribute closure="existential"; elsewhere, it may not
+		have any attributes.
+
+		"<Or>Atom</Or>" is equivalent to "Atom".
+
+		Note that in naffolog and naffologeq, Naf cannot be prevented from
+		occurring within the head via And/Or due to XSD technical reasons:
+		the two types of the context sensitive tag both being in the content
+		model of Implies would violate the "Element Declarations Consistent" constraint
+		(http://www.w3.org/TR/xmlschema-1/#cos-element-consistent).
+
+		Because not all validators enforce this constraint (e.g. Saxon), the
+		modules and schemas retain the types and redefinitions to prevent Naf
+		from occurring, but they are commented out.
+	-->
+	<xs:attributeGroup name="Or-query.attlist">	
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Or-inner.attlist"/>
+	<xs:group name="Or.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or.type"/>
+				<xs:group ref="formula-and-or.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<!-- The following content model is not actually used; see above. -->
+	<xs:group name="Or-head.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-and-or-head.type"/>
+				<xs:group ref="formula-and-or-head.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Or-query.type">
+		<xs:group ref="Or.content"/>
+		<xs:attributeGroup ref="Or-query.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Or-inner.type">
+		<xs:group ref="Or.content"/>
+		<xs:attributeGroup ref="Or-inner.attlist"/>
+	</xs:complexType>
+	<!-- The following type is not actually used; see above. -->
+	<xs:complexType name="Or-head.type">
+		<xs:group ref="Or-head.content"/>
+		<xs:attributeGroup ref="Or-inner.attlist"/>
+	</xs:complexType>	
+	<xs:element name="Or" type="Or-inner.type"/>
+
+	<!--
+		*** formula ***
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		content model (below top level And): ( Atom | Implies | Equivalent | Forall )
+		content model (below And/Or): (Atom | And | Or)
+		content model (below oppo): (Atom)
+
+		The formula within an And or Or.  This is a metarole which may be left implicit.
+
+		Note that "formula" may also appear below "Forall".  See the quantifier module for details.
+		
+		(Note that this must be distinguished from when below Forall, even though the content model
+		is the same, because in hornlogeq, Equal is permitted in top level Ands but not in Forall.)
+	-->
+	<xs:attributeGroup name="formula.attlist"/>
+	<xs:group name="formula-top-and.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element ref="Implies"/>			
+			<xs:element ref="Equivalent"/>			
+			<xs:element ref="Forall"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:group name="formula-and-or.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-inner.type"/>
+			<xs:element name="Or" type="Or-inner.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="formula-oppo.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<!-- The following content model is not actually used; see above. -->	
+	<xs:group name="formula-and-or-head.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-head.type"/>
+			<xs:element name="Or" type="Or-head.type"/>
+		</xs:choice>
+	</xs:group>	
+	<xs:complexType name="formula-top-and.type">
+		<xs:group ref="formula-top-and.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="formula-and-or.type">
+		<xs:group ref="formula-and-or.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="formula-oppo.type">
+		<xs:group ref="formula-oppo.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<!-- The following type is not actually used; see above. -->	
+	<xs:complexType name="formula-and-or-head.type">
+		<xs:group ref="formula-and-or-head.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>	
+
+	<!--
+		*** @mapDirection ***
+		
+		The mapDirection attribute indicates the intended direction of implication rule
+		inferencing falling within its element's scope.  It has a neutral default value of
+		"bidirectional".
+	-->
+	<xs:attributeGroup name="mapDirection.attrib">
+		<xs:attribute name="mapDirection" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<!--
+		*** @direction ***
+		
+		The direction attribute indicates the intended direction of implication rule
+		inferencing in a rulebase.  It has a neutral default value of "bidirectional".
+	-->
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @mapClosure ***
+		
+		The mapClosure attribute indicates how the free variables falling within its
+		element's scope are quantified.
+	-->
+	<xs:attributeGroup name="mapClosure.attrib">
+		<xs:attribute name="mapClosure" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="universal"/>
+					<xs:enumeration value="existential"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>	
+
+	<!--
+		*** @closure ***
+		
+		The closure attribute indicates how the free variables of its element
+		are quantified.
+	-->
+	<xs:attributeGroup name="closure.attrib">
+		<xs:attribute name="closure" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="universal"/>
+					<xs:enumeration value="existential"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+</xs:schema>

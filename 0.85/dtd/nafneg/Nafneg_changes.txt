@@ -1,0 +1,15 @@
+<!-- RuleML sublanguage XML DTD changes to include both strong and weak negation -->
+<!-- (aka classical negation and negation as failure) -->
+
+<!-- _body, and & or's content models are extended to also permit both neg(ation) and naf -->
+<!ENTITY % _body.content "(atom | neg | naf | and | or)">
+<!ENTITY % and.content "((atom | neg | naf | or)*)">
+<!ENTITY % or.content "((atom | neg | naf | and)*)">
+
+<!-- the naf element negates the specified atom (by default, i.e. negation as failure) -->
+<!ENTITY % naf.content "(atom | neg)">
+<!ELEMENT naf %naf.content;>
+
+<!-- the neg element negates the specified atom (explicitly, i.e. classical or "strong" negation) -->
+<!ENTITY % neg.content "(atom)">
+<!ELEMENT neg %neg.content;>

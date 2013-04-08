@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+Test Example (Import)
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY rif "http://www.w3.org/2007/rif#">
+  <!ENTITY xs  "http://www.w3.org/2001/XMLSchema#">
+]>
+
+<Document
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#">
+  <directive>
+    <Import>
+      <location>http://sample1.org</location>
+      <profile>http://sample2.org</profile>
+    </Import>
+  </directive>
+  <payload>
+    <Group/>
+  </payload>
+</Document>

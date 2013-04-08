@@ -1,0 +1,16 @@
+<!-- XML DTD for a 'UR' Horn-Logic RuleML sublanguage, including negation as failure (NAF) -->
+<!-- File: nafurhornlog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of -->
+<!-- common new elements) are found in hornlog_mod.mod because they are common in this DTD and hornlog as well -->
+<!ENTITY % hornlog.mod SYSTEM "hornlog_mod.mod">
+%hornlog.mod;
+
+<!-- this module inherits from the (NAF) 'UR' Datalog RuleML sublanguage (nafurdatalog) -->
+<!ENTITY % nafurdatalog_include SYSTEM "nafurdatalog.dtd">
+%nafurdatalog_include;
+
+<!-- URI's can also be used under an optional href attribute of ctors as used for RDF predicates -->
+<!ATTLIST ctor href %URI; #IMPLIED>

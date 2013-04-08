@@ -1,0 +1,183 @@
+default namespace this = inherit
+#default namespace = "http://www.ruleml.org/0.91/xsd"
+namespace xs = "http://www.w3.org/2001/XMLSchema"
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+dc:title [ "RuleML Explicit Datatype Emulation" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, explicit datatype" ]
+dc:description [
+    "The expansion module for explicit datatyping for the complete-form serialization."
+]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# Union Datatypes
+anySimpleTypeForElements.datatype.choice |=
+    duration.datatype.choice
+    | dateTime.datatype.choice
+    | time.datatype.choice
+    | date.datatype.choice
+    | gYearMonth.datatype.choice
+    | gYear.datatype.choice
+    | gMonthDay.datatype.choice
+    | gDay.datatype.choice
+    | gMonth.datatype.choice
+    | boolean.datatype.choice
+    | base64Binary.datatype.choice
+    | hexBinary.datatype.choice
+    | float.datatype.choice
+    | decimal.datatype.choice
+    | double.datatype.choice
+    | anyURI.datatype.choice
+    | QName.datatype.choice
+    | NOTATION.datatype.choice
+    | String.datatype.choice
+    | normalizedString.datatype.choice
+    | Token.datatype.choice
+    | language.datatype.choice
+    | Name.datatype.choice
+    | NCName.datatype.choice
+    | NMTOKEN.datatype.choice
+    | NMTOKENS.datatype.choice
+    | ENTITY.datatype.choice
+    | ENTITIES.datatype.choice
+    | integer.datatype.choice
+    | nonPositiveInteger.datatype.choice
+    | negativeInteger.datatype.choice
+    | long.datatype.choice
+    | int.datatype.choice
+    | short.datatype.choice
+    | byte.datatype.choice
+    | nonNegativeInteger.datatype.choice
+    | unsignedLong.datatype.choice
+    | unsignedInt.datatype.choice
+    | unsignedByte.datatype.choice
+    | positiveInteger.datatype.choice
+# Primitive Datatypes
+duration.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:duration" },
+    xsd:duration
+dateTime.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:dateTime" },
+    xsd:dateTime
+time.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:time" },
+    xsd:time
+date.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:date" },
+    xsd:date
+gYearMonth.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:gYearMonth" },
+    xsd:gYearMonth
+gYear.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:gYear" },
+    xsd:gYear
+gMonthDay.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:gMonthDay" },
+    xsd:gMonthDay
+gDay.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:gDay" },
+    xsd:gDay
+gMonth.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:gMonth" },
+    xsd:gMonth
+boolean.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:boolean" },
+    xsd:boolean
+base64Binary.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:base64Binary" },
+    xsd:base64Binary
+hexBinary.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:hexBinary" },
+    xsd:hexBinary
+float.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:float" },
+    xsd:float
+decimal.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:decimal" },
+    xsd:decimal
+double.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:double" },
+    xsd:double
+anyURI.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:anyURI" },
+    xsd:anyURI
+QName.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:QName" },
+    xsd:QName
+NOTATION.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:NOTATION" },
+    xsd:NOTATION
+String.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:string" },
+    xsd:string
+# Derived Types
+normalizedString.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:normalizedString" },
+    xsd:normalizedString
+Token.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:token" },
+    xsd:token
+language.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:language" },
+    xsd:language
+Name.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:Name" },
+    xsd:Name
+NCName.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:NCName" },
+    xsd:NCName
+NMTOKEN.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:NMTOKEN" },
+    xsd:NMTOKEN
+NMTOKENS.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:NMTOKENS" },
+    xsd:NMTOKENS
+ENTITY.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:ENTITY" },
+    xsd:ENTITY
+ENTITIES.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:ENTITIES" },
+    xsd:ENTITIES
+integer.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:integer" },
+    xsd:integer
+nonPositiveInteger.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:nonPositiveInteger" },
+    xsd:nonPositiveInteger
+negativeInteger.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:negativeInteger" },
+    xsd:negativeInteger
+long.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:long" },
+    xsd:long
+int.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:int" },
+    xsd:int
+short.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:short" },
+    xsd:short
+byte.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:byte" },
+    xsd:byte
+nonNegativeInteger.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:nonNegativeInteger" },
+    xsd:nonNegativeInteger
+unsignedLong.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:unsignedLong" },
+    xsd:unsignedLong
+unsignedInt.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:unsignedInt" },
+    xsd:unsignedInt
+unsignedByte.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:unsignedByte" },
+    xsd:unsignedByte
+positiveInteger.datatype.choice |=
+    attribute xsi:type { xsd:QName "xs:positiveInteger" },
+    xsd:positiveInteger

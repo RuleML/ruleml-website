@@ -1,0 +1,21 @@
+<!-- XML DTD for a 'UR'-Centered Binary Datalog RuleML sublanguage, including negation as failure (NAF) -->
+<!-- File: nafurcbindatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- the metarole _slot's content model is extended to permit var(iable)s in addition to inds -->
+<!ENTITY % _slot.content "(ind | var)">
+
+<!-- atom's content model is also extended to permit vars -->
+<!ENTITY % atom.content "((_opr, (_slot)*, (ind | var), (ind | var), (_slot)*) | ((_slot)*, (ind | var), (ind | var), (_slot)*, _opr))">
+
+<!-- this module inherits from the (NAF) 'UR'-Centered Binary Ground-Datalog RuleML sublanguage (nafurcbindatagroundlog) -->
+<!-- note the modifications to previously declared elements above (using parameter entites, which override -->
+<!-- the entities specified in DTDs higher in hierarchy) and the additional var element below -->
+<!ENTITY % nafurcbindatagroundlog_include SYSTEM "nafurcbindatagroundlog.dtd">
+%nafurcbindatagroundlog_include;
+
+<!-- the new logical variable argument, as in logic programming -->
+<!ENTITY % var.content "(#PCDATA)">
+<!ELEMENT var %var.content;>
+<!ATTLIST var type CDATA #IMPLIED>

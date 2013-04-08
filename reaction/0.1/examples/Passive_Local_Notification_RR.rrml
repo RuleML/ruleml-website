@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a local passive notification reaction rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+Prova AA formalization of passive (message style) rule
+
+dummyHead() :- 
+  rcvMsg(XID, Protocol, From, inform, input(PayLoad)), %inline reaction rule
+  dummy(), % normal literals
+  sendMsg(XID,Protocol,From,inform,echo(PayLoad)), % inline reaction rule
+  dummy().
+
+ -->
+ 
+<Assert>
+
+	<Implies>
+	   <head>
+	      <Atom><Rel>dummyHead</Rel></Atom>
+	   </head>
+	   <body>
+	     <And>
+	      
+	      <Reaction kind="e" exec="passive">
+	        <event>	           
+	               <Message mode="inbound" directive="inform">
+	                   <oid><Var>XID</Var></oid>
+	                   <protocol><Var>Protocol</Var></protocol>
+	                   <sender><Var>From</Var></sender>	                   
+	                   <content><Inform><Atom><Rel>input</Rel><Var>PayLoad</Var></Atom></Inform></content>
+	               </Message>	               	           
+	        </event>  
+	      </Reaction>
+	      
+	      <Atom> <Rel>dummy</Rel> </Atom>
+	      
+	      <Reaction kind="a" exec="passive"> 
+	            <action> 	              
+	                  <Message mode="outbound" directive="inform">
+	                     <oid><Var>XID</Var></oid>
+	                     <protocol><Var>Protocol</Var></protocol>
+	                     <sender><Var>From</Var></sender>	                    
+	                     <content><Inform><Atom><Rel>echo</Rel><Var>PayLoad</Var></Atom></Inform></content>
+	                   </Message>	                   
+	            </action>
+	      </Reaction>
+	           
+	      <Atom> <Rel>dummy</Rel> </Atom>
+	      
+	     </And>
+	    </body>
+	</Implies>
+	      
+
+
+
+</Assert>
+
+</RuleML>

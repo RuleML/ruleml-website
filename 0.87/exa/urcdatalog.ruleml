@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/urcdatalog.xsd" direction="backward">
+
+<!-- a trivial example rulebase for testing the 'UR'-Centered Datalog RuleML sublanguage -->
+
+<Imp>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Slot><Ind>t</Ind><Var>b</Var></Slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Var>z</Var>
+     </Atom>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Var>y</Var>
+      <Ind href="some_URI">Frank</Ind>
+      <Ind href="some_other_URI">Todd</Ind>
+      <Ind href="another_URI">John</Ind>
+    </Atom>
+    </And>
+  </body>
+</Imp>
+
+<Query>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel href="some_URI">some relation</Rel></opr>
+        <Slot><Ind>role_name1</Ind><Var>role 1 variable</Var></Slot>
+        <Ind>constant a</Ind>
+        <Ind href="another_URI">constant b</Ind>
+        <Ind href="another_URI">constant c</Ind>
+        <Ind href="another_URI">constant d</Ind>
+        <Ind href="another_URI">constant e</Ind>
+        <Slot><Ind>role_name2</Ind><Var>role 2 variable</Var></Slot>
+      </Atom>
+      <Atom>
+        <opr><Rel href="some_URI">another relation</Rel></opr>
+        <Ind>constant f</Ind>
+        <Ind>constant g</Ind>
+        <Ind>constant h</Ind>
+      </Atom>
+    </And>
+  </body>
+  <rlab><Ind>rule (query) label</Ind></rlab>
+</Query>
+
+<Fact>
+  <rlab><Ind>rule (fact) label</Ind></rlab>
+  <head>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind href="URI">constant i</Ind>
+      <Ind>constant j</Ind>
+      <Slot><Ind>role_name3</Ind><Ind>role 3</Ind></Slot>
+    </Atom>
+  </head>
+</Fact>
+
+<rbaselab><Ind>test rulebase</Ind></rbaselab>
+</Rulebase>

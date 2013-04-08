@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns="http://gregsML.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gregsML.com">
+	<xs:attributeGroup name="Room.attlist">
+		<xs:attribute name = "kind" use = "required">
+			<xs:simpleType>
+				<xs:restriction base ="xs:NMTOKEN">
+
+					<xs:enumeration value = "apartment"/>	
+					<xs:enumeration value = "house"/>
+					<xs:enumeration value = "dormitory"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:group name="Room.content">
+	<xs:sequence>
+	<xs:element ref="Owner"/>
+	<xs:element ref="Occupant"/>
+	<xs:element ref="Furnishings"/>
+	<xs:element ref="Fixtures"/>
+	
+	</xs:sequence>
+	</xs:group>
+	<xs:complexType name = "Room.type">
+	<xs:group ref ="Room.content"/>
+	<xs:attributeGroup ref="Room.attlist"/>
+	</xs:complexType>
+<xs:element name="Room" type = "Room.type" />
+<xs:element name="Owner" type = "Owner.attlist" />
+<xs:group name ="Owner.content">
+<xs:sequence>
+<xs:element name ="Owner" type ="Owner.type" />
+
+</xs:sequence>
+</xs:group>
+
+<xs:element name="Occupant" type = "Occupant.attlist" />
+<xs:element name="Furnishing" type = "Furnishing.attlist" />
+<xs:element name="Fixture" type = "Fixture.attlist" />
+
+
+</xs:schema>

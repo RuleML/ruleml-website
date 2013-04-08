@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<Assert mapClosure="universal">
+
+<!--
+   Unoriented with interpreted functions on lhs and rhs
+   (no constructor discipline):
+
+   ((x+y)+z) = (x+(y+z))
+
+   Can rewrite ((1+2)+3) to (1+(2+3)) 
+   Can rewrite (1+(2+3)) to ((1+2)+3)
+ 
+ 
+<Equal oriented="no">
+  <Expr>
+    <Fun in="no">plus</Fun>
+    <Expr>
+      <Fun in="yes">plus</Fun>
+      <Var>x</Var>
+      <Var>y</Var>
+    </Expr>
+    <Var>z</Var>
+  </Expr>
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Var>x</Var>
+    <Expr>
+      <Fun in="yes">plus</Fun>
+      <Var>y</Var>
+      <Var>z</Var>
+    </Expr>
+  </Expr>
+</Equal>
+-->
+
+<!--
+  Oriented with interpreted functions on lhs and rhs
+  (no constructor discipline):
+
+  ((x+y)+z) -> (x+(y+z))
+
+  Can rewrite ((1+2)+3) to (1+(2+3)) 
+ -->
+ 
+<Equal oriented="yes">
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Expr>
+      <Fun in="yes">plus</Fun>
+      <Var>x</Var>
+      <Var>y</Var>
+    </Expr>
+    <Var>z</Var>
+  </Expr>
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Var>x</Var>
+    <Expr>
+      <Fun in="yes">plus</Fun>
+      <Var>y</Var>
+      <Var>z</Var>
+    </Expr>
+  </Expr>
+</Equal>
+
+
+<!--
+  Unoriented with interpreted functions only on top-level of lhs and rhs
+  (constructor discipline):
+
+  ([x+y]+z) = (x+[y+z])
+
+  Can rewrite ([1+2]+3) to (1+[2+3]) 
+  Can rewrite (1+[2+3]) to ([1+2]+3)
+-->
+
+<Equal oriented="yes">
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>x</Var>
+      <Var>y</Var>
+    </Expr>
+    <Var>z</Var>
+  </Expr>
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Var>x</Var>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>y</Var>
+      <Var>z</Var>
+    </Expr>
+  </Expr>
+</Equal>
+
+
+
+<!--
+  Oriented with interpreted functions only on top-level of lhs and rhs
+  (constructor discipline):
+
+  ([x+y]+z) -> (x+[y+z])
+  Can rewrite ([1+2]+3) to (1+[2+3])
+
+ -->
+ 
+<Equal oriented="yes">
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>x</Var>
+      <Var>y</Var>
+    </Expr>
+    <Var>z</Var>
+  </Expr>
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Var>x</Var>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>y</Var>
+      <Var>z</Var>
+    </Expr>
+  </Expr>
+</Equal>
+
+
+
+<!--
+  Unoriented with interpreted function only on top-level of lhs and uninterpreted functions on rhs:
+
+  NOT ALLOWED: Top-level uninterpreted function on rhs prevents any right-to-left rewriting.
+  
+  Oriented with interpreted function only on top-level of lhs and uninterpreted functions on rhs
+  (constructor discipline):
+
+  ([x+y]+z) -> [x+[y+z]]
+
+  Can rewrite ([1+2]+3) to [1+[2+3]]
+-->
+
+<Equal oriented="no">
+  <Expr>
+    <Fun in="yes">plus</Fun>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>x</Var>
+      <Var>y</Var>
+    </Expr>
+    <Var>z</Var>
+  </Expr>
+  <Expr>
+    <Fun in="no">plus</Fun>
+    <Var>x</Var>
+    <Expr>
+      <Fun in="no">plus</Fun>
+      <Var>y</Var>
+      <Var>z</Var>
+    </Expr>
+  </Expr>
+</Equal>
+
+</Assert>
+
+</RuleML>

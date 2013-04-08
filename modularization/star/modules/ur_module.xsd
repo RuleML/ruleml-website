@@ -1,0 +1,29 @@
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			UR RuleML attribute module.
+			This is the XML Schema ur module for RuleML.
+			File: ur_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following RuleML attribute:
+			* ur
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:attributeGroup name="href.attrib">
+		<xs:attribute name="href" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+		
+</xs:schema>

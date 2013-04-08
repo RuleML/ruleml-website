@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+>
+<!--
+	content model:
+	(  slot*, ( arg, arg, slot )?  )
+-->
+
+	<xs:redefine schemaLocation="restriction.xsd">
+		<!--
+			restrict from "1 or more" to "exactly 2"
+		-->
+		<xs:group name="Atom.content">
+			<xs:sequence>
+				<xs:element ref="slot" minOccurs="0"/>
+				<xs:sequence minOccurs="0">
+					<xs:element ref="arg" minOccurs="2" maxOccurs="2"/>
+					<xs:element ref="slot"/>
+				</xs:sequence>
+			</xs:sequence>
+		</xs:group>		
+		
+	</xs:redefine>
+	
+</xs:schema>

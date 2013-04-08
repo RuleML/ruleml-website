@@ -1,0 +1,18 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Data Terms - Simple" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, term, data, simple" ]
+dc:description [ "The expansion module for simple data terms." ]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends the following RuleML elements, attributes and patterns:
+#            DataTerm.choice
+
+## Data terms may have simple content.
+DataTerm.choice |= Data_simple-node.choice
+# For the declaration of simple data terms, see the simple data modules (data_simple_expansion_module).

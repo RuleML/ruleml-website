@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Query xmlns="http://www.ruleml.org/0.88/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/urcbindatalog.xsd">
+	<And>
+		<!-- Ground query asking for a triple -->
+		<formula>
+			<Atom>
+				<opr>
+					<Rel wref="http://dublincore.org/documents/dces/index.shtml.rdf#Creator" />
+				</opr>
+				<Ind wref="http://www.w3.org/Home/Lassila" />
+				<Ind>Ora Lassila</Ind>
+			</Atom>
+		</formula>
+	</And>
+</Query>

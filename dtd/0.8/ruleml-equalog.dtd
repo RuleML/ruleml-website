@@ -1,0 +1,79 @@
+<!-- An XML DTD for a (Flat) Equational-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-17 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % equalog.module "INCLUDE">
+
+
+<!-- Only a flat equational logic (without function nestings) is defined here. -->
+<!-- A nested equational logic would require atom versions, called 'relationships', -->
+<!-- with embedded applications, generalizing the flat nanos defined here; -->
+<!-- analogously, nano versions with embedded applications, are called 'applications' -->
+<!-- To keep one kind of 'eq' and 'and' (rather than needing two of both), -->
+<!-- only (flat) atoms and nanos are used here. For flatting use 'eq' variables. -->
+
+
+<![%equalog.module;[
+
+<!-- an expression is usable within equational formulas -->
+<!-- expr uses ind, var, or cterm terms or nano formulas -->
+
+<!ENTITY % expr "(ind | var | cterm | nano)">
+
+]]>
+
+
+<!ENTITY % datalog-and-hornlog.module "IGNORE">
+
+<!ENTITY % hornlog SYSTEM "ruleml-hornlog.dtd">
+%hornlog;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- _head role is usable within 'imp' rules and 'fact' assertions -->
+<!-- _body role is usable within 'imp' rules -->
+<!-- _head uses an atomic formula or an equational formula -->
+<!-- _body uses an atomic formula, an equational formula, or an 'and' -->
+<!-- 'eq' in head and body permits an equational logic (cf. RFML) -->
+
+<!ELEMENT _head (atom | eq)>
+<!ELEMENT _body (atom | eq | and)>
+
+
+<!-- an 'and' is usable within a body -->
+<!-- and uses zero or more atomic or equational formulas -->
+
+<!ELEMENT and ((atom | eq)*)>
+
+
+<!-- an 'eq' is usable within a head, a body, and an 'and' -->
+<!-- and uses two expressions -->
+
+<!ELEMENT eq (%expr;, %expr;)>
+
+
+<![%equalog.module;[
+
+<!-- nano formulas are usable within expressions (see above ENTITY Declarations) -->
+<!-- nano element uses _opf ("operator of functions") role followed by three (flat: non-nano) kinds of arguments, -->
+<!-- or vice versa, much like atoms and cterms (explained in ruleml-hornlog.dtd) -->
+
+<!ELEMENT nano ((_opf, (ind | var | cterm)*) | ((ind | var | cterm)+, _opf))>
+
+<!-- _opf is usable within nanos -->
+<!-- _opf uses fun(ction) symbol -->
+
+<!ELEMENT _opf (fun)>
+
+]]>
+
+
+<!-- user-defined function names -->
+<!ELEMENT fun  (#PCDATA)>

@@ -1,0 +1,28 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Stripe-Skipping Module for Xor" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, stripe-skipping for Xor" ]
+dc:description [ "expansion module for extending stripe-skipping to Xor." ]
+dc:date ["2011-10-01"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends the following RuleML choice patterns:
+#            * formula_Xor
+
+# All the RuleML roles below are made collapsible by allowing
+# substitution of their content model for the role pattern.
+
+## Stripe-skipping is allowed asynchronously for formulas in exclusive disjunctions.
+formula_Xor-edge.choice |= formula_Xor.content
+
+# 
+
+
+

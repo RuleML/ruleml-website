@@ -1,0 +1,25 @@
+<!ENTITY % foformula "(Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists)">
+
+<!ELEMENT Atom (Rel, (Ind | Var | Cterm)*)>
+<!ELEMENT Cterm (Ctor, (Ind | Var | Cterm)*)>
+
+<!ELEMENT And ((%foformula;)*)>
+<!ELEMENT Or ((%foformula;)*)>
+<!ELEMENT Neg (%foformula;)>
+<!ELEMENT Implies (%foformula;, %foformula;)>
+<!ELEMENT Equivalent (%foformula;, %foformula;)>
+
+<!ELEMENT Forall (Var+, %foformula;)>
+<!ELEMENT Exists (Var+, %foformula;)>
+
+<!ELEMENT Ind  (#PCDATA)>
+<!ELEMENT Var  (#PCDATA)>
+<!ELEMENT Rel  (#PCDATA)>
+<!ELEMENT Ctor  (#PCDATA)>
+
+<!ATTLIST And closub (universal | existential) #IMPLIED>
+<!ATTLIST Or closub (universal | existential) #IMPLIED>
+
+<!ATTLIST Atom closure (universal | existential) #IMPLIED>
+<!ATTLIST Implies closure (universal | existential) #IMPLIED>
+<!ATTLIST Equivalent closure (universal | existential) #IMPLIED>

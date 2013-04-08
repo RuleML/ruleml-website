@@ -1,0 +1,7 @@
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .ruleml .rnc .rng .nvdl .xhtml
+AddType application/relax-ng-compact-syntax .rnc
+AddType text/xml .ruleml
+AddType text/xhtml+xml .xhtml
+AddType application/xml .nvdl .rng .sch
+Redirect /0.91/rnc http://ruleml.org/0.91/relaxng/naffologeq_relaxed.rnc

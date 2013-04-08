@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+<name>import1.5_data</name>
+<creationDate>2008</creationDate>
+<author>Stephen Harrison</author>
+<copyright>Copyright 2008 GNU/GPL License.</copyright>
+<authorEmail>joomla@bestdownloadsites.com</authorEmail>
+<authorUrl>http://www.bestdownloadsites.com</authorUrl>
+<version>2.0</version>
+  <description>
+  <h1>All imported content has been successfully installed.</h1>
+</description>
+
+	<!-- Custom install file //-->
+	<installfile>install.import1.5_data.php</installfile>
+	<uninstallfile>uninstall.import1.5_data.php</uninstallfile>
+
+	<!-- Install SQL files //-->
+	<install>
+		<sql>
+			<!-- UTF Database files //-->
+			<file driver="mysql" charset="utf8">install.mysql.utf.sql</file>
+			<file driver="mysql">install.mysql.nonutf8.sql</file>
+		</sql>
+	</install>
+
+	<!-- Uninstallation SQL files //-->
+	<uninstall>
+		<sql>
+			<!-- UTF Database files //-->
+			<file driver="mysql" charset="utf8">uninstall.mysql.utf.sql</file>
+		</sql>
+	</uninstall>
+		<!-- Site files //-->
+
+	
+<administration>
+<menu link="option=import1.5_data">Imported Content</menu>
+            <!-- Administration Main File Copy Section -->
+      <!-- Note the folder attribute: This attribute describes the folder
+         to copy FROM in the package to install therefore files copied
+         in this section are copied from /admin/ in the package -->
+      <files folder="">
+   <!-- Site Main File Copy Section -->
+	       <filename>import1.5_data.php</filename>
+	       <filename>install.mysql.utf.sql</filename>
+			<filename>install.mysql.nonutf8.sql</filename>
+			<filename>install.import1.5_data.php</filename>
+			<filename>uninstall.import1.5_data.php</filename>
+			<filename>uninstall.mysql.utf.sql</filename>
+			
+			
+			
+	</files>
+   </administration>
+   </install>

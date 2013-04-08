@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Reaction rule schema part of Reaction RuleML
+			This is the XML Schema for reaction rules.
+			File: rr.xsd
+			Version: 0.1
+			Last Modification: 2006-10-13
+			
+			This schema declares the following Reaction rule elements and attributes:
+			
+				  * includes Reaction
+				  * redefines RuleBase by adding Reaction
+				  * redefines formula by adding Reaction
+				  * redefines Assert by adding Reaction			
+				  * redefines Retract by adding Reaction
+				  * redefines Implies by adding Reaction (lokale Reaction Rule)
+ 
+				  
+				  
+				  * includes rr_module and algebra module  (complex event algebra)
+				  
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/modules/algebra_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/modules/rr_module.xsd"/>
+
+	<xs:redefine schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/hornlog2rr.xsd">
+
+		<!--
+			rr schema redefines RuleML by adding Message
+			note the new content model of RuleML: 
+			( oid?,  (Assert | Retract | Query)*, Message? )
+						
+		-->	
+
+		<xs:group name="RuleML.content">
+			<xs:sequence>
+				<xs:group ref="RuleML.content"/>				
+				<xs:element ref="Message" minOccurs="0"/>
+			</xs:sequence>	
+		</xs:group>
+
+		<!--
+			rr schema redefines Assert and Retract by adding Reaction
+			note the new content model of Assert: 
+			( oid?, (formula | Rulebase | Atom | Neg | Implies | Reaction | Equivalent | Entails | Forall)* )
+						
+		-->	
+		   
+			  <xs:group name="formula-assert.content">
+				 <xs:choice>
+					 <xs:group ref="formula-assert.content"/>
+					 <xs:element ref="Reaction"/>
+				 </xs:choice>
+			 </xs:group>
+		
+		
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+		<!--
+			add Reaction so that Rulebase's content model is:
+			( oid?, (formula | Atom | Implies | Equivalent | Forall | Equal | Neg | Reaction)* )
+		-->
+			<xs:group name="formula-rulebase.content">
+				<xs:choice>
+					<xs:group ref="formula-rulebase.content"/>
+					<xs:element ref="Reaction"/>
+				</xs:choice>	
+			</xs:group>	
+
+
+		<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		
+		
+		<!-- 
+		        rr redefines Implies adding local Reaction rules
+		
+		 	note the new content model of Implies:
+			( oid?, (head, body) | (body, head) | ( (Atom | Reaction | And | Or | Equal | Naf | Neg | Assert | Retract ), (Atom | Equal | Neg) ) )
+		-->
+					
+				<xs:group name="body.content" >
+					<xs:choice>
+							<xs:group ref="body.content" />
+							<xs:element ref="Reaction" />							
+					</xs:choice>	
+				</xs:group>
+							
+				
+		<!--
+			add Reaction so that formula's content model (below And/Or) is:
+			(Atom | Naf | Neg | And | Or | Equal | Reaction)
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Reaction" />
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Naf, Neg to And/Or so that their content models are:
+			( oid?, (formula | Atom | Naf | Neg | And | Or | Equal | Reaction)* )
+		-->	
+		
+	
+ 	</xs:redefine>
+
+</xs:schema>

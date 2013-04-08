@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.9/xsd" xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            ECA-RuleML schema part of RBSLA.
+			This is the XML Schema event condition action schema for RBSLA.
+			File: eca.xsd
+			Version: 0.2
+			Last Modification: 2005-11-26
+			
+			This schema declares the following RBSLA elements and attributes:
+				  
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.2/modules/event-algebra_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.2/modules/eca_module.xsd"/>
+
+	<xs:redefine schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.2/hornlog2rbsla.xsd">
+
+		<!--
+				eca schema redefines Assert by adding ECA
+		-->	
+		   
+			  <xs:group name="formula-assert.content">
+				 <xs:choice>
+					 <xs:group ref="formula-assert.content"/>
+					 <xs:element ref="ECA"/>
+				 </xs:choice>
+			 </xs:group>
+		
+		<!--
+				note the new content model of Assert: ( oid?, (formula | Atom | Implies | Equivalent | Forall | Equal | Neg | TestCase | ECA )* )
+		-->
+		<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<!--
+				eca schema redefines Retract
+		-->
+			
+			<xs:group name="atom_retract.content">
+				<xs:sequence>
+				     <xs:choice>
+						<xs:group ref="atom_retract.content" />
+						<xs:element ref="ECA"  />
+					</xs:choice>
+				</xs:sequence>
+			</xs:group>
+		<!--
+				note the new content model of Retract : ( (oid | Atom | ECA )*, TestCase? )
+		-->
+
+
+	</xs:redefine>
+	
+
+
+</xs:schema>

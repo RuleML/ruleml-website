@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/dtd/0.85/urcbindatagroundfact.dtd">
+<!-- a trivial example rulebase for testing the 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage -->
+
+<rulebase xmlns="http://www.ruleml.org/inspec" xsi:schemaLocation="http://www.ruleml.org/inspec http://www.ruleml.org/modularization/star/urcbindatagroundfact.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<query>
+		<_body>
+			<and>
+				<atom>
+					<_opr>
+						<rel href="some_URI">some relation</rel>
+					</_opr>
+					<_slot name="role_name1">
+						<ind>role 1</ind>
+					</_slot>
+					<ind>constant a</ind>
+					<ind href="another_URI">constant b</ind>
+					<_slot name="role_name2" weight="0.4">
+						<ind>role 2</ind>
+					</_slot>
+				</atom>
+				<atom>
+					<_opr>
+						<rel href="some_URI">another relation</rel>
+					</_opr>
+					<ind>constant c</ind>
+					<ind>constant d</ind>
+				</atom>
+			</and>
+		</_body>
+		<_rlab>
+			<ind>rule (query) label</ind>
+		</_rlab>
+	</query>
+	<fact>
+		<_rlab>
+			<ind>rule (fact) label</ind>
+		</_rlab>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>yet another relation</rel>
+				</_opr>
+				<ind href="URI">constant e</ind>
+				<ind>constant b</ind>
+				<_slot name="role_name3">
+					<ind>role 3</ind>
+				</_slot>
+			</atom>
+		</_head>
+	</fact>
+	<_rbaselab>
+		<ind>test rulebase</ind>
+	</_rbaselab>
+</rulebase>
+<!--
+expected validation results (using http://www.stg.brown.edu/service/xmlvalid):
+
+Document validates OK.
+-->

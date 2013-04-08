@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/inspec"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Datalog RuleML sublanguage
+			File: urcbindatalog.xsd
+			Version: 0.85
+			Last Modification: 2003-12-17
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatagroundlog.xsd">
+		<!-- the metarole _slot's content model is extended to permit var(iable)s in addition to inds -->
+		<xs:group name="_slot.extend">
+			<xs:choice>
+				<xs:group ref="_slot.extend"/>
+				<xs:element ref="var"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			atom's content model is also extended to permit vars:
+			"((_opr, (_slot)*, (ind | var), (ind | var), (_slot)*) | ((_slot)*, (ind | var), (ind | var), (_slot)*, _opr))">
+		-->		
+		<xs:group name="atom.extend.extend">
+			<xs:choice>
+				<xs:group ref="atom.extend.extend"/>
+				<xs:element ref="var"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+	<xs:attributeGroup name="var.attlist"/>
+	<xs:group name="var.content">
+		<!-- content model is "(#PCDATA)" -->
+   	<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="var.type" mixed="true">
+		<xs:group ref="var.content"/>
+		<xs:attributeGroup ref="var.attlist"/>
+	</xs:complexType>
+	<xs:element name="var" type="var.type"/>
+
+</xs:schema>

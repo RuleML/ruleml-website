@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<homepage>
+	<title>Object-Oriented RuleML to Positional RuleML Translators</title>
+	<opening>
+		<center>
+			<big>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+-->]]></code>
+				</box>
+				<box bgcolor="#FFCCCC">R u l e M L</box>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+<--]]></code>
+				</box>
+			</big>
+			<br/>
+			<br/>
+			<h1>Object-Oriented to Positional RuleML Translators</h1>
+			<h2><a href="mailto:stephen.greene@nrc.gc.ca">Stephen Greene</a></h2>
+			<h2>2003-03-26: Version 0.1</h2>
+		</center>
+		<br/>
+		<br/>
+		 XSLT translators between Object-Oriented RuleML and Positional RuleML are provided through this page
+		<br/>
+	</opening>
+
+<uplink href="index.html"/>
+
+<section label="Overview">
+<header>Overview</header>
+<p>
+This is a set of (XSLT-specified) translators for transforming RuleML between its Positional (<a href="http://www.dfki.uni-kl.de/ruleml">version 0.82</a>) and Object-Oriented (<a href="http://www.dfki.uni-kl.de/ruleml/indoo/">version 0.83</a>) specifications.
+</p>
+<p>
+The transformation of Object-Oriented RuleML into Positional RuleML occurs in a three step XSLT 
+translation process. The task of of transforming RuleML has been modularized into a translator which 
+applies the signature for each relation to the metaroles (_r) found within each implementation of the 
+relation; a translator that sorts an object centred RuleML file; and a translator which positionalizes the 
+RuleML by removing all of the metaroles and leaving the contents in a positionalized version of the source document.
+</p>
+<p>
+The transformation of Positional RuleML into Object-Oriented RuleML occurs in a one step XSLT translation. The translator inserts metaroles 
+into the Positional RuleML based on an object-oriented signature.
+</p>
+</section>
+
+<section label="Translators">
+<header>Translators</header>
+<xhtml>
+<table border='2' align="center" cellspacing='4' cellpadding='3' bgcolor="#cfdbff">
+<caption align="top"><b>Object-Oriented RuleML to Positional RuleML Translators</b></caption>
+<tr>
+<td>
+<a href="applysig.xsl">applysig.xsl</a><br/>
+</td>
+<td>
+<a href="nprmlsort.xsl">nprmlsort.xsl</a><br/>
+</td>
+<td>
+<a href="nprml2prml.xsl">nprml2prml.xsl</a><br/>
+</td>
+<td>
+<a href="prml2nprml.xsl">prml2nprml.xsl</a><br/>
+</td>
+</tr>
+</table>
+</xhtml>
+<br/><br/>
+<itemize>
+<item>
+<p>
+<a href="applysig.xsl">applysig.xsl</a> -> This translator takes a defined, object centred, signature and applies this signature 
+to the implementation of each atom within a fact, imp or query. The signature specifies the metaroles 
+(_r) which are required for each fact, imp, or query. Any metaroles that are not defined in the 
+implementation of the relation are inserted as an empty ind (&lt;ind/>), or if they are missing from within
+a body, an empty var (&lt;var/>). The output of the translator is a RuleML file in which each 
+implementation of an atom matches the corresponding signature declaration.
+</p>
+</item>
+<item>
+<p>
+<a href="nprmlsort.xsl">nprmlsort.xsl</a> -> This translator sorts all of the metaroles within an atom.
+The sorting is based on the signature declaration for each atom. If the order attribute of the corresponding signature
+is equal to 'sorted', then the metaroles will be sorted based on the positional order of metaroles in the signature.
+If the order attribute is equal to 'unsorted' then the metaroles, and the signature will be sorted 
+canonically by the name (n)
+attribute of the metarole and the order attribute will be set to 'sorted'. 
+ind or var terms which occur within the instance of an atom as positional 
+terms are not sorted, and remain in their original Positional context. All Positional terms 
+currently occur at the beginning of the sorted, object-oriented metaroles. The output of the translator is a 
+RuleML file in which the metaroles are sorted by name within the signature declaration and within the implementation of each atom.
+</p>
+</item>
+<item>
+<p>
+<a href="nprml2prml.xsl">nprml2prml.xsl</a> -> This translator removes all of the metaroles within an atom, leaving the contents of the 
+metaroles in a positionalized, sorted order. The output of the translator is a RuleML file in which the 
+RuleML is completely Positional, based on the sorted order of nprmlsort.xsl translator, in which 
+undefined metaroles have been filled in by empty ind or var terms by the applysig.xsl translator. The positionalized file contains no metaroles.
+</p>
+</item>
+<item>
+<p>
+<a href="prml2nprml.xsl">prml2nprml.xsl</a> -> This translator takes a Positional RuleML file containing an Object-Oriented signature 
+and applies the signature to the Positional RuleML. The output of the translator is a RuleML file in 
+which the RuleML is Object-Oriented, having a metarole implemented within an atom for each metarole 
+declared in the corresponding signature. The output is unsorted. Any Positional terms occurring 
+within a specific implementation are preserved, in order, at the end of the object centred block.
+</p>
+</item>
+</itemize>
+</section>
+<br/>
+<br/>
+<section label="Explanation">
+<header>Explanation</header>
+<xhtml>
+<table align="center" border="0">
+<caption align="top"><b>Object-Oriented RuleML to Positional RuleML Flow Diagram</b></caption>
+<tr><td>
+<img src="oo2prml.gif"/>
+</td></tr>
+</table>
+</xhtml>
+<p>
+The three translators, applysig.xsl, nprmlsort.xsl, and nprml2prml.xsl must be piped together in order to completely transform  Object-Oriented RuleML to Positional RuleML file. Each translator performs operations on the same set of nodes and is dependant on the output of the translator that is applied before it. 
+The applysig.xsl translator applys the specified object-oriented signature to all of the metaroles ensuring that the output is a complete RuleML file and adheres to the
+provided signature. Once the signature has been applied to the RuleML, it can be sorted by nprmlsort.xsl. This ensures that when the metaroles are removed 
+by nprml2prml.xsl, there is a guaranteed order that is maintained. 
+</p>
+<xhtml>
+<table border="0" align="center">
+<caption align="top"><b>Positional RuleML to Object-Oriented RuleML Flow Diagram</b></caption>
+<tr><td>
+<img src="prml2oorml.gif"/>
+</td></tr>
+</table>
+</xhtml>
+<p>
+The prml2nprml.xsl translator performs the transformation of Positional RuleML (containing an object-oriented signature) to Object-Oriented RuleML in a single
+step. The translator loops through each atom or cterm and applies the signature declaration that responds to the implimentation. The sorted order is not maintained 
+during the transformation and the output is unsorted, Object-Oriented RuleML.
+</p>
+</section>
+<br/>
+<br/>
+<section label="Test Cases">
+<header>Test Cases</header>
+<xhtml>
+<table border='2' align="center" cellspacing='4' cellpadding='3' bgcolor="#cfdbff">
+<caption align="top"><b>Object-Oriented RuleML to Positional RuleML Test Case Examples</b></caption>
+<th>Input Files</th>
+<th colspan='3'><center>Output Files</center></th>
+<tr align="center">
+  <td></td>
+  <td>applysig.xsl</td>
+  <td>nprmlsort.xsl</td>
+  <td>nprml2prml.xsl</td>
+</tr>
+<tr>
+  <td><a href="testcases/SimpleCase.xml">simpleCase.xml</a></td>
+  <td><a href="testcases/SimpleCase1.xml">Complete simpleCase.xml</a></td>
+  <td><a href="testcases/SimpleCase2.xml">Sorted simpleCase.xml</a></td>
+  <td><a href="testcases/SimpleCase3.xml">Positionalized simpleCase.xml</a></td>
+</tr>
+<tr>
+  <td><a href="testcases/ctermCase.xml">ctermCase.xml</a></td>
+  <td><a href="testcases/ctermCase1.xml">Complete ctermCase.xml</a></td>
+  <td><a href="testcases/ctermCase2.xml">Sorted ctermCase.xml</a></td>
+  <td><a href="testcases/ctermCase3.xml">Positionalized ctermCase.xml</a></td> 
+</tr>
+<tr>
+  <td><a href="testcases/complexCase.xml">complexCase.xml</a></td>
+  <td><a href="testcases/complexCase1.xml">Complete complexCase.xml</a></td>
+  <td><a href="testcases/complexCase2.xml">Sorted complexCase.xml</a></td>
+  <td><a href="testcases/complexCase3.xml">Positionalized complexCase.xml</a></td>
+</tr>
+
+</table>
+</xhtml>
+<br/>
+<p>
+The output of each translator is listed under the translators name in the above table. It is used as input for the next translator in the sequence.
+</p>
+<itemize>
+<item>
+SimpleCase.xml -> is a simple test case containing metaroles only as children of atoms. There are no positionalized terms.
+</item>
+<item>
+CtermCase.xml -> is a simple test case containing only cterm tags within atoms.
+</item>
+<item>
+ComplexCase.xml -> is a more complex test case containing cterms within metaroles, positionalized cterms and metaroles mixed with positional terms.
+</item>
+</itemize>
+<br/>
+<br/>
+
+<xhtml>
+<table border='2' align="center" cellspacing='4' cellpadding='3' bgcolor="#cfdbff">
+<caption align="top"><b>Positional RuleML to Object-Oriented RuleML Test Case Examples</b></caption>
+<th>Input Files</th>
+<th colspan='3'><center>Output Files</center></th>
+<tr align="center">
+  <td></td>
+  <td>prml2nprml.xsl</td>
+</tr>
+<tr>
+  <td><a href="testcases/SimpleCasePos.xml">Positional simpleCase.xml</a></td>
+  <td><a href="testcases/SimpleCasePos1.xml">Object-Oriented simpleCase.xml</a></td>
+</tr>
+<tr>
+  <td><a href="testcases/ctermCasePos.xml">Positional ctermCase.xml</a></td>
+  <td><a href="testcases/ctermCasePos1.xml">Object-Oriented ctermCase.xml</a></td>
+</tr>
+<tr>
+  <td><a href="testcases/complexCasePos.xml">Positional complexCase.xml</a></td>
+  <td><a href="testcases/complexCasePos1.xml">Object-Oriented complexCase.xml</a></td>
+</tr>
+</table>
+</xhtml>
+<br/>
+<itemize>
+<item>
+PositionalSimpleCase.xml -> is a simple test case containing positional ind and var terms. It contains an object-oriented signature.
+</item>
+<item>
+PositionalCtermCase.xml -> is a simple test case containing positional cterm tags. It contains an object-oriented signature.
+</item>
+<item>
+PositionalComplexCase.xml -> is a more complex test case containing empty cterms, positionalized cterms and positional terms. It contains an object-oriented signature.
+</item>
+</itemize>
+
+</section>
+<br/>
+<br/>
+<br/>
+	<closing>
+		<p>
+		Site Contact:
+		<a href="http://www.dfki.uni-kl.de/~boley/">Harold Boley</a>.
+		Page Version: 2003-03-28
+			<br/>
+			<br/>
+			<br/>
+			<a name="Practice-Preach"/>
+			<small>"Practice what you preach": XML source of this homepage at <a href="oo2prml.xml">oo2prml.xml</a> (<a href="oo2prml.xml.txt">oo2prml.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> 	stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+		</p>
+	</closing>
+
+
+</homepage>

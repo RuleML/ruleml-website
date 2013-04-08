@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: aux_urcbindatagroundlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- redefine the previous sublanguage in the hierarchy to now permit imps -->
+	<xs:redefine schemaLocation="aux_urcbindatagroundfact.xsd">
+		<xs:group name="rulebase.extend">
+			<xs:choice>
+				<xs:group ref="rulebase.extend"/>
+				<xs:element ref="imp"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+</xs:schema>

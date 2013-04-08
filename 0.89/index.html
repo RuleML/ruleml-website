@@ -1,0 +1,934 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>Schema Specification of RuleML 0.89</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#FFFFFF">
+		<center>
+			<br>
+			<br>
+			<h1>Schema Specification of RuleML 0.89</h1>
+			<h2>
+				David Hirtle,
+				<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, 
+				<a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>,
+				<a href="http://www.cs.sunysb.edu/~kifer">Michael Kifer</a>,<br>
+				<a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>,
+				<a href="http://home.comcast.net/~stabet/">Said Tabet</a>,
+				<a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a>			
+			</h2>
+			
+			<table border="0" align="center">
+			<tr><td colspan="2" align="center"><h2>Version history:</h2></td></tr>
+			<tr>
+<td align="right">2001-01-25 - </td>
+<td><a href="http://www.ruleml.org/indtd.html">Version 0.7</a></td>
+</tr>
+			<tr>
+<td align="right">2001-07-11 - </td>
+<td><a href="http://www.ruleml.org/indtd0.8.html">Version 0.8</a></td>
+</tr>
+			<tr>
+<td align="right">2003-12-09 - </td>
+<td><a href="http://www.ruleml.org/0.85/">Version 0.85</a></td>
+</tr>
+			<tr>
+<td align="right">2004-06-23 - </td>
+<td><a href="http://www.ruleml.org/0.86/">Version 0.86</a></td>
+</tr>
+			<tr>
+<td align="right">2004-08-12 - </td>
+<td><a href="http://www.ruleml.org/0.87/">Version 0.87</a></td>
+</tr>
+			<tr>
+<td align="right">2005-03-01 - </td>
+<td><a href="http://www.ruleml.org/0.88/">Version 0.88</a></td>
+</tr>
+			<tr>
+<td align="right"><h3>2005-05-27 - </h3></td>
+<td><h3><a href="http://www.ruleml.org/0.89/">Version 0.89</a></h3></td>
+</tr>
+			</table>			
+
+			<h2>Latest version: <a href="http://www.ruleml.org/spec/">www.ruleml.org/spec</a>
+</h2>
+			<p>
+			<h2>Quick links:</h2>
+			<h2>
+<a href="http://www.ruleml.org/0.89/xsd/content_models.pdf">Content Models</a>,
+			<a href="http://www.ruleml.org/0.89/xsd">Schemas</a> <small>(<a href="http://www.ruleml.org/0.85/dtd">Archived DTDs</a>)</small>,
+			<a href="http://www.ruleml.org/0.89/xslt/normalizer">Normalizer</a>,
+			<a href="http://www.ruleml.org/0.89/xslt/upgrader">Upgrader</a>, <a href="http://www.ruleml.org/0.89/exa">Examples</a>
+			</h2>
+		</center>
+		<br>
+		
+		<p>This is a revised XML Schema specification for RuleML, version 0.89. This release incorporates long-envisaged new expressiveness building upon the validation
+			stable <a href="http://www.ruleml.org/0.88">RuleML 0.88</a>.
+		 </p>
+		 <p>
+		   Each XML Schema Definition (XSD) in the evolving hierarchy corresponds to a specific RuleML
+		   sublanguage. The implementation uses a
+		   <a href="http://www.w3.org/TR/xhtml-modularization/">modularization approach similar to the one in XHTML</a>
+		   in order to offer appropriate flexibility and accomodate different implementations and approaches.
+		   Note that the Document Type Definition (DTD) specification of RuleML is no longer being maintained,
+		   but will continue to be <a href="http://www.ruleml.org/0.85/dtd">available as an archive</a>.  Tools
+		   capable of converting between XML Schema and DTDs such as <a href="http://www.altova.com/products_ide.html">XMLSpy</a>
+		   are always available.
+		</p>
+		
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Changes">Changes</a></li>
+<li><a href="#Striped Syntax">Striped Syntax</a></li>
+<li><a href="#Modularization">Modularization</a></li>
+<li><a href="#Content Model-Based Approach">Content Model-Based Approach</a></li>
+<li><a href="#XSDs">XSDs</a></li>
+<li><a href="#Examples">Examples</a></li>
+<li><a href="#XSLT-Based Upgrader">XSLT-Based Upgrader</a></li>
+<li><a href="#XSLT-Based Normalizer">XSLT-Based Normalizer</a></li>
+<li><a href="#Validation">Validation</a></li>
+<li><a href="#Appendix">Appendix</a></li>
+<li><a href="#Appendix 1">Appendix 1: XSD for a Datalog subset of RuleML</a></li>
+<li><a href="#Appendix 2">Appendix 2:  Example rulebase in RuleML</a></li>
+<li><a href="#Appendix 3">Appendix 3:  Instructions on validating the example against the XSD</a></li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
+	
+   <p>
+   An introduction to RuleML is given in our <a href="http://www.ruleml.org/papers/tutorial-ruleml.html">tutorial</a>.
+    Also, the main page's <a href="http://www.ruleml.org/index.html#Design">design section</a>
+   discusses the upper layer of the RuleML hierarchy of rules.
+   In that terminology, the system of RuleML XSDs presented here only covers
+   derivation rules, not reaction rules.
+   </p>
+   <p>
+   This is because we think it is important to start with a subset of
+   simple rules, test and refine our principal strategy using these,
+   and then work 'up' to the more general categories of rules in the hierarchy.
+   For this we choose
+   <a href="http://www-lp.doc.ic.ac.uk/UserPages/staff/ft/alp/net/dbs/datalog.html">Datalog</a>,
+   a language corresponding to relational databases
+   (ground facts without complex domains or 'constructors')
+   augmented by views (possibly recursive rules),
+   and work a few steps upwards to further declarative rules
+   as allowed in (equational) Horn logic.
+   
+   </p>	
+
+	<p>Below is a summary of the changes in version 0.89:</p>
+	
+	<ul>
+		<li>new sublanguages providing the modular specification of <a href="http://www.ruleml.org/fol">FOL RuleML</a> as submitted to W3C:
+			<ul>
+<li><a href="xsd/folog.xsd">folog</a></li>
+				<li><a href="xsd/fologeq.xsd">fologeq</a></li>
+				<li><a href="xsd/naffolog.xsd">naffolog</a></li>
+				<li><a href="xsd/naffologeq.xsd">naffologeq</a></li>
+			</ul>
+		</li>
+		<li>new sublanguages providing the serialization of <a href="http://www.daml.org/services/swsl/report/swsl/#sec-markup">SWSL</a>:
+			<ul>
+				<li>HiLog Layer: <a href="xsd/hohornlog.xsd">hohornlog</a>
+</li>
+				<li>Explicit Equality: <a href="xsd/hohornlogeq.xsd">hohornlogeq</a>
+</li>
+				<li>Frames Layer: <a href="xsd/framehohornlogeq.xsd">framehohornlogeq</a>
+</li>
+			</ul>
+		</li>
+		<li>new tag &lt;Reify&gt; introduced to support reification (a kind of instantiation or quasi-quotation)</li>		
+		<li>new attributes 'minCard' and 'maxCard' introduced to allow cardinality constraints</li>
+		<li>new tag &lt;Data&gt; introduced, besides &lt;Ind&gt;, optionally specifying an <a href="http://www.w3.org/TR/xmlschema-2/#built-in-datatypes">XML Schema built-in datatype</a> for checking during validation</li>
+		<li>new tag &lt;Mutex&gt; introduced to support mutual exclusion</li>
+		<li>'innerclose' renamed to 'mapClosure', and analogous 'mapDirection' introduced</li>
+		<li>optional positional rest role &lt;repo&gt; and slotted rest role &lt;resl&gt; introduced</li>
+		<li>RDF blank nodes as Skolem individual constants</li>
+		<li>oid's are now permitted in all atoms, connectives and quantifiers</li>
+		<li>webizing is optionally included in all sublanguages, eliminating the need for the entire 'ur' branch of the family of languages</li>
+	</ul>
+
+	<p>For more information, see the <a href="#Changes">Changes</a> section.</p>
+
+<p>The grammar of RuleML 0.89 (i.e. the content
+	model of each individual tag) is available as a single document called 
+	<a href="xsd/content_models.pdf">Content Models for RuleML</a> in addition to being encoded within
+	the <a href="xsd/">XML Schemas</a>.  Issues relevant to RuleML 0.89 were already discussed in the <a href="http://www.ruleml.org/fol/#Issues">Issues List of 
+	FOL RuleML</a>, in particular issues 1. and 9.
+	</p>
+<p>A presentation entitled <a href="http://www.ruleml.org/0.89/RuleML-schema-spec-2005-06-08.ppt">From RuleML 0.88 to 0.89: Sublanguages Beyond Horn Logic - Validation and Translation</a> is also available.</p>
+<p>See also a recent publication accepted for the <a href="http://www.w3.org/2004/12/rules-ws/">W3C Rules Workshop</a> in Washington: <a href="http://www.ruleml.org/w3c-ws-rules/implementing-ruleml-w3c-ws.html">Implementing RuleML Using Schemas, Translators, and Bidirectional Interpreters</a>.</p>
+
+<h2><a name="Changes">Changes</a></h2>
+	
+<p>RuleML 0.89 consists of the following changes relative to the previous version <a href="http://www.ruleml.org/0.88/">0.88</a>.
+</p>
+
+<p>Four new sublanguages providing the modular specification of <a href="http://www.ruleml.org/fol">FOL RuleML</a> have been added to the family:</p>
+			<ul>
+<li>
+<a href="xsd/folog.xsd">folog</a>: FOL RuleML as submitted to W3C</li>
+				<li>
+<a href="xsd/fologeq.xsd">fologeq</a>: FOL RuleML with Equal</li>
+				<li>
+<a href="xsd/naffolog.xsd">naffolog</a>: FOL RuleML with Naf (negation-as-failure)</li>
+				<li>
+<a href="xsd/naffologeq.xsd">naffologeq</a>: FOL RuleML with both Equal and Naf</li>
+			</ul>
+<p>Another three new sublanguages are also added to provide the serialization of the
+<a href="http://www.daml.org/services/swsl/report/swsl/#sec-markup">Semantic Web Services Language (SWSL)</a>:</p>
+			<ul>
+				<li>HiLog Layer: <a href="xsd/hohornlog.xsd">hohornlog</a>
+</li>
+				<li>Explicit Equality: <a href="xsd/hohornlogeq.xsd">hohornlogeq</a>
+</li>
+				<li>Frames Layer: <a href="xsd/framehohornlogeq.xsd">framehohornlogeq</a>
+</li>
+			</ul>
+<p>A new tag &lt;Reify&gt; is introduced to support reification, a kind of instantiation or quasi-quotation.  It
+is permitted anywhere a regular term (e.g. Ind or Var) is, in all sublanguages, and allows any RuleML tag
+available within the current sublanguage as content, treating it as a term for performing reasoning on.  For example,
+the following is a reification of the <a href="http://www.ruleml.org/0.8/#Context">'own' rule</a>:</p>
+<p><b><pre>
+ &lt;Reify&gt;
+   &lt;Implies&gt;
+     &lt;And&gt;
+       &lt;Atom&gt;
+         &lt;Rel&gt;buy&lt;/Rel&gt;
+         &lt;Var&gt;person&lt;/Var&gt;
+         &lt;Var&gt;merchant&lt;/Var&gt;
+         &lt;Var&gt;object&lt;/Var&gt;
+       &lt;/Atom&gt;
+       &lt;Atom&gt;
+         &lt;Rel&gt;keep&lt;/Rel&gt;
+         &lt;Var&gt;person&lt;/Var&gt;
+         &lt;Var&gt;object&lt;/Var&gt;
+       &lt;/Atom&gt;
+     &lt;/And&gt;
+     &lt;Atom&gt;
+       &lt;Rel&gt;own&lt;/Rel&gt;
+       &lt;Var&gt;person&lt;/Var&gt;
+       &lt;Var&gt;object&lt;/Var&gt;
+     &lt;/Atom&gt;
+   &lt;/Implies&gt;
+ &lt;/Reify&gt;</pre></b></p>
+
+<p>See the <a href="http://www.daml.org/services/swsl/report/swsl/#ruleml-reification">SWSL report</a> for more details on &lt;Reify&gt;.</p>
+<p>Two new attributes 'minCard' and 'maxCard' are introduced to allow cardinality constraints on slots.  For example,
+the following specifies that the cardinality of a slot is no less than 1 and no more than 2:</p>
+<p><b><pre>
+ &lt;slot mincard=&quot;1&quot; maxcard=&quot;2&quot;&gt;...&lt;/slot&gt;
+</pre></b></p>
+
+<p>Another important addition is &lt;Data&gt; that may optionally specify an
+<a href="http://www.w3.org/TR/xmlschema-2/#built-in-datatypes">XML Schema built-in datatype</a> (e.g. date, integer, string) for checking during validation using the 'xsi:type' attribute.
+For example, the following are all correctly enforced during validation:</p>
+<p><b><pre>
+ &lt;Data xsi:type=&quot;xs:string&quot;&gt;test&lt;/Data&gt;
+ &lt;Data xsi:type=&quot;xs:nonNegativeInteger&quot;&gt;12&lt;/Data&gt;
+ &lt;Data xsi:type=&quot;xs:dateTime&quot;&gt;2002-10-10T17:00:00Z&lt;/Data&gt;</pre></b></p>
+<p>And, as expected,</p>
+<p><b><pre>
+ &lt;Data xsi:type=&quot;xs:short&quot;&gt;10000000&lt;/Data&gt;
+</pre></b></p>
+<p>fails, where <a href="http://www.w3.org/2001/03/webdata/xsv">XSV</a> returns the following:</p>
+<p><b><pre>
+ &lt;invalid char=&quot;1&quot; code=&quot;cvc-complex-type.1.2.2&quot; line=&quot;61&quot; resource=&quot;file:///datalog.ruleml&quot;&gt;
+  element content failed type check: 10000000&gt;32767
+ &lt;/invalid&gt;</pre></b></p>
+<p>Note that &lt;Data&gt; without an xsi:type attribute allows unrestricted text, as in <a href="http://www.ruleml.org/submission/ruleslite/concretesyntax.html">RuleML Lite</a>, and also that the following namespace
+declaration must be included to refer to XSD's built-in datatypes (as present in <a href="http://www.ruleml.org/0.89/exa/datalog.ruleml">datalog.ruleml</a>):</p>
+<p><b><pre>
+ xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;
+</pre></b></p>
+<p>Finally, note that other terms (e.g. Ind and Var) may only have <i>user-defined</i> types via the existing 'type' attribute.  Ind roughly corresponds to resources in RDF, while Data corresponds with RDF literals.</p>
+
+<p>Mutual exclusion is possible with the new &lt;Mutex&gt; tag, allowable as the first child of the new &lt;Protect&gt; performative (optionally
+wrapped by the &lt;warden&gt; role introduced to maintain RuleML's <a href="#Striped Syntax">striped syntax</a>).  A &lt;Mutex&gt; states that it is a
+contradiction for a particular pair of literals (known as the &quot;opposers&quot; and denoted by &quot;oppo&quot;)
+to be inferred, given another optional particular condition (known as the &quot;given&quot;, marked up as &quot;mgiv&quot;).  For example:</p>
+<p><b><pre>
+ &lt;Mutex&gt;
+   &lt;oppo&gt;
+     &lt;And&gt;
+       &lt;Hterm&gt;
+         &lt;Con&gt;pricediscount&lt;/Con&gt;
+         &lt;Var&gt;CUST&lt;/Var&gt;
+         &lt;Var&gt;Y&lt;/Var&gt;
+       &lt;/Hterm&gt;
+       &lt;Hterm&gt;
+         &lt;Con&gt;pricediscount&lt;/Con&gt;
+         &lt;Var&gt;CUST&lt;/Var&gt;
+         &lt;Var&gt;Z&lt;/Var&gt;
+       &lt;/Hterm&gt;
+     &lt;/And&gt;
+   &lt;/oppo&gt;
+   &lt;mgiv&gt;
+     &lt;Neg&gt;
+       &lt;Equal&gt;
+         &lt;Var&gt;Y&lt;/Var&gt;
+         &lt;Var&gt;Z&lt;/Var&gt;
+       &lt;/Equal&gt;
+     &lt;/Neg&gt;
+   &lt;/mgiv&gt;
+ &lt;/Mutex&gt;</pre></b></p>
+<p>See Benjamin Grosof's <a href="http://ebusiness.mit.edu/bgrosof/#gclp-rr-99k">Courteous Logic Programming</a> for more details.</p>
+
+<p>Introduced to Atoms (at hornlog), Cterms and Plex's are an optional positional rest role &lt;repo&gt; and
+a slotted rest role &lt;resl&gt;, both of which may only contain a Var or a Plex.  For example:</p>
+<p><b><pre>
+ &lt;Cterm&gt;
+   &lt;Ctor&gt;person&lt;/Ctor&gt;
+   &lt;Var&gt;who&lt;/Var&gt;
+   &lt;repo&gt;&lt;Var/&gt;&lt;/repo&gt;
+ &lt;/Cterm&gt;
+
+ &lt;Cterm&gt;
+   &lt;Ctor&gt;person&lt;/Ctor&gt;
+   &lt;slot&gt;&lt;Ind&gt;age&lt;/Ind&gt;&lt;Var&gt;age&lt;/Var&gt;&lt;/slot&gt;
+   &lt;resl&gt;&lt;Var&gt;X&lt;/Var&gt;&lt;/resl&gt;
+ &lt;/Cterm&gt;</pre></b></p>
+<p>With the new &lt;Skolem&gt; term (available in all sublanguages), RDF blank nodes can be captured as
+Skolem individual constants.  For example, POSL's _PeterMillerPC becomes</p>
+<p><b><pre>
+ &lt;Skolem&gt;PeterMillerPC&lt;/Skolem&gt;
+</pre></b></p>
+<p>and Skolem generator '_' becomes</p>
+<p><b><pre>
+ &lt;Skolem/&gt;
+</pre></b></p>
+
+<p>Object identifiers (&lt;oid&gt;) are now permitted in all atoms, connectives and quantifiers, now available for the first time
+in all instances of And (not just directly under Assert), Or, Naf and Neg.</p>
+
+<p>The 'innerclose' attribute is renamed to 'mapClosure', and an analogous 'mapDirection' attribute is introduced.  The
+new naming convention reflects attribute 'mapping' through XML trees as with</p>
+<p><b><pre>
+ &lt;TypeTag mapAttribute=&quot;...&quot;&gt;&lt;c1&gt;. . .&lt;/c1&gt;. . .&lt;cN&gt;. . .&lt;/cN&gt;&lt;/TypeTag&gt;
+</pre></b></p>
+<p>basically acting like</p>
+<p><b><pre>
+ &lt;TypeTag&gt;&lt;c1 attribute=&quot;...&quot;&gt;. . .&lt;/c1&gt;. . .&lt;cN attribute=&quot;...&quot;&gt;. . .&lt;/cN&gt;&lt;/TypeTag&gt;
+</pre></b></p>
+
+<p>Webizing is optionally included in all sublanguages, eliminating the need for the entire 'ur' branch of
+the family of languages.  However, bindatalog, bindatagroundlog and bindatagroundfact remain for the time being.  See
+the <a href="#Modularization">updated modularization model</a> for a clearer picture.</p>
+
+<h2><a name="Striped Syntax">Striped Syntax</a></h2>
+
+<p>There are two kinds tags in RuleML: method-like 'role' tags and class-like 'type' tags.  The two are easily
+distinguished by their initial letter, much like the convention used in Java: role tags start with a lower-case
+letter, whereas type tags start with an upper-case letter.  For example, &lt;head&gt; is a role tag and
+&lt;Ind&gt; is a type tag.</p>
+<p>Furthermore, type and role tags alternate in RuleML.  For example, notice the alternation in this a fact
+asserting that John sells XMLBible to Mary:</p>
+<p><b><pre>
+ &lt;Atom&gt;
+   &lt;opr&gt;
+     &lt;Rel&gt;sell&lt;/Rel&gt;
+   &lt;/opr&gt;
+   &lt;arg index=&quot;1&quot;&gt;
+     &lt;Ind&gt;John&lt;/Ind&gt;
+   &lt;/arg&gt;
+   &lt;arg index=&quot;2&quot;&gt;
+     &lt;Ind&gt;Mary&lt;/Ind&gt;
+   &lt;/arg&gt;
+   &lt;arg index=&quot;3&quot;&gt;
+     &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+   &lt;/arg&gt;
+ &lt;/Atom&gt;
+</pre></b></p>
+<p>This is known as the &quot;striped syntax&quot; of RuleML, and is important for compatibility with RDF.
+Because this is quite verbose, all role tags can also be skipped (in the spirit of Sandro Hawke's 
+<a href="http://esw.w3.org/topic/StripeSkipping">StripeSkipping</a>), leaving a more compact form. 
+For example, the above fact can be shortened to:</p>
+
+<p><b><pre>
+ &lt;Atom&gt;
+   &lt;Rel&gt;sell&lt;/Rel&gt;
+   &lt;Ind&gt;John&lt;/Ind&gt;
+   &lt;Ind&gt;Mary&lt;/Ind&gt;
+   &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+ &lt;/Atom&gt;
+</pre></b></p>
+
+<p>Note that there is no loss of information, because all role tags can be reconstructed based on the
+remaining type tags.  In fact, this reconstruction (from the latter positional form to the former slotted form) can be done automatically via XSLT, as with the
+<a href="http://www.ruleml.org/0.88/#XSLT-Based%20Normalizer">Normalizer</a> in 0.88.</p>
+<p>This gives the syntax of RuleML a lot of flexibility because it allows either a compact or expanded form 
+(or any combination thereof), where the compact form is more user-friendly and the expanded (normalized)
+form is more compatible with other languages.</p>
+<h2><a name="Modularization">Modularization</a></h2>
+		
+		<p>The most current model of the modularization of RuleML is available at <a href="http://www.ruleml.org/modularization/#Model">http://www.ruleml.org/modularization/#Model</a>.</p>
+		<p>The <a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">modularization used for
+		   Versions 0.7 and 0.8</a> was inverted in <a href="../0.85/Inheritance_diagram.gif">RuleML 0.85</a>
+		   to be more intuitive.  The motivating factors behind this switch were
+		   simplicity (a single root with two distinct branches), consistency (inheritance in a single
+		   direction, for obvious super/subclass relationships) and efficiency (non-redundant
+		   implementation).</p>
+		   		   
+       <p>However, a
+		   <a href="http://www.ruleml.org/modularization/#Motivation">limitation within XML Schema</a>
+		   prevented this approach from being easily implemented (resulting in the unstable XSDs in
+		   0.85), so the modularization was <a href="http://www.ruleml.org/modularization">re-analyzed</a>.  This
+		   updated model reflects both the -- now <a href="#Validation">fully-validating</a> -- (XSD)
+		   implementation and expressiveness layering of RuleML, simultaneously capturing both the abstract and concrete.
+		</p>
+	<h2><a name="Content Model-Based Approach">Content Model-Based Approach</a></h2>
+		
+		<p>DTDs have limited support for modularity, but it can be achieved in a roundabout
+		   way using macro-like parameter entities. In particular, the contents of an external
+		   file can be included using an externally-linked parameter entity. For example, the
+		   following includes the contents of
+		   <a href="http://www.ruleml.org/0.85/dtd/datalog.dtd">datalog.dtd</a>:</p>
+		
+		<p>
+<b><pre>
+&lt;!ENTITY % datalog_include SYSTEM &quot;datalog.dtd&quot;&gt;
+%datalog_include;
+</pre></b>
+		</p>
+		
+		<p>Simple inclusion is not enough, though: overriding is also necessary. Previously,
+		   this was managed using INCLUDE/IGNORE sections: the section that declared the element
+		   which had to be changed was simply IGNOREd, then the element was re-declared.</p>
+		
+		<p>In version 0.85, this clumsy method of overriding was replaced with a much more elegent solution
+		wherein every element's content model was explicitly defined by a parameter entity. The rulebase label
+		   '_rbaselab' (now 'oid'), for example, became declared as follows:</p>
+		<p>
+<b><pre>&lt;!ENTITY % _rbaselab.content &quot;(ind)&quot;&gt; 
+&lt;!ELEMENT _rbaselab %_rbaselab.content;&gt;
+</pre></b>
+
+		</p>
+		<p>Since parameter entities can overwrite one another (even across files), this
+		   content model could be easily replaced with another specified in a different DTD altogether,
+		   much like re-assigning a global variable in traditional programming languages. For example,
+		   the content model of the rulebase label '_rbaselab' is just &quot;(ind)&quot; in
+		   <a href="http://www.ruleml.org/0.85/dtd/urcbindatagroundfact.dtd">urcbindatagroundfact.dtd</a>
+		   (as above), but was extended to permit a complex term (thus, becoming &quot;(ind | cterm)&quot;) in
+		   <a href="http://www.ruleml.org/0.85/dtd/hornlog.dtd">hornlog.dtd</a>:</p>
+		<p>
+<b><pre>&lt;!ENTITY % _rbaselab.content &quot;(ind | cterm)&quot;&gt;</pre></b>
+		</p>
+		<p>(Note that this overriding entity must be defined before the inclusion of other files.)</p>
+		<p>A visual demonstration of this process can be found on slide 25 of the
+		   <a href="../0.85/ooruleml-remodularized_schematized.ppt">Object-Oriented RuleML: Re-Modularized
+		      and XML Schematized via Content Models</a> presentation.</p>
+		<p>The content model-based approach to modularization also works for XML Schema, using groups
+		   (and attributeGroups) instead of parameter entities. For example (now using 0.88 syntax, where '_rbaselab' is now 'oid'),</p>
+		<p>
+<b><pre>&lt;!ENTITY % oid.content &quot;(ind)&quot;&gt; 
+&lt;!ELEMENT oid % oid.content;&gt;
+</pre></b>
+		</p>
+		<p>becomes</p>
+		<p>
+<b><pre>&lt;xs:attributeGroup name=&quot;oid.attlist&quot;/&gt;
+&lt;xs:group name=&quot;oid.content&quot;&gt;
+  &lt;xs:choice&gt;
+    &lt;xs:element name=&quot;Ind&quot; type=&quot;Ind-oid.type&quot;/&gt;
+  &lt;/xs:choice&gt;
+&lt;/xs:group&gt;
+&lt;xs:complexType name=&quot;oid.type&quot;&gt;
+  &lt;xs:group ref=&quot;oid.content&quot;/&gt;
+  &lt;xs:attributeGroup ref=&quot;oid.attlist&quot;/&gt;
+&lt;/xs:complexType&gt;
+&lt;xs:element name=&quot;oid&quot; type=&quot;oid.type&quot;/&gt;
+</pre></b>
+		</p>
+		<p>There is no need for workarounds in XSD: <tt>&lt;redefine&gt;</tt> makes the specified
+		changes and includes everything else.  For example,</p>
+		<p>
+<b><pre>&lt;!ENTITY % oid.content &quot;(ind | cterm)&quot;&gt;
+
+&lt;!ENTITY % include SYSTEM &quot;datalog.dtd&quot;&gt;
+%include;
+</pre></b>
+		</p>
+		<p>becomes</p>
+		<p>
+<b><pre>&lt;xs:redefine schemaLocation=&quot;datalog.xsd&quot;&gt;
+  &lt;xs:group name=&quot;oid.content&quot;&gt;
+    &lt;xs:choice&gt;
+      &lt;xs:group ref=&quot;oid.content&quot;/&gt;
+      &lt;xs:element ref=&quot;Cterm&quot;/&gt;
+    &lt;/xs:choice&gt;
+  &lt;/xs:group&gt;
+&lt;/xs:redefine&gt;
+</pre></b>
+		</p>
+	<h2><a name="XSDs">XSDs</a></h2>
+	
+	<p>A stable <a href="xsd/">XML Schema representation</a> of RuleML version 0.89 has been created using an
+	<a href="#Content Model-Based Approach">approach</a> that is consistent with that used in the (version
+	0.85) <a href="http://www.ruleml.org/0.85/dtd">DTDs</a>.</p>
+<h2><a name="Examples">Examples</a></h2>
+	
+	<p>Numerous sample RuleML documents have been prepared and maintained as examples and for testing purposes.  They
+	are stored in the <a href="exa/">Examples directory</a>.  (Examples from previous versions of RuleML are also maintained, e.g.
+	<a href="http://www.ruleml.org/0.88/exa/">0.88 examples</a>).  </p>
+<h2><a name="XSLT-Based Upgrader">XSLT-Based Upgrader</a></h2>
+	
+	<p>Continuing the practice begun in <a href="http://www.ruleml.org/0.86">0.86</a>, an XSLT stylesheet named
+	<a href="xslt/upgrader/088-to-089.xslt">088-to-089.xslt</a> has been created to
+	automatically update RuleML 0.88 documents to 0.89.  For instance,
+	taking the <a href="xslt/upgrader/own-088.ruleml">own example from 0.88</a> as input, the stylesheet outputs
+	the following: <a href="xslt/upgrader/own-089.ruleml">own-089.ruleml</a>. 
+	(See a <a href="xslt/upgrader/own-diff.htm">comparison of these two files</a> generated using
+	<a href="http://www.componentsoftware.com/products/htmldiff/">HTML Diff</a>, noting that the differences are minor since
+0.89 mostly builds on top of 0.88.)  Additional translation
+	output samples are found in the <a href="xslt/upgrader/">Upgrader</a> directory.</p>
+	<p>An XSLT processor which may be used to perform these transformations on a whole directory at once is 
+	<a href="http://www.saxonica.com/">Saxon</a>, using the following command:</p>
+<p><b><pre>   $ java net.sf.saxon.Transform -o 0.89/exa/ 0.88/exa/ 088-to-0.89.xslt</pre></b></p>
+	
+	<p>The stylesheet has also been tested
+	using <a href="http://www.altova.com/products_ide.html">XML Spy</a> (version 2005 sp3).</p>
+<h2><a name="XSLT-Based Normalizer">XSLT-Based Normalizer</a></h2>
+	
+	<p>An XSLT stylesheet has been developed (<a href="http://www.ruleml.org/0.89/xslt/normalizer/089_normalizer.xslt">089_normalizer.xslt</a>) for normalizing the syntax used in a given RuleML 0.89 instance, reconstructing
+	all skipped role tags to be in a fully-expanded, normal form.  For example, the <a href="xslt/normalizer/own_compact.ruleml">compact version of the 'own' example</a>,</p>
+
+<p><b><pre>
+&lt;Assert&gt;
+  &lt;And mapClosure=&quot;universal&quot;&gt;
+    &lt;Implies&gt;
+      &lt;And&gt;
+        &lt;Atom&gt;
+          &lt;Rel&gt;buy&lt;/Rel&gt;
+          &lt;Var&gt;person&lt;/Var&gt;
+          &lt;Var&gt;merchant&lt;/Var&gt;
+          &lt;Var&gt;object&lt;/Var&gt;
+        &lt;/Atom&gt;
+        &lt;Atom&gt;
+          &lt;Rel&gt;keep&lt;/Rel&gt;
+          &lt;Var&gt;person&lt;/Var&gt;
+          &lt;Var&gt;object&lt;/Var&gt;
+        &lt;/Atom&gt;
+      &lt;/And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;own&lt;/Rel&gt;
+        &lt;Var&gt;person&lt;/Var&gt;
+        &lt;Var&gt;object&lt;/Var&gt;
+      &lt;/Atom&gt;
+    &lt;/Implies&gt;
+    ...
+    &lt;Atom&gt;
+      &lt;Rel&gt;keep&lt;/Rel&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+      &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/And&gt;
+&lt;/Assert&gt;</pre></b></p>
+<p>is normalized to the <a href="xslt/normalizer/own_compact-normalized.ruleml">expanded version</a>:</p>
+<p><b><pre>
+&lt;Assert&gt;
+  &lt;content&gt;
+    &lt;And innerclose=&quot;universal&quot;&gt;
+      &lt;formula&gt;
+        &lt;Implies&gt;
+          &lt;body&gt;
+            &lt;And&gt;
+              &lt;formula&gt;
+                &lt;Atom&gt;
+                  &lt;opr&gt;&lt;Rel&gt;buy&lt;/Rel&gt;&lt;/opr&gt;
+                  &lt;arg index=&quot;1&quot;&gt;&lt;Var&gt;person&lt;/Var&gt;&lt;/arg&gt;
+                  &lt;arg index=&quot;2&quot;&gt;&lt;Var&gt;merchant&lt;/Var&gt;	&lt;/arg&gt;
+                  &lt;arg index=&quot;3&quot;&gt;&lt;Var&gt;object&lt;/Var&gt;&lt;/arg&gt;
+                &lt;/Atom&gt;
+              &lt;/formula&gt;
+              &lt;formula&gt;
+                &lt;Atom&gt;
+                  &lt;opr&gt;&lt;Rel&gt;keep&lt;/Rel&gt;&lt;/opr&gt;
+                  &lt;arg index=&quot;1&quot;&gt;&lt;Var&gt;person&lt;/Var&gt;&lt;/arg&gt;
+                  &lt;arg index=&quot;2&quot;&gt;&lt;Var&gt;object&lt;/Var&gt;&lt;/arg&gt;
+                &lt;/Atom&gt;
+              &lt;/formula&gt;
+            &lt;/And&gt;
+          &lt;/body&gt;
+          &lt;head&gt;
+            &lt;Atom&gt;
+              &lt;opr&gt;&lt;Rel&gt;own&lt;/Rel&gt;&lt;/opr&gt;
+              &lt;arg index=&quot;1&quot;&gt;&lt;Var&gt;person&lt;/Var&gt;&lt;/arg&gt;
+              &lt;arg index=&quot;2&quot;&gt;&lt;Var&gt;object&lt;/Var&gt;&lt;/arg&gt;
+            &lt;/Atom&gt;
+          &lt;/head&gt;
+        &lt;/Implies&gt;
+      &lt;/formula&gt;
+      ...
+      &lt;formula&gt;
+        &lt;Atom&gt;
+          &lt;opr&gt;&lt;Rel&gt;keep&lt;/Rel&gt;&lt;/opr&gt;
+          &lt;arg index=&quot;1&quot;&gt;&lt;Ind&gt;Mary&lt;/Ind&gt;&lt;/arg&gt;
+          &lt;arg index=&quot;2&quot;&gt;&lt;Ind&gt;XMLBible&lt;/Ind&gt;&lt;/arg&gt;
+        &lt;/Atom&gt;
+      &lt;/formula&gt;
+    &lt;/And&gt;
+  &lt;/content&gt;
+&lt;/Assert&gt;</pre></b></p>
+<p>(See a <a href="xslt/normalizer/own_compact-diff.htm">comparison of these two files</a> generated using
+	<a href="http://www.componentsoftware.com/products/htmldiff/">HTML Diff</a>.)</p>
+<p>Additional examples are located in the <a href="xslt/normalizer/">Normalizer</a> directory.</p>
+
+<h2><a name="Validation">Validation</a></h2>
+	
+	<p>To ensure validation stability, the <a href="xsd/">0.89 XSDs</a> are
+	tested (using corresponding <a href="exa/">instance documents/examples</a>)
+	with a selection of the most reliable validators. A summary of these validation results follows:</p>
+	
+	<p>
+<a href="http://www.w3.org/2001/03/webdata/xsv">W3C XML Schema Validator (XSV)</a> <small>v 2.10-1</small><br>
+	All examples and schemas validate perfectly except for the binary sublanguages due to a <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2005Feb/0046.html">known bug</a> introduced since 2.7-1.  </p>
+
+	
+   
+   <p>
+<a href="http://www.saxonica.com">Saxon</a> <small>v SA 8.4</small><br>
+   All examples and schemas validate perfectly. Sample output:</p>
+	<p><b><pre> java com.saxonica.Validate -t http://www.ruleml.org/0.89/exa/own.ruleml
+ Saxon-SA 8.4 from Saxonica
+ Java version 1.5.0_03
+ Processing http://www.ruleml.org/0.89/exa/own.ruleml
+ Loading schema document http://www.ruleml.org/0.89/xsd/datalog.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/performative_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/performative_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/desc_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/desc_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/quantifier_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/quantifier_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/connective_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/connective_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/atom_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/atom_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/slot_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/slot_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/term_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/term_module.xsd
+ Loading schema document http://www.ruleml.org/0.89/xsd/modules/ur_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/modules/ur_module.xsd
+ Finished loading schema document http://www.ruleml.org/0.89/xsd/datalog.xsd
+ Execution time: 1022 milliseconds</pre></b></p>
+<h2><a name="Appendix">Appendix</a></h2>
+
+<p>
+Appended below is the XML Schema (version 0.89) for the Datalog
+sublanguage of RuleML (<a href="#Appendix 1">Appendix 1</a>).  Also appended
+below is a simple example rulebase that conforms to that XSD (<a href="#Appendix 2">Appendix 2</a>), 
+and instructions for how to validate the example against the schema 
+(<a href="#Appendix 3">Appendix 3</a>).
+</p>
+<p>
+The entire family of 0.89 XSDs, specified in a modular fashion, are available here:
+<a href="http://www.ruleml.org/0.89/xsd">http://www.ruleml.org/0.89/xsd</a>.
+The XSD files in the main directory represent actual sublanguages of RuleML, whereas
+those in the <a href="http://www.ruleml.org/0.89/xsd/modules">modules subdirectory</a>
+are elementary components included in the main XSDs.  For more information, see the
+<a href="http://www.ruleml.org/modularization/#Model">Modularization</a> section.
+</p>
+<p>
+More sample files -- each referring to the most specific XSD which validates it -- can be
+found at <a href="http://www.ruleml.org/0.89/exa">http://www.ruleml.org/0.89/exa</a>.
+</p>
+<h2><a name="Appendix 1">Appendix 1: XSD for a Datalog subset of RuleML</a></h2>
+
+<p>Source: <a href="xsd/datalog.xsd">datalog.xsd</a>
+</p>
+
+<table border="1" cellpadding="5" bgcolor="#FFFFFF"><tr><td><b><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;xs:schema 
+xmlns=&quot;http://www.ruleml.org/0.89/xsd&quot; 
+xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+targetNamespace=&quot;http://www.ruleml.org/0.89/xsd&quot;
+&gt;
+
+	&lt;xs:annotation&gt;
+		&lt;xs:documentation xml:lang=&quot;en&quot;&gt;
+			XML Schema for a Datalog RuleML sublanguage
+			File: datalog.xsd
+			Version: 0.89
+			Last Modification: 2005-05-26
+		&lt;/xs:documentation&gt;
+	&lt;/xs:annotation&gt;
+
+	&lt;!--
+		Note that datalog is entirely composed of modules and that all other
+		schema drivers rely on it, making it the root of the sublanguage family tree.
+	--&gt;
+
+	&lt;!--
+		Datalog includes the following modules:
+		* performative
+		* desc
+		* quantifier
+		* connective
+		* atom
+		* slot
+		* term
+		* mutex
+		* ur
+
+		For details on each module, including what element and/or attribute declarations
+		they contain, please refer to them individually.
+	--&gt;
+
+	&lt;xs:include schemaLocation=&quot;modules/performative_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/desc_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/quantifier_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/connective_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/atom_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/slot_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/term_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/mutex_module.xsd&quot;/&gt;
+	&lt;xs:include schemaLocation=&quot;modules/ur_module.xsd&quot;/&gt;
+
+&lt;/xs:schema&gt;</pre></b></td></tr></table>
+<h2><a name="Appendix 2">Appendix 2:  Example rulebase in RuleML</a></h2>
+
+<p>Source: <a href="exa/own.ruleml">own.ruleml</a>
+</p>
+<table border="1" cellpadding="5" bgcolor="#FFFFFF"><tr><td><b><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;Assert
+xmlns=&quot;http://www.ruleml.org/0.89/xsd&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/datalog.xsd&quot;&gt;
+
+&lt;!-- start XML comment ...
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+Implies~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+     head *                    body *
+          *                         *
+        Atom~~~~~~~~~~~~~~~~~~     And~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                Rel   Var   Var        Atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     Atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment --&gt;
+
+&lt;And mapClosure=&quot;universal&quot;&gt;
+
+&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;opr&gt;&lt;Rel&gt;own&lt;/Rel&gt;&lt;/opr&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- explicit 'And' --&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;opr&gt;&lt;Rel&gt;buy&lt;/Rel&gt;&lt;/opr&gt;
+        &lt;Var&gt;person&lt;/Var&gt;
+        &lt;Var&gt;merchant&lt;/Var&gt;
+        &lt;Var&gt;object&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+        &lt;opr&gt;&lt;Rel&gt;keep&lt;/Rel&gt;&lt;/opr&gt;
+        &lt;Var&gt;person&lt;/Var&gt;
+        &lt;Var&gt;object&lt;/Var&gt;
+      &lt;/Atom&gt;
+    &lt;/And&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;
+
+&lt;!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. --&gt;
+
+&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;opr&gt;&lt;Rel&gt;buy&lt;/Rel&gt;&lt;/opr&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;merchant&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;Atom&gt;
+      &lt;opr&gt;&lt;Rel&gt;sell&lt;/Rel&gt;&lt;/opr&gt;
+      &lt;Var&gt;merchant&lt;/Var&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;
+ 
+&lt;!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. --&gt;
+ 
+    &lt;Atom&gt;
+      &lt;opr&gt;&lt;Rel&gt;sell&lt;/Rel&gt;&lt;/opr&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+      &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+    &lt;/Atom&gt;
+
+&lt;!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts --&gt;
+ 
+    &lt;Atom&gt;
+      &lt;opr&gt;&lt;Rel&gt;keep&lt;/Rel&gt;&lt;/opr&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+      &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+    &lt;/Atom&gt;
+
+&lt;/And&gt;
+  
+&lt;/Assert&gt;</pre></b></td></tr></table>
+<h2><a name="Appendix 3">Appendix 3:  Instructions on validating the example against the XSD</a></h2>
+
+<table border="1" cellpadding="5" bgcolor="#FFFFFF"><tr><td>
+<b><pre>
+Validating a RuleML 0.88 Sample Document: own.ruleml
+====================================================
+
+1. Direct your browser to </pre></b><a href="http://www.w3.org/2001/03/webdata/xsv">http://www.w3.org/2001/03/webdata/xsv</a>
+<b><pre>(Validator for XML Schema REC (20010502) version, as amended).
+
+2. Enter the following URL of our example RuleML file (or any other) into the textfield
+preceded by &quot;Address(es)&quot;: http://www.ruleml.org/0.89/exa/own.ruleml
+
+3. If desired, check the &quot;Show Warnings&quot; box.
+
+4. Click the &quot;Get Results&quot; button.
+
+Note: The validation may take a while, and may require a full
+refresh when re-validating to avoid caching.
+
+Also note: Depending on your browser, you may want to select a different
+output using the radio buttons just above the &quot;Get Results&quot; button.
+
+***
+ 
+You should get the following output (using the default output):</pre></b>
+
+		<h3>Schema validating with XSV 2.10-1 of 2005/04/22 13:10:49</h3>
+		<ul>
+			<li>
+<b>Target</b>: <tt>http://www.ruleml.org/0.89/exa/own.ruleml</tt><br>   (Real name: http://www.ruleml.org/0.89/exa/own.ruleml<br>    Length: 3817 bytes
+ <br>    Last Modified: Wed, 25 May 2005 18:42:42 GMT<br>    Server: Apache/1.3.27 (Unix)  (Red-Hat/Linux) mod_fastcgi/2.4.2 mod_ssl/2.8.12 OpenSSL/0.9.6b DAV/1.0.3 PHP/4.1.2 mod_perl/1.26)</li>
+			<li>
+<b>docElt</b>: <tt>{http://www.ruleml.org/0.89/xsd}Assert</tt>
+</li>
+			<li>Validation was strict, starting with type <tt>{http://www.ruleml.org/0.89/xsd}:Assert.type</tt>
+</li>
+			<li>
+<b>schemaLocs</b>: http://www.ruleml.org/0.89/xsd -&gt; http://www.ruleml.org/0.89/xsd/datalog.xsd</li>
+			<li>The schema(s) used for schema-validation had no errors</li>
+			<li>No schema-validity problems were found in the target </li>
+		</ul>
+		<hr>
+		<h3>Schema resources involved</h3>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/datalog.xsd</tt>
+ (source: <tt>schemaLoc</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/performative_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/desc_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/quantifier_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/connective_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/atom_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/slot_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/term_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/mutex_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/0.89/xsd/modules/ur_module.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.ruleml.org/0.89/xsd</tt>,
+    succeeded</p>      
+		<hr>
+</td></tr></table>
+<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2005-07-14
+		
+		<br>
+		<br>
+		<br>
+		<a name="Practice-Preach"></a>
+		<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

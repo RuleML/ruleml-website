@@ -1,0 +1,87 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.81/ruleml-urcbindatalog.dtd">
+
+
+<rulebase>
+
+
+<!-- rel-ur-ind triple a la RDF report (http://www.w3.org/TR/REC-rdf-syntax/):
+"Ora Lassila  is the creator of  the resource http://www.w3.org/Home/Lassila."
+"http://www.w3.org/Home/Lassila  has creator  Ora Lassila." -->
+
+<fact>
+ <_head>
+  <atom>
+    <_opr>
+      <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </_opr>
+    <ind href="http://www.w3.org/Home/Lassila"/>
+    <ind>Ora Lassila</ind>
+  </atom>
+ </_head>
+</fact>
+
+
+
+<!-- RDF rule expressing that someone who created a page has also accessed it:
+IF   "Page   has creator   Person"    THEN    "Page   was accessed by   Person"
+-->
+
+
+<imp>
+ <_body>
+  <atom>
+    <_opr>
+      <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </_opr>
+    <var>Page</var>
+    <var>Person</var>
+  </atom>
+ </_body>
+ <_head>
+  <atom>
+    <_opr>
+      <rel href="http://logging.org/vocabulary/xyz.rdf#Accessed"/>
+    </_opr>
+    <var>Page</var>
+    <var>Person</var>
+  </atom>
+ </_head>
+</imp>
+
+
+
+
+<!-- Ground query asking for an (implicit) 'Accessed' triple -->
+
+<query>
+ <_body>
+  <atom>
+    <_opr>
+      <rel href="http://logging.org/vocabulary/xyz.rdf#Accessed"/>
+    </_opr>
+    <ind href="http://www.w3.org/Home/Lassila"/>
+    <ind>Ora Lassila</ind>
+  </atom>
+ </_body>
+</query>
+
+
+<!-- Non-ground query asking for derivable triples not expressible in this DTD -->
+
+<!--
+<query>
+ <_body>
+  <atom>
+    <_opr>
+      <rel href="http://logging.org/vocabulary/xyz.rdf#Accessed"/>
+    </_opr>
+    <var>home page<var/>
+    <var>person<var/>
+  </atom>
+ </_body>
+</query>
+-->
+
+
+</rulebase>

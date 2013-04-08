@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hornlog includes the 'cterm' module -->
+	<xs:include schemaLocation="modules/cterm_module.xsd"/>
+
+	<!-- note the addition of c(omplex )terms and (com)plexs from the cterm module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			add cterms to rulebase labels so that _rbaselab's content model is:
+			(ind | cterm)
+		-->
+		<xs:group name="_rbaselab.content">
+			<xs:choice>
+				<xs:group ref="_rbaselab.content"/>
+				<xs:element ref="cterm"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add cterms to rule labels so that _rlab's content model is:
+			(ind | cterm)
+		-->
+		<xs:group name="_rlab.content">
+			<xs:choice>
+				<xs:group ref="_rlab.content"/>
+				<xs:element ref="cterm"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add cterms and plexs so that atom's content model is:
+			(  ( _opr, (_slot)*, (ind | var | cterm | plex)*, (_slot)* ) |
+                           ( (_slot)*, (ind | var | cterm | plex)+, (_slot)*, _opr )  )
+		-->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:group ref="atom.extend"/>
+					<xs:element ref="cterm"/>
+					<xs:element ref="plex"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>	
+		
+		<!--
+			add cterms and plexs so that _slot's content model is:
+			(ind | var | cterm | plex)
+		-->
+		<xs:group name="_slot.content">
+			<xs:choice>
+				<xs:group ref="_slot.content"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="plex"/>				
+			</xs:choice>
+		</xs:group>	
+			
+	</xs:redefine>
+
+
+</xs:schema>

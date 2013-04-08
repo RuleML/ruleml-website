@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert mapClosure="universal"
+        xmlns="http://www.ruleml.org/0.9/xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/datalog.xsd">
+        
+<oid><Ind>Asserted content, i.e. rules and facts</Ind></oid>
+
+<Implies>
+  <oid>
+    <Ind>
+	Implies 1
+	The discount for a customer buying a product is 5.0 percent
+	if the customer is premium and the product is regular.
+
+	Notice that an individual constant can syntactically be an entire phrase
+	like "5.0 percent". It will unify only with variables and with individuals
+	having exactly the same spelling (incl. spaces). One could refine this markup
+	by introducing a constructor term for "percent[5.0]", thus leaving Datalog
+	towards full Horn logic.
+    </Ind>
+  </oid>
+  <head>
+    <Atom>
+      <op><Rel>discount</Rel></op>
+
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Atom>
+  </head>
+  <body>
+    <And>
+
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+<Implies>
+  <oid>
+    <Ind>
+	Implies 2
+	The discount for a customer buying a product is 7.5 percent
+	if the customer is premium and the product is luxury.
+    </Ind>
+  </oid>
+
+  <head>
+    <Atom>
+      <op><Rel>discount</Rel></op>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Ind>7.5 percent</Ind>
+    </Atom>
+
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+
+        <op><Rel>luxury</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+<Implies>
+  <oid>
+
+    <Ind>
+	Implies 3
+	A customer is premium if
+	their spending has been min 5000 euro in the previous year.
+
+	Notice that "previous year" can again be regarded as an individual constant
+	consisting of an entire phrase. It can also be regarded as a semi-formal construct
+	transitionally used in the process of formalizing a given English business rule in
+	a logic allowing backward temporal references.
+
+	Similarly, "min 5000 euro" can as well be regarded as an individual constant phrase.
+	It can also be regarded as a semi-formal construct ultimately to be replaced by a
+	'greater-than' comparison over numbers with units.
+    </Ind>
+  </oid>
+  <head>
+    <Atom>
+      <op><Rel>premium</Rel></op>
+      <Var>customer</Var>
+
+    </Atom>
+  </head>
+  <body>
+    <Atom>
+      <op><Rel>spending</Rel></op>
+      <Var>customer</Var>
+      <Ind>min 5000 euro</Ind>
+
+      <Ind>previous year</Ind>
+    </Atom>
+  </body>
+</Implies>
+
+  <Atom>
+    <oid>
+      <Ind>
+	Fact 1
+	A Porsche is luxury.
+      </Ind>
+
+    </oid>
+    <op><Rel>luxury</Rel></op>
+    <Ind>Porsche</Ind>
+  </Atom>
+
+  <Atom>
+    <oid>
+      <Ind>
+
+	Fact 2
+	A Honda is regular.
+      </Ind>
+    </oid>
+    <op><Rel>regular</Rel></op>
+    <Ind>Honda</Ind>
+  </Atom>
+
+  <Atom>
+    <oid>
+
+      <Ind>
+	Fact 3
+	Peter Miller's spending has been min 5000 euro in the previous year.
+
+	Notice that "min 5000 euro" and "previous year" directly unify with
+	the identical individual constant phrases of Imp 3. Thus, these
+	semi-formal constructs can be used for debugging the rules already
+	in an early phase of the formalization process.
+      </Ind>
+    </oid>
+    <op><Rel>spending</Rel></op>
+    <Ind>Peter Miller</Ind>
+    <Ind>min 5000 euro</Ind>
+    <Ind>previous year</Ind>
+
+  </Atom>
+
+</Assert>

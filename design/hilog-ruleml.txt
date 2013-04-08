@@ -1,0 +1,419 @@
+RuleML Design Document                                        2005-02-12
+
+
+Hilog RuleML:
+=============
+
+Higher-Order Syntax with Neutralized Constants and Merged Atom-Terms
+====================================================================
+
+
+Harold Boley, Benjamin Grosof, Michael Kifer, Jing Mei, Said Tabet
+
+
+
+Abstract
+~~~~~~~~
+
+This document describes the design of Hilog RuleML, which is to become
+part of the serialization syntax of SWSL-Rules, hence SWSL. This RuleML
+sublanguage neutralizes the Rel, Ctor, and Ind elements into a new Con
+element and merges the Atom and Cterm elements into a new Hterm element.
+Content models for this higher-order syntax are given.
+
+
+Overview
+~~~~~~~~
+
+With 'Hilog' we refer here to the higher-order syntax introduced to
+declarative languages by various languages including, among others,
+Hilog <http://www.cs.sunysb.edu/~warren/xsbbook/node45.html> and
+Relfun <http://www.dfki.uni-kl.de/~vega/relfun.html>. We note that
+these all rely on first-order semantics, as e.g. shown by an 'apply'
+reduction.
+
+Hilog support in RuleML presented us with two opposing desiderata:
+(1) Be more aligned with Hilog and F-logic.
+(2) Be more aligned with current RuleML sublanguages and FOL syntax.
+
+We think that (1) has priority and that a new RuleML sublanguage for
+Hilog (combining the Con and Hterm sublanguages) should be defined,
+with mappings that perform import/export to/from it:
+
+Con introduces 'neutralized' constants (for Rel, Ctor, and Ind).
+Hterm introduces 'merged' Hilog atom-terms (for Atom and Cterm).
+
+For example, in current RuleML, Hilog's f(f(f)) would be marked up
+using Rel, Ctor, and Ind as well as Atom and Cterm:
+
+<Atom>
+  <Rel>f</Rel>
+  <Cterm>
+    <Ctor>f</Ctor>
+    <Ind>f</Ind>
+  </Cterm>
+</Atom>
+
+In the 'neutralized' as well as 'merged' Hilog RuleML, the markup
+just uses Con as well as Hterm:
+
+<Hterm>
+  <Con>f</Con>
+  <Hterm>
+    <Con>f</Con>
+    <Con>f</Con>
+  </Hterm>
+</Hterm>
+
+Since Con entails less RuleML changes than Hterm, and because of a
+one-way dependency, we will begin with Con and then develop Hterm in
+analogy to Con.
+
+Mappings from current RuleML to Hilog RuleML basically perform
+{Rel, Ctor, Ind} --> Con and {Atom, Cterm} --> Hterm.
+Their inverses need to do contextual Con and Hterm disambiguation.
+
+The RuleML version used as the starting point for these changes is
+documented at <http://www.ruleml.org/0.88>. The kernel spec of the
+resulting Hilog RuleML is sketched as content models in the last
+section.
+
+We will use RuleML's distinction of type tags and role tags, refined
+XML elements analogous to Java's distinction of classes and methods.
+
+Regarding clarity, modularity, and the above mappings, we think it is
+better to use the new type tags Con and Hterm in Hilog RuleML than to
+overload existing type tags, say, Ind and Atom, with the extra Hilog 
+interpretation. This seems to make up for the two newly introduced
+tag names. For reasons of uniformity we recommend that all of SWSL,
+including e.g. the Frames Layer, be marked up in the 'Con and Hterm'
+Hilog RuleML style introduced here. Experience will tell if this style
+may have (much) wider applicability.
+
+
+The Con Element
+~~~~~~~~~~~~~~~
+
+Consider a Hilog term in presentation syntax such as this:
+
+transitive(ancestorof)
+
+How do we know if it should be parsed as
+
+<Cterm>
+  <opc><Ctor>transitive</Ctor></opc>
+  <Ind>ancestorof</Ind>
+</Cterm>
+
+or as
+
+<Cterm>
+  <opc><Ctor>transitive</Ctor></opc>
+  <Ctor>ancestorof</Ctor>
+</Cterm>
+
+?
+
+Relying on the stripe-reconstruction principle "The type tag
+in the 1st subelement position has the operator role tag",
+let us rephrase this question in the stripe-skipped fashion:
+
+How do we know if transitive(ancestorof) should be parsed as
+
+<Cterm>
+  <Ctor>transitive</Ctor>
+  <Ind>ancestorof</Ind>
+</Cterm>
+
+or as
+
+<Cterm>
+  <Ctor>transitive</Ctor>
+  <Ctor>ancestorof</Ctor>
+</Cterm>
+
+?
+
+Similarly, for the corresponding presentation syntax fact:
+
+transitive(ancestorof).
+
+How do we know if it should be parsed as
+
+<Atom>
+  <Rel>transitive</Rel>
+  <Ind>ancestorof</Ind>
+</Atom>
+
+or as
+
+<Atom>
+  <Rel>transitive</Rel>
+  <Ctor>ancestorof</Ctor>
+</Atom>
+
+or as
+
+<Atom>
+  <Rel>transitive</Rel>
+  <Rel>ancestorof</Rel>
+</Atom>
+
+?
+
+In this case, there is no clue at all, since solely from the fact
+we don't know if transitive is meant as a 2nd-order relation
+(an ord="2" attribute on the 'transitive' Rel element, or a signature
+declaration for 'transitive', would change this situation).
+
+The context of a single clause may provide a disambiguation clue,
+e.g. the (three occurrences of) ancestorof in operator position in this rule:
+
+ancestorof(?x,?z) <- transitive(ancestorof), ancestorof(?x,?y), ancestorof(?y,?z).
+
+Here the <Rel>ancestorof</Rel> typing is the appropriate one also
+within the <Rel>transitive</Rel> atom.
+
+For closer alignment with Hilog and F-logic we can thus introduce a neutralized
+Con element, a superelement of Rel, Ctor, and Ind that was already used in
+RFML <http://www.relfun.org/rfml>, where the example becomes:
+
+<Atom>
+  <Rel>transitive</Rel>
+  <Con>ancestorof</Con>
+</Atom>
+
+or, further 'neutralized',
+
+<Atom>
+  <Con>transitive</Con>
+  <Con>ancestorof</Con>
+</Atom>
+
+or, using a neutralized role tag, op,
+
+<Atom>
+  <op><Con>transitive</Con></op>
+  <Con>ancestorof</Con>
+</Atom>
+
+Rather than trying to disambiguate at (presentation syntax) parse time,
+we would leave open if <Con>ancestorof</Con> is <Rel>ancestorof</Rel>
+or <Ctor>ancestorof</Ctor> or <Ind>ancestorof</Ind>.
+
+On export from Hilog to FOL, a RuleML-to-RuleML mapping could try to
+decide on the types, using extra information gained in the meantime.
+
+The other way round, import to Hilog trivially maps all of Rel, Ctor, and
+Ind to Con (incurring type information loss, however).
+
+A new Hilog RuleML sublanguage containing Con (but not Rel, Ctor, and Ind)
+will be introduced, usable also for other purposes (see last section).
+
+
+The Hterm Element
+~~~~~~~~~~~~~~~~~
+
+Since RuleML also permits first-order logic it appears -- for dealing
+with HiLog terms -- we need an explicit (Lisp-like) evaluation operator,
+Eval, which activates a Cterm into an Atom:
+
+<Eval>
+  <Cterm>
+    <Ctor>p</Ctor>
+    a1 ... aN
+  </Cterm>
+</Eval>
+
+is, by definition, equivalent to
+
+<Atom>
+  <Rel>p</Rel>
+  a1 ... aN
+</Atom>
+
+Consider a Hilog term in presentation syntax such as this:
+
+q(p(a)).
+
+In the RuleML serialization of the early draft "Semantic Web Services
+Language (SWSL)" it was parsed thus (the Atom is assumed to be Assert'ed):
+
+<Atom>
+  <Rel>q</Rel>
+  <Cterm>
+    <Ctor>p</Ctor>
+    <Ind>a</Ind>
+  </Cterm>
+</Atom>
+
+(This could also employ the neutralized Con from above:
+
+<Atom>
+  <Con>q</Con>
+  <Cterm>
+    <Con>p</Con>
+    <Con>a</Con>
+  </Cterm>
+</Atom>
+)
+
+This means, for permitting queries such as the presentation syntax
+
+?- q(?X) and ?X.
+
+the Rel's Cterm argument must be Eval-activated to an Atom thus
+(the Eval of a Cterm of a Ctor becomes an Atom of a Rel):
+
+<Query>
+  <And>
+    <Atom>
+      <Rel>q</Rel>
+      <Var>X</Var>
+    </Atom>
+    <Eval><Var>X</Var></Eval>
+  </And>
+</Query>
+
+~~>
+
+<Query>
+  <And>
+    <Eval>
+      <Cterm>
+        <Ctor>p</Ctor>
+        <Ind>a</Ind>
+      </Cterm>
+    </Eval>
+  </And>
+</Query>
+
+~~>
+
+<Query>
+  <And>
+    <Atom>
+      <Rel>p</Rel>
+      <Ind>a</Ind>
+    </Atom>
+  </And>
+</Query>
+
+~~>
+
+. . .
+
+For closer alignment with Hilog and F-logic we can thus introduce a neutralized
+Hterm element, a complex Hilog term that is a superelement of Atom and Cterm,
+so the earlier Assert content becomes:
+
+<Hterm>
+  <Rel>q</Rel>
+  <Hterm>
+    <Ctor>p</Ctor>
+    <Ind>a</Ind>
+  </Hterm>
+</Hterm>
+
+However, this need now be in combo with the neutralized Con from above:
+
+<Hterm>
+  <Con>q</Con>
+  <Hterm>
+    <Con>p</Con>
+    <Con>a</Con>
+  </Hterm>
+</Hterm>
+
+The query answering then becomes (without an explicit Eval):
+
+<Query>
+  <And>
+    <Hterm>
+      <Con>q</Con>
+      <Var>X</Var>
+    </Hterm>
+    <Var>X</Var>
+  </And>
+</Query>
+
+~~>
+
+<Query>
+  <And>
+    <Hterm>
+      <Con>p</Con>
+      <Ind>a</Ind>
+    </Hterm>
+  </And>
+</Query>
+
+~~>
+
+. . .
+
+Rather than trying to disambiguate at (presentation syntax) parse time
+(where to insert Evals?), we always implicitly (re-)evaluate a <Var>X</Var>
+occurring on the top-level of an And: first dereference it and then query
+a value that is an Hterm.
+
+The other way round, import to Hilog trivially maps both Atom and Cterm
+to Hterm (incurring type information loss, however).
+
+A new Hilog RuleML sublanguage containing Hterm (but not Atom or Cterm)
+will be introduced, initially only for this purpose (see next section).
+
+
+Content Models
+~~~~~~~~~~~~~~
+
+We define here a Hilog RuleML that has only neutralized constants and only
+merged atom-terms (not mixed with FOL-like elements). On top of this,
+Implies, And, etc. can be introduced as in FOL RuleML, except that Hterm
+takes the place of Atom. (How to align this with the FOL content models
+<http://www.ruleml.org/0.88/xsd/ruleml_088_content_models.pdf> has been
+informally discussed in the above sections, and could be formalized).
+
+
+*** Con ***
+content model:
+
+(#PCDATA)
+
+
+*** Var ***
+content model:
+
+(#PCDATA)
+
+
+*** op ***
+content model:
+
+( Con | Var | Hterm )
+
+
+*** Hterm ***
+content model:
+
+( ( op | Con | Var | Hterm ), ( Con | Var | Hterm )* )
+
+
+Design History
+~~~~~~~~~~~~~~
+
+The initial basis were discussions between Harold and Michael in May
+and June 2004. This was revisited between Harold, Benjamin, and Said
+on February 2nd, 2005. Content models have been developed by Harold
+and Jing since February 3rd. In a discussion on February 4th, Michael
+and Harold then concluded that the Con/Hterm Hilog version of RuleML,
+initially considered as just a hypothetical change, is actually best
+for the purpose of SWSL (and maybe beyond). In the SWSL-Rules Telecon
+on February 7th, 2005 the current document was accepted with one easy
+modification and two follow-up suggestions:
+* Axel Polleres: Rename 'Aterm' into 'Hterm' (for Hilog term), which
+became consensus in the SWSL telecon on February 10th, 2005.
+* Benjamin: A permissive sublanguage could allow mixing Hilog's <Con>
+with the FOL-like <Rel>, <Ctor>, <Ind>.
+* Michael: Future uses of Hilog syntax should be throughout RuleML,
+not only in Hilog RuleML and SWSL.

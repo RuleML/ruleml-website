@@ -1,0 +1,34 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML interpretation attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, interpretation" ]
+dc:description [
+  "The expansion module for the interpretation attribute."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= in.edge.def
+# This module declares the following RuleML attribute:
+#    * @in
+
+## an extension point for alternate spellings and internationalization of the interpretation attribute name.  
+interpretation-att.choice |= in.attrib.def
+in.attrib.def =
+  #
+  
+  ##    An attribute for specifying interpretation properties of functions. 
+  ##    See http://www.ruleml.org/0.91/glossary/#gloss-@per
+  attribute in { interpretation.value }
+interpretation.value |=
+  interpretation_default.value | interpretation_non-default.value
+
+## FIXME: move all such statements into initialization module.
+interpretation_default.value |= notAllowed
+interpretation_non-default.value |= notAllowed
+#
+in.edge.def = element in { interpretation.content }
+interpretation.content |= interpretation.value

@@ -1,0 +1,99 @@
+
+%%%%%%%%%%%%%%%%%%%%
+%
+% Policies for registration
+%
+%%%%%%%%%%%%%%%%%%%%
+
+% early registration phase
+initiates(startEarlyRegistration,open(earlyRegistration),T).
+terminates(closeEarlyRegistration,open(earlyRegistration),T).
+initiates(startRegularRegistration,open(regularRegistration),T).
+terminates(closeRegularRegistration,open(regularRegistration),T).
+
+
+% permit registration during early and late registration phase
+permit(Participant,register(Participant)):-
+     sysTime(T),
+     holdsAt(open(earlyRegistration),T).
+permit(Participant,register(Participant)):-
+     sysTime(T),
+     holdsAt(open(regularRegistration),T).     
+     
+% registration axioms for registered participants
+initiates(register(Participant),registered(Participant),T).
+terminates(cancel(Participant),registered(Participant),T).
+
+
+% registration fee policy
+% compute fee depending on the registration phase 
+% and possible discounts
+
+fee(earlyRegistration,currency_Dollar:500).
+fee(regularRegistration,currency_Dollar:600).
+
+computeFee(Participant,Fee):-
+  sysTime(T),
+  computeFee(Participant,Fee,T).
+computeFee(Participant,Fee,T):-   
+   holdsAt(open(RegistrationPhase),T),
+   fee(RegistrationPhase,BasicFee),
+   %discount(Participant,Discount),
+   Fee = BasicFee.
+   %Fee = BasicFee - (BasicFee * Discount).
+%Could be further extended, e.g. with extra fee for
+% overlengthed papers such as 50$ extra for each 
+% additional page above the maximum papge size
+% (not enforced in RuleML-2007)   
+   
+% TODO: Implement discount rules for sponsors and collaboration partners
+% Sponsoring rules will be implemented in the personal profile of the Publicity Chair    
+   
+% a participant is obliged to pay the registration fee
+% when he has registered and not payed yet
+% and not canceled the registration
+oblige(Participant,pay(Fee)):-
+   happens(register(Participant),T),
+   not(happens(pay(Participant,Fee),T2)), %no payment 
+   sysTime(CurrentTime),
+   % still registered and not canceled
+   holdsAt(registered(Participant),CurrentTime),
+   computeFee(Participant,Fee,T).
+   
+ % a participant is permitted to attend if he has payed the fee
+permit(Participant,attend):-
+    happens(pay(Participant,Fee),T).        
+    
+    
+
+open(earlyRegistration):-
+       sysTime(T),
+       holdsAt(open(earlyRegistration),T).           
+dates(earlyRegistration,Start,End):-
+       happens(startEarlyRegistration,Start),
+       happens(closeEarlyRegistration,End). 
+open(regularRegistration):-
+       sysTime(T),
+       holdsAt(open(regularRegistration),T).           
+dates(regularRegistration,Start,End):-
+       happens(startRegularRegistration,Start),
+       happens(closeRegularRegistration,End). 
+          
+%%%%%%%%%%%%%%%%%%
+%
+% Test assertions 
+%%%%%%%%%%%%%%%%%%
+
+happens(startEarlyRegistration, datetime(2007,6,15,0,0,0)).
+happens(closeEarlyRegistration, datetime(2007,8,15,0,0,0)).     
+happens(startRegularRegistration, datetime(2007,8,16,0,0,0)).
+happens(closeRegularRegistration, datetime(2007,9,26,0,0,0)).
+
+happens(register("Adrian Paschke"), datetime(2007,7,13,0,0,0)).
+
+%:-solve(holdsAt(open(earlyRegistration),datetime(2007,8,15,0,0,0))).
+%:-solve(holdsAt(open(regularRegistration),datetime(2007,8,17,0,0,0))).
+%:-solve(permit("Adrian Paschke",register(Participant))).
+%:-solve(holdsAt(registered(Participant),datetime(2007,7,15,0,0,0))).
+%:-solve(computeFee("Adrian Paschke",Fee)).
+%:-solve(oblige("Adrian Paschke",Action)).

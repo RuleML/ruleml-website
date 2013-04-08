@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/datalog.xsd">
+
+<!-- start XML comment ...
+
+Note: This is a compact (i.e. minimally-roled) version of this example.
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+Implies~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+     head *                    body *
+          *                         *
+        Atom~~~~~~~~~~~~~~~~~~     And~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                Rel   Var   Var        Atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     Atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment -->
+
+  <content>
+    <And innerclose="universal">
+
+      <formula>
+        <Implies>
+          <!-- explicit 'And' -->
+          <body>
+            <And>
+              <formula>
+                <Atom>
+                  <opr>
+                    <Rel>buy</Rel>
+                  </opr>
+                  <arg index="1">
+                    <Var>person</Var>
+                  </arg>
+                  <arg index="2">
+                    <Var>merchant</Var>
+                  </arg>
+                  <arg index="3">
+                    <Var>object</Var>
+                  </arg>
+                </Atom>
+              </formula>
+              <formula>
+                <Atom>
+                  <opr>
+                    <Rel>keep</Rel>
+                  </opr>
+                  <arg index="1">
+                    <Var>person</Var>
+                  </arg>
+                  <arg index="2">
+                    <Var>object</Var>
+                  </arg>
+                </Atom>
+              </formula>
+            </And>
+          </body>
+          <head>
+            <Atom>
+              <opr>
+                <Rel>own</Rel>
+              </opr>
+              <arg index="1">
+                <Var>person</Var>
+              </arg>
+              <arg index="2">
+                <Var>object</Var>
+              </arg>
+            </Atom>
+          </head>
+        </Implies>
+      </formula>
+
+<!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+      <formula>
+        <Implies>
+          <body>
+            <Atom>
+              <opr>
+                <Rel>sell</Rel>
+              </opr>
+              <arg index="1">
+                <Var>merchant</Var>
+              </arg>
+              <arg index="2">
+                <Var>person</Var>
+              </arg>
+              <arg index="3">
+                <Var>object</Var>
+              </arg>
+            </Atom>
+          </body>
+          <head>
+            <Atom>
+              <opr>
+                <Rel>buy</Rel>
+              </opr>
+              <arg index="1">
+                <Var>person</Var>
+              </arg>
+              <arg index="2">
+                <Var>merchant</Var>
+              </arg>
+              <arg index="3">
+                <Var>object</Var>
+              </arg>
+            </Atom>
+          </head>
+        </Implies>
+      </formula>
+
+<!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. -->
+
+      <formula>
+        <Atom>
+          <opr>
+            <Rel>sell</Rel>
+          </opr>
+          <arg index="1">
+            <Ind>John</Ind>
+          </arg>
+          <arg index="2">
+            <Ind>Mary</Ind>
+          </arg>
+          <arg index="3">
+            <Ind>XMLBible</Ind>
+          </arg>
+        </Atom>
+      </formula>
+
+<!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+
+      <formula>
+        <Atom>
+          <opr>
+            <Rel>keep</Rel>
+          </opr>
+          <arg index="1">
+            <Ind>Mary</Ind>
+          </arg>
+          <arg index="2">
+            <Ind>XMLBible</Ind>
+          </arg>
+        </Atom>
+      </formula>
+
+    </And>
+  </content>
+
+</Assert>

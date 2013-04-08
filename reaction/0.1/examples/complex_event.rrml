@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ECA rule with complex event definition, variable binding, event calculus condition, ID-based update action -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/kr.xsd">
+
+
+<!-- ContractLog formalization of ECA Rule (ISO Prolog / Prova syntax)
+
+eca(
+	everySecond(T),
+	event(sequence(concurrent(a,b),sequence(c,d))),
+	holdsAt(state(1),T),
+	add(state1,"happens(ab,_0).",[T])
+).
+
+ -->
+
+
+
+	<Assert>
+	
+		<Reaction kind="eca" exec="active">	
+		
+			<Reaction  kind="ea" exec="active">	<!-- event part with active nested reaction rule ,i.e. time -> event	-->
+				<Atom>
+					<op><Rel>everySecond</Rel></op>	   
+					<arg index="1"><Var>T</Var></arg>		
+				</Atom>	
+		       
+				<Sequence>	
+					<event>
+						<Concurrent>
+							<event>
+								<Ind>a</Ind>
+							</event>			
+							<event>			
+								<Ind>b</Ind>
+							</event>			
+						</Concurrent>	
+					</event>
+					<event>
+						<Sequence>    
+							<Ind>c</Ind> 
+							<Ind>d</Ind>
+						</Sequence>
+					</event>
+				</Sequence>
+			</Reaction>
+		
+			<HoldsState>			
+					<state>
+						<Expr>
+							<Fun>state</Fun>
+							<arg index="1"><Var type="java.lang.Integer">1</Var></arg>
+						</Expr>
+					</state>
+					<time>
+						<Var>T</Var>
+					</time>		
+			</HoldsState> 	
+				
+			
+			<Assert>
+					<oid><Ind>state1</Ind></oid>			
+					<formula>
+						<Atom>	
+							<Rel>happens</Rel>
+							<Ind>ab</Ind>
+							<Var>T</Var>
+						</Atom>
+					</formula>		
+			</Assert>	
+	   </Reaction> 
+	
+	</Assert>
+	
+</RuleML>

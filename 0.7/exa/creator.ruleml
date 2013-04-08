@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.7/dtd/ruleml-urcbindatagroundfact.dtd">
+
+
+<rulebase>
+
+
+<!-- rel-ur-ind triple a la RDF report (http://www.w3.org/TR/REC-rdf-syntax/):
+"Ora Lassila  is the creator of  the resource http://www.w3.org/Home/Lassila."
+"http://www.w3.org/Home/Lassila  has creator  Ora Lassila." -->
+
+<if>
+  <atom>
+    <rel>Creator</rel>
+    <ur>http://www.w3.org/Home/Lassila</ur>
+    <ind>Ora Lassila</ind>
+  </atom>
+  <and/>
+</if>
+
+
+</rulebase>

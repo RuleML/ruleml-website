@@ -1,0 +1,41 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Positional Independence" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, positional independence" ]
+dc:description [ "The expansion module for positional independence." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+
+## Pre-fix operator notation for atomic formulas is required in a normal-form serialization.
+Atom.main |= operatorForAtoms-edge.choice, argumentsForAtoms.sequence
+argumentsForAtoms.sequence |= positionalArgumentsForAtoms.sequence, slotsForAtoms.sequence
+positionalArgumentsForAtoms.sequence |=
+    termsForAtoms.sequence, restOfPositionalArguments-edge.choice?
+# termsForAtoms.sequence |= termsPlus.sequence?
+slotsForAtoms.sequence |= slotTermsForAtoms.sequence, restOfSlots-edge.choice?
+
+## Pre-fix operator notation for expressions is required in the normal-form serialization.
+Expr.main |= operatorForExpressions-edge.choice, argumentsForExpressions.sequence
+argumentsForExpressions.sequence |=
+    positionalArgumentsForExpressions.sequence, slotsForExpressions.sequence
+positionalArgumentsForExpressions.sequence |=
+    termsForExpressions.sequence, restOfPositionalArguments-edge.choice?
+# termsForExpressions.sequence |= termsPlus.sequence?
+slotsForExpressions.sequence |= slotTermsForExpressions.sequence, restOfSlots-edge.choice?
+#
+
+## In the normal-form serialization, the body and head of an implication must occur in canonical order.
+Implies.main |= body_Implies.name.choice, head_Implies.name.choice
+
+## In the normal-form serialization, the body and head of a proof-theoretic entailment must occur canonical order.
+Entails.main |= body_Entails.name.choice, head_Entails.name.choice
+
+## In the normal-form serialization, the object identifier occupies the leading position in the header of fuzzifiable formulas.
+## The header for fuzzifiable formulas contains an ordered sequence of the patterns for general formulas and fuzzifiable objects.
+FuzzyFormula-header.choice |= Formula.header, Fuzzy.header

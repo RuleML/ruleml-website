@@ -1,0 +1,412 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{covington} % useful DRS macros
+\usepackage{color}
+\usepackage{alltt}
+
+ \newcommand{\lyxaddress}[1]{
+   \par {\raggedright #1 
+   \vspace{1.4em}
+   \noindent\par}
+ }
+
+\date{}
+
+\usepackage{geometry}
+\geometry{left=0.75in, right=0.75in, height=9in}
+\usepackage[pdftitle={TRANSLATOR: A TRANSlator from LAnguage TO Rules}, pdfauthor={David Z. Hirtle},
+pdfborder=000, pdfstartview=FitV]{hyperref}
+
+\begin{document}
+
+\title{TRANSLATOR:\\A TRANSlator from LAnguage TO Rules\thanks{Special thanks to Harold Boley for supervising the honours thesis upon which this paper is based.}}
+\author{David Z. Hirtle}
+
+\maketitle
+
+
+\lyxaddress{\begin{center}Faculty of Computer Science\\
+University of New Brunswick\\
+PO Box 4400\\
+Fredericton, N.B. E3B 5A3, CANADA\\
+david.hirtle@unb.ca\end{center}}
+
+\begin{abstract}
+One explanation as to why the Semantic Web has not quite caught on yet is that the barrier to entry is too high. This paper describes TRANSLATOR, a free tool available as a Java Web Start application designed to allow anyone, even non-experts, to write facts and rules in formal representation for use on the Semantic Web. This is accomplished by automatically translating natural language sentences written in Attempto Controlled English into the Rule Markup Language, using the Attempto Parsing Engine webservice as a backend. XML representation in RuleML has several advantages, not least of which is compatibility with existing Semantic Web standards.
+\end{abstract}
+
+\section{Introduction}
+The Semantic Web, often described as the next generation of the existing Web, is a highly collaborative effort with the ultimate goal of making it easier for humans and computers to work together~\cite{berners-lee}. The key is enriching the current Web, which is understandable by humans alone, with machine-interpretable (meta)data in the form of facts, rules and ontologies.
+
+Enabling standards such as the Resource Description Framework (RDF) and Web Ontology Language (OWL) have already been defined by the World Wide Web Consortium (W3C), and work toward a Rule Interchange Format (RIF) is now in progress. Despite all of this activity, the Semantic Web has yet to see widespread adoption. There is some concern (e.g.,~\cite{haustein}) that the barrier to entry is too high: understanding such formal languages is a challenge for the vast majority of individuals.
+
+One way of lowering the barrier to entry is to offer a more user-friendly format. While the intuitiveness and expressiveness of natural language makes it a logical candidate, it is inherently ambiguous and has therefore largely been ignored for formal applications. Fortunately, recent work has shown that principles from computational linguistics can be applied to translate between language and machine-interpretable logic. This is accomplished by using a subset of language that remains completely natural yet lends itself to formalization. The most mature such domain-independent \textit{controlled} language is Attempto Controlled English (ACE)~\cite{ace}, whose development over the past ten years has also included its own Attempto Parsing Engine (APE)~\cite{ape}.
+
+The focus of this work is using ACE as the means to author formal rules for the Semantic Web via a newly-developed application called TRANSLATOR (TRANSlator from LAnguage TO Rules). Specifically, rules written in ACE are taken as input, parsed (using the APE webservice) into a variant of first-order logic known as a Discourse Representation Structure (DRS) and then mapped into formal representation in the XML-based Rule Markup Language (RuleML)~\cite{boley}. RuleML is the product of a long-standing effort toward standardizing rule markup on the Web and is compatible with other Semantic Web languages.
+
+TRANSLATOR, available as a Java Web Start application\footnote{\url{http://www.ruleml.org/translator}}, enables non-programmers to write their own rules on the Semantic Web via a subset of English that remains completely familiar. As a first example, users may write:
+\begin{quote}
+\textit{If the customer is a student then he/she receives a discount.}
+\end{quote}
+instead of something formal like the following (the corresponding DRS in logical notation):
+\begin{quote}
+$
+\forall ABC : object(A, atomic, student, person, cardinality, count\_unit, eq, 1) \land \\
+predicate(B, state, be, C, A) \land \\
+object(C, atomic, customer, person, cardinality, count\_unit, eq, 1) \\
+\rightarrow \\ \exists DE : object(D, atomic, discount, object, cardinality, count\_unit, eq, 1) \land \\ predicate(E, unspecified, receive, A, D)
+$
+\end{quote}
+
+\section{Input: Attempto Controlled English}
+The input accepted by TRANSLATOR has the appearance of plain English but is in fact a formal language in the same vein as the relatively esoteric RDF and RDF-based OWL. Known as Attempto Controlled English (ACE), it is a tractable subset of full English that can be unambiguously translated into first-order logic. In this way, ACE combines the ease of use and familiarity of natural language with the ease of processing and precision of formal language.
+
+\subsection{Overview}
+
+The language of ACE remains as natural as possible while avoiding ambiguity. To this end, the grammar of ACE excludes certain imprecise phrasings, e.g.,
+\begin{quote}
+\textit{Students hate annoying professors.}
+\end{quote}
+(Do students hate professors who are annoying, or do they hate to annoy professors?) Remaining ambiguity is handled by predefined rules favouring one interpretation over others. Consider the following sentence:
+\begin{quote}
+\textit{The student brings a friend who is an alumnus and receives a discount.}
+\end{quote}
+This is ambiguous in full natural language: does the student or the friend receive the discount? In ACE, on the other hand, the sentence has the interpretation that it is the student who receives the discount, i.e. the coordination is outside the relative phrase. The alternative interpretation (the friend receives the discount) can be expressed in ACE by simply repeating the relative pronoun:
+\begin{quote}
+\textit{The student brings a friend who is an alumnus and \textbf{who} receives a discount.}
+\end{quote}
+The vocabulary of ACE consists of predefined and user-defined elements. Function words such as articles (e.g., \textit{a}, \textit{the}), prepositions (e.g., \textit{in}, \textit{to}) and pronouns (e.g., \textit{they}, \textit{itself}, \textit{everyone}) as well as fixed phrases (e.g., \textit{it is not the case that...}) are all predefined. On top of that, a default lexicon of nearly 100 000 content words (nouns, verbs, adjectives and adverbs) can be supplemented by user-defined (e.g., domain-specific) lexicons.
+
+This brief overview of ACE has not covered several significant features such as anaphoric references and plurals. Complete details on ACE, including further publications, are available from the Attempto project website\footnote{http://www.ifi.unizh.ch/attempto}.
+
+\subsection{Expressible Rules}
+While all ACE sentences are accepted English, the opposite is not true. Since TRANSLATOR focuses on translating language (i.e., ACE) to rules, a pertinent question becomes, ``What kinds of rules are expressible in ACE?''
+
+First, the notion of a rule is introduced. Knowledge is divisible into two categories: facts (e.g., \textit{John is human}) and rules, which allow inferring new facts from existing ones (e.g., \textit{All humans are mortal}, giving the new fact \textit{John is mortal}). The typical logic programming (e.g., Prolog) representation of a rule is as a left-hand side (i.e., conclusion) separated from a right-hand side (i.e., one or more conditions) by a special ``is implied'' symbol, e.g.,
+\begin{quote}
+\texttt{mortal(X) :- human(X).}
+\end{quote}
+This can be translated to English as \textit{if X is human then X is mortal}. The representation of a fact has only a left-hand side, e.g.,
+\begin{quote}
+\texttt{human(John).}
+\end{quote}
+In other words, \textit{John is human}. Since there are no conditions, the conclusion is unconditionally true. Therefore facts are just a special kind of rule and rules can be considered as conditional facts.
+
+It is important to realize that rules are expressible in natural language in a variety of (possibly ambiguous) ways. Indeed, the same general rule can be expressed in many syntactically different forms, e.g.,
+\begin{quote}
+\textit{Everyone is mortal.\\
+All humanity is mortal.\\
+Every human being is mortal.\\
+For each person the person is mortal.\\
+If there is a member of the human race then he/she is mortal.}
+\end{quote}
+All of the above rules are, in fact, valid ACE. Furthermore, each such pattern of rule can be further embellished with negation, relative clauses, etc. For example:
+\begin{quote}
+\textit{Every honest student who does not procrastinate receives a good mark and always passes the course easily.}
+\end{quote}
+TRANSLATOR also adds support for ``infix'' implication, e.g.,
+\begin{quote}
+\textit{The student is happy \textbf{if} there is no class.}
+\end{quote}
+The conclusions on the right-hand side are swapped with the conditions on the left-hand side and the word \textit{then} is inserted, yielding the following equivalent (but now valid ACE) version:
+\begin{quote}
+\textit{If there is no class then the student is happy.}
+\end{quote}
+This preprocessing step is done before the input is sent to the APE webservice so that it never sees the original version.
+
+There are actually several different kinds of rules; the examples so far have been derivation rules (also known as inference or deductive rules), which are primarily used for reasoning applications and do not invoke any actions. This category of rules is the focus for TRANSLATOR since RuleML is already well-developed in this area and the DRSs output by APE directly support this kind of implication.
+
+\subsection{Discourse Representation Structures}
+
+The parsing engine APE, accessed as a webservice by TRANSLATOR, translates ACE texts into a syntactic variant of first-order logic called a Discourse Representation Structure (DRS). The utility of DRSs is a result of Discourse Representation Theory, a formal method of dealing with contextual meaning across multiple sentences~\cite{kamp}. In particular, DRSs provide a solution to the problem of anaphora resolution, e.g., whether \textit{it} refers to the cat or the dog below:
+\begin{quote}
+\textit{The owner separates the cat from the dog. It growls.}
+\end{quote}
+While only a brief introduction is given here, complete details are available in an Attempto report dedicated to DRSs~\cite{drs}.
+
+A single DRS represents an entire discourse (group of sentences). Each entity (e.g., noun, verb) of the discourse is assigned a discourse referent (variable), which is listed at the top of the DRS. Below the referents is a list of related conditions (logical atoms). For example, a DRS for the discourse above might have referents \verb|D|, \verb|B| and \verb|C| and five conditions, conventionally formatted as a box:
+\begin{quote}
+\drs{D B C}
+{
+owner(D)\\
+cat(B)\\
+dog(C)\\
+separate(D,B,C)\\
+growl(C)
+}
+\end{quote}
+Notice that it is the dog \verb|C| that growls---the anaphor has been resolved.
+
+In the Attempto system, the notation is somewhat different. Most importantly, predefined condition names are used so that, e.g., \verb|cat(B)| becomes \verb|object(B, atomic, cat, object,|\\ \verb|cardinality, count_unit, eq, 1)|:
+\begin{quote}
+\drs{A B C D E}
+{
+predicate(A, unspecified, \textbf{separate}, D, B)-1\\
+modifier(A, unspecified, from, C)-1\\
+object(D, atomic, \textbf{owner}, person, cardinality, count\_unit, eq, 1)-1\\
+object(B, atomic, \textbf{cat}, object, cardinality, count\_unit, eq, 1)-1\\
+object(C, atomic, \textbf{dog}, object, cardinality, count\_unit, eq, 1)-1\\
+predicate(E, unspecified, \textbf{growl}, C)-2
+}
+\end{quote}
+This ``reified'' representation allows using first-order logic where higher-order would normally be required. The Attempto representation also clearly introduces additional referents and conditions to provide additional detail (e.g., quantity information). The integer at the end of each condition is an index indicating the number of the corresponding sentence within the discourse.
+
+The conditions so far have all been simple, but complex ones can be formed with nested DRSs and logical implication ($\Rightarrow$), negation ($\neg$) and disjunction ($\lor$). For example, the ACE text
+\begin{quote}
+\textit{If the dog barks or the cat hisses then the owner is not happy.}
+\end{quote}
+is translated into the following DRS:
+
+\begin{quote}
+\drs{~}
+{
+ \downifdrs{~}
+ {
+  \ordrs{A B}
+  {
+   predicate(A, \ldots \textbf{bark}, B)-1\\
+   object(B, atomic, \textbf{dog}, \ldots )-1
+  }
+  {C D}
+  {
+   predicate(C, \ldots \textbf{hiss}, D)-1\\
+   object(D, atomic, \textbf{cat}, \ldots )-1
+  }
+ }
+ {E}
+ {
+  object(E, atomic, \textbf{owner}, \ldots )-1\\
+  \negdrs{F G}
+  {
+   property(F, \textbf{happy})-1\\
+   predicate(G, \ldots \textbf{be}, E, F)-1
+  }
+ }
+}
+\end{quote}
+
+TRANSLATOR directly translates such DRSs into RuleML. The DRS-RuleML mapping is described in section 4.3.
+
+\section{Translation}
+Translating English into RuleML is complicated. Fortunately, the APE webservice greatly simplifies the task. Since details on the Attempto parser are already published~\cite{ape}, the focus here is on the user interface of TRANSLATOR and the series of steps that comprise the translation process.
+
+\subsection{User Interface}
+
+The two primary design goals of TRANSLATOR were that it be
+\begin{itemize}
+	\item widely accessible, and
+	\item user friendly.
+\end{itemize}
+In fact, both goals are satisfied by its availability as a Java Web Start application: TRANSLATOR can be accessed (cross-platform) online and provides users with an easy to use graphical user interface depicted in Figure~\ref*{fig:gui}.
+
+\begin{figure}[htbp]
+	\begin{center}
+	  \includegraphics[scale=0.8]{translator_gui.png}
+		%\includegraphics[width=0.8\textwidth]{translator_gui.png}
+	\caption{The graphical user interface of TRANSLATOR.}
+	\label{fig:gui}
+	\end{center}
+\end{figure}
+
+The user interface is divided into an input pane on the top and an output pane on the bottom. The input pane contains a scrolling text area where the user may enter an ACE text as well as the translation button. While translation is in progress (e.g., the APE webservice is being accessed), the translation button is temporarily disabled. The interface is multi-threaded in order to remain responsive to the user during this time.
+
+The output pane consists of four checkboxes, a non-editable scrolling text area where the translation results are displayed, a help button and a save button. The checkboxes allow the user to customize what output is displayed in addition to the RuleML (e.g., the original ACE text, DRS, etc). The help button directs the user's browser to the TRANSLATOR webpage where additional information is available. Finally, the save button will save the current output to a file on the user's local machine for convenience.
+
+\subsection{Procedure}
+
+The translation process can be broken down into the following eight steps:
+\begin{enumerate}
+\item
+Accept the ACE text input by the user.
+\item
+Preprocess the user input:
+	\begin{itemize}
+	\item Reject any queries (ending with ``?'') since they are currently unsupported.
+	\item Add final ``.'' if omitted. (Valid ACE sentences end with a period.)
+	\item If ``infix implication'' found, rearrange \verb|Y if X| into \verb|If X then Y|.
+	\end{itemize}
+\item
+Encode the input in a querystring and use it to access the APE webservice.
+\item
+Retrieve XML-wrapped result from APE. (This may take several seconds.)
+\item
+Parse result to get messages (if any), DRS, paraphrase, etc.
+\item
+Display messages from APE, if any. End here if the result is otherwise empty (i.e. input was invalid ACE).
+\item
+Traverse the DRS to build RuleML/XML.
+\item
+Display the pretty-printed RuleML (and optional user-configurable extras) to the user.
+\end{enumerate}
+
+\section{Output: Rule Markup Language}
+The goal of the international Rule Markup Initiative is to define a canonical language for publishing and sharing rules on the Web. The result is the XML-based Rule Markup Language (RuleML), used for derivation, query, transformation, integrity checking and reactive behavior. RuleML is implemented with XML Schema, XSL Transformations (XSLT) and reasoning engines~\cite{impl}. The RuleML Initiative collaborates with several standards bodies including W3C, OMG and OASIS.
+
+\subsection{Advantages}
+First of all, why RuleML as the target formalism? There are, in fact, several advantages to representation in RuleML.
+
+RuleML inherits some of its benefits directly from XML, including platform independence and interoperability. Exchange is simplified because conformance to the RuleML specification (defined in XML Schema) can be confirmed using a validator such as the W3C's XSV. RuleML is also extensible, a prime example being its combination with OWL to form the Semantic Web Rule Language (SWRL)~\cite{swrl}. RuleML is also translatable to and from other Semantic Web standards (e.g. RDF, OWL and probably the upcoming RIF) via XSLT. Various tools are also available, including OO jDREW~\cite{ball}, Mandarax\footnote{\url{http://mandarax.sourceforge.net}}, and NxBRE\footnote{\url{http://www.agilepartner.net/oss/nxbre}}. Another useful tool is a bidirectional converter between RuleML and the more compact positional-slotted (POSL) syntax combining Prolog and F-logic~\cite{posl}.
+
+\subsection{Modularization}
+
+The Rule Markup Language is actually a family of sublanguages realized with modular XML Schemas, following the general software engineering principle of modularity. A UML-like model of the modularization\footnote{For the complete picture, see \url{http://www.ruleml.org/modularization}.} of RuleML is shown in Figure~\ref*{fig:m12n}.
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[scale=0.8]{m12n.png}
+	\caption{The modularization of RuleML.}
+	\label{fig:m12n}
+	\end{center}
+\end{figure}
+
+Each sublanguage, represented as an unshaded rectangle, corresponds to a well-known rule system (e.g., datalog and hornlog), allowing users to pick and choose according to their specific needs. TRANSLATOR, for instance, uses the first-order logic sublanguage ``folog''. The shaded rectangles in the figure represent groups of related sublanguages.
+
+\subsection{DRS-RuleML Mapping}
+
+There are many possible mappings between DRSs and RuleML. An important criterion when selecting the mapping was reversibility in order to accommodate the future possibility of translation from RuleML back to ACE. Therefore, it is important that there be no loss of information; in particular, all details of the extended DRS notation used in the Attempto system should be preserved.
+
+A direct mapping is therefore best. For example, the ACE text
+\begin{quote}
+\textit{The professor is mortal.}
+\end{quote}
+with the DRS
+\begin{quote}
+\drs{A B C}
+{
+ property(A, \textbf{mortal})-1\\
+ predicate(B, state, \textbf{be}, C, A)-1\\
+ object(C, atomic, \textbf{professor}, person, cardinality, count\_unit, eq, 1)-1
+}
+\end{quote}
+is straightforwardly mapped into RuleML as follows:
+
+\newcommand{\dave}[1]
+{\rmfamily\normalsize\emph{\textbf{#1}}\ttfamily\small}
+
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent <Exists>\\
+\indent \indent \indent <Var>A</Var><Var>B</Var><Var>C</Var>\\
+\indent \indent \indent <And>\\
+\indent \indent \indent \indent <Atom><Rel>property</Rel><Var>A</Var><Ind>\dave{mortal}</Ind></Atom>\\
+\indent \indent \indent \indent <Atom>\\
+\indent \indent \indent \indent \indent <Rel>predicate</Rel>\ldots <Ind>\dave{be}</Ind><Var>C</Var><Var>A</Var>\\
+\indent \indent \indent \indent </Atom>\\
+\indent \indent \indent \indent 
+<Atom><Rel>object</Rel><Var>C</Var>\ldots<Ind>\dave{professor}</Ind>\ldots</Atom>\\
+\indent \indent \indent </And>\\
+\indent \indent </Exists>\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+
+Finally, the quantification of variables is made explicit in RuleML for clarity. It is implicit in a DRS that all variables are existentially quantified; RuleML has the \verb|<Exists>| tag for this purpose. The only exceptions are variables on the condition side of an implication, which are universally quantified. In RuleML, these are placed within a \verb|<Forall>| tag.
+
+As a concrete example, the ACE text
+\begin{quote}
+\textit{Every student is mortal.}
+\end{quote}
+results in the DRS
+\begin{quote}
+\drs{~}
+{
+	\ifdrs{A}
+	{
+	object(A, atomic, \textbf{student}, \ldots)-1\\
+	}
+	{B C}
+	{
+	property(B, \textbf{mortal})-1\\
+	predicate(C, \ldots~\textbf{be}, A, B)-1
+	}
+}
+\end{quote}
+whose quantification is made explicit in the mapping to RuleML as follows (where the quantifier tags are boxed for clarity):
+
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent \fbox{<Forall>}\\
+\indent \indent \indent <Var>A</Var>\\
+\indent \indent \indent <Implies>\\
+\indent \indent \indent \indent <And>\\
+\indent \indent \indent \indent \indent <Atom><Rel>object</Rel><Var>A</Var>\ldots<Ind>\dave{student}</Ind>\ldots</Atom>\\
+\indent \indent \indent \indent </And>\\
+\indent \indent \indent \indent \fbox{<Exists>}\\
+\indent \indent \indent \indent \indent <Var>B</Var><Var>C</Var>\\
+\indent \indent \indent \indent \indent <And>\\
+\indent \indent \indent \indent \indent \indent <Atom><Rel>property</Rel><Var>B</Var><Ind>\dave{mortal}</Ind></Atom>\\
+\indent \indent \indent \indent \indent \indent <Atom>\\
+\indent \indent \indent \indent \indent  \indent \indent <Rel>predicate</Rel>\ldots<Ind>\dave{be}</Ind><Var>A</Var><Var>B</Var>\\
+\indent \indent \indent \indent \indent  \indent </Atom>\\
+\indent \indent \indent \indent \indent </And>\\
+\indent \indent \indent \indent \fbox{</Exists>}\\
+\indent \indent \indent </Implies>\\
+\indent \indent \fbox{</Forall>}\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+
+A more standard non-reified representation in RuleML (e.g., with nouns and verbs as relations) could be derived from the version above using advanced XSLT translation. One possibility is as follows:
+\begin{quote}
+\small
+\ttfamily
+\setlength{\parindent}{0.1in}
+<RuleML~\ldots~xmlns="http://www.ruleml.org/0.9/xsd">\\
+\indent <Assert>\\
+\indent \indent <Implies>\\
+\indent \indent \indent <Atom><Rel>\dave{student}</Rel><Var>A</Var></Atom>\\
+\indent \indent \indent <Atom><Rel>\dave{mortal}</Rel><Var>A</Var></Atom>\\
+\indent \indent </Implies>\\
+\indent </Assert>\\
+</RuleML>
+\setlength{\parindent}{0.0in}
+\normalfont
+\end{quote}
+Note that the explicit quantification and conjunctions are gone, and that the atoms have been un-reified (to have more meaningful relation names). Finally, the following atom has been replaced by variable equality:
+\begin{quote}
+\small
+\ttfamily
+<Atom><Rel>predicate</Rel>\ldots<Ind>\dave{be}</Ind><Var>A</Var><Var>B</Var></Atom>
+\normalfont
+\end{quote}
+However, this extra measure is only necessary for irregular verbs (such as ``to be'').
+
+\section{Conclusions and Future Work}
+TRANSLATOR is an open source tool that allows anyone to write facts and rules in formal representation for use on the Semantic Web. It accomplishes this by taking input written in ACE, accessing the APE webservice and then translating the generated DRS into RuleML. The hope is that this user-friendly front-end will help lower the barrier to entry of the Semantic Web and encourage non-experts to get involved; this seems to have been a critical factor in the success of the original Web.
+
+One potential use of TRANSLATOR is to construct real-world use cases, e.g., for company policies. An open issue is that the output of TRANSLATOR, as first-order logic, is undecidable and therefore not supported by reasoning engines. However, reorganization into a decidable subset should be possible, e.g., by factoring out multiple conclusions of a rule.
+
+There are several possible areas of future work. First, TRANSLATOR does not currently support queries because currently the DRS for
+\begin{quote}
+\textit{Does the man enter a card?}
+\end{quote}
+is identical to the DRS for
+\begin{quote}
+\textit{The man enters a card.}
+\end{quote}
+and it is impossible to identify when to use \verb|<Query>| versus \verb|<Assert>| in RuleML. Another possibility is making TRANSLATOR bidirectional by supporting translation of RuleML back into ACE. If the prototype DRS-to-ACE verbalization tool DRACE~\cite{verbal} were accessible (e.g., as another webservice), extending TRANSLATOR to be bidirectional would simply be a matter of reversing the DRS-RuleML mapping. The Attempto team is also continually extending ACE; in fact, the next version includes support for the passive voice and modality, e.g., possibility (\textit{can}) and necessity (\textit{must}). TRANSLATOR should, of course, be updated to support such extensions.
+
+Meanwhile, development of the RIF standard continues. Fortunately, the future challenge of relating TRANSLATOR to RIF (once defined) should be straightforward since RuleML will most likely be translatable to RIF. TRANSLATOR would therefore be one such tool alluded to in the RIF Working Group charter\footnote{\url{http://www.w3.org/2005/rules/wg/charter}}, which states: ``Users are expected to work with tools or rule languages which are transformed to and from this format.''
+
+TRANSLATOR is available as a Java Web Start application at \url{http://www.ruleml.org/translator} and is also linked from the Attempto website. Further collaboration with the Attempto team is anticipated.
+\newpage
+\bibliographystyle{plain}
+\bibliography{CaSTA}
+
+%\appendix
+
+\end{document}

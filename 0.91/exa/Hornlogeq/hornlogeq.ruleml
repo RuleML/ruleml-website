@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<!-- a trivial example rulebase for testing the Equalog RuleML sublanguage -->
+
+<Assert mapClosure="universal">
+
+
+<Forall>
+    <Var>d</Var>
+    <Equal>
+      <Ind>some constant</Ind>
+      <Var>d</Var>
+    </Equal>
+</Forall>
+
+<!-- begin new -->
+
+	<Equivalent>
+		<torso>
+			<Equal>
+			  <Expr>
+			    <Fun in="yes">f</Fun>
+				<Var>x</Var>
+			  </Expr>
+			  <Ind>1</Ind>
+			</Equal>
+		</torso>
+		<torso>
+			<Equal>
+			  <Expr>
+			    <Fun in="yes">g</Fun>
+				<Var>x</Var>
+			  </Expr>
+			  <Ind>2</Ind>
+			</Equal>
+		</torso>
+	</Equivalent>
+
+<Implies>
+	<!-- this is a testing equation (in the body) -->
+		<Equal>
+			<lhs>
+				<Expr>
+					<Fun in="no">age</Fun> 
+					<Expr>
+						<Fun in="no">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			</lhs>
+			<rhs>
+				<!-- only passive can be nested within passive -->
+				<Expr>
+					<Fun in="no">subtract</Fun>
+					<Expr>
+						<Fun in="yes">this-year</Fun> <!-- must be "no" -->
+						<arg index="1">
+							<Expr>
+								<Fun in="no">this-year</Fun> <!-- must be "no" -->
+							</Expr>
+						</arg>
+					</Expr>
+					<Ind>1993</Ind>
+				</Expr>
+			</rhs>
+		</Equal>
+	<!-- this is a defining equation (in the head) -->
+	<!-- so the toplevel function of the lhs must be interpreted -->
+		<Equal>
+			<lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> <!-- must be "yes" -->
+					<Expr>
+						<Fun in="yes">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			</lhs>
+			<rhs>
+				<Expr>
+					<Fun in="no">a</Fun>
+					<Ind>1</Ind>
+				</Expr>
+			</rhs>
+		</Equal>
+</Implies>
+
+<!-- end new -->
+	
+	
+<Equivalent>
+    <Equal>
+      <Ind>some constant</Ind>
+      <Var>d</Var>
+    </Equal>
+    <Equal>
+      <Ind>some constant</Ind>
+      <Var>e</Var>
+    </Equal>
+</Equivalent>
+
+
+<Implies>
+  <head>
+     <Atom>
+      <op><Rel>friend</Rel></op>
+      <slot><Ind>t</Ind><Ind>b</Ind></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <op><Rel>friend</Rel></op>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+      <slot><Ind>yar</Ind><Expr>
+          <op><Fun>constructor</Fun></op>
+          <Plex>
+            <Var>z</Var>
+            <slot><Ind>yar2</Ind><Ind>c</Ind></slot>
+          </Plex>
+        </Expr></slot>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+      <Atom>
+        <op><Rel>some relation</Rel></op>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+ 
+     <Atom>
+        <op><Rel>another relation</Rel></op>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <Expr>
+          <op><Fun>yac</Fun></op>
+            <Ind>constant g</Ind>
+            <Ind>constant h</Ind>
+            <Expr>
+              <op><Fun>empty</Fun></op>
+            </Expr>
+            <Ind>constant h</Ind>
+        </Expr>
+      </Atom>
+ 
+     <Equal>
+        <Expr>
+          <op><Fun in="yes">some function</Fun></op>
+          <Ind>arg1</Ind>
+          <Ind>arg2</Ind>
+          <Ind>arg3</Ind>
+        </Expr>
+        <Expr>
+          <op><Fun in="yes">some other function</Fun></op>
+          <Ind>arg4</Ind>
+          <Ind>arg5</Ind>
+          <Ind>arg6</Ind>
+        </Expr>
+      </Equal>
+
+    <Atom>
+      <op><Rel>yet another relation</Rel></op>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+
+    <Equal>
+      <Ind>some constant</Ind>
+      <Var>d</Var>
+    </Equal>
+
+
+</Assert>
+
+</RuleML>

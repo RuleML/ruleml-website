@@ -1,0 +1,158 @@
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Horn RuleML elements module.
+			This is the XML Schema horn module for RuleML.
+			File: horn_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following horn RuleML elements:
+			* _opc
+			* ctor
+			* cterm
+			* plex
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- cterm -->
+	<!--
+		content model is:
+		"((_opc, (_slot)*, (ind | var | cterm | plex)*, (_slot)*) | ((_slot)*, (ind | var | cterm | plex)+, (_slot)*, _opc))"
+
+		however, this is non-deterministic, so it is restructured in the following way:
+
+                       "(
+                            ( _opc,
+                              (_slot)*, 
+                              ( (ind | var | cterm | plex)+, (_slot)*)?
+                            ) 
+                          |
+                            (
+                               (
+                                  ( (_slot)+, 
+                                    ( (ind | var | cterm | plex)+, (_slot)* )?
+                                  )
+                                |
+                                  ((ind | var | cterm | plex)+, (_slot)*)
+                               ),
+                               _opc
+                            )
+                         )"
+
+	-->	
+	<xs:attributeGroup name="cterm.attlist"/>
+	<xs:group name="cterm.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_opc"/>
+				<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:sequence minOccurs="0">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="ind"/>
+						<xs:element ref="var"/>
+						<xs:element ref="cterm"/>
+						<xs:element ref="plex"/>
+					</xs:choice>
+					<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="_slot" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:sequence minOccurs="0">
+							<xs:choice minOccurs="1" maxOccurs="unbounded">
+								<xs:element ref="ind"/>
+								<xs:element ref="var"/>
+								<xs:element ref="cterm"/>
+								<xs:element ref="plex"/>
+							</xs:choice>
+							<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="ind"/>
+							<xs:element ref="var"/>
+							<xs:element ref="cterm"/>
+							<xs:element ref="plex"/>
+						</xs:choice>
+						<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="_opc"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="cterm.type">
+		<xs:group ref="cterm.content"/>
+		<xs:attributeGroup ref="cterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="cterm" type="cterm.type"/>
+
+	<!-- _opc -->
+	<!-- content model is "(ctor)" -->
+	<xs:attributeGroup name="_opc.attlist"/>
+	<xs:group name="_opc.content">
+		<xs:sequence>
+			<xs:element ref="ctor"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_opc.type">
+		<xs:group ref="_opc.content"/>
+		<xs:attributeGroup ref="_opc.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opc" type="_opc.type"/>
+
+	<!-- ctor -->
+	<!-- content model is "(#PCDATA)" -->
+	<xs:attributeGroup name="ctor.attlist"/>
+	<xs:group name="ctor.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="ctor.type" mixed="true">
+		<xs:group ref="ctor.content"/>
+		<xs:attributeGroup ref="ctor.attlist"/>
+	</xs:complexType>
+	<xs:element name="ctor" type="ctor.type"/>
+
+	<!-- plex -->
+	<!--
+		content model is: "((_slot)*, (ind | var | cterm | plex)*, (_slot)*)"
+
+		however, this is non-deterministic, so it is restructured in the following way:
+		"((_slot)*, ( (ind | var | cterm | plex)+, (_slot)* )?)"
+	-->
+	<xs:attributeGroup name="plex.attlist"/>
+	<xs:group name="plex.content">
+		<xs:sequence>
+			<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:sequence minOccurs="0">
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+					<xs:element ref="cterm"/>
+					<xs:element ref="plex"/>
+				</xs:choice>
+				<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="plex.type">
+		<xs:group ref="plex.content"/>
+		<xs:attributeGroup ref="plex.attlist"/>
+	</xs:complexType>
+	<xs:element name="plex" type="plex.type"/>
+	
+</xs:schema>

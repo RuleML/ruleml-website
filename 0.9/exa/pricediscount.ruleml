@@ -1,0 +1,71 @@
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/fologeq.xsd"
+>
+
+<!--
+
+  Here are serialization examples from the SWSL Report
+  (http://www.daml.org/services/swsl/report/swsl.shtml#swsl-rules-courteous):
+
+-->
+
+<Protect>
+<oid><Ind uri="http://www.daml.org/services/swsl/report/swsl.shtml#swsl-rules-courteous"></Ind></oid>
+
+<Integrity>
+<oid><Ind/></oid>
+  <Neg>
+   <And>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Ind>fivepercent</Ind>
+     </Atom>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Ind>tenpercent</Ind>
+     </Atom>
+   </And>
+  </Neg>
+</Integrity>
+
+<Integrity>
+ <Implies kind="fo">
+ <head>
+  <Neg>
+   <And>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Var>Y</Var>
+     </Atom>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Var>Z</Var>
+     </Atom>
+   </And>
+  </Neg>
+ </head>
+ <body>
+   <Neg>
+     <Equal>
+       <Var>Y</Var>
+       <Var>Z</Var>
+     </Equal>
+   </Neg>
+ </body>
+ </Implies>
+</Integrity>
+
+<Atom>
+  <Rel>gold</Rel>
+  <Ind>watch17</Ind>
+</Atom>
+
+</Protect>
+
+</RuleML>

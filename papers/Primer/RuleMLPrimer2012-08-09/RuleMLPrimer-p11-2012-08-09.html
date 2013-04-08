@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Primer Page Template</title>
+    <script>
+      var nextpage="RuleMLPrimer-p12a-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p11-slide">
+      <h1>Product Classification Fact</h1>
+      <figure>
+        <img class="diag topspace" src="../png/luxury_atom.png" />
+      </figure>
+      <div class="natural-language topspace">"A Porsche is a luxury product."</div>
+      <pre class="example_code diag">
+<span class="elem">&lt;Atom&gt;</span>
+  <span class="elem">&lt;Ind&gt;</span><code>Porsche</code><span class="elem">&lt;/Ind&gt;</span>
+  <span class="elem">&lt;Rel&gt;</span><code>is luxury</code><span class="elem">&lt;/Rel&gt;</span>
+<span class="elem">&lt;/Atom&gt;</span>
+      </pre>
+    </section>
+    <section id="section-p11-prose">
+      <h3>Product Classification Fact - Notes</h3>
+      <p>While <span class="elem-inline"
+          >&lt;Rel&gt;is premium&lt;/Rel&gt;</span> was
+        defined by our first rule, <span
+          class="elem-inline"
+        >&lt;Rel&gt;is luxury&lt;/Rel&gt;</span> could be
+        (partially) defined as</p>
+      <p><span class="natural-language">"A Porsche is a luxury product."</span></p>
+      <p>Again, this natural language sentence can be visualized as an OrdLab tree 
+        and represented as an   XML serialization</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p10-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p12a-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

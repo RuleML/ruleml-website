@@ -1,0 +1,32 @@
+<!-- An XML DTD for a 'UR'-Centered Binary Ground-Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-30 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % urcbindatagroundlog.module "INCLUDE">
+<!ENTITY % datalog.module "IGNORE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<![%urcbindatagroundlog.module;[
+
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an _opr  role followed by an ind with a REQUIRED href attribute -->
+<!-- followed by an ind with IMPLIED href attribute, or equivalently, with _opr at the end -->
+<!-- This 'local' REQUIRED-vs.-IMPLIED constraint cannot be expressed by DTDs: XML Schema -->
+<!--                   | href!  | href?                                                   -->
+<!ELEMENT atom ((_opr, ind,   ind) | (ind, ind, _opr))>
+
+]]>

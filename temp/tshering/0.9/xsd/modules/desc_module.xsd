@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for description-related RuleML elements.
+			File: desc_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+			
+			This module declares the following RuleML element:
+			* oid
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** oid ***
+		An optional label for a clause, creating accessibility within the knowledge representation.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-oid
+
+		Note: oids are not required to be unique within a rulebase.
+
+		content model: (Ind | Data | Var | Skolem | Reify)
+	-->
+	<xs:attributeGroup name="oid.attlist"/>
+	<xs:group name="oid.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Data"/>		
+			<xs:element ref="Var"/>		
+			<xs:element ref="Skolem"/>		
+			<xs:element ref="Reify"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="oid.type">
+		<xs:group ref="oid.content"/>
+		<xs:attributeGroup ref="oid.attlist"/>
+	</xs:complexType>
+	<xs:element name="oid" type="oid.type"/>
+	
+</xs:schema>

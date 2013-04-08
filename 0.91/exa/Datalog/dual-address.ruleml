@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/datalog.xsd">
+
+<!--A personX is dually-addressed if the personX lives at address1 and address2, and the two addresses are not the same -->
+
+<Assert mapClosure="universal">
+<Implies>
+  <head>
+    <Atom>
+     <Rel>dual-address</Rel>
+     <Var>personX</Var>
+     <Var type="String">address1</Var>
+     <Var type="String">address2</Var>
+   </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>address</Rel></op>
+        <Var>personX</Var>
+        <Var type= "String">address1</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>address</Rel></op>
+        <Var>personX</Var>
+        <Var type="String">address2</Var>
+      </Atom>
+      <Atom>
+        <Rel>lessThan</Rel>
+        <Var type="String">address1</Var>
+        <Var type="String">address2</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+<!--Jack lives at 655 Graham Avenue -->
+    <Atom>
+      <op><Rel>address</Rel></op>
+      <Ind>Jack</Ind>
+      <Ind type="String">655 Graham Avenue</Ind>
+    </Atom>
+
+<!--Jack lives at 552 Windsor -->	
+    <Atom>
+      <op><Rel>address</Rel></op>
+      <Ind>Jack</Ind>
+      <Ind type="String">552 Windsor</Ind>
+    </Atom>
+</Assert>
+<Query>
+  <Atom>
+    <Rel>dual-address</Rel>
+    <Var>personX</Var>
+    <Var type="String">address1</Var>
+    <Var type="String">address2</Var>
+  </Atom>
+</Query>  
+</RuleML>
+
+
+
+

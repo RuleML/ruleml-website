@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Test Case 1: Demonstrate the transformation of Object-Oriented RuleML to Positionalized RuleML-->
+
+<rulebase>	<!--**************************************************-->
+	<!--Object-Oriented Signature-->
+	<!--**************************************************-->
+
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>automobile</rel>
+				</_opr>
+				<_r n="make">
+					<ind/>
+				</_r>
+				<_r n="year">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind/>
+				</_r>
+				<_r n="color">
+					<ind/>
+				</_r>
+				<_r n="madein">
+					<ind/>
+				</_r>
+				<_r n="speed">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>vehicle</rel>
+				</_opr>
+				<_r n="make">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind/>
+				</_r>
+				<_r n="year">
+					<ind/>
+				</_r>
+				<_r n="type">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>size</rel>
+				</_opr>
+				<_r n="height">
+					<ind/>
+				</_r>
+				<_r n="width">
+					<ind/>
+				</_r>
+				<_r n="length">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>	<!--Complete Automobile Fact-->
+
+	<fact>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>automobile</rel>
+				</_opr>
+				<_r n="speed">
+					<ind>220</ind>
+				</_r>
+				<_r n="madein">
+					<ind>Mexico</ind>
+				</_r>
+				<_r n="color">
+					<ind>blue</ind>
+				</_r>
+				<_r n="model">
+					<ind>New Beetle</ind>
+				</_r>
+				<_r n="year">
+					<ind>2000</ind>
+				</_r>
+				<_r n="make">
+					<ind>Volkswagen</ind>
+				</_r>
+			</atom>
+		</_head>
+	</fact>	<!--Partially Complete Vehicle Fact-->
+
+	<fact>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>vehicle</rel>
+				</_opr>
+				<_r n="type">
+					<ind>car</ind>
+				</_r>
+				<_r n="year">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind/>
+				</_r>
+				<_r n="make">
+					<ind>Volkswagen</ind>
+				</_r>
+			</atom>
+		</_head>
+	</fact>	<!--Empty Size Fact-->
+
+	<fact>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>size</rel>
+				</_opr>
+				<_r n="length">
+					<ind/>
+				</_r>
+				<_r n="width">
+					<ind/>
+				</_r>
+				<_r n="height">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</fact>	<!--Implementation-->
+
+	<imp>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>automobile</rel>
+				</_opr>
+				<_r n="speed">
+					<ind/>
+				</_r>
+				<_r n="madein">
+					<ind/>
+				</_r>
+				<_r n="color">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<var>Explorer</var>
+				</_r>
+				<_r n="year">
+					<var>YR</var>
+				</_r>
+				<_r n="make">
+					<var>Ford</var>
+				</_r>
+			</atom>
+		</_head>
+		<_body>
+			<and>
+				<atom>
+					<_opr>
+						<rel>vehicle</rel>
+					</_opr>
+					<_r n="type">
+						<var/>
+					</_r>
+					<_r n="year">
+						<var>YR</var>
+					</_r>
+					<_r n="model">
+						<var/>
+					</_r>
+					<_r n="make">
+						<var>Ford</var>
+					</_r>
+				</atom>
+				<atom>
+					<_opr>
+						<rel>size</rel>
+					</_opr>
+					<_r n="length">
+						<var/>
+					</_r>
+					<_r n="width">
+						<var/>
+					</_r>
+					<_r n="height">
+						<var/>
+					</_r>					<!--Positionalized Var and Ind-->
+
+					<var>MD</var>
+					<ind>medium</ind>
+				</atom>
+			</and>
+		</_body>
+	</imp>	<!--Query-->
+
+	<query>
+		<_body>
+			<and>
+				<atom>
+					<_opr>
+						<rel>vehicle</rel>
+					</_opr>
+					<_r n="type">
+						<var/>
+					</_r>
+					<_r n="year">
+						<var>YR</var>
+					</_r>
+					<_r n="model">
+						<var>MD</var>
+					</_r>
+					<_r n="make">
+						<var>MK</var>
+					</_r>
+				</atom>
+				<atom>
+					<_opr>
+						<rel>size</rel>
+					</_opr>
+					<_r n="length">
+						<var/>
+					</_r>
+					<_r n="width">
+						<var/>
+					</_r>
+					<_r n="height">
+						<var/>
+					</_r>					<!--Positionalized Var and Ind-->
+
+					<var>MD</var>
+					<ind>medium</ind>
+				</atom>
+			</and>
+		</_body>
+	</query>
+</rulebase>

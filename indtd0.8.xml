@@ -1,0 +1,1277 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley "boley@informatik.uni-kl.de" -->
+
+<homepage>
+
+  <title>RuleML DTDs</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+<!--       <xhtml><big><b>RuleML DTDs</b></big></xhtml> -->
+<h1>RuleML DTDs</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h4>Version History, 2001-01-25: <a href="http://www.ruleml.org/indtd.html">Version 0.7</a></h4>
+<h2>Version History, 2001-07-11: <a href="http://www.ruleml.org/indtd0.8.html">Version 0.8</a></h2>
+<h2>Ongoing Work: <a href="http://www.ruleml.org/inxsd0.8.html">XML Schema Version 0.8</a></h2>
+<h2>All DTDs: <a href="http://www.ruleml.org/dtd/0.8/">DTD Directory</a></h2>
+<h2>Some Examples: <a href="http://www.ruleml.org/exa/0.8/">Examples Directory</a></h2>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This is a revised DTD draft for RuleML.
+Each DTD in the evolving hierarchy corresponds to a specific RuleML sublanguage.
+The DTDs use a modularization approach similar to the one in XHTML
+in order to offer appropriate flexibility and accomodate
+different implementations and approaches.
+We will write a technical report on this system of RuleML DTDs
+(see also <a href="http://www.ruleml.org/ruleml-krdtd/sld001.htm">KR Principles and DTD Modularization</a>).
+</p>
+
+  </opening>
+
+<section>
+<header>Changes</header>
+<p>
+The current Version 0.8 differs from the earlier Version 0.7 by principally shifting the
+approach from a positional representation of rules towards an object-centered one. This was
+motivated by RuleML's semantic neutrality w.r.t. backward and forward reasoning as well as
+by a comparison of the mostly positional XML data model with the mostly object-centered RDF
+data model:
+In Version 0.7, a rule ('if') element's children were positionalized, XML-style,
+in the fixed order of a conclusion followed by premises; in Version 0.8, a rule ('imp')
+element's children are predicate-object ('role'-'type') pairs, RDF-style, whose positions are immaterial.
+Thus, while Version 0.8, as well as future versions, remain <b>based</b> on XML, we make an
+object-centered <b>usage</b> of XML via novel 'role' tag names complementing the normal 'type' tag names.
+In order not to change too many things at once, we didn't yet work on proceeding from DTDs to XML Schemas.
+However, we already see some places where the added expressive power of XML Schemas could help Version 0.8,
+in particular, XML Schema datatypes. The XML Schema expressiveness should also improve the other important
+change in RuleML, namely the replacement
+of Version 0.7 ur elements by corresponding Version 0.8 attributes. This permits not only each ind
+but also each rel (as required for RDF triples) etc. to be regarded as a URI 'object'.
+Important additions in RuleML 0.8 are the n-tuple (tup) and role-list (roli) datatypes,
+which can be employed, respectively, in a positional and non-positional manner,
+to replace all n-ary operations by unary ones.
+</p>
+<p>
+The DTD files etc. of the earlier Version 0.7 will be kept "as is"; actually, RuleML 0.7 can be regarded as
+a language in its own right, which may serve future RuleML versions as a "purely positional"
+reference language for feature comparisons etc. Since to our knowledge not many rulebases have yet been written
+in Version 0.7 (with the notable exception of <a href="http://www.daml.org/2001/02/gedcom-ruleml/">GEDCOM</a>),
+we currently have no full-blown XSLT translator for automatically upgrading them to Version 0.8.
+However, there is a GEDCOM-oriented upgrading translator
+(cf. the GEDCOM entry of the <a href="http://www.ruleml.org/#Library">RuleML Rulebase Library</a>),
+which should be easy to adapt to other RuleML 0.7-to-0.8 upgrades.
+Version 0.8 was partially inspired by a presentation of
+<a href="http://www.ruleml.org/RuleML-RDF/sld001.htm">RuleML 0.7 to an RDF audience</a>.
+Hence, a RuleML 0.7-to-RuleML 0.8 translator could probably be constructed taking our
+<a href="http://www.ruleml.org/inrdf.html">experimental RuleML 0.7-to-RDF translator</a>
+as a starting point.
+Since RuleML 0.7 is a positional system with similarities to RFML,
+a 0.7-to-0.8 translator could also take advantage of the
+<a href="http://www.relfun.org/ruleml/rfml-ruleml.html">translator from RFML to RuleML 0.8</a>. 
+</p>
+</section>
+
+<section>
+<header>Overview</header>
+<p>
+The upper layer of the RuleML hierarchy of rules is discussed in our
+main page's <a href="index.html#Design">design section</a>.
+In that terminology, the system of RuleML DTDs presented here only covers
+derivation rules, not reaction rules
+(special tags for facts have now been introduced).
+</p>
+<p>
+This is because we think it is important to start with a subset of
+simple rules, test and refine our principal strategy using these,
+and then work 'up' to the more general categories of rules in the hierarchy.
+For this we choose
+<a href="http://www-lp.doc.ic.ac.uk/UserPages/staff/ft/alp/net/dbs/datalog.html">Datalog</a>, a language corresponding to relational databases
+(ground facts without complex domains or 'constructors')
+augmented by views (possibly recursive rules),
+and work a few steps upwards to further declarative rules
+as allowed in (equational) Horn logic.
+We also introduce a URL/URI language corresponding to
+simple objects. The 'UR'-Datalog join of both of these classes then permits
+inferences over RDF-like 'resources' and can be re-specialized to
+RDF triples: 
+<a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">hierarchy slide</a>.
+</p>
+<p>
+Regarding the concrete markup syntax, we have been experimenting
+with several DTDs prior to the current, still preliminary, version.
+The rationale for our current tags is as follows.
+<enumerate>
+  <item>Rather than leaving conjunction implicit, an explicit tag pair
+<tt>&lt;and></tt> ... <tt>&lt;/and></tt> with a sequence of N conjuncts is used
+(this would preferably be a set of conjuncts),
+preparing the unavoidable explicit markup of other boolean connectives
+(mainly <tt>&lt;or></tt> ... <tt>&lt;/or></tt>) and their nesting.
+  </item>
+  <item>As a result of previous discussions,
+RuleML now uses an XML-RDF-unified data model with "Order-Labeled (OrdLab) Trees" as its notational base;
+cf. <a href="http://www.dfki.uni-kl.de/~boley/xmlrdf.html">A Web Data Model Unifying XML and RDF</a>.
+  </item>
+  <item>In particular, we conventionally mark up <a href="http://www.w3.org/TR/REC-rdf-syntax/">RDF</a>-like 'predicates' or <a href="http://www.w3.org/2000/10/swap/Primer.html">N3</a>-like 'verbs', here called 'roles',
+by "<tt>_</tt>"-prefixed tags in XML (if all class-like 'type' tags would start with an upper-case letter, then
+'role' tags could also be distinguished, Java-like, by having them start with a lower-case letter, as in
+<a href="http://www.dfki.uni-kl.de/frodo/rdf2java/">The FRODO rdf2java Tool</a>;
+alternatively different namespaces for RuleML types and roles could be used);
+dually to regarding "<tt>_</tt>" as a prefix to be reserved as the first
+character of role tag names,
+it can also be viewed as an extension of the opening angular brackets of role start tags, "<tt>&lt;_</tt>",
+and end tags, "<tt>&lt;/_</tt>".
+  </item>
+  <item>Using an <tt>atom</tt> (for a single premise) or an <tt>and</tt> (for a conjunction of premises) in the role of the body
+and an <tt>atom</tt>ic conclusion in the role of the head, rules aggregate
+two commutative roles;
+in particular, our Horn-like implication rules equivalently become
+<tt>&lt;imp></tt> <tt>&lt;_body></tt> <tt>&lt;and></tt> <i>prem1</i> ... <i>premN</i> <tt>&lt;/and></tt> <tt>&lt;/_body></tt> <tt>&lt;_head></tt> <i>conc</i> <tt>&lt;/_head></tt> <tt>&lt;/imp></tt>
+or become
+<tt>&lt;imp></tt> <tt>&lt;_head></tt> <i>conc</i> <tt>&lt;/_head></tt> <tt>&lt;_body></tt> <tt>&lt;and></tt> <i>prem1</i> ... <i>premN</i> <tt>&lt;/and></tt> <tt>&lt;/_body></tt> <tt>&lt;/imp></tt>
+(thus unifying <a href="http://logic.stanford.edu/kif/dpans.html">KIF</a>'s "implication" and "reverse implication" syntaxes).
+  </item>
+  <item>The main advantage of roles is that of feature-term or object-centered modeling:
+If some extra information is to be added to an element
+such as a priority factor to the <tt>imp</tt> element, then
+it is easy to attach, RDF-like, a new <tt>_priority</tt> role with a <tt>float</tt>-type value;
+on the other hand the insertion, XML-like, of the <tt>float</tt>-type value directly into
+the child sequence would (be harder to read and) cause all subsequent children to assume a new
+position in the element (a problem for processing via XSLT etc.).
+  </item>
+  <item>The (head and body) roles of the two subelements (children) of the XML element
+<tt>&lt;imp></tt> <i>head</i> <i>body</i> <tt>&lt;/imp></tt> or
+<tt>&lt;imp></tt> <i>body</i> <i>head</i> <tt>&lt;/imp></tt> enable commutativity at the cost of
+introducing an extra level of markup (but see below). Future equivalence rules
+<tt>&lt;equiv></tt> <i>lequiv</i> <i>requiv</i> <tt>&lt;/equiv></tt>,
+with interchangeable (lequiv and requiv) subelements, could use (implicit) _1 and _2 roles also
+used in all other RuleML connectives such as a binary <tt>and</tt>.
+  </item>
+  <item>The extra level of markup introduced by roles is most valuable,
+hence only used in RuleML 0.8, when there are meaningful role names
+such as <tt>&lt;_head></tt> and <tt>&lt;_body></tt> (as contrasted to 'structural' role names
+such as <tt>_1</tt> and <tt>_2</tt>):
+If meaningful role names are visualized as arc labels in a tree representation like RuleML 0.8's
+T3 in section <a href="#Context">Context</a>, this tree does not entail extra depth compared to RuleML 0.7's T1,
+only meaningful extra names for certain arcs.
+In general, the type-role alternation of 0.8 markups, similar to RDF,
+is nicely visualized via a node-label alternation in trees.
+Moreover, two different roles can be used to uniquely access (e.g., via XSLT)
+the same type in a position-independent manner such as when the <tt>&lt;_head></tt> and <tt>&lt;_body></tt>
+of a (single-premise) rule are both the <tt>&lt;atom></tt> type.
+Even when a type is later changed (say, from <tt>&lt;atom></tt> to <tt>&lt;and></tt>),
+the role (say, <tt>&lt;_body></tt>) can stay the same (e.g., for uniform XSLT access).
+Finally, a graphical RuleML editor could directly work on T3-like (OrdLab) trees.
+  </item>
+  <item>The backward <b>variant</b>
+<tt>&lt;imp></tt> <i>head</i> <i>body</i> <tt>&lt;/imp></tt>
+of most examples below makes them better comparable to
+the standard notation of Horn rules. The forward <b>variant</b>
+<tt>&lt;imp></tt> <i>body</i> <i>head</i> <tt>&lt;/imp></tt>, better comparable to production rules,
+will be exemplified in section <a href="#Abstraction">Abstraction</a>, T3[9of16].
+Future directed equations could be easily added via a 'foot' role for an
+equation's right-hand side (the defined function's returned value):
+<tt>&lt;direq></tt> <i>head</i> <i>foot</i> <i>body</i> <tt>&lt;/direq></tt> or
+<tt>&lt;direq></tt> <i>head</i> <i>body</i> <i>foot</i> <tt>&lt;/direq></tt>.
+  </item>
+  <item>In the new data model an element can have "mixed content" in the new sense of
+having both 'role' and 'type' children
+(see the <tt>atom</tt> examples in T3/X3 below whose content consists of
+one _opr-role child before (or after) _1, _2, ... var-type children):
+while the 'type' children form an ordered sequence as in XML
+(without need for RDF's Sequence container), the 'role' children
+are commutative as in RDF (treating an ordered sequence as a unit,
+as if it was reified into a Sequence container under an _args role as in T6/X6).
+The "_"-integers _1, _2, ... can be viewed as 'system-generated' roles,
+which are always useful when one runs out of (meaningful) 'user-defined' roles:
+Like for 'rest' variables in Lisp, Prolog, etc.,
+there is at most one _1, _2, ... sequence per element
+for capturing otherwise unnamed, normally adjacent, children
+(normally, no other, role-named child should intervene in this sequence,
+so it is improbable that we will introduce _op-role <a href="#Infix-Variants">infix variants</a> in the future).
+  </item>
+  <item>In RuleML 0.8 the (implicit) roles _1, _2, ... are used generically for the arguments of relations, functions,
+and constructors; they could also have been named _arg1, _arg2, ..., but we wanted to be consistent with
+RDF's rdf:_1, rdf:_2, ... container-element predicates and with numeric indexes into 1-dimensional arrays.
+Similary, the roles _opr, _opf, _opc are substitutes (required by DTDs)
+for a generic role _op for the operator of relations, functions, and constructors.
+Role names need only discriminate between the children of an element, and
+the current set was partially chosen for mnemonic reasons.
+  </item>
+  <item>While the _op roles could be avoided by regarding an operator, Lisp-like, as part
+of its own argument sequence (as if it was role _0 or_arg0), we did introduce them
+in RuleML 0.8 for the following reasons:
+<enumerate>
+  <item>An _op role for the operator complements one (implicit) _args role for a sequence of the arguments
+(explicit in T6/X6 of section <a href="#Context">Context</a>) or a sequence of (implicit) _arg1, _arg2, ... or
+_1, _2, ... roles for the arguments (explicit in T4/X4 and T5/X5 of section <a href="#Context">Context</a>). Using n-tuples, _op complements one (implicit) _1 role for a tup of the arguments
+(cf. T7/X7 of section <a href="#Context">Context</a>).
+  </item>
+  <item>There may be further sibling roles to discriminate _op from on the level of
+atom (and nano and cterm) types
+such as a _qual(ification) role or a _comment role.
+  </item>
+  <item><a name="Infix-Variants"></a>
+The _op-role notation allows both prefix and postfix variants, as well as
+possible future infix variants (especially for binary relations, functions, and constructors),
+where the _op role would intervene in the sequence of consecutive _1, _2, ... children (which would
+hinder our current sequence-as-Seq view).
+  </item>
+  <item>While in the current first-order RuleML sublanguages the role _opr always has
+a child of type rel (similarly for _opf and _opc), so that there is some duplicate role-type markup,
+in future (syntactically) higher-order RuleML sublanguages
+the role _opr may also have children of type var (for relation-valued variables) or type nano
+(for relation-valued function calls) and the roles _1, _2, ... may also have children of type rel
+(for relations as arguments), so that no role-type redundancy remains in the markup.
+  </item>
+  <item>Full role markup can also give us uniformity to a future feature-term sublanguage within RuleML
+(prepared by the current role-list datatype in <a href="http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd">http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd</a>). This should be closely coordinated with
+the use of F-Logic in <a href="http://www-db.stanford.edu/~stefan/2001/02/rdfinterest/">Triple</a>.
+  </item>
+  <item>Finally, this brings RuleML closer to RDF, DAML+OIL, and other language for the Semantic Web.
+  </item>
+</enumerate>
+  </item>
+  <item>Similarly, we keep the _head role
+inside the fact type, which originates from, and permits access uniform to,
+its rule (or clause) ancestor imp,
+since there soon should be other named roles in facts, e.g.
+_priority, so _head will not stay 'lonely' for long.
+  </item>
+</enumerate>
+</p>
+</section>
+
+<section>
+<header>Context</header>
+<p>
+Here we exemplify RuleML 0.8 in the context of six
+versions of rule representations as trees and their corresponding XML markups,
+from totally ordered (most concise) to totally labeled, with Seq containers (most verbose).
+The first version corresponds to RuleML 0.7 with
+<tt>if</tt> replaced by <tt>imp</tt>. The last version is the one most related to RDF.
+The T3/X3 version corresponds to RuleML 0.8, which employs RDF-like role labels exactly where
+they prevent order overspecification (which arbitrarily puts a non-positional type into the child order)
+and uses the natural XML child order instead of RDF's Seq containers.
+</p>
+<p>
+We will use the following sample rule:
+<code><![CDATA[
+A person owns an object
+if that person buys the object from a merchant and the person keeps the object.]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T1: As an Ordered Tree ("|"-Arcs: Ordered left to right, as if labeled 1, 2, ...):
+
+ imp---------------------------------
+          |                         |
+          |                         |
+          |                         |
+        atom------------------     and----------------------------------------
+                 |     |     |           |                                   |
+                 |     |     |           |                                   |
+                 |     |     |           |                                   |        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  |     |      |       |              |     |     |
+                 .     .     .                  |     |      |       |              |     |     |
+                 .     .     .                  |     |      |       |              |     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X1: As XML Markup without any Roles:
+
+<imp>
+  <atom>
+    <rel>own</rel>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+  <!-- explicit 'and' -->
+  <and>
+    <atom>
+      <rel>buy</rel>
+      <var>person</var>
+      <var>merchant</var>
+      <var>object</var>
+    </atom>
+    <atom>
+      <rel>keep</rel>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </and>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T2: As an Order-Biased Tree ("|"-Arcs: Ordered left to right, implicitly labeled 1, 2, ...;
+                             "*"-Arcs: Unordered but explicitly labeled):
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 |     |     |           |                                   |
+                 |     |     |           |                                   |
+                 |     |     |           |                                   |        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  |     |      |       |              |     |     |
+                 .     .     .                  |     |      |       |              |     |     |
+                 .     .     .                  |     |      |       |              |     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X2: As XML Markup with Roles only for parents all of whose child Types are Non-Positional:
+
+<imp>
+  <_head>
+    <atom>
+      <rel>own</rel>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <rel>buy</rel>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <rel>keep</rel>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T3: As an Order-Labeled Tree ("|"-Arcs: Ordered left to right, implicitly labeled 1, 2, ...;
+                              "*"-Arcs: Explicitly labeled as in Arc-Labeled Trees below):
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X3: As XML Markup with Roles only for Non-Positional Types:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T4: As a Label-Biased Tree:
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 *     *     *           |                                   |
+             opr *   1 *   2 *           |                                   |
+                 *     *     *           |                                   |
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  *     *      *       *              *     *     *
+                 .     .     .              opr *   1 *    2 *     3 *          opr *   1 *   2 *
+                 .     .     .                  *     *      *       *              *     *     *
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X4: As XML Markup with Roles for all parents having at least one Non-Positional Type as child:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <_1><var>person</var></_1>
+      <_2><var>object</var></_2>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <_1><var>person</var></_1>
+        <_2><var>merchant</var></_2>
+        <_3><var>object</var></_3>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <_1><var>person</var></_1>
+        <_2><var>object</var></_2>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T5: As an Arc-Labeled Tree (Special case of a Directed Arc-Labeled Graph):
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 *     *     *           *                                   *
+             opr *   1 *   2 *         1 *                                 2 *
+                 *     *     *           *                                   *        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  *     *      *       *              *     *     *
+                 .     .     .              opr *   1 *    2 *     3 *          opr *   1 *   2 *
+                 .     .     .                  *     *      *       *              *     *     *
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X5: As XML Markup with Roles for Every Embedded Type:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <_1><var>person</var></_1>
+      <_2><var>object</var></_2>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <_1>
+        <atom>
+          <_opr><rel>buy</rel></_opr>
+          <_1><var>person</var></_1>
+          <_2><var>merchant</var></_2>
+          <_3><var>object</var></_3>
+        </atom>
+      </_1>
+      <_2>
+        <atom>
+          <_opr><rel>keep</rel></_opr>
+          <_1><var>person</var></_1>
+          <_2><var>object</var></_2>
+        </atom>
+      </_2>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T6: As an Arc-Labeled Tree with Seq Nodes (RDF-like Sequence Containers):
+
+ imp-----------------------------------------
+          *                                 *
+     head *                            body *
+          *                                 *
+        atom---------------                and--------
+                 *        *                          *
+             opr *   args *                     args *
+                 *        *                          * 
+                rel      Seq----------              Seq---------------
+                 .             *     *                  *            *
+                 .           1 *   2 *                1 *          2 *    
+                 .             *     *                  *            *
+                own           var   var               atom         atom
+                               .     .
+                               .     .
+                               .     .                      .  .  .
+                             person object
+
+
+X6: As XML Markup with Roles for Every Embedded Type including Seq Types:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <_args>
+        <Seq>
+          <_1><var>person</var></_1>
+          <_2><var>object</var></_2>
+        </Seq>
+      </_args>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <_args>
+        <Seq>
+          <_1>
+            <atom>
+              <_opr><rel>buy</rel></_opr>
+              <_args>
+                <Seq>
+                  <_1><var>person</var></_1>
+                  <_2><var>merchant</var></_2>
+                  <_3><var>object</var></_3>
+                </Seq>
+              </_args>
+            </atom>
+          </_1>
+          <_2>
+            <atom>
+              <_opr><rel>keep</rel></_opr>
+              <_args>
+                <Seq>
+                  <_1><var>person</var></_1>
+                  <_2><var>object</var></_2>
+                </Seq>
+              </_args>
+            </atom>
+          </_2>
+        </Seq>
+      </_args>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+A comparison of these six tree/markup versions shows the following:
+<itemize>
+  <item>Version T1/X1 overspecifies the positions of rule heads and tails
+and of atom oprs.
+  </item>
+  <item>Version T2/X2 still overspecifies the positions of atom oprs.
+  </item>
+  <item>Version T3/X3 has no overspecification or redundancy.
+  </item>
+  <item>Version T4/X4 uses redundant labels on atom arguments.
+  </item>
+  <item>Version T5/X5 uses additional redundant labels on and arguments.
+  </item>
+  <item>Version T6/X6 Seq-reifies the redundantly labeled arguments.
+  </item>
+</itemize>
+For RuleML 0.8 we thus chose Version T3/X3.
+</p>
+<p>
+However, RuleML 0.8 also provides an n-tuple datatype in its
+<a href="http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd">http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd</a>.
+This tup type can be employed to reduce all atoms to binary "_opr"-"_1" element pairs,
+where the original n arguments after opr become the
+n elements of a single tup argument under an (implicit) _1 role. Similarly for nanos and cterms.
+Such a 'tupping' of arguments may be used to confine positional types to n-tuples and other built-ins (e.g., 'and').
+The Version T7/X7 below exemplifies.
+</p>
+<p>
+<code><![CDATA[
+
+T7: As an Order-Labeled Tree with tupped Arguments:
+
+ imp-----------------------------------------
+          *                                 *
+     head *                            body *
+          *                                 *
+        atom---------------                and----------------------------------------
+                 *        |                      |                                   |
+             opr *        |                      |                                   |
+                 *        |                      |                                   |
+                rel      tup----------         atom                                atom
+                 .             |     |
+                 .             |     |
+                 .             |     |
+                own           var   var
+                               .     .
+                               .     .
+                               .     .                      .  .  .
+                             person object
+
+
+X7: As XML Markup with tupped Arguments and Roles only for Non-Positional Types:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <tup>
+        <var>person</var>
+        <var>object</var>
+      </tup>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <tup>
+          <var>person</var>
+          <var>merchant</var>
+          <var>object</var>
+        </tup>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <tup>
+          <var>person</var>
+          <var>object</var>
+        </tup>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+</section>
+
+<section>
+<header>Abstraction</header>
+<p>
+For the above T3/X3 version constituting RuleML 0.8 we now exemplify the abstraction
+achieved by regarding all commutative possibilities as equivalent.
+In this 'abstract syntax' commutative tree variants will be graph-theoretically equivalent and
+the corresponding commutative markup variants will be algebraically equivalent.
+More precisely, for trees the branching order of the (explicitly labeled) "*" arcs
+is immaterial and for markups
+the following equation holds:
+<tt>&lt;</tt><i>element</i><tt>></tt>. . .<tt>&lt;_</tt><i>role1</i><tt>></tt>...<tt>&lt;/_</tt><i>role1</i><tt>></tt>. . .<tt>&lt;_</tt><i>role2</i><tt>></tt>...<tt>&lt;/_</tt><i>role2</i><tt>></tt>. . .<tt>&lt;/</tt><i>element</i><tt>></tt>
+=
+<tt>&lt;</tt><i>element</i><tt>></tt>. . .<tt>&lt;_</tt><i>role2</i><tt>></tt>...<tt>&lt;/_</tt><i>role2</i><tt>></tt>. . .<tt>&lt;_</tt><i>role1</i><tt>></tt>...<tt>&lt;/_</tt><i>role1</i><tt>></tt>. . .<tt>&lt;/</tt><i>element</i><tt>></tt>.
+Note that such an abstraction is also implicit in RDF graphs and serializations,
+since both the triples within RDF models and the pairs within <tt>rdf:Description</tt>
+can be permuted without information loss.
+The following examples of the sixteen equivalent 'Commutations' of T3/X3 illustrate,
+starting with our original T3/X3 version.
+</p>
+<p>
+<code><![CDATA[
+
+T3[1of16]: RuleML 0.8 Tree in the first of 16 Graph-theoretically Equivalent Commutations:
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X3[1of16]: RuleML 0.8 Markup in the first of 16 Algebraically Equivalent Commutations:
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+<code><![CDATA[
+
+T3[2of16]: RuleML 0.8 Tree in the second of 16 Graph-theoretically Equivalent Commutations:
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom----------------       and----------------------------------------
+               |     |     *             |                                   |
+               |     |     * opr         |                                   |
+               |     |     *             |                                   |        
+              var   var   rel          atom---------------------------     atom------------------
+               .     .     .                    *     |      |       |              *     |     |
+               .     .     .                opr *     |      |       |          opr *     |     |
+               .     .     .                    *     |      |       |              *     |     |
+           object person  own                  rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+
+X3[2of16]: RuleML 0.8 Markup in the second of 16 Algebraically Equivalent Commutations:
+
+<imp>
+  <_head>
+    <atom>
+      <var>person</var>
+      <var>object</var>
+      <_opr><rel>own</rel></_opr>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>]]></code>
+</p>
+<p>
+.   .   .
+</p>
+<p>
+<code><![CDATA[
+
+T3[9of16]: RuleML 0.8 Tree in the ninth of 16 Graph-theoretically Equivalent Commutations:
+
+ imp--------------------------------------------------------------------------
+          *                                                                  *
+     body *                                                             head *
+          *                                                                  *
+         and----------------------------------------                       atom------------------
+               |                                   |                                *     |     |
+               |                                   |                            opr *     |     |
+               |                                   |                                *     |     |
+             atom---------------------------     atom------------------            rel   var   var
+                      *     |      |       |              *     |     |             .     .     .
+                  opr *     |      |       |          opr *     |     |             .     .     .
+                      *     |      |       |              *     |     |             .     .     .
+                     rel   var    var     var            rel   var   var           own  person object  
+                      .     .      .       .              .     .     .                                  
+                      .     .      .       .              .     .     .                               
+                      .     .      .       .              .     .     .                               
+                     buy  person merchant object        keep  person object
+
+
+X3[9of16]: RuleML 0.8 Markup in the ninth of 16 Algebraically Equivalent Commutations:
+
+<imp>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+</imp>]]></code>
+</p>
+<p>
+.   .   .
+</p>
+<p>
+<code><![CDATA[
+
+T3[16of16]: RuleML 0.8 Tree in the sixteenth of 16 Graph-theoretically Equivalent Commutations:
+
+ imp--------------------------------------------------------------------------
+          *                                                                  *
+     body *                                                             head *
+          *                                                                  *
+         and----------------------------------------                       atom----------------
+               |                                   |                              |     |     *
+               |                                   |                              |     |     * opr
+               |                                   |                              |     |     *
+             atom---------------------------     atom------------------          var   var   rel
+                      |      |       |     *              |     |     *           .     .     .
+                      |      |       |     * opr          |     |     * opr       .     .     .
+                      |      |       |     *              |     |     *           .     .     .
+                     var    var     var   rel            var   var   rel      object person  own
+                      .      .       .     .              .     .     .                                  
+                      .      .       .     .              .     .     .                               
+                      .      .       .     .              .     .     .                               
+                  person merchant object  buy         person object  keep
+
+
+X3[16of16]: RuleML 0.8 Markup in the sixteenth of 16 Algebraically Equivalent Commutations:
+
+<imp>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+        <_opr><rel>buy</rel></_opr>
+      </atom>
+      <atom>
+        <var>person</var>
+        <var>object</var>
+        <_opr><rel>keep</rel></_opr>
+      </atom>
+    </and>
+  </_body>
+  <_head>
+    <atom>
+      <var>person</var>
+      <var>object</var>
+      <_opr><rel>own</rel></_opr>
+    </atom>
+  </_head>
+</imp>]]></code>
+</p>
+</section>
+
+<section>
+<header>Explanations</header>
+<p>
+Appended below is a preliminary DTD, designated version 0.8,
+for a Datalog subset of RuleML (<a href="#Appendix 1">Appendix 1</a>).  Also appended
+below is a simple example rulebase that conforms to that DTD, 
+and instructions for how to validate the example against the
+DTD.  
+</p>
+<p>
+There now also is a family of DTD's, specified in a modular
+fashion  (using parameter ENTITY declarations), also designated
+vers. 0.8, at this URL: <a href="http://www.ruleml.org/dtd/0.8/">http://www.ruleml.org/dtd/0.8/</a> .
+Note that this family of DTD's is, overall, more raw/immature than just 
+the Datalog member of that family.  Note that the Datalog DTD on the
+website is a bit more complex, a proper superset of, the one appended
+below.  The one below is called "monolith", because it has
+stripped out the ENTITY interface declarations that are in the 
+website (non-"monolith") version.  
+</p>
+<p>
+To see the DTD's on the website:
+After you clicked on the *.dtd files, you may have to select
+View | Page Source. Thus, we provide additional *.dtd.txt links.
+Downloading should work anyway.
+</p>
+<p>
+You can try things out "monolithically", as explained in <a href="#Appendix 3">Appendix 3</a>,
+using the own.ruleml example of <a href="#Appendix 2">Appendix 2</a> (the Warnings here
+concern only stylistic matters).
+</p>
+<p>
+You may also use the non-"monolith" modules to study XML's
+"INCLUDE"/"IGNORE" overriding method for DTDs that are read in via
+"ENTITY % ... SYSTEM *.dtd" declarations. But you can get the gist
+of the definitions also when treating most of these house-keeping
+directives as no-ops.
+</p>
+<p>
+After some discussions, we found a set of tag names that sound
+reasonable to us. Feedback is very welcome.
+</p>
+<p>
+Facts now use an explicit, abbreviating "fact"
+tag. Similarly, abbreviating tags will probably be needed for reaction rules and integrity constraints.
+</p>
+<p>
+User comments on all levels are currently taken care of by XML;
+look at the sample datalog document own.ruleml.
+</p>
+<p>
+More sample files -- each referring to the most specific DTD still
+validating them -- can be found at: <a href="http://www.ruleml.org/exa/0.8/">http://www.ruleml.org/exa/0.8/</a> .
+See the instructions above (about View | Page Source, etc.) for
+viewing the content etc.
+</p>
+</section>
+
+<section>
+<header>Issues</header>
+<p>
+Should the 'UR' attribute in inds etc. be renamed from (XHTML-like) 'href' to (our favorite) 'uref',
+'ur', 'resource', or something else?
+</p>
+<p>
+More issues are being collected by Said Tabet.
+</p>
+</section>
+
+<section label="Appendix 1">
+<header>Appendix 1:  DTD for a Datalog subset of RuleML</header>
+<box bgcolor="#CCCCFF"><code><![CDATA[
+<!-- An XML DTD for a Datalog RuleML Sublanguage: Monolith Version -->
+<!-- Last Modification: 2001-07-07 -->
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- 'rulebase' root element uses 'imp' rules and 'fact' assertions as top-level elements -->
+
+<!ELEMENT rulebase ((imp | fact)*)>
+
+ 
+<!-- 'imp' rules are usable as general implications on the top-level -->
+<!-- 'imp' element uses a conclusion role _head followed by a premise role _body, or equivalently -->
+<!-- (since roles constitute unordered elements), uses a premise role _body followed by a conclusion role _head -->
+<!-- "<imp>_head _body</imp>" stands for "_head is implied by _body", i.e., "_head is true is implied by _body is true", or equivalently, -->
+<!-- "<imp>_body _head</imp>" stands for "_body implies _head", i.e., "_body is true implies _head is true" -->
+ 
+<!ELEMENT imp ((_head, _body) | (_body, _head))>
+
+
+<!-- 'fact' assertions are usable as degenerate rules on the top-level -->
+<!-- 'fact' element uses just a conclusion role _head -->
+<!-- "<fact>_head</fact>" stands for "_head is implied by true", i.e., "_head is true" -->
+ 
+<!ELEMENT fact (_head) >
+
+
+<!-- _head role is usable within 'imp' rules and 'fact' assertions -->
+<!-- _body role is usable within 'imp' rules -->
+<!-- _head uses an atomic formula -->
+<!-- _body uses an atomic formula or an 'and' -->
+
+<!ELEMENT _head (atom)>
+<!ELEMENT _body (atom | and)>
+
+ 
+<!-- an 'and' is usable within _body's -->
+<!-- 'and' uses zero or more atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+ 
+<!ELEMENT and (atom*)>
+ 
+ 
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an: -->
+<!-- _opr ("operator of relations") role followed by a sequence of zero or more arguments, or similarly -->
+<!-- (since roles constitute unordered elements, and the zero-argument case must not cause ambiguity), -->
+<!-- a sequence of one or more arguments followed by an _opr role -->
+<!-- the arguments may be ind(ividual)s or var(iable)s -->
+ 
+<!ELEMENT atom ((_opr, (ind | var)*) | ((ind | var)+, _opr))>
+
+
+<!-- _opr is usable within atoms -->
+<!-- _opr uses rel(ation) symbol -->
+
+<!ELEMENT _opr (rel)>
+
+
+<!-- there is one kind of fixed argument -->
+ 
+<!-- individual constant, as in predicate logic -->
+ 
+<!ELEMENT ind  (#PCDATA)>
+ 
+ 
+<!-- there is one kind of variable argument -->
+ 
+<!-- logical variable, as in logic programming -->
+ 
+<!ELEMENT var  (#PCDATA)>
+ 
+ 
+<!-- there are only fixed (first-order) relations -->
+ 
+<!-- relation or predicate symbol -->
+ 
+<!ELEMENT rel  (#PCDATA)>]]></code></box>
+</section>
+
+<section label="Appendix 2">
+<header>Appendix 2:  Example RuleML document:  a rulebase own.ruleml</header>
+<box bgcolor="#FFCCCC"><code><![CDATA[
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/dtd/0.8/ruleml-datalog-monolith.dtd">
+
+
+
+<rulebase>
+
+
+<!-- start XML comment ...
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+ imp---------------------------------
+          *                         *
+     head *                    body *
+          *                         *
+        atom------------------     and----------------------------------------
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                rel   var   var        atom---------------------------     atom------------------
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment -->
+
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>
+
+
+
+<!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>buy</rel></_opr>
+      <var>person</var>
+      <var>merchant</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <atom>
+      <_opr><rel>sell</rel></_opr>
+      <var>merchant</var>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_body>
+</imp>
+ 
+ 
+<!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. -->
+ 
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>sell</rel></_opr>
+      <ind>John</ind>
+      <ind>Mary</ind>
+      <ind>XMLBible</ind>
+    </atom>
+  </_head>
+</fact>
+ 
+<!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+ 
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>keep</rel></_opr>
+      <ind>Mary</ind>
+      <ind>XMLBible</ind>
+    </atom>
+  </_head>
+</fact>
+ 
+ 
+</rulebase>]]></code></box>
+</section>
+
+<section label="Appendix 3">
+<header>Appendix 3:  Instructions/Trace on Validating the example against the DTD</header>
+<box><code><![CDATA[
+Validating a RuleML 0.8 Sample Document: own.ruleml
+
+
+
+> Go to]]></code>
+<a href="http://www.stg.brown.edu/service/xmlvalid/">http://www.stg.brown.edu/service/xmlvalid/</a>
+<code><![CDATA[
+
+> Paste in at
+
+URI:
+http://www.ruleml.org/exa/0.8/own.ruleml
+
+
+> Hit the 'Validate' button
+> You should get:
+
+
+Validation Results for http://www.ruleml.org/exa/0.8/own.ruleml
+
+
+
+Warnings:
+ 
+line 39, http://www.ruleml.org/exa/0.8/own.ruleml: 
+       warning (901): deprecated sequence within comment ending at: -- 
+
+
+
+Document validates OK.]]></code></box>
+</section>
+
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2002-03-07
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/indtd0.8.xml">indtd0.8.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/indtd0.8.xml.txt">indtd0.8.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

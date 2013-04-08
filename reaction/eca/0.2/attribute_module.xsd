@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            Mode RBSLA elements module.
+			This is the XML Schema mode module for RBSLA.
+			File: attribute_module.xsd
+			Version: 0.2
+			Last Modification: 2005-11-26
+			
+			This module declares the following RBSLA elements and attributes:
+                  
+                  * @mode
+                  * @safety
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!--
+           *** @mode ***
+           A role for optionally specify the intended input-output constellations of the predicate terms with the
+           following semantics:
+        
+           "+" The term is intended to be input
+           "-" The term is intended to be output
+           "?" The term is undefined (input or output)
+-->
+	<xs:attributeGroup name="mode.attrib">
+		<xs:attribute name="mode" use="optional" default="?">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="+"/>
+					<xs:enumeration value="-"/>
+					<xs:enumeration value="?"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!--
+	  *** @safety ***
+
+     restriction: transaction or normal
+-->
+	<xs:attributeGroup name="safety.attrib">
+		<xs:attribute name="safety" use="optional" default="transaction">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="transaction"/>
+					<xs:enumeration value="normal"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+</xs:schema>

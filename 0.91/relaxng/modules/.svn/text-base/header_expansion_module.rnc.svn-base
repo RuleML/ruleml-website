@@ -1,0 +1,26 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Headers" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, headers" ]
+dc:description [
+  "The expansion module for header content models."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+
+## The RuleML performative Nodes and root accept the object header.
+Performative.header &= Object.header?
+
+## All Formula Nodes accept the object header.
+Formula.header &= Object.header?
+
+## The header for objects contains an optional object identifier.
+Object.header &= objectIdentifier-edge.choice?
+
+## The header for fuzzifiable objects contains an optional degree of uncertainty.
+Fuzzy.header &= degree-edge.choice?

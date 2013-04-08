@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for (strong) negation in RuleML.
+			File: neg_module.xsd
+			Version: 0.91
+			Last Modification: 2006-07-17
+			
+			This module declares the following RuleML elements:
+			* Neg
+			* strong
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Neg ***
+		A classical negation of a logical atom (i.e. classical or "strong" negation).
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Neg
+
+		content model: ( oid?, (strong | Atom) )
+	-->
+	<xs:attributeGroup name="Neg.attlist"/>
+	<xs:group name="Neg.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="strong"/>		
+				<xs:group ref="strong.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Neg.type">
+		<xs:group ref="Neg.content"/>
+		<xs:attributeGroup ref="Neg.attlist"/>
+	</xs:complexType>
+	<xs:element name="Neg" type="Neg.type"/>
+
+	<!--
+		*** strong ***
+		A role used for classical negation.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-strong
+
+		content model: ( Atom )
+	-->
+	<xs:attributeGroup name="strong.attlist"/>
+	<xs:group name="strong.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="strong.type">
+		<xs:group ref="strong.content"/>
+		<xs:attributeGroup ref="strong.attlist"/>
+	</xs:complexType>
+	<xs:element name="strong" type="strong.type"/>
+		
+</xs:schema>

@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of op -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML elements related to higher order logic.
+			File: holog_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+			
+			See http://www.daml.org/services/swsl/report/swsl/#ruleml-hilog for more details.
+
+			This module declares the following RuleML elements:
+			* Hterm
+			* Atom
+			* op
+			* Con
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Hterm ***
+		A Hilog term, generalizing an atom and complex term.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Hterm
+		
+		content model:
+		( 
+		   (oid)?, (op | Con | Data | Skolem | Var | Reify | Hterm), (slot)*, (resl)?,
+		   (arg | Con | Data | Skolem | Var | Reify | Hterm)*, (repo)?, (slot)*, (resl)?
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+			(oid)?, (op | Con | Data | Skolem | Var | Reify | Hterm), (slot)*, (resl)?,
+			( 
+				( 
+					((arg|Con|Data|Skolem|Var|Reify|Hterm)+, (repo)?)
+					|
+					(repo)
+				),
+				(slot)*, (resl)?
+			)?
+		)                    
+	-->
+	<xs:attributeGroup name="Hterm.attlist"/>
+	<xs:group name="Hterm.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>		
+			<xs:choice>
+				<xs:element name="op" type="op-hterm.type"/>				
+				<xs:group ref="op-hterm.content"/>	
+			</xs:choice>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="resl" minOccurs="0"/>
+			<xs:sequence minOccurs="0">
+				<xs:choice>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:group ref="arg.content"/>
+						</xs:choice>
+						<xs:element ref="repo" minOccurs="0"/>
+					</xs:sequence>
+					<xs:element ref="repo"/>
+				</xs:choice>
+				<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="resl" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Hterm.type">
+		<xs:group ref="Hterm.content"/>
+		<xs:attributeGroup ref="Hterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="Hterm" type="Hterm.type"/>
+
+	<!--
+             *** Atom ***
+		A logical atom, i.e. an expression formed from a predicate applied to a collection of its
+		(logical) arguments.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Atom
+	
+		content model (in SWSL sublanguages): ( oid, (op | Con | Skolem | Var | Reify | Hterm)?, slot* )
+		(another version of Atom is in the atom module)
+		
+		(Note the 'positionalized' normal form where the oid and op roles are at the beginning of the atom.)
+			  
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<xs:group name="Atom-frame.extend">
+		<xs:sequence>
+			<xs:element ref="oid"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="op" type="op-hterm.type"/>				
+				<xs:group ref="op-hterm.content"/>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:group name="Atom-frame.content">
+		<xs:sequence>
+			<xs:group ref="Atom-frame.extend"/>
+			<xs:element name="slot" type="slot-frame.type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="Atom-frame.type">
+		<xs:group ref="Atom-frame.content"/>
+		<xs:attributeGroup ref="Atom.attlist"/>
+	</xs:complexType>	
+
+	<!--
+		*** op ***
+		An operator expression including the neutralized constant of a Hilog term.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-op
+
+		content model (within Hterm): (Con | Skolem | Var | Reify | Hterm)
+		(other versions are in the following modules: atom, cterm and equality)
+
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<!-- the (empty) attribute list is declared in the atom module -->
+	<xs:group name="op-hterm.content">
+		<xs:choice>
+			<xs:element ref="Con"/>
+			<xs:element ref="Skolem"/>			
+			<xs:element ref="Var"/>
+			<xs:element ref="Reify"/>
+			<xs:element ref="Hterm"/>				
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="op-hterm.type">
+		<xs:group ref="op-hterm.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+
+	<!--
+		*** Con ***
+		A neutralized constant (for Rel, Ctor and Ind) of a Hilog term.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-Con
+
+		content model: (#PCDATA)
+	-->
+       <xs:attributeGroup name="Con.attlist">
+               <xs:attributeGroup ref="type.attrib"/>
+               <xs:attributeGroup ref="uri.attrib"/>
+       </xs:attributeGroup>
+	<xs:group name="Con.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Con.type" mixed="true">
+		<xs:group ref="Con.content"/>
+		<xs:attributeGroup ref="Con.attlist"/>
+	</xs:complexType>
+	<xs:element name="Con" type="Con.type"/>
+	
+</xs:schema>

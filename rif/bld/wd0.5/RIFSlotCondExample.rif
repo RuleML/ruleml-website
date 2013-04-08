@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wg/wiki/Core/Slotted_Conditions)
+
+Example 2 (A RIF condition and its XML serialization):
+
+a. RIF condition:
+
+  And ( Exists ?Buyer ?P (?P#purchase[buyer->?Buyer
+                                      seller->?Seller
+                                      item->book(author->?Author title->LeRif)
+                                      price->$49])
+        ?Seller=?Author )
+
+b. XML serialization:
+
+-->
+
+  <And
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <formula>
+      <Exists>
+        <declare><Var>Buyer</Var></declare>
+        <declare><Var>P</Var></declare>
+        <formula>
+          <Frame>
+            <classinst>
+              <Instance>
+                <oid><Var>P</Var></oid>
+                <op><Const>purchase</Const></op>
+              </Instance>
+            </classinst>
+            <slot><Const>buyer</Const><Var>Buyer</Var></slot>
+            <slot><Const>seller</Const><Var>Seller</Var></slot>
+            <slot>
+              <Const>item</Const>
+              <Uniterm>
+                <op><Const>book</Const></op>
+                <slot><Const>author</Const><Var>Author</Var></slot>
+                <slot><Const>title</Const><Const>LeRif</Const></slot>
+              </Uniterm>
+            </slot>
+            <slot><Const>price</Const><Const>$49</Const></slot>
+          </Frame>
+        </formula>
+      </Exists>
+    </formula>
+    <formula>
+      <Equal>
+        <side><Var>Seller</Var></side>
+        <side><Var>Author</Var></side>
+      </Equal>
+    </formula>
+  </And>

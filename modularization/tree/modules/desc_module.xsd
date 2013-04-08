@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Description RuleML elements module.
+			This is the XML Schema description elements module for RuleML.
+			File: desc_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following description RuleML elements:
+			* _rbaselab
+			* _rlab
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- _rbaselab -->
+	<!-- content model is "(ind)" -->
+	<xs:group name="_rbaselab.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_rbaselab.attlist"/>
+	<xs:group name="_rbaselab.content">
+		<xs:sequence>
+			<xs:group ref="_rbaselab.extend"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rbaselab.type">
+		<xs:group ref="_rbaselab.content"/>
+		<xs:attributeGroup ref="_rbaselab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rbaselab" type="_rbaselab.type"/>
+	
+	<!-- _rlab -->
+	<!-- content model is "(ind)" -->
+	<xs:group name="_rlab.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_rlab.attlist"/>
+	<xs:group name="_rlab.content">
+		<xs:sequence>
+			<xs:group ref="_rlab.extend"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rlab.type">
+		<xs:group ref="_rlab.content"/>
+		<xs:attributeGroup ref="_rlab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rlab" type="_rlab.type"/>
+	
+</xs:schema>

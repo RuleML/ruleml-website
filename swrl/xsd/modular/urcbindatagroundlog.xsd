@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: urcbindatagroundlog.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatalog.xsd">
+		<!--
+			remove vars so that atom's content model is:
+			((_opr, (_slot)*, ind, ind, (_slot)*) | ((_slot)*, ind, ind, (_slot)*, _opr))
+		-->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="ind"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:group>
+
+		<!--
+			remove vars so that _slot's content model is just:
+			(ind)
+		-->
+		<xs:group name="_slot.content">
+			<xs:choice>
+				<xs:element ref="ind"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+
+</xs:schema>

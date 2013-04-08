@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Derivation with Datalog RuleML</title>
+    <script>
+      var nextpage="RuleMLPrimer-p10-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p9-slide">
+      <h1>Derivation with Datalog RuleML</h1>
+      <ol>
+        <li>Given the previous fact about Peter Miller's spending,</li>
+        <li>Match fact to rule's <span class="elem-inline"
+          >&lt;if&gt;</span> edge;
+        </li>
+        <li>Bind 
+          <span class="elem-inline"
+            >&lt;Var&gt;</span><code>customer</code><span class="elem-inline"
+            >&lt;/Var&gt;</span>
+          to 
+          <span
+            class="elem-inline">&lt;Ind&gt;</span><code>Peter Miller</code><span
+            class="elem-inline">&lt;/Ind&gt;</span>;</li>
+        <li>Instantiate same variable in rule's 
+          <span
+            class="elem-inline"
+          >&lt;then&gt;</span> edge with this binding, producing</li>
+      </ol>
+      <pre class="example_code">
+<span class="elem">&lt;Atom&gt;</span>
+  <span class="elem">&lt;Ind&gt;</span>Peter Miller<span class="elem">&lt;/Ind&gt;</span>
+  <span class="elem">&lt;op&gt;&lt;Rel&gt;</span>is premium<span class="elem">&lt;/Rel&gt;&lt;/op&gt;</span>
+<span class="elem">&lt;/Atom&gt;</span>
+      </pre>
+    </section>
+    <!--#include virtual="include/section-p9-prose.inc" -->
+    <section id="section-p9-prose">
+      <h3>Derivation with Datalog RuleML - Notes</h3>
+      <p>The rule and the fact can be used together for a first derivation example:
+        The rule's 
+        <span
+          class="elem-inline"
+          >&lt;if&gt;</span> 
+        matches the fact, binding 
+        <span
+          class="elem-inline"
+          >&lt;Var&gt;<code>customer</code>&lt;/Var&gt;</span>
+        to 
+        <span
+          class="elem-inline"
+          >&lt;Ind&gt;<code>Peter Miller</code>&lt;/Ind&gt;</span>;
+        using this binding to instantiate the same variable in the rule's 
+        <span
+          class="elem-inline">&lt;then&gt;</span>,
+        a new
+        <span
+          class="elem-inline"
+          >&lt;Atom&gt;</span>
+        is derived expressing that
+        <span
+          class="elem-inline">&lt;Ind&gt;</span><code>Peter Miller</code><span
+          class="elem-inline">&lt;/Ind&gt;</span>
+        is a
+        <span
+          class="elem-inline">&lt;Rel&gt;</span><code>premium</code><span
+          class="elem-inline">&lt;/Rel&gt;</span>
+        customer.</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p8-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p10-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

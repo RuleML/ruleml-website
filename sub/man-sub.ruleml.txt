@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+<!-- <!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.81/ruleml-taxonomy.dtd"> -->
+
+<?xml-stylesheet href="sub2imp.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+
+<!--
+
+-->
+
+
+
+<rulebase>
+
+
+<sub>
+  <_shead><rel>man</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>bachelor</rel>
+      <rel>marriedman</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead>
+    <sand>
+      <rel>person</rel>
+      <rel>male</rel>
+    </sand>
+  </_shead>
+  <_sbody><rel>man</rel></_sbody>
+</sub>
+
+
+<sub>
+  <_shead>
+    <sand>
+      <rel>person</rel>
+      <rel>male</rel>
+    </sand>
+  </_shead>
+  <_sbody>
+    <sor>
+      <rel>bachelor</rel>
+      <rel>marriedman</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+</rulebase>

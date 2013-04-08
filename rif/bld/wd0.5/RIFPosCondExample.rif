@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wg/wiki/Core/Positive_Conditions)
+
+Example 2 (A RIF condition and its XML serialization):
+
+a. RIF condition:
+
+  And ( Exists ?Buyer (purchase(?Buyer ?Seller book(?Author LeRif) USD(49))) ?Seller=?Author )
+
+b. XML serialization:
+
+-->
+
+  <And
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <formula>
+      <Exists>
+        <declare><Var>Buyer</Var></declare>
+        <formula>
+          <Uniterm>
+            <op><Const>purchase</Const></op>
+            <arg><Var>Buyer</Var></arg>
+            <arg><Var>Seller</Var></arg>
+            <arg>
+              <Uniterm>
+                <op><Const>book</Const></op>
+                <arg><Var>Author</Var></arg>
+                <arg><Const>LeRif</Const></arg>
+              </Uniterm>
+            </arg>
+            <arg>
+              <Uniterm>
+                <op><Const>USD</Const></op>
+                <arg><Const>49</Const></arg>
+              </Uniterm>
+            </arg>
+          </Uniterm>
+        </formula>
+      </Exists>
+    </formula>
+    <formula>
+      <Equal>
+        <side><Var>Seller</Var></side>
+        <side><Var>Author</Var></side>
+      </Equal>
+    </formula>
+  </And>

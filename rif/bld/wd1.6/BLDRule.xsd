@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: BLDRule.xsd,v 0.7 2008-02-12 dhirtle/hboley">
+
+  <xs:annotation>
+    <xs:documentation>
+    This is the XML schema for the Rule Language as defined by
+    Working Draft 2 of the RIF Basic Logic Dialect.
+    
+    The schema is based on the following EBNF for the RIF-BLD Rule Language:
+    
+  Document ::= Ruleset*
+  Ruleset  ::= RULE*
+  RULE     ::= 'Forall' Var+ '(' RULE ')' | Implies | COMPOUND
+  Implies  ::= COMPOUND ':-' CONDITION
+    
+    Note that this is an extension of the syntax for the RIF-BLD Condition Language (BLDCond.xsd).
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- The Rule Language includes the Condition Language-->
+  <xs:include schemaLocation="BLDCond.xsd"/>
+
+  <xs:element name="Document">
+    <!--
+    Document ::= Ruleset*
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Ruleset" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Ruleset">
+    <!--
+    Ruleset  ::= RULE*
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rule" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="RULE"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:group name="RULE">
+  <!--
+  RULE     ::= 'Forall' Var+ '(' RULE ')' | Implies | COMPOUND
+  -->
+    <xs:choice>
+      <xs:element ref="Forall"/>
+      <xs:element ref="Implies"/>
+      <xs:group ref="COMPOUND"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="Forall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <!-- note different from formula in And, Or and Exists -->
+        <xs:element name="formula">
+          <xs:complexType>
+            <xs:group ref="RULE"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+    
+  <xs:element name="Implies">
+    <!--
+  Implies  ::= COMPOUND ':-' CONDITION
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="if"/>
+        <xs:element ref="then"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="CONDITION"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="then">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="COMPOUND"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>

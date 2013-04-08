@@ -1,0 +1,58 @@
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Role RuleML elements module.
+			This is the XML Schema role elements module for RuleML.
+			File: role_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following RuleML element:
+			* _slot
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- _slot -->
+	<!-- content model is "(ind)" -->
+	<xs:attributeGroup name="_slot.attrib">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:group name="_slot.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_slot.attlist">
+		<xs:attributeGroup ref="_slot.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="_slot.content">
+		<xs:sequence>
+			<xs:group ref="_slot.extend"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_slot.type">
+		<xs:group ref="_slot.content"/>
+		<xs:attributeGroup ref="_slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="_slot" type="_slot.type"/>
+		
+</xs:schema>

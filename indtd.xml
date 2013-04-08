@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley "boley@informatik.uni-kl.de" -->
+
+<homepage>
+
+  <title>RuleML DTDs</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+<!--       <xhtml><big><b>RuleML DTDs</b></big></xhtml> -->
+<h1>RuleML DTDs</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a></h2>
+<h2>Version History, 2001-01-25: Version 0.7</h2>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This is a preliminary DTD draft for RuleML.
+Each DTD in the evolving hierarchy corresponds to a specific RuleML sublanguage.
+The DTDs use a modularization approach similar to the one in XHTML
+in order to offer appropriate flexibility and accomodate
+different implementations and approaches.
+We will write a technical report on this system of RuleML DTDs
+(see also <a href="http://www.ruleml.org/ruleml-krdtd/sld001.htm">KR Principles and DTD Modularization</a>).
+</p>
+  </opening>
+
+<section>
+<header>Overview</header>
+<p>
+The upper layer of the RuleML hierarchy of rules is discussed in our
+main page's <a href="index.html#Design">design section</a>.
+In that terminology, the system of RuleML DTDs presented here only covers
+state-preserving rules (declarative, deductive-rewriting rules), not
+state-changing rules (active, trigger rules); special tags for facts are also omitted.
+</p>
+<p>
+This is because we think it is important to start with a subset of
+simple rules, test and refine our principal strategy using these,
+and then work 'up' to the more general categories of rules in the hierarchy.
+For this we choose
+<a href="http://www-lp.doc.ic.ac.uk/UserPages/staff/ft/alp/net/dbs/datalog.html">Datalog</a>, a language corresponding to relational databases
+(ground facts without complex domains or 'constructors')
+augmented by views (possibly recursive rules),
+and work a few steps upwards to further declarative rules
+from (equational) Horn logic.
+We also work upwards from a URL/URI language corresponding to
+simple objects. The join of both of these branches then permits
+inferences over RDF-like 'resources' and can be re-specialized to
+RDF triples.
+</p>
+<p>
+Regarding the concrete markup syntax, we have been experimenting
+with several DTDs prior to the current, still preliminary, version.
+The rationale for our current tags is as follows.
+<itemize>
+  <item>An explicit N-ary conjunctive tag pair
+<tt>&lt;and></tt> ... <tt>&lt;/and></tt> is used,
+preparing other boolean connectives
+(mainly <tt>&lt;or></tt> ... <tt>&lt;/or></tt>) and their nesting.
+  </item>
+  <item>Using <tt>and</tt> for the conjunction of premises, rules become
+binary, in particular our deductive-rewriting implication rules become
+<tt>&lt;if></tt> <i>conc</i> <tt>&lt;and></tt> <i>prem1</i> ... <i>premN</i> <tt>&lt;/and></tt> <tt>&lt;/if></tt>
+  </item>
+  <item>The (conclusion and premise) roles of the two subelements (children) of the XML element
+<tt>&lt;if></tt> <i>conc</i> <i>prem</i> <tt>&lt;/if></tt>
+thus need no further markup, making it compatible to future equivalence rules
+<tt>&lt;equiv></tt> <i>lequiv</i> <i>requiv</i> <tt>&lt;/equiv></tt>
+and consistent to all other RuleML connectives.
+  </item>
+  <item>The backward <strong>notation</strong> of
+<tt>&lt;if></tt> <i>conc</i> <i>prem</i> <tt>&lt;/if></tt>
+does not compromise the directional neutrality of 
+these state-preserving rules, but makes them consistent to
+the standard notation of Horn rules and to future
+directed equations.
+  </item>
+</itemize>
+</p>
+</section>
+
+<section>
+<header>Explanations</header>
+<p>
+Appended below is a preliminary DTD, designated version 0.7,
+for the Datalog subset of RuleML (<a href="#Appendix 1">Appendix 1</a>).  Also appended
+below is a simple example rulebase that conforms to that DTD, 
+and instructions for how to validate the example against the
+DTD.  
+</p>
+<p>
+There now also is a family of DTD's, specified in a modular
+fashion  (using parameter ENTITY declarations), also designated
+vers. 0.7, at this URL: <a href="http://www.ruleml.org/dtd/0.7/">http://www.ruleml.org/dtd/0.7/</a> .
+Note that this family of DTD's is, overall, more raw/immature than just 
+the Datalog member of that family.  Note that the Datalog DTD on the
+website is a bit more complex, but equivalent, to the one appended
+below.  The one below is called "stand-alone", because it has
+stripped out most of the ENTITY declarations that are in the 
+website (non-"stand-alone") version.  
+</p>
+<p>
+To see the DTD's on the website:
+After you clicked on the *.dtd files, you may have to select
+View | Page Source. Thus, we provide additional *.dtd.txt links.
+Downloading should work anyway.
+</p>
+<p>
+You can try things out "stand-alone", as explained in <a href="#Appendix 3">Appendix 3</a>,
+using the own.ruleml example of <a href="#Appendix 2">Appendix 2</a> (Warnings here
+concern only stylistic matters).
+</p>
+<p>
+You may also use the non-"stand-alone" modules to study XML's
+"INCLUDE"/"IGNORE" overriding method for DTDs that are read in via
+"ENTITY % ... SYSTEM *.dtd" declarations. But you can get the gist
+of the definitions also when treating most of these house-keeping
+directives as no-ops.
+</p>
+<p>
+After some discussions, we found a set of tag names that sound
+reasonable to us. Feedback is very welcome.
+</p>
+<p>
+Facts are currently simply rules ("if" elements) that have empty
+(i.e. 'true') 'and' prems.  We'll need an explicit, abbreviating
+tag. Similarly, perhaps, for trigger rules and integrity constraints.
+</p>
+<p>
+User comments on all levels are already taken care of by XML;
+look at the sample datalog document own.ruleml.
+</p>
+<p>
+More sample files -- each referring to the most specific DTD still
+validating them -- can be found at: <a href="http://www.ruleml.org/exa/">http://www.ruleml.org/exa/</a> .
+See the instructions above (about View | Page Source, etc.) for
+viewing the content etc.
+</p>
+</section>
+
+<section label="Appendix 1">
+<header>Appendix 1:  DTD for Datalog subset of RuleML</header>
+<box bgcolor="#CCCCFF"><code><![CDATA[
+<!-- An XML DTD for a Datalog RuleML Sublanguage: Stand-Alone Version -->
+<!-- Last Modification: 2001-01-25 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- a conclusion and premise will be usable within 'if' implications -->
+<!-- conc element uses an atomic formula -->
+<!-- prem element uses an atomic formula or an 'and' -->
+
+<!ENTITY % conc "atom">
+<!ENTITY % prem "(atom | and)">
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<!-- 'rulebase' root element uses 'if' implications as top-level rules -->
+
+<!-- label attribute allows naming of an entire individual rulebase; -->
+<!-- e.g., this can help enable forward inferencing of selected rulebase(s)  -->
+
+<!-- direction attribute indicates the intended direction of rule inferencing;  -->
+<!-- it is a preliminary design choice and has a 'neutral' default value -->
+
+<!ELEMENT rulebase (if*)>
+<!ATTLIST rulebase label CDATA #IMPLIED>
+<!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional">
+ 
+ 
+<!-- 'if' implications are usable as top-level rules -->
+<!-- 'if' element uses a conclusion followed by a premise -->
+<!-- "<if>conc prem</if>" stands for "conc if prem", i.e., "conc is true if prem is true" -->
+ 
+<!-- label attribute is a handle for the rule: for various uses, including editing -->
+ 
+<!ELEMENT if (%conc;, %prem;)>
+<!ATTLIST if label CDATA #IMPLIED>
+ 
+ 
+<!-- an 'and' is usable within premises -->
+<!-- 'and' uses zero or more atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+ 
+<!ELEMENT and (atom*)>
+ 
+ 
+<!-- atomic formulas are usable within conc's, prem's, and 'and's -->
+<!-- atom element uses rel(ation) symbol followed by a sequence of -->
+<!-- zero or more arguments, which may be ind(ividual)s or var(iable)s -->
+ 
+<!ELEMENT atom (rel, (ind | var)*)>
+ 
+ 
+<!-- there is one kind of fixed argument -->
+ 
+<!-- individual constant, as in predicate logic -->
+ 
+<!ELEMENT ind  (#PCDATA)>
+ 
+ 
+<!-- there is one kind of variable argument -->
+ 
+<!-- logical variable, as in logic programming -->
+ 
+<!ELEMENT var  (#PCDATA)>
+ 
+ 
+<!-- there are only fixed (first-order) relations -->
+ 
+<!-- relation or predicate symbol -->
+ 
+<!ELEMENT rel  (#PCDATA)>]]></code></box>
+</section>
+
+<section label="Appendix 2">
+<header>Appendix 2:  Example RuleML document:  a rulebase with filename own.ruleml</header>
+<box bgcolor="#FFCCCC"><code><![CDATA[
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/dtd/ruleml-datalog-standalone.dtd">
+
+
+
+<rulebase>
+
+
+<!-- This example rulebase contains four rules.  The third and
+fourth rules are actually facts.
+
+In English:
+The first rule says that a person owns an object if that person buys
+the object from a merchant and the person keeps the object. -->
+
+
+<if>
+  <atom>
+    <rel>own</rel>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+  <!-- explicit 'and' -->
+  <and>
+    <atom>
+      <rel>buy</rel>
+      <var>person</var>
+      <var>merchant</var>
+      <var>object</var>
+    </atom>
+    <atom>
+      <rel>keep</rel>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </and>
+</if>
+
+
+
+<!--
+In English:
+The next rule says that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+<if>
+  <atom>
+    <rel>buy</rel>
+    <var>person</var>
+    <var>merchant</var>
+    <var>object</var>
+  </atom>
+  <atom>
+    <rel>sell</rel>
+    <var>merchant</var>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+</if>
+ 
+ 
+<!-- The next rule is a fact that says, in English, that
+John sells XMLBible to Mary. -->
+ 
+<if>
+  <atom>
+    <rel>sell</rel>
+    <ind>John</ind>
+    <ind>Mary</ind>
+    <ind>XMLBible</ind>
+  </atom>
+  <!-- empty 'and' -->
+  <and/>
+</if>
+ 
+<!-- The last rule is a fact that says, in English, that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+ 
+<if>
+  <atom>
+    <rel>keep</rel>
+    <ind>Mary</ind>
+    <ind>XMLBible</ind>
+  </atom>
+  <and/>
+</if>
+ 
+ 
+</rulebase>]]></code></box>
+</section>
+
+<section label="Appendix 3">
+<header>Appendix 3:  Instructions/Trace on Validating the example against the DTD</header>
+<box><code><![CDATA[
+Validating a RuleML 0.7 Sample Document: own.ruleml
+
+
+
+> Go to]]></code>
+<a href="http://www.stg.brown.edu/service/xmlvalid/">http://www.stg.brown.edu/service/xmlvalid/</a>
+<code><![CDATA[
+
+> Paste in at
+
+URI:
+http://www.ruleml.org/exa/own.ruleml
+
+
+> Hit the 'Validate' button
+> You should get:
+
+
+Validation Results for http://www.ruleml.org/exa/own.ruleml
+
+
+Warnings:
+
+line 31, http://www.ruleml.org/dtd/ruleml-datalog-standalone.dtd: 
+       warning (652): element has more than one attlist declaration: rulebase 
+line 73, http://www.ruleml.org/exa/own.ruleml: 
+       warning (1106): empty-tag syntax used for element not declared with EMPTY content model: and 
+line 92, http://www.ruleml.org/exa/own.ruleml: 
+       warning (1106): empty-tag syntax used for element not declared with EMPTY content model: and 
+
+
+Document validates OK.]]></code></box>
+</section>
+
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2001-02-14
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/indtd.xml">indtd.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/indtd.xml.txt">indtd.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

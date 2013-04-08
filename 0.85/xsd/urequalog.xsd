@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/inspec"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR' (Flat) Equational-Logic RuleML sublanguage
+			File: urequalog.xsd
+			Version: 0.85
+			Last Modification: 2003-12-17
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:redefine schemaLocation="urhornlog.xsd">
+
+		<!-- head's content model is extended to permit eqs in addition to atoms -->
+		<xs:group name="_head.extend">
+			<xs:choice>
+				<xs:group ref="_head.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!-- body's content model is extended to include eqs in addition to atoms, ands & ors -->
+		<xs:group name="_body.extend">
+			<xs:choice>
+				<xs:group ref="_body.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!-- and's content model is extended to include eqs in addition to atoms & ors -->
+		<xs:group name="and.extend">
+			<xs:choice>
+				<xs:group ref="and.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+	
+	</xs:redefine>
+	
+	
+	<xs:attributeGroup name="eq.attlist"/>
+	<xs:group name="eq.content">
+		<!-- content model is: "((ind | var | cterm | nano), (ind | var | cterm | nano))" -->			
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="ind"/>
+				<xs:element ref="var"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="nano"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="ind"/>
+				<xs:element ref="var"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="nano"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="eq.type">
+		<xs:group ref="eq.content"/>
+		<xs:attributeGroup ref="eq.attlist"/>
+	</xs:complexType>
+	<xs:element name="eq" type="eq.type"/>
+
+	<xs:attributeGroup name="nano.attlist"/>
+	<xs:group name="nano.content">
+		<!-- content model is: "((_opf, (ind | var | cterm)*) | ((ind | var | cterm)+, _opf))" -->			
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_opf"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+					<xs:element ref="cterm"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+					<xs:element ref="cterm"/>
+				</xs:choice>
+				<xs:element ref="_opf"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="nano.type">
+		<xs:group ref="nano.content"/>
+		<xs:attributeGroup ref="nano.attlist"/>
+	</xs:complexType>
+	<xs:element name="nano" type="nano.type"/>
+
+
+	<xs:attributeGroup name="_opf.attlist"/>
+	<xs:group name="_opf.content">
+		<xs:sequence>
+			<xs:element ref="fun"/>
+		</xs:sequence>
+		<!-- content model is "(fun)" -->
+	</xs:group>
+	<xs:complexType name="_opf.type">
+		<xs:group ref="_opf.content"/>
+		<xs:attributeGroup ref="_opf.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opf" type="_opf.type"/>
+
+<!-- same as equalog except for href attributes -->
+
+	<xs:attributeGroup name="fun.attlist">
+		<xs:attribute name="href" type="xs:anyURI"/>
+	</xs:attributeGroup>
+	<xs:group name="fun.content">
+		<!-- content model is "(#PCDATA)" -->
+  		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="fun.type" mixed="true">
+		<xs:group ref="fun.content"/>
+		<xs:attributeGroup ref="fun.attlist"/>
+	</xs:complexType>
+	<xs:element name="fun" type="fun.type"/>
+	
+</xs:schema>

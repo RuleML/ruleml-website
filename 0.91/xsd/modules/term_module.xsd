@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML terms.
+			File: term_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-24
+			
+			This module declares the following RuleML elements and attributes:
+			* arg
+			* Ind
+			* Data
+			* Var
+			* Skolem
+			* Reify
+			* @type
+			* @index
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** arg ***
+		A role used for the positional arguments of a logical atom.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-arg
+
+		content model: (Ind | Data | Var | Skolem | Reify)
+	-->
+	<xs:attributeGroup name="arg.attlist">
+		<xs:attributeGroup ref="index.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="arg.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Data"/>
+			<xs:element ref="Var"/>
+			<xs:element ref="Skolem"/>
+			<xs:element ref="Reify"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="arg.type">
+		<xs:group ref="arg.content"/>
+		<xs:attributeGroup ref="arg.attlist"/>
+	</xs:complexType>
+	<xs:element name="arg" type="arg.type"/>
+
+	<!--
+		*** Ind ***
+		An individual constant, as in predicate logic, which can also be considered to
+		be a fixed argument like RDF resources.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Ind
+		
+		content model: (#PCDATA)
+	-->
+       <xs:attributeGroup name="Ind.attlist">
+               <xs:attributeGroup ref="type.attrib"/>
+               <xs:attributeGroup ref="uri.attrib"/>
+       </xs:attributeGroup>
+	<xs:group name="Ind.content">
+		<xs:sequence/>
+	</xs:group>	
+	<xs:complexType name="Ind.type" mixed="true">
+		<xs:group ref="Ind.content"/>
+		<xs:attributeGroup ref="Ind.attlist"/>
+	</xs:complexType>
+	<xs:element name="Ind" type="Ind.type"/>
+
+	<!--
+		*** Data ***
+		A fixed argument like RDF literals, allowing XML data.  It may be
+		optionally associated with an XML Schema built-in datatype
+		(see http://www.w3.org/TR/xmlschema-2/#built-in-datatypes)
+		using the built-in xsi:type attribute.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Data
+		
+		content model: (#PCDATA) [optionally datatyped]
+	-->
+	<xs:element name="Data" type="xs:anyType"/>
+
+	<!--
+		*** Var ***
+		A logical variable, as in logic programming.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Var
+
+		content model: (#PCDATA)
+	-->
+	<xs:attributeGroup name="Var.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Var.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Var.type" mixed="true">
+		<xs:group ref="Var.content"/>
+		<xs:attributeGroup ref="Var.attlist"/>
+	</xs:complexType>
+	<xs:element name="Var" type="Var.type"/>
+	
+	<!--
+		*** Skolem ***
+		A Skolem individual constant, like RDF's blank nodes.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Skolem
+
+		content model: (#PCDATA)
+	-->
+	<xs:attributeGroup name="Skolem.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Skolem.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Skolem.type" mixed="true">
+		<xs:group ref="Skolem.content"/>
+		<xs:attributeGroup ref="Skolem.attlist"/>
+	</xs:complexType>
+	<xs:element name="Skolem" type="Skolem.type"/>
+
+	<!--
+		*** Reify ***
+		Supports reification (a kind of instantiation or quasi-quotation)
+		as needed by SWSL. It allows any RuleML tag available within the
+		current sublanguage as content, treating it as a term for performing
+		reasoning on.
+				
+		See http://www.ruleml.org/0.91/glossary/#gloss-Reify		
+		
+		content model: ( (any valid RuleML)? )
+	-->
+	<xs:attributeGroup name="Reify.attlist"/>
+	<xs:group name="Reify.content">
+		<xs:sequence>
+			<!-- <Reify> only allows valid RuleML -->
+			<xs:any minOccurs="0" processContents="strict" namespace="##targetNamespace"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Reify.type">
+		<xs:group ref="Reify.content"/>
+		<xs:attributeGroup ref="Reify.attlist"/>
+	</xs:complexType>
+	<xs:element name="Reify" type="Reify.type"/>
+
+	<!--
+		*** @type ***
+		An attribute for optionally specifying a term's (user-defined) type.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@type
+	-->
+	<xs:attributeGroup name="type.attrib">
+		<xs:attribute name="type" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @index ***
+		A required attribute for specifying the position of a positional
+		argument within an atom.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@index
+	-->
+	<xs:attributeGroup name="index.attrib">
+		<xs:attribute name="index" type="xs:positiveInteger" use="required"/>
+	</xs:attributeGroup>			
+
+</xs:schema>

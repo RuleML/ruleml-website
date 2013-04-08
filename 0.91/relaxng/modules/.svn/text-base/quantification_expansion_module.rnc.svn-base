@@ -1,0 +1,141 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Quantification" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, quantify, quantification, universal, existential" ]
+dc:description [ "The expansion module for quantifications." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= quantification.Node.defs | quantification.edge.defs
+quantification.Node.defs |= Forall.Node.def | Exists.Node.def
+quantification.edge.defs |= declare.edge.def | formula_Forall.edge.def | formula_Exists.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <Forall> !
+#            * <Exists> !
+#            * <declare>
+#            * <formula>
+# This module also declares the following RuleML choice patterns:
+#            * ForallFormula.choice
+#            * ExistsFormula.choice
+
+## an extension point to allow alternate names and internationalization of universal quantifiers
+Forall-node.choice |= Forall.Node.def
+Forall.Node.def =
+    
+    ## Explicit universal quantifier. It consists of a sequence of one or more 
+    ## variables (<Var>), each optionally surrounded by a <declare> role, and a
+    ## logical formula (optionally surrounded by a <formula> role).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Forall
+    element Forall { (Forall-datt.choice & reForall.attlist), Forall.header, Forall.main }
+## The attribute list of the universal quantification formula 
+##will accept a scoped closure attribute at full first-order logic.
+reForall.attlist &= mapClosure-att-fo.choice?
+
+## Universally qualified formulas accept the header pattern of general formulas.
+Forall.header &= CompoundFormula.header?
+# For the declaration of the compound formula header, see the con/disjunction module (andor_module).
+
+## Universally qualified formulas contain a sequence of bound variables and one formula.
+Forall.main |= boundVariables, formula_Forall-edge.choice
+
+## an extension point to allow alternate names and internationalization for existential quantifiers
+Exists-node.choice |= Exists.Node.def
+Exists.Node.def =
+    
+    ## Explicit existential quantifier. It consists of one or more variables (<Var>),
+    ## each optionally surrounded by a <declare> role, followed by a logical formula 
+    ## (optionally surrounded by a <formula> role).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Exists
+    element Exists { (Exists-datt.choice & reExists.attlist), Exists.header, Exists.main }
+## The attribute list of the existential quantification formula 
+## will accept a scoped closure attribute at full first-order logic.
+reExists.attlist &= mapClosure-att-fo.choice?
+
+## Existential quantifications accept the header pattern of general formulas.
+Exists.header &= CompoundFormula.header?
+# For the declaration of the compound formula header, see the con/disjunction module (andor_module).
+
+## Existentially qualified formulas contain a sequence of bound variables and one formula.
+Exists.main |= boundVariables, formula_Exists-edge.choice
+
+## declaration of one or more bound quantifiable terms.
+boundVariables = declare-edge.choice+
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the declare tag name in quantified formulas.  
+declare-edge.choice |= declare.edge.def
+declare.edge.def =
+    
+    ## A role used for variables (<Var>) declared within a quantifier (<Forall> or <Exists>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-declare
+    element declare { declare.content }
+
+## a declaration element contains a single quantifiable term
+declare.content |= SimpleQuantifiableTerm.choice
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in universal quantifications. 
+formula_Forall-edge.choice |= formula_Forall.edge.def
+formula_Forall.edge.def =
+    
+    ## The formula role of a conjunctive (<And>) or disjunctive (<Or>) expression, 
+    ## quantifier (<Forall> or <Exists>), or performative (<Assert>, <Query> or <Retract>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-formula
+    ## within Forall...
+    element formula { formula_Forall.content }
+
+## The formula role of universal quantifications contains a single formula. 
+formula_Forall.content |= ForallFormula.choice
+
+## formulas allowed to be universally quantified.
+ForallFormula.choice |=
+    SimpleFormula-node.choice
+    | And-fo-node.choice
+    | Or-fo-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-node.choice
+    | Forall-node.choice
+    | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in existential quantifications. 
+formula_Exists-edge.choice |= formula_Exists.edge.def
+formula_Exists.edge.def =
+    
+    ## The formula role of a conjunctive (<And>) or disjunctive (<Or>) expression, 
+    ## quantifier (<Forall> or <Exists>), or performative (<Assert>, <Query> or <Retract>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-formula
+    ## Within Exists...
+    element formula { formula_Exists.content }
+
+## The formula role of existential quantifications contains a single formula.
+formula_Exists.content |= ExistsFormula.choice
+
+## formulas allowed to be existentially quantified.
+ExistsFormula.choice |=
+    SimpleFormula-node.choice
+    | And-node.choice
+    | Or-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-fo-node.choice
+    | Forall-fo-node.choice
+    | Exists-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+Node.choice |= quantification.Node.defs
+edge.choice |= quantification.edge.defs
+# 
+
+
+

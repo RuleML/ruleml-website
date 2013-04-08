@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd" 
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Atom -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Frames Layer RuleML sublanguage with equational logic
+			File: hoframehornlogeq.xsd
+			Version: 0.89
+			Last Modification: 2005-05-27
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hoframehornlog includes the 'frame' module -->
+	<xs:include schemaLocation="modules/frame_module.xsd"/>
+
+	<!--
+		Note that InstanceOf, SubclassOf, Signature, unary slots, and non-positional
+		Atoms are added, in addition to support for set-valued fillers, slot access,
+		and path expression serialization.
+
+		Currently, unary slots are only available within Atoms, not Hterms,
+		due to XSD-technical reasons.  Later unary slots may be generalized
+		to all of RuleML.
+	-->
+	<xs:redefine schemaLocation="hohornlogeq.xsd">
+
+		<!--
+			add Set to slot-frame:
+			( (Con|Skolem|Var|Reify|Hterm),(Con|Skolem|Var|Reify|Hterm|Set)? )
+		 -->
+		<xs:group name="slot-frame.extend">
+			<xs:choice>
+				<xs:group ref="slot-frame.extend"/>
+				<xs:element ref="Set"/>
+			</xs:choice>			
+		</xs:group>		
+
+		<!-- add Get to arg -->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Get"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Get to slot so that its content model is:
+			( (Con|Skolem|Var|Reify|Hterm|Get), (Con|Skolem|Var|Reify|Hterm|Get) )
+
+			... and to slot-frame so that its content model is:
+			( (Con|Skolem|Var|Reify|Hterm|Get),(Con|Skolem|Var|Reify|Hterm|Get|Set)? )	
+
+			... and to Set so that its content model is:
+			( (Con | Skolem | Var | Reify | Hterm | Get)* )		
+
+			... and to InstanceOf and SubclassOf so that their content model is:
+			( (Con|Skolem|Var|Reify|Hterm|Get),(Con|Skolem|Var|Reify|Hterm|Get) )
+
+			... and to SlotProd so that its content model is:
+			(Con | Skolem | Var | Hterm | Get)+
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to formula-top-and -->
+		<xs:group name="formula-top-and.content">
+			<xs:choice>
+				<xs:group ref="formula-top-and.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to top
+			level And so that its content model is:
+			( oid?, (formula | Atom | InstanceOf | SubclassOf | Hterm | Implies | Equivalent | Forall)* )
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to body -->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to head -->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to Implies so
+			that its content model is:
+			( 
+   			   oid?, ( head, body ) | ( body, head ) |
+				 ( 
+				  (Atom | InstanceOf | SubclassOf | And | Or | Hterm),
+ 				  (Atom | InstanceOf | SubclassOf | Hterm)
+				 )
+			)
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to torso -->
+		<xs:group name="torso.content">
+			<xs:choice>
+				<xs:group ref="torso.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to
+			Equivalent so that its content model is:
+			(
+			   oid?, (
+				   ( torso, torso) |
+				   ((Atom | InstanceOf | SubclassOf | Hterm), (Atom | InstanceOf | SubclassOf | Hterm))
+				 )
+			)	
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to formula-and-or -->		
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to
+			And & Or so that their content model is:
+			( oid?, (formula | Atom | InstanceOf | SubclassOf | Hterm | And | Or)* )
+		-->	
+
+		<!-- add Atom to content-query -->		
+		<xs:group name="content-query.content">
+			<xs:choice>
+				<xs:group ref="content-query.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to
+			Query so that its content model is:
+			(content | Atom | InstanceOf | SubclassOf | Hterm | And | Or | Exists)
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to formula-forall -->
+		<xs:group name="formula-forall.content">
+			<xs:choice>
+				<xs:group ref="formula-forall.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to
+			Forall so that its content model is:
+			( oid?, (declare | Var)+, (formula | Atom|InstanceOf|SubclassOf|Hterm|Implies|Equivalent|Forall) )
+		-->
+
+		<!-- add InstanceOf, SubclassOf, Signature and Atom to formula-exists -->
+		<xs:group name="formula-exists.content">
+			<xs:choice>
+				<xs:group ref="formula-exists.content"/>		
+				<xs:element name="Atom" type="Atom-frame.type"/>			
+				<xs:element ref="InstanceOf"/>			
+				<xs:element ref="SubclassOf"/>
+				<xs:element ref="Signature"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds InstanceOf, SubclassOf, Signature and Atom to
+			Exists so that its content model is:
+			( oid?, (declare | Var)+, (formula | Atom|InstanceOf|SubclassOf|Hterm|And|Or|Exists) )
+		-->
+
+	</xs:redefine>
+
+</xs:schema>

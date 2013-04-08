@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            ECA RuleML module part of RBSLA.
+			This is the XML Schema event condiiton action module for RBSLA.
+			File: eca_module.xsd
+			Version: 0.2
+			Last Modification: 2006-10-01
+			
+			This schema declares the following RBSLA elements and attributes:
+				  
+				  * ECA
+                  * time
+                  * event
+                  * condition
+                  * action
+                  * postcondition 
+                  * else                  
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+
+<!--
+      *** ECA ***
+      An ECA element that provides the basic syntax for ECA rules.
+
+      content model: 
+      (oid?,  time?,  event?, condition?,  action, postcondition?, else?)
+-->
+	<xs:attributeGroup name="ECA.attlist"/>
+	<xs:group name="ECA.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="time" minOccurs="0"/>
+			<xs:element ref="event" minOccurs="0"/>
+			<xs:element ref="condition" minOccurs="0"/>
+			<xs:element ref="action"/>
+			<xs:element ref="postcondition" minOccurs="0"/>
+			<xs:element ref="else" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ECA.type">
+		<xs:group ref="ECA.content"/>
+		<xs:attributeGroup ref="ECA.attlist"/>
+	</xs:complexType>
+	<xs:element name="ECA" type="ECA.type"/>
+	
+<!--
+     *** time ***
+     
+     content model: (Naf | Neg | Ind | Var | Cterm )
+-->
+	<xs:attributeGroup name="time.attlist"/>
+	<xs:group name="time.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="time.type">
+		<xs:group ref="time.content"/>
+		<xs:attributeGroup ref="time.attlist"/>
+	</xs:complexType>
+	<xs:element name="time" type="time.type"/>
+	
+<!--
+     *** event ***
+     
+     content model: ( Naf | Neg | Ind | Var | Cterm | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic )
+-->
+	<xs:attributeGroup name="event.attlist"/>
+	<xs:group name="event.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Sequence"/>
+				<xs:element ref="Disjunction"/>
+				<xs:element ref="Xor"/>
+				<xs:element ref="Conjunction"/>
+				<xs:element ref="Concurrent"/>
+				<xs:element ref="Not"/>
+				<xs:element ref="Any"/>
+				<xs:element ref="Aperiodic"/>
+				<xs:element ref="Periodic"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="event.type">
+		<xs:group ref="event.content"/>
+		<xs:attributeGroup ref="event.attlist"/>
+	</xs:complexType>
+	<xs:element name="event" type="event.type"/>
+	
+<!--
+     *** condition ***
+     
+     content model: (Naf | Neg | Cterm )
+-->
+	<xs:attributeGroup name="condition.attlist"/>
+	<xs:group name="condition.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="condition.type">
+		<xs:group ref="condition.content"/>
+		<xs:attributeGroup ref="condition.attlist"/>
+	</xs:complexType>
+	<xs:element name="condition" type="condition.type"/>
+	<!--
+     *** action ***
+     
+     content model: ( Cterm | Assert | Retract | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)
+-->
+	<xs:attributeGroup name="action.attlist"/>
+	<xs:group name="action.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Assert"/>
+				<xs:element ref="Retract"/>
+				<xs:element ref="Sequence"/>
+				<xs:element ref="Disjunction"/>
+				<xs:element ref="Xor"/>
+				<xs:element ref="Conjunction"/>
+				<xs:element ref="Concurrent"/>
+				<xs:element ref="Not"/>
+				<xs:element ref="Any"/>
+				<xs:element ref="Aperiodic"/>
+				<xs:element ref="Periodic"/>			
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="action.type">
+		<xs:group ref="action.content"/>
+		<xs:attributeGroup ref="action.attlist"/>
+	</xs:complexType>
+	<xs:element name="action" type="action.type"/>
+	
+<!--
+     *** postcondition ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+	<xs:attributeGroup name="postcondition.attlist"/>
+	<xs:group name="postcondition.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="postcondition.type">
+		<xs:group ref="postcondition.content"/>
+		<xs:attributeGroup ref="postcondition.attlist"/>
+	</xs:complexType>
+	<xs:element name="postcondition" type="postcondition.type"/>
+	
+<!--
+     *** else ***
+     
+     content model: ( Cterm | Assert | Retract )
+-->
+	<xs:attributeGroup name="else.attlist"/>
+	<xs:group name="else.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Assert"/>
+				<xs:element ref="Retract"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="else.type">
+		<xs:group ref="else.content"/>
+		<xs:attributeGroup ref="else.attlist"/>
+	</xs:complexType>
+	<xs:element name="else" type="else.type"/>
+</xs:schema>

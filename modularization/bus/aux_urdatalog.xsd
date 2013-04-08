@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a 'UR' Datalog RuleML sublanguage
+			File: aux_urdatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- redefine the previous sublanguage in the hierarchy to re-add href attributes -->
+	<xs:redefine schemaLocation="aux_datalog.xsd">
+		<xs:attributeGroup name="ind.attlist">
+			<xs:attributeGroup ref="ind.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>	
+	</xs:redefine>
+	
+</xs:schema>

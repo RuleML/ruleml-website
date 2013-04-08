@@ -1,0 +1,427 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>Semantic Attributes for RuleML</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#EEEEEE">
+		<center>
+			<br>
+
+			<br>
+			<h1>Semantic Attributes for RuleML</h1>
+			<h2>
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, David Hirtle</h2>
+			
+		        <h3>Version History, 2004-07-19: <a href="http://www.ruleml.org/0.88/">Version 0.5</a>
+</h3>
+			<h3>Version History, 2004-09-07: <a href="http://www.ruleml.org/0.88/">Version 0.7</a>
+</h3>
+		</center>
+		<br>
+		
+		<p>As a step beyond RuleML syntax that is supported by XML Schema validators,
+		this is a preliminary proposal for semantic RuleML attributes that are still validated syntactically
+		but whose meaning can also be exploited by RuleML-aware tools.
+		Semantic attributes are shown to simplify the specification of RuleML via orthogonal, inheritable dimensions,
+		accomodating recent requests by the RuleML user community and partner initiatives such as SWRL, SCL, and FORUM.
+		 </p>  
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Changes">Changes</a></li>
+<li><a href="#Dimensions">The Truth, Rewrite, and Closure Dimensions of Formulas</a></li>
+<li><a href="#Appendix">Appendix:  Example Clause Set in RuleML (<a href="exa/own.ruleml">own.ruleml</a>)</a></li>
+<li><a href="#Appendix 3">Appendix 3:  Instructions on validating the example against the XSD</a></li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
+	
+   <p>
+Pragmatic attributes have long been used in RuleML, e.g. for the 'direction' of rule application.
+Likewise, semantic attributes have been discussed for properties of clauses and rulebases
+that cannot be (conveniently) expressed by XML Schema syntax alone, e.g. capturing results of static analysis
+such as the 'stratification' or 'termination' of certain rulebases.
+A basic group of attributes is proposed here.
+   </p>
+   <p>
+In the design of RuleML we have tried to balance the generality of RuleML's Web rules with their ease of use.
+To improve on both of these for the specification of RuleML, semantic attributes turn out to be quite useful.
+   </p>
+   <p>
+On a general level, we propose an orthogonal system of dimensions for the specification of RuleML.
+The markup of these dimensions is then realized with XML attributes because their fillers are unstructured values.
+Alternatively, XML (sub)elements acting as 'role tags' could be employed if there was a need for structured values.
+</p>
+   <p>
+On the broadest level, we strive for the following:
+	<ul>
+	
+	   <li>Increasing RuleML extensibility via orthogonal, inheritable dimensions:</li>
+	   
+	    	<ul>
+			   
+	    	    <li>Complementing RuleML's syntax by an orthogonal system of semantic attributes</li>
+	   
+	    	    <li>Providing modular, logic RuleML elements carrying those attributes</li>
+	   
+	    	    <li>Allowing OO-like overridable attribute inheritance from parent to child elements</li>
+		    
+	    	    <li>Permitting new features, e.g., integrity constraints, by attribute combinations (rather than new elements)</li>
+	   		    		
+    	    	</ul>
+		
+	   <li>Omitting role tags where they can be easily inferred from their parent or position
+	   (cf. <a href="http://www.ruleml.org/indtd0.8.html#Context">RuleML 0.8 Context</a>,
+	    <a href="http://www.ruleml.org/#Lite">RuleML Lite</a>, and <a href="http://esw.w3.org/topic/StripeSkipping">StripeSkipping</a>)</li>	    
+		
+	   <li>Generalizing RuleML to <a href="http://www.ruleml.org/fol/">First-Order-Logic RuleML</a>
+</li>,
+	   logically adapting existing markup
+	   
+	   <li>Accomodating requests from <a href="http://www.w3.org/Submission/2004/SUBM-SWRL-20040521/">SWRL</a>,
+	   <a href="http://philebus.tamu.edu/mailman/listinfo/scl">SCL</a>,
+	   and <a href="http://projects.semwebcentral.org/mailman/listinfo/forum-flogic">FORUM</a>
+</li>
+	   
+	   <li>Re-unifying <a href="http://www.ruleml.org/#Lite">RuleML Lite</a> with mainstream RuleML</li>
+	   	   
+	</ul>
+   </p>
+   <p>
+Most of this can be accomplished by establishing a system of dimensions and, in the corresponding XML,
+parameterizing logic RuleML elements by semantic RuleML attributes.
+   </p>
+
+<h2><a name="Changes">Changes</a></h2>
+
+<p>Renaming of elements:
+	<ul>
+    	    <li>Normal &lt;Rulebase&gt; becomes &lt;And truth=&quot;assert&quot; rewrite=&quot;none&quot; closure=&quot;universal&quot;&gt; as the root for much inheritance</li>
+    	    <li>Normal &lt;Imp&gt; becomes &lt;Implies&gt; and, after inheritance, &lt;Implies truth=&quot;assert&quot; rewrite=&quot;none&quot; closure=&quot;universal&quot;&gt;</li>
+    	    <li>Embedded FOL &lt;Implies&gt; becomes &lt;Implies truth=&quot;check&quot; rewrite=&quot;any&quot; closure=&quot;none&quot;&gt;</li>	       
+	    <li>...</li>
+	</ul>
+</p>
+<p>New features by attribute combinations:
+	<ul>
+    	    <li>SWRL RuleML &lt;Imp&gt; for implications whose truth assertion also asserts their contrapositives can be defined,
+	    after inheritance, as &lt;Implies truth=&quot;assert&quot; rewrite=&quot;propositional&quot; closure=&quot;universal&quot;&gt;</li>
+	    <li>The envisaged &lt;Ic&gt;&lt;some-connective&gt;...&lt;/some-connective&gt;&lt;/Ic&gt; for integrity constraints can be realized,
+	    after inheritance, as &lt;some-connective truth=&quot;sustain&quot; rewrite=&quot;any&quot; closure=&quot;universal&quot;&gt;...&lt;/some-connective&gt;</li>
+	    
+	    <li>...</li>
+	</ul>
+</p>
+<h2><a name="Dimensions">The Truth, Rewrite, and Closure Dimensions of Formulas</a></h2>
+
+<p>
+Dimensions for the 'truth' and 'rewrite' of formulas (e.g., of clauses) are combined for getting a basic formula classification.
+'Truth' distinguishes a formula that we axiomatically 'assert' to be true from a formula whose truth value we 'check' via a query or premise,
+the truth value of which we 'detect' via a conclusion, and whose truth we 'sustain' as an integrity constraint.
+'Rewrite' distinguishes a formula also representing various ('algebraic' or 'propositional') rewritings from
+a formula that stands only for itself ('none').
+</p>
+<p>
+Specifically:
+<br> <br>
+
+        <table border="1" cellpadding="3">
+            <tr align="center">
+                <td>
+                    <b>truth \ rewrite</b>
+                </td>
+		
+                <td>
+                    <b>any</b>
+                </td>
+				
+                <td>
+                    <b>algebraic</b>
+                </td>
+		
+                <td>
+                    <b>propositional</b>
+                </td>
+                <td>
+                    <b>none</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td><b>assert</b></td>
+                <td>TBD</td>
+		<td>e.g. for RuleML And</td>
+		<td>e.g. for SWRL RuleML Implies</td>
+                <td>e.g. on RuleML top-level</td>
+            </tr>
+            <tr align="center">
+	        <td><b>detect</b></td>
+                <td>TBD</td>
+		<td>e.g. for RuleML And</td>
+                <td>TBD</td>
+                <td>e.g. in RuleML Implies head</td>
+            </tr>
+            <tr align="center">
+	        <td><b>check</b></td>
+                <td>TBD</td>
+		<td>e.g. for RuleML And</td>
+                <td>e.g. in RuleML Implies body</td>
+                <td>TBD</td>
+            </tr>
+	    <tr align="center">
+	        <td><b>sustain</b></td>
+                <td>TBD</td>
+		<td>e.g. for RuleML And</td>
+                <td>e.g. for FOL integrity constraints</td>
+                <td>TBD</td>
+            </tr>
+        </table>
+	
+<br> <br>
+
+A dimension for the 'closure' of formulas is added to the formula classification.
+'Closure' distinguishes a formula that is closed ('universal' or 'existential') from a formula that is left open ('none').
+</p>
+<p>
+Dimension values need only be specified, via XML attributes, at the uppermost ancestor element for which they hold;
+processors can use an OO-like attribute inheritance mechanism to carry the attribute values down, via the parent-child chain,
+from the uppermost ancestor element to all elements that do not mention the same attribute.
+If an element in this inheritance path does mention the same attribute, its value overrides the value of any ancestor element.
+This inheritance can be performed statically, say via an XSLT stylesheet, or dynamically, say via a Java application.
+</p>
+<h2><a name="Appendix">Appendix:  Example Clause Set in RuleML (<a href="exa/own.ruleml">own.ruleml</a>)</a></h2>
+
+<table border="1" cellpadding="5" bgcolor="#FFFFFF"><tr><td><b><pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;And truth=&quot;assert&quot; rewrite=&quot;none&quot; closure=&quot;universal&quot;
+xmlns=&quot;http://www.ruleml.org/0.86/xsd&quot;
+xsi:schemaLocation=&quot;http://www.ruleml.org/0.86/xsd http://www.ruleml.org/0.86/xsd/datalog.xsd&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+&gt;
+
+&lt;!-- start XML comment ...
+
+This example clause set is an And that axiomatically asserts four clauses.
+The first and second clauses are implication rules; the third and fourth ones are facts.
+
+In English:
+
+The first clause is a rule that implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree (with implicit role tags):
+
+ Implies~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+   (head) *                  (body) *
+          *                         *
+        Atom~~truth=&quot;detect&quot;~~    And~~truth=&quot;check&quot;~~rewrite=&quot;algebraic&quot;~~~~~
+                 *     |     |           |                                   |
+           (opr) *     |     |  	 |				     |
+                 *     |     |           |                                   |        
+                Rel   Var   Var        Atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     Atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .            (opr) *     |      |       |        (opr) *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment --&gt;
+
+
+&lt;Implies&gt;
+  &lt;Atom truth=&quot;detect&quot;&gt;
+    &lt;Rel&gt;own&lt;/Rel&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;
+  &lt;/Atom&gt;
+  &lt;!-- explicit 'And' could be left implicit --&gt;
+  &lt;And truth=&quot;check&quot; rewrite=&quot;algebraic&quot;&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;buy&lt;/Rel&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;merchant&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;keep&lt;/Rel&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/And&gt;
+&lt;/Implies&gt;
+
+
+&lt;!-- The remaining attributes of this rule are inherited from ancestor elements.
+
+As an OrdLab Tree (with implicit role tags):
+
+ Implies~~truth=&quot;assert&quot;~rewrite=&quot;none&quot;~closure=&quot;universal&quot;~~
+          *                         *
+   (head) *                  (body) *
+          *                         *
+        Atom~~truth=&quot;detect&quot;~~    And~~truth=&quot;check&quot;~~rewrite=&quot;algebraic&quot;~~~~~
+                 *     |     |           |                                   |
+           (opr) *     |     |  	 |				     |
+                 *     |     |           |                                   |        
+                Rel   Var   Var        Atom~~truth=&quot;check&quot;~~~~~~~~~~~~    Atom~~truth=&quot;check&quot;~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .            (opr) *     |      |       |        (opr) *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+					       
+
+&lt;Implies truth=&quot;assert&quot; rewrite=&quot;none&quot; closure=&quot;universal&quot;&gt;
+  &lt;Atom truth=&quot;detect&quot;&gt;
+    &lt;Rel&gt;own&lt;/Rel&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;
+  &lt;/Atom&gt;
+  &lt;!-- explicit 'And' could be left implicit --&gt;
+  &lt;And truth=&quot;check&quot; rewrite=&quot;algebraic&quot;&gt;
+    &lt;!-- truth=&quot;check&quot; of two Atoms has been inherited from 'And' --&gt;
+    &lt;Atom truth=&quot;check&quot;&gt;
+      &lt;Rel&gt;buy&lt;/Rel&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;merchant&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+    &lt;Atom truth=&quot;check&quot;&gt;
+      &lt;Rel&gt;keep&lt;/Rel&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/And&gt;
+&lt;/Implies&gt;
+
+--&gt;
+
+
+&lt;!-- The second clause is a rule that implies that a person buys an object from a merchant
+if the merchant sells the object to the person. --&gt;
+
+&lt;Implies&gt;
+  &lt;Atom truth=&quot;detect&quot;&gt;
+    &lt;Rel&gt;buy&lt;/Rel&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;merchant&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;
+  &lt;/Atom&gt;
+  &lt;Atom truth=&quot;check&quot;&gt;
+    &lt;Rel&gt;sell&lt;/Rel&gt;
+    &lt;Var&gt;merchant&lt;/Var&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;      
+  &lt;/Atom&gt;
+&lt;/Implies&gt;
+
+
+&lt;!-- The remaining attributes of this rule are inherited from ancestor elements.
+
+&lt;Implies truth=&quot;assert&quot; rewrite=&quot;none&quot; closure=&quot;universal&quot;&gt;
+  &lt;Atom truth=&quot;detect&quot;&gt;
+    &lt;Rel&gt;buy&lt;/Rel&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;merchant&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;
+  &lt;/Atom&gt;
+  &lt;Atom truth=&quot;check&quot;&gt;
+    &lt;Rel&gt;sell&lt;/Rel&gt;
+    &lt;Var&gt;merchant&lt;/Var&gt;
+    &lt;Var&gt;person&lt;/Var&gt;
+    &lt;Var&gt;object&lt;/Var&gt;      
+  &lt;/Atom&gt;
+&lt;/Implies&gt;
+
+--&gt;
+
+ 
+&lt;!-- The third clause is a fact that asserts that
+John sells XMLBible to Mary. --&gt;
+ 
+&lt;Atom&gt;
+  &lt;Rel&gt;sell&lt;/Rel&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+&lt;/Atom&gt;
+
+
+&lt;!-- The remaining attributes of this fact are inherited from ancestor elements.
+The closure=&quot;universal&quot; attribute acts like Prolog's convention when an Ind such
+as &lt;Ind&gt;Mary&lt;/Ind&gt; is replaced by a Var such as &lt;Var&gt;person&lt;/Var&gt;.
+ 
+&lt;Atom truth=&quot;assert&quot; closure=&quot;universal&quot;&gt;
+  &lt;Rel&gt;sell&lt;/Rel&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+&lt;/Atom&gt;
+
+--&gt;
+
+ 
+&lt;!-- The fourth clause is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts --&gt;
+
+&lt;Atom&gt;
+  &lt;Rel&gt;keep&lt;/Rel&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+&lt;/Atom&gt;
+
+
+&lt;!-- The remaining attributes of this fact are inherited from ancestor elements.
+The closure=&quot;universal&quot; attribute acts like Prolog's convention when an Ind such
+as &lt;Ind&gt;XMLBible&lt;/Ind&gt; is replaced by a Var such as &lt;Var&gt;object&lt;/Var&gt;.
+ 
+&lt;Atom truth=&quot;assert&quot; closure=&quot;universal&quot;&gt;
+  &lt;Rel&gt;keep&lt;/Rel&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+&lt;/Atom&gt;
+
+--&gt;
+  
+&lt;/And&gt;</pre></b></td></tr></table>
+<h2><a name="Appendix 3">Appendix 3:  Instructions on validating the example against the XSD</a></h2>
+
+
+
+<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2004-07-19
+		
+		<br>
+		<br>
+		<br>
+		<a name="Practice-Preach"></a>
+		<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">	homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><title>RuleML Extensions</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head><body background="hintergrund.gif" bgcolor="#FFFFFF">
+    <center>
+      <big>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+--&gt;</pre></b></td></tr></table>
+        <table bgcolor="#FFCCCC" border="1" cellpadding="5"><tr><td>R u l e M L</td></tr></table>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+&lt;--</pre></b></td></tr></table>
+      </big>
+      <br> <br>
+<h1>Planned Extensions for RuleML 0.85 and 0.9</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h2>Version History, 2002-04-03: Version 0.5</h2>
+    </center>
+
+<br> <br> <br>
+
+<p>
+This is a preliminary prioritized list of planned RuleML 0.8 extensions for
+incorporation into RuleML 0.85 and 0.9,
+where the boundary between 0.85 and 0.9 is still open (and mostly a pragmatic issue).
+</p>
+  <h2>Sections</h2><ul><li><a href="#Overview">Overview</a><li><a href="#Extensions">Extensions</a></ul><h2><a name="Overview">Overview</a></h2>
+
+<p>
+This document serves to plan the extensions of the current RuleML 0.8
+<a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">system of sublanguages</a>
+by similarly modular 0.85 and 0.9 additions, without yet committing to either DTDs
+or XML Schema (or RELAX NG). Instead, use cases, markup examples, and suggested RuleML
+standard semantics will suffice for the time being.
+We can then discuss and filter the proposed extensions, see how they
+fit together, check their semantics, complexity/efficiency, and
+usefulness/applicability -- besides their markup syntax. Once stable, their
+DTD (successor) definition and/or XSLT transformation can follow.
+</p>
+<p>
+For this we have started to collect candidate extensions as a prioritized
+list maintained here in XML to facilitate insertions/deletions, splittings/mergings,
+and reorderings; also, hierarchical groupings over the currently flat list should be attempted.
+Please, send your update suggestions to the below Site Contact.
+Corresponding extensions to the graphical
+<a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">sublanguage hierarchy</a>
+will also be done.
+When looking at this graph remember that the below extensions are also meant to be combinable in the
+modular manner of the 'join' operation in a lattice. For example,
+<a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>'s courteous extension of logic programs  
+is the combination of negation-as-failure, defaults, priorities, merging, and updating
+as well as limited classical negation (in the logic program sense).
+</p>
+<h2><a name="Extensions">Extensions</a></h2>
+
+<p>
+The decreasing top-level order is used here mainly for expressing decreasing RuleML 0.9 priority,
+but also temporary  RuleML 0.8 to 0.9 sequencing, so simple extensions may be put earlier
+just because they can be realized more quickly.
+<ol>
+  <li>Sublanguages with negations &quot;not&quot; ('as failure') and &quot;neg&quot; ('classical'),
+used together or in separate sublanguages.
+<ul>
+  <li><i>Use Cases</i>:
+    <ol>
+      <li><a href="http://tmitwww.tm.tue.nl/staff/gwagner/AORML/RuleExamples.html#DR-DefDerAttr">DefDerAttr</a>
+      <li><a href="http://tmitwww.tm.tue.nl/staff/gwagner/AORML/RuleExamples.html#DR-Default">DR-Default</a>
+      <li><a href="http://ebusiness.mit.edu/bgrosof/paps/fipa-grosof-07-00-distrib.ps">BRML/DAML-RULES</a>
+    </ol>
+  
+  <li><i>Suggested RuleML Standard Semantics</i>:
+Partial logic under the
+preferential semantics of minimal/stable models. See the following
+references:
+    <ol>
+      <li>Partial Logics with Two Kinds of Negation as a Foundation for 
+   Knowledge-Based Reasoning, G. Wagner, H. Herre and J. Jaspars, 
+   in D.M. Gabbay and H. Wansing (Eds.), What is Negation ?, Kluwer 
+   Academic Publishers, 1999.
+   <a href="http://tmitwww.tm.tue.nl/staff/gwagner/PartialLogics.pdf">PartialLogics</a>
+     <li>G. Wagner: &quot;Foundations of Knowledge Systems with Applications to 
+   Databases and Agents&quot;, Kluwer Academic Publishers, 1998.
+   <a href="http://www.inf.fu-berlin.de/~wagnerg/ks.html">ks</a>
+    </ol>
+  
+</ul>
+  
+  <li>Possibility to include references to public ontologies/taxonomies
+(in RDFS, description logics, DAML+OIL, OWL, and/or object-oriented class hierarchies),
+for (a) assigning types or sorts to RuleML variables and/or
+(b) calling role-term-like or frame-logic-like concept descriptions with argument roles
+instead of Herbrand-term-like positional atoms in the body, not in
+the head, corresponding to Carin's principle in ALLNR
+(description logic combined with Horn logic).
+  
+  <li>Query language (building on SQL for relational databases, XQuery for XML,
+RQL for RDF, and DQL for DAML+OIL),
+using a 'query' tag, which acts like a rule body
+(without a head). Initial version done as a RuleML 0.8 extension.
+<ul>
+  <li><i>Use Cases</i>:
+    <ol>
+      <li><a href="http://www.w3.org/2001/11/13-RDF-Query-Rules/">RDF-Query-Rules | Implementation Survey | RuleML</a>
+    </ol>
+  
+</ul>
+  
+  <li>Global modules for importing and merging rules/rulesets via copies or URIs, and local modules for
+assumptions in queries (cf. DQL query language for DAML+OIL) and in rule bodies.
+  
+  <li>Override-performing meta-facts (meta-rules?) over rule labels, and/or a
+syntactic &quot;qualification&quot; construct that subsumes  priorities, uncertainties,
+lineage, etc. (perhaps including Bayesian probability, fuzzy logic, or rough sets).
+  
+  <li>Justifications.
+  
+  <li>Reaction rule format that subsumes most other
+relevant forms of &quot;situated logic programs&quot;, &quot;ECA rules&quot;, and &quot;production rules&quot;
+as in OPS5 and Jess.
+<ul>
+  <li><i>Use Cases</i>:
+    <ol>
+      <li><a href="http://tmitwww.tm.tue.nl/staff/gwagner/AORML/RuleExamples.html#RR-CarReservReq">RR-CarReservReq</a>
+      <li>...
+    </ol>
+  
+</ul>
+  
+  <li>Sublanguages of ground facts combined with non-ground or ground imps
+(as non-ground facts using non-ground imps with empty/absent bodies).
+  
+  <li>User-defined functions specified as conditional
+equations, i.e. transformation rules. They can be called in RuleML's nanos.
+<ul>
+  <li><i>Use Cases</i>:
+    <ol>
+      <li><a href="http://www.ruleml.org/lib/discount-variations.ruleml">Discount Variations</a>
+    </ol>
+  
+</ul>
+  
+  <li>Built-in (arithmetic etc.) relations (e.g, less) and functions
+(e.g, plus).
+  
+  <li>Examine protocols for the transport, packaging and registration of RuleML rulebases:
+some sort of a RuleML repository may be defined and a specification developed. We may also
+need to explore issues of the 'discovery' of, and reference to, public rulebases,
+databases, etc. (in various languages).
+  
+  <li>Disjunction in the body and, possibly, head as well as 'and'/'or'
+nestings in the body.
+  
+  <li>Semantic attributes for 'rulebase' and 'imp'/'fact' tags for holding
+results of static analyses (termination, determinism, complexity,
+stratification, etc.).
+  
+  <li>Optional grouping of rules into 'procedures' of relation or function
+definitions, which provide a handle for procedure-specific semantic
+attributes.
+  
+  <li>Optional explicit quantifier scopes for 'imp' variables and more
+full first-order expressiveness using Lloyd-Topor transformations.
+  
+  <li>Allowing further &quot;logical&quot; languages in the
+body and head of a rule (SQL, RDF, KIF, ...).
+  
+  <li>Support for constraint rules, e.g. those of <a href="http://www.ebxml.org">ebXML</a>.
+  
+  <li>RuleML requirements to provide support for reasoning over XML documents.
+  
+  <li>RuleML and Case Based Reasoning.
+  
+</ol>
+</p>
+<br>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2002-04-25
+
+<br><br><br>
+
+      <a name="Practice-Preach"></a><small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/inext.xml">inext.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/inext.xml.txt">inext.xml.txt</a>);
+      <br>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a href="http://xml.apache.org/cocoon/index.html" target="_self"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"></a></xhtml>
+  </body></html>
+<!-- This page was served in 1419 milliseconds by Cocoon 1.8 -->

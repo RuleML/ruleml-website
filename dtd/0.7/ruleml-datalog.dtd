@@ -1,0 +1,101 @@
+<!-- An XML DTD for a Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-25 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- in this ruleml-datalog.dtd, parameter entities set two *.module switches to INCLUDE -->
+
+<!ENTITY % datalog.module "INCLUDE">
+<!ENTITY % datalog-and-hornlog.module "INCLUDE">
+
+
+<!-- hence all conditional sections "<![%*.module;[" . . . "]]>" activate their content; -->
+<!-- in a stand-alone use of the current DTD "<![%*.module;[" and "]]>" are thus no-ops -->
+
+<![%datalog-and-hornlog.module;[
+
+<!-- a conclusion and premise will be usable within 'if' implications -->
+<!-- in datalog and hornlog, conc element uses an atomic formula -->
+<!-- in datalog and hornlog, prem element uses an atomic formula or an 'and' -->
+
+<!ENTITY % conc "atom">
+<!ENTITY % prem "(atom | and)">
+
+]]>
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<!-- 'rulebase' root element uses 'if' implications as top-level rules -->
+
+<!-- label attribute allows naming of an entire individual rulebase; -->
+<!-- e.g., this can help enable forward inferencing of selected rulebase(s)  -->
+
+<!-- direction attribute indicates the intended direction of rule inferencing;  -->
+<!-- it is a preliminary design choice and has a 'neutral' default value -->
+
+<!ELEMENT rulebase (if*)>
+<!ATTLIST rulebase label CDATA #IMPLIED>
+<!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional">
+
+
+<!-- 'if' implications are usable as top-level rules -->
+<!-- 'if' element uses a conclusion followed by a premise -->
+<!-- "<if>conc prem</if>" stands for "conc if prem", i.e., "conc is true if prem is true" -->
+
+<!-- label attribute is a handle for the rule: for various uses, including editing -->
+
+<!ELEMENT if (%conc;, %prem;)>
+<!ATTLIST if label CDATA #IMPLIED>
+
+
+
+<![%datalog-and-hornlog.module;[
+
+<!-- an 'and' is usable within premises -->
+<!-- 'and' uses zero or more atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+
+<!ELEMENT and (atom*)>
+
+]]>
+
+
+
+<![%datalog.module;[
+
+<!-- atomic formulas are usable within conc's, prem's, and 'and's -->
+<!-- atom element uses rel(ation) symbol followed by a sequence of -->
+<!-- zero or more arguments, which may be ind(ividual)s or var(iable)s -->
+
+<!ELEMENT atom (rel, (ind | var)*)>
+
+]]>
+
+
+
+<!-- there is one kind of fixed argument -->
+
+<!-- individual constant, as in predicate logic -->
+
+<!ELEMENT ind  (#PCDATA)>
+
+
+<!-- there is one kind of variable argument -->
+
+<!-- logical variable, as in logic programming -->
+
+<!ELEMENT var  (#PCDATA)>
+
+
+<!-- there are only fixed (first-order) relations -->
+
+<!-- relation or predicate symbol -->
+
+<!ELEMENT rel  (#PCDATA)>

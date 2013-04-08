@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Binary Ground-Datalog-Fact RuleML sublanguage
+			File: bindatagroundfact.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="bindatagroundlog.xsd">
+		<!--
+			remove Implies and Equivalent so that Assert's content model is:
+			( oid?, (formula | Rulebase | Atom | Entails)* )
+		-->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:element ref="Rulebase"/>
+				<xs:element ref="Atom"/>
+				<xs:element ref="Entails"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			remove Implies and Equivalent so that Rulebase's content model is:
+			( oid?, (formula | Atom)* )
+		-->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:element ref="Atom"/>
+			</xs:choice>
+		</xs:group>	
+
+	</xs:redefine>
+	
+</xs:schema>

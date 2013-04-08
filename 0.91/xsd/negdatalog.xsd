@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including classical/strong negation
+			File: negdatalog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- negdatalog includes the 'neg' module -->
+	<xs:include schemaLocation="modules/neg_module.xsd"/>
+
+	<!-- note the addition of Neg (classical Negation) from the Negation module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+			add Neg so that head's content model is:
+			(Atom | Neg)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add Neg so that body's content model is:
+			(Atom | And | Or | Neg)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>		
+		<!--
+			note that the above indirectly adds Neg to Implies so that its content model is:
+			( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or | Neg), (Atom | Neg) ) )
+		-->
+
+		<!--
+			add Neg so that Assert's content model is:
+			( oid?, (formula | Rulebase | Atom | Neg | Implies | Equivalent | Entails | Forall)* )
+		-->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:group ref="formula-assert.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			add Neg so that Rulebase's content model is:
+			( oid?, (formula | Atom | Neg | Implies | Equivalent | Forall)* )
+		-->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:group ref="formula-rulebase.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>	
+		
+		<!--
+			add Neg so that Query's content model is:
+			( oid?, (formula | Rulebase | Neg | Atom | And | Or | Entails | Exists)* )
+		-->
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:group ref="formula-query.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+		</xs:group>
+
+
+		<!--
+			add Neg so that formula's content model (when under And/Or) is:
+			(Atom | And | Or | Neg)
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+		</xs:group>
+		<!-- 
+			note that the above indirectly adds Neg to And/Or so their content models are:
+			( oid?, (formula | Atom | And | Or | Neg)* )
+		-->
+
+	</xs:redefine>
+	
+</xs:schema>

@@ -1,0 +1,13 @@
+<!-- XML DTD for a Binary Datalog RuleML sublanguage -->
+<!-- File: bindatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-10-22 -->
+
+<!-- ignore the conditional block located in urcbindatagroundfact by changing the parameter entity to "IGNORE" -->
+<!-- this results in the removal of 'UR'-Centeredness (by omitting the href attributes), forming a separate branch in the -->
+<!-- RuleML sublanguages inheritance tree (see http://198.164.40.138/ruleml/dtd/0.85/ruleml_0.85_inheritance_diagram.gif) -->
+<!ENTITY % href.attrib.module "IGNORE">
+
+<!-- this module inherits from the 'UR'-Centered Binary Datalog RuleML sublanguage (urcbindatalog) -->
+<!ENTITY % urcbindatalog_include SYSTEM "urcbindatalog.dtd">
+%urcbindatalog_include;

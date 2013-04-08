@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/inspec"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: urcbindatagroundlog.xsd
+			Version: 0.85
+			Last Modification: 2003-12-17
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:redefine schemaLocation="urcbindatagroundfact.xsd">
+		<!--
+			rulebase's content model is extended to include imp:
+			"(((_rbaselab, (imp | fact | query)*) | ((imp | fact | query)+, _rbaselab?))?)"
+		-->
+		<xs:group name="rulebase.extend">
+			<xs:choice>
+				<xs:group ref="rulebase.extend"/>
+				<xs:element ref="imp"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!-- the direction attribute is also added to rulebase -->
+		<xs:attributeGroup name="rulebase.attlist">
+			<xs:attributeGroup ref="rulebase.attlist"/>
+			<xs:attributeGroup ref="direction.attrib"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+
+
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="imp.attlist"/>
+	<!--
+		content model is "(
+					(_rlab, ( (_head, _body) |  (_body, _head) )) | 
+					(_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+					(_body, ( (_rlab, _head) | (_head, _rlab?) ))
+				)">
+	-->
+	<xs:group name="imp.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_head"/>
+			<xs:element ref="_body"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="imp.type">
+		<xs:group ref="imp.content"/>
+		<xs:attributeGroup ref="imp.attlist"/>
+	</xs:complexType>
+	<xs:element name="imp" type="imp.type"/>
+</xs:schema>

@@ -1,0 +1,64 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Long Names" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, long names" ]
+dc:description [ "The expansion module for human-readable names." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+cardinality-att.choice |= cardinality.attrib.def
+cardinality.attrib.def = attribute cardinality { cardinality.value }
+#
+interpretation-att.choice |= interpretation.attrib.def
+interpretation.attrib.def = attribute interpretation { interpretation.value }
+#
+singlevalued-att.choice |= singlevalued.attrib.def
+singlevalued.attrib.def = attribute singlevalued { val.value }
+#
+Relation-node.choice |= Relation.Node.def
+Relation.Node.def = element Relation { (Rel-datt.choice & reRel.attlist), Rel.content }
+#
+Expression-node.choice |= Expression.Node.def
+Expression.Node.def = element Expression { (Expr-datt.choice & reExpr.attlist), Expr.header, Expr.main }
+#
+Function-node.choice |= Function.Node.def
+Function.Node.def = element Function { (Fun-datt.choice & reFun.attlist), Fun.content }
+#
+NegationAsFailure-node.choice |= NegationAsFailure.Node.def
+NegationAsFailure.Node.def = element NegationAsFailure { (Naf-datt.choice & reNaf.attlist), Naf.header, Naf.main }
+#
+Negation-node.choice |= Negation.Node.def
+Negation.Node.def = element Negation { (Neg-datt.choice & reNeg.attlist), Neg.header, Neg.main }
+#
+Equation-node.choice |= Equation.Node.def
+Equation.Node.def = element Equation { (Equal-datt.choice & reEqual.attlist), Equal.header, Equal.main }
+#
+Variable-node.choice |= Variable.Node.def
+Variable.Node.def = element Variable { (Var-datt.choice & reVar.attlist), Var.content }
+#
+Individual-node.choice |= Individual.Node.def
+Individual.Node.def = element Individual { (Ind-datt.choice & reInd.attlist), Ind.content }
+#
+operatorForAtoms-edge.choice |= operator_Atom.edge.def
+operator_Atom.edge.def = element operator { op_Atom.content }
+#
+objectIdentifier-edge.choice |= objectIdentifier.edge.def
+objectIdentifier.edge.def = element objectIdentifier { oid.content }
+#
+operatorForExpressions-edge.choice |= operator_Expr.edge.def
+operator_Expr.edge.def = element operator { op_Expr.content }
+#
+positionalArgument-edge.choice |= argument.edge.def
+argument.edge.def = element argument { (arg-datt.choice & rearg.attlist), arg.content }
+#
+leftSide-edge.choice |= leftHandSide.edge.def
+leftHandSide.edge.def = element leftHandSide { lhs.content }
+#
+rightSide-edge.choice |= rightHandSide.edge.def
+rightHandSide.edge.def = element rightHandSide { rhs.content }

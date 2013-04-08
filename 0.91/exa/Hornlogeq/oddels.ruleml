@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <RuleML xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+ <Assert>
+ <!-- 
+	oddelement function :
+
+	oddels([]) :& [].
+	oddels([X]) :& [[X]].
+	oddels([X,Y|Z]) :- R .= oddels(Z) & [[X]|R].
+  --> 
+ 
+ <!-- 
+  oddels([]) = []
+ --> 
+
+  <Equal oriented="yes">
+    <Expr>
+      <Fun in="yes">oddels</Fun> 
+        <Plex></Plex> 
+    </Expr>
+    <Plex></Plex> 
+  </Equal>
+
+ <!-- 
+   oddels([X]) = [[X]]
+  --> 
+  <Equal oriented="yes">
+    <Expr>
+      <Fun in="yes">oddels</Fun>
+        <Plex>
+          <Var>X</Var>
+        </Plex>
+    </Expr>
+    <Plex>
+      <Plex>
+        <Var>X</Var>
+      </Plex>
+    </Plex>
+  </Equal>
+
+    
+  <!-- 
+	 oddels([X,Y|Z])=[[X]|R] if R = oddels(Z)
+  --> 
+
+<Implies>
+  <head>
+    <Equal oriented="yes">
+      <Expr>
+        <Fun in="yes">oddels</Fun>
+          <Plex>  
+            <Var>X</Var> 
+            <Var>Y</Var>
+            <repo>
+              <Var>Z</Var>
+            </repo>
+          </Plex>
+      </Expr>
+      <Plex>  
+        <Plex>
+          <Var>X</Var> 
+        </Plex>
+        <repo>
+          <Var>R</Var>
+        </repo>
+      </Plex>
+    </Equal>
+  </head>
+
+  <body>
+    <Equal oriented="no">
+      <Var>R</Var>
+      <Expr>
+        <Fun in="yes">oddels</Fun> 
+          <Var>Z</Var> 
+      </Expr>
+    </Equal>
+  </body>
+</Implies>
+</Assert>
+</RuleML>

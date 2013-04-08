@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd"
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			UR RuleML attribute module.
+			This is the XML Schema ur module for RuleML.
+			File: ur_module.xsd
+			Version: 0.88
+			Last Modification: 2005-01-19
+			
+			This module declares the following RuleML attribute:
+			* @wref
+			* @wlab
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** @wref ***
+
+		Fixed arguments to relations etc. normally enclose non-empty PCDATA content between
+		'Ind' tags, so individuals having empty content can be used like null values in databases.
+
+		Fixed arguments to relations etc. can also have the character of objects (resources).
+
+		Objects (resources) are Inds using a URL/URI as their OID, as in SHOE or RDF (cf. URML).
+		Named objects (resources) additionally enclose some non-empty PCDATA content between
+		'Ind' tags.  Now individuals with empty content are anonymous objects (resources).
+
+		Like for XHTML anchors, the URI can be used under an optional 'wref' attribute of Inds.
+		The 'wref' attribute may be used in the following tags: Ind, Rel, Fun And Ctor.
+	-->	
+	<xs:attributeGroup name="wref.attrib">
+		<xs:attribute name="wref" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @wlab ***
+	-->	
+	<xs:attributeGroup name="wlab.attrib">
+		<xs:attribute name="wlab" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+		
+</xs:schema>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="A business rule example in Datalog RuleML." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Datalog Rule Example</title>
+    <script>
+      var nextpage="RuleMLPrimer-p9-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p8-slide">
+      <h1>Datalog Rule Example</h1>
+      <figure><img class="diag topspace" src="../png/premium_implies_diag.png"
+         /></figure>
+      <pre class="example_code diag"><span class="elem">&lt;Implies closure="universal"&gt;</span>
+ <span class="elem">&lt;then&gt;</span>
+  <span class="elem">&lt;Atom&gt;</span>
+   <span class="elem">&lt;Var&gt;</span>customer<span class="elem">&lt;/Var&gt;</span>
+   <span class="elem">&lt;Rel&gt;</span>is premium<span class="elem">&lt;/Rel&gt;</span>
+  <span class="elem">&lt;/Atom&gt;</span>
+ <span class="elem">&lt;/then&gt;</span>
+ <span class="elem">&lt;if&gt;</span>
+  <span class="elem">&lt;Atom&gt;</span>
+   <span class="elem">&lt;Var&gt;</span>customer<span class="elem">&lt;/Var&gt;</span>
+   <span class="elem">&lt;Rel&gt;</span>spent at least<span class="elem">&lt;/Rel&gt;</span>
+   <span class="elem">&lt;Ind&gt;</span>5000 euros<span class="elem">&lt;/Ind&gt;</span>
+   <span class="elem">&lt;Ind&gt;</span>in the previous year<span class="elem">&lt;
+        /Ind&gt;</span>
+  <span class="elem">&lt;/Atom&gt;</span>
+ <span class="elem">&lt;/if&gt;</span>
+<span class="elem">&lt;/Implies&gt;</span></pre>
+    </section>
+    <section id="section-p8-prose">
+      <h3>Datalog Rule Example - Notes</h3>
+      <p>Looking at these tags, notice that RuleML follows the Java
+        class-vs.-method naming convention by distinguishing upper-case <em>node
+          tags</em> from lower-case <em>edge tags</em>. The atomic formula within the
+        <span
+          class="elem-inline">&lt;if&gt;</span> edge of the <span
+          class="elem-inline">&lt;Implies&gt;</span> is like the <span
+          class="elem-inline"
+          >&lt;Atom&gt;</span>
+        constituting the previously-discussed fact, except that <span
+          class="elem-inline">&lt;Ind&gt;</span><code>Peter Miller</code><span
+          class="elem-inline">&lt;/Ind&gt;</span> is replaced with <span
+            class="elem-inline">&lt;Var&gt;</span><code>customer</code><span
+          class="elem-inline"
+          >&lt;/Var&gt;</span>, the
+        markup of a variable named <code>customer</code>. This
+        variable also occurs in an <span
+          class="elem-inline">&lt;Atom&gt;</span> within the
+        <span
+          class="elem-inline">&lt;then&gt;</span> edge of the
+        <span
+          class="elem-inline"
+          >&lt;Implies&gt;</span>, which applies the unary relation <span
+          class="elem-inline">&lt;Rel&gt;</span><code>is premium</code><span
+          class="elem-inline">&lt;/Rel&gt;</span>
+        to <span
+          class="elem-inline">&lt;Var&gt;</span><code>customer</code><span
+          class="elem-inline">&lt;/Var&gt;</span>.</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p7-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p9-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

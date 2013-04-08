@@ -1,0 +1,15 @@
+<!-- An XML DTD for a 'UR' Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % datalog.module "INCLUDE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;

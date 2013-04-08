@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rss="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:html="http://www.w3.org/1999/xhtml">
+
+<foaf:Agent rdf:nodeID="id2244878"> 
+	<foaf:name>Adrian Paschke</foaf:name> 
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/> 
+	<foaf:title>Dr.</foaf:title>
+	<foaf:givenname>Adrian</foaf:givenname>
+	<foaf:family_name>Paschke</foaf:family_name>
+	<foaf:role>General Chair"</foaf:role>
+	<foaf:mbox rdf:resource="mailto:adrian.paschke@biotec.tu-dresden.de"/>
+	<foaf:phone rdf:resource="tel:+4935146340074"/>
+	<foaf:workplaceHomepage rdf:resource="http://www.biotec.tu-dresden.de/~adrianp/"/>	
+	<foaf:interest rdf:resource="http://responder.ruleml.org/"/>  
+</foaf:Agent> 
+
+
+
+</rdf:RDF> 
+

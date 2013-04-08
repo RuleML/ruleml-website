@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+xmlns="http://www.w3.org/2003/11/ruleml"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Role RuleML elements module.
+			This is the XML Schema role elements module for RuleML.
+			File: role_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+			
+			This module declares the following RuleML element:
+			* _slot
+			* @name
+			* @card
+			* @weight
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** _slot ***
+		content model: ( ind | var )
+
+		User-defined non-positional metaroles.
+
+		'_slot' uses either an individual constant or a variable (or, in hornlog, a complex term),
+		and must have a name given in the 'name' attribute.  Optional attributes are 'card',
+		specifying the role's cardinality, and 'weight', specifying the role's relative weight.
+	-->
+	<xs:attributeGroup name="_slot.attlist">
+		<xs:attributeGroup ref="name.attrib"/>
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="_slot.content">
+		<xs:choice>
+			<xs:element ref="ind"/>
+			<xs:element ref="var"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_slot.type">
+		<xs:group ref="_slot.content"/>
+		<xs:attributeGroup ref="_slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="_slot" type="_slot.type"/>
+
+	<!--
+		*** @name ***
+		
+		Specifies a user-defined name.  It is required for metaroles.
+	-->
+	<xs:attributeGroup name="name.attrib">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @card ***
+		
+		Optionally specifies the metarole's cardinality.
+	-->
+	<xs:attributeGroup name="card.attrib">
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @card ***
+		
+		Optionally specifies the metarole's relative weight.
+	-->
+	<xs:attributeGroup name="weight.attrib">
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

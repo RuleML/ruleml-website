@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            hornlog2rr part of Reaction RuleML including
+			negation as failure (NAF), explicit strong negation (Neg) and equational logic (Equal)
+			
+			This layer adds necessary extensions to RuleML hornlog for Reaction RuleML.
+			File: hornlog2rr.xsd
+			Version: 0.1
+			Last Modification: 2006-10-12
+			
+			This schema declares the following Reaction RuleML elements and attributes:
+				  								  
+				  * redefines Var by adding @mode (input / output modes)				  
+				  * redefines Assert by adding @safety (transactional update)
+				  * redefines Retract by adding @safety (transactional update)
+				  * redefines Implies by adding Assert and Retract (used to add / retract knowledge)
+				  * redefines Rel and Fun by adding @in (in="yes", = interpreted)
+				  * redefines Rel and Fun by adding @lang (lang="java" for procedural attachment call | lang = "modal"  for modal relation/function)
+				  * add Naf, Neg and Equal
+
+
+			 Equal can be used to bind constructed objects from procedural attachments to variables
+	     	 e.g. X = java.lang.String("xxx"), i.e. bind String object "xxx" to variable X
+	
+				   
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	   
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/modules/root_module.xsd"/>			
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/modules/attribute_module.xsd"/>		
+
+
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->		
+<!--
+	  honlog2rr  redefines the Var element by adding a mode attribute
+	  @mode = + | - | ?; default is ?
+-->
+
+	  <xs:attributeGroup name="Var.attlist">
+		  <xs:attributeGroup ref="Var.attlist" />
+		  <xs:attributeGroup ref="mode.attrib"/> 
+	  </xs:attributeGroup>
+
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	 the hornlog2rr schema redefines the Assert element
+	 and adds the attribute safety for transactional updates: 
+	 
+	 @safety = normal | transactional; default = normal
+	 
+	 and adds  Neg so that Assert's (and Retract's) content model is:
+	 
+	( oid?, (formula | Atom | Implies | Equivalent | Forall | Equal | Neg)* )
+-->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:group ref="formula-assert.content"/>				
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+		</xs:group>
+	
+	<xs:attributeGroup name="Assert.attlist">
+		<xs:attributeGroup ref="Assert.attlist"/>
+		<xs:attributeGroup ref="safety.attrib"/>
+	</xs:attributeGroup>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	 the hornlog2rr schema redefines the Retract element
+	 and adds the attribute safety for transactional updates
+	 
+-->
+
+	<xs:attributeGroup name="Retract.attlist">
+		<xs:attributeGroup ref="Retract.attlist"/>
+		<xs:attributeGroup ref="safety.attrib"/>
+	</xs:attributeGroup>
+
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that Rulebase's content model is:
+	( oid?, (formula | Atom | Implies | Equivalent | Forall | Equal | Neg)* )
+-->
+	<xs:group name="formula-rulebase.content">
+		<xs:choice>
+			<xs:group ref="formula-rulebase.content"/>
+			<xs:element ref="Neg"/>
+		</xs:choice>	
+	</xs:group>		
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that head's content model is:
+	(Atom | Equal | Neg)
+-->
+	<xs:group name="head.content">
+		<xs:choice>
+			<xs:group ref="head.content"/>
+			<xs:element ref="Neg"/>			
+		</xs:choice>
+	</xs:group>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Assert, Retract, Naf, Neg so that body's content model is:
+	(Atom | And | Or | Equal | Naf | Neg | Assert | Retract)
+-->
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:group ref="body.content"/>
+			<xs:group ref="naf_neg.content"/>
+			<xs:group ref="update_primitives.content" />
+		</xs:choice>
+	</xs:group>
+<!--
+	note that the above indirectly adds Equal to Implies so that its content model is:
+	( oid?, (head, body) | (body, head) | ( (Atom | And | Or | Equal | Naf | Neg | Assert | Retract ), (Atom | Equal | Neg) ) )
+-->		
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that formula's content model under Forall is:
+	( Atom | Neg | Implies | Equivalent | Forall | Equal )
+-->
+	<xs:group name="formula-forall.content">
+		<xs:choice>
+			<xs:group ref="formula-forall.content"/>
+			<xs:element ref="Neg"/>
+		</xs:choice>
+	</xs:group>
+<!--		
+	note that the above indirectly adds Neg to Forall so that its content model is:
+	( oid?, (declare | Var)+, (formula | Atom | Neg | Implies | Equivalent | Forall | Equal) )
+-->
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that formula's content model under Exists is:
+	( Atom | Neg | And | Or | Exists | Equal )		
+-->
+	<xs:group name="formula-exists.content">
+		<xs:choice>
+			<xs:group ref="formula-exists.content"/>
+			<xs:element ref="Neg"/>
+		</xs:choice>
+	</xs:group>
+<!--		
+	note that the above indirectly adds Equal to Exists so that its content model is:
+	( oid?, (declare | Var)+, (formula | Atom | Neg | And | Or | Exists | Equal) )
+-->
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Naf, Neg so that Query's content model is:
+	( oid?, (formula | Atom | Naf | Neg | Rulebase | And | Or | Entails | Exists | Equal)* )
+-->
+	<xs:group name="formula-query.content">
+		<xs:choice>
+			<xs:group ref="formula-query.content"/>
+			<xs:group ref="naf_neg.content"/>
+		</xs:choice>
+	</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Naf, Neg so that formula's content model (below And/Or) is:
+	(Atom | Naf | Neg | And | Or | Equal | Assert | Retract)
+-->
+<xs:group name="formula-and-or.content">
+	<xs:choice>
+		<xs:group ref="formula-and-or.content"/>
+		<xs:group ref="naf_neg.content"/>
+		<xs:group ref="update_primitives.content" />
+	</xs:choice>
+</xs:group>
+<!--
+	note that the above indirectly adds Naf, Neg to And/Or so that their content models are:
+	( oid?, (formula | Atom | Naf | Neg | And | Or | Equal | Assert | Retract)* )
+-->
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg  so that torso's content model is:
+	(Atom |  Neg | Equal)
+-->
+<xs:group name="torso.content">
+	<xs:choice>
+		<xs:group ref="torso.content"/>
+		<xs:element ref="Neg"/>
+	</xs:choice>
+</xs:group>
+<!--
+	note that the above indirectly adds Equal to Equivalent so that its content model is:
+	( oid?, ( (torso, torso) | ( (Atom |  Neg | Equal), (Atom | Equal) ) ) )
+-->	
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add @in and @lang to Rel (in order to support procedural attachments and later modal "atoms")
+-->
+
+<xs:attributeGroup name="Rel.attlist">
+ 	<xs:attributeGroup ref="Rel.attlist" /> 
+	<xs:attributeGroup ref="in.attrib" />
+	<xs:attributeGroup ref="lang.attrib" /> 
+</xs:attributeGroup>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add @lang to Fun (in order to support procedural attachments)
+-->
+
+<xs:attributeGroup name="Fun.attlist">
+ 	<xs:attributeGroup ref="Fun.attlist" /> 
+	<xs:attributeGroup ref="lang.attrib" />
+</xs:attributeGroup>
+
+			
+</xs:redefine>
+
+
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- hornlog2rr includes the 'naf' module and redefines it slightly
+	 so that Neg is allowed below Naf
+
+ -->
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/modules/naf_module.xsd">
+
+		<!--
+			add Neg so that weak's content model is:
+			(Atom | Neg)
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Neg to Naf so that Naf's content model is:
+			(weak | Atom | Neg)
+		-->		
+
+</xs:redefine>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+<!-- hornlog2rr includes the 'neg' module and redefines it slightly
+	 so that Equal is allowed below Neg
+
+ -->
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/modules/neg_module.xsd">
+
+		<!--
+			add Equal so that strong's content model is:
+			(Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists | Equal )			
+		-->
+		<xs:group name="strong.content">
+			<xs:choice>
+				<xs:group ref="strong.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+		<!--		
+			note that the above indirectly adds Equal to Neg so that its content model is:
+			( strong | Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists | Equal )
+		-->
+
+
+</xs:redefine>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+
+<xs:group name="update_primitives.content" >		
+			<xs:choice>
+				<xs:element ref="Assert" />
+				<xs:element ref="Retract"/>
+			</xs:choice>					
+</xs:group>
+		
+<xs:group name="naf_neg.content" >
+			<xs:choice>		
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+</xs:group>
+
+
+	
+</xs:schema>

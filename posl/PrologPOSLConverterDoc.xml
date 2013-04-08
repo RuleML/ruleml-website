@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--<?xml-stylesheet href="homepage.xsl" type="text/xsl"?>-->
+<?xml-stylesheet href="http://ruleml.org/homepage.xsl" type="text/xsl"?>
+
+<!-- Written by Monika Machunik-->
+<homepage>
+  <title>Prolog-POSL Converter</title>
+  <opening>
+    <center>
+      <br/>
+      <!--			<a href="http://www.ruleml.org">
+      <img src="http://www.ruleml.org/logo/rulemllogo2_transparent.gif" border="none" alt="RuleML"/>
+    </a>-->
+    <br/>
+    <h1>Prolog-POSL Converter Tool
+      <br/>
+      <i>Brief description</i></h1>
+    <h2>Monika Machunik, Harold Boley</h2>
+    <h4>Version History, 2011-01-01: First Version-Version 0.1</h4>
+    <br/>
+    <h2>Version History, 2011-01-01: Current Version</h2></center>
+  <br/>
+  <p>
+  
+  
+  </p></opening>
+
+
+<section>
+
+  <header>Overview</header>
+  
+  <p>Prolog-POSL Converter Tool can be run from <a href="http://ruleml.org/posl/PrologPOSLConverter.jar">here</a>.</p>
+  <!--About your Prolog-POSL Converter question, yes, please note the purpose of the (bidirectional?) application,-->
+  <p>
+  Prolog-POSL Converter Tool is a Java application that converts data between Prolog and POSL formats. It allows to do the conversion in both directions. </p><p>Prolog is a general purpose logic programming language. POSL stands for Positional-Slotted Language, and its purpose is to express F-logic's. Both POSL and Prolog can be used to express the same knowledge, but their syntaces differ. </p><p>The purpose of this tool is to provide a way of quick and easy conversion betweetn these two formats. It should be noted that the application is designed to work only with pure Prolog terms, which are enough for describing knowledge bases. The explicit restrictions are decribed in the Usage restrictions section.
+  </p>
+</section>
+
+<section>
+
+  <header>Conversion details</header>
+  
+  <p>
+  The main differences between Prolog and POSL, regarding the syntax, is the way the variables are represented, as well as the way of treating brackets in nested rules. The exact types of conversion performed by the tool are the following:
+  
+  <itemize>
+
+  
+  <item>for Prolog -> POSL conversion:
+    <itemize>
+      <item>Variables conversion - variables are converted only if they appear inside a rule. Every Prolog variable starting with an upper case character or the unserscore '_' will have a question mark '?' appended at the beginning. There are some special cases that can apply:
+        <itemize>              
+        <item>In case when a Prolog constant starts with a question mark '?' it would become a variable after the conversion; in order to avoid that, a prefix 'a' is added to every such constant.</item>
+        </itemize>
+      </item>
+      <item>Brackets conversion - in Prolog all rules have round brackets. All nested rules will have their brackets changed to square ones.
+      </item>
+    </itemize>
+  </item>
+  
+    <item>for POSL -> Prolog conversion:
+    <itemize>
+    <item>Variables conversion - variables are converted only if they appear inside a rule. Every POSL variable starting with a question mark '?' will have the question mark removed and the first letter changed to upper case. There are some special cases that can apply:
+      <itemize>      
+      <item>In case of anonymous POSL variable (question mark '?' only), the variable name will be changed to 'Anonymous_x', where x is the ordinal number of the anonymous variable encountered.</item>
+      <item>In case when a POSL constant starts with an upper case letter, or the underscore '_', it would become a variable after the conversion; in order to avoid that, a prefix 'a' is added to every such constant.</item>
+      </itemize>  
+    </item>
+    <item>Brackets conversion - in POSL nested rules have square brackets. All such nested rules will have their brackets changed to round ones.
+    </item>
+    </itemize>
+  </item>
+  
+  </itemize>
+  </p>  
+</section>
+
+<section>
+
+  <header>Usage restrictions</header>
+  
+  <p>
+  The Prolog-POSL Converter Tool is intended to be used only with pure Prolog. It also does not support POSL built-ins. 
+  </p>
+      
+</section>
+
+<!--<section>
+
+  <header>
+  Implementation details
+  </header>
+  
+  <p>
+  Maybe you can also explain a bit on the Java level, as you wrote (well, it’s likely not *manual* but *explicit* counting):  
+  </p>
+      
+</section>-->
+
+<section>
+
+  <header>Usage example</header>
+  
+  <p>
+    The main usage example of the Prolog-POSL Converter Tool is the <a href="http://ruleml.org/usecases/wineonto/">WineOnto use case of RuleML</a>. The converter was used there to convert files from Prolog to POSL format, as an initial step in wine ontology migration path from Prolog to RuleML format.
+  </p>
+  
+</section>
+  
+<closing>
+  <p>Site Contact:
+    <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>. 		Page Version: 2011-01-01
+    <br/>
+    <br/>
+    <br/>
+    <a name="Practice-Preach"/>
+    <small>"Practice what you preach": XML source of this homepage at
+      <a href="index.xml">index.xml</a>;
+      <br/>transformed to HTML via the adaptation of
+      <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML
+      <a href="http://www.w3.org/TR/xslt">XSLT</a>stylesheet at
+      <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a>(View | Page Source)</small></p></closing></homepage>

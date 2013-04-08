@@ -1,0 +1,571 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+elementFormDefault="qualified"
+attributeFormDefault="qualified"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a SWRL-Datalog RuleML sublanguage
+			which allows accessing SWRL properties as "foreign" atoms
+			File: swrldatalog_monolith.xsd
+			Last Modification: 2004-07-12
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.w3.org/2003/11/swrlx"
+	schemaLocation="http://www.daml.org/rules/proposal/swrlx.xsd"/>
+
+	<xs:import namespace="http://www.w3.org/2003/05/owl-xml"
+	schemaLocation="http://www.daml.org/rules/proposal/owlx/schema/owl1-dl.xsd"/>
+
+	<!-- BEGIN modified elements -->
+
+	<!--
+		*** _head ***
+		new content model: (atom | (swrlx:atom)*)
+
+		old content model: (atom)
+		
+		The head of a rule, also known as the "consequent" or "then" part of the rule.
+
+		The '_head' role is usable within facts and implication rules.  '_head' uses
+		an atomic (or, in equalog, equational) formula.
+	-->
+	<xs:attributeGroup name="_head.attlist"/>
+	<xs:group name="_head.content">
+		<xs:choice>
+			<xs:element ref="ruleml:atom"/>
+			<!-- addition -->
+			<xs:group ref="swrlx:atom" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_head.type">
+		<xs:group ref="ruleml:_head.content"/>
+		<xs:attributeGroup ref="ruleml:_head.attlist"/>
+	</xs:complexType>
+	<xs:element name="_head" type="ruleml:_head.type"/>
+	
+	<!-- 
+		*** _body ***
+		new content model: ( atom | (swrlx:atom)* | and | or )
+
+		old content model: (atom | and | or)
+	
+		The body of a rule, also known as the "antecedent" or "if" part of the rule.
+
+		The '_body' role is usable within query tests and implication rules. '_body'
+		uses an atomic (or, in equalog, equational) formula, an 'and' or an 'or'.
+	-->
+	<xs:attributeGroup name="_body.attlist"/>
+	<xs:group name="_body.content">
+		<xs:choice>
+			<xs:element ref="ruleml:atom"/>
+			<!-- addition -->
+			<xs:group ref="swrlx:atom" minOccurs="0" maxOccurs="unbounded"/>	
+			<xs:element ref="ruleml:and"/>
+			<xs:element ref="ruleml:or"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_body.type">
+		<xs:group ref="ruleml:_body.content"/>
+		<xs:attributeGroup ref="ruleml:_body.attlist"/>
+	</xs:complexType>
+	<xs:element name="_body" type="ruleml:_body.type"/>
+
+	<!--
+		*** _rlab ***
+		content model: ( ind? )
+
+		A rule label.
+
+		A rule (an imp, fact, or query) may have an optional label, '_rlab', creating accessibility
+		within the knowledge representation. This can help for representing prioritization between
+		rules, for example. These labels use individual constants (or, in hornlog, complex terms).
+		
+		NOTE: rule labels are not required to be unique within a rulebase.
+	-->	
+	<xs:attributeGroup name="_rlab.attlist">
+		<!-- the href attribute is required in SWRL but not in datalog, so it stays optional -->
+		<xs:attributeGroup ref="ruleml:href.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="_rlab.content">
+		<xs:sequence>
+			 <!-- note that empty _rlab is now permissible -->
+			<xs:element ref="ruleml:ind" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rlab.type">
+		<xs:group ref="ruleml:_rlab.content"/>
+		<xs:attributeGroup ref="ruleml:_rlab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rlab" type="ruleml:_rlab.type"/>
+
+	<!--
+		*** imp ***
+		old content model: (
+					(_rlab, ( (_head, _body) |  (_body, _head) )) | 
+					(_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+					(_body, ( (_rlab, _head) | (_head, _rlab?) ))
+				)
+
+		new content model:
+				(
+					(_rlab, ( (_head, _body) |  (Annotation*, _body, _head) )) | 
+					(_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+					(Annotation*, _body, ( (_rlab, _head) | (_head, _rlab?) ))
+				)
+
+		An implication rule.
+
+		'imp' rules are usable as general implications on the top-level.  They use
+		a conclusion role '_head' followed by a premise role '_body', or, equivalently
+		(since roles constitute unordered elements), a premise role '_body'
+		followed by a conclusion role '_head'.
+
+		e.g.
+		"<imp>_head _body</imp>" stands for "_head is implied by _body",
+		i.e., "_head is true is implied by _body is true" or, equivalently,
+		"<imp>_body _head</imp>" stands for "_body implies _head",
+		i.e., "_body is true implies _head is true".
+
+		An imp may also have a label, '_rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:attributeGroup name="imp.attlist"/>
+	<xs:group name="imp.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="ruleml:_rlab"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="ruleml:_head"/>
+						<xs:element ref="ruleml:_body"/>
+					</xs:sequence>
+					<xs:sequence>
+						<!-- addition -->						
+						<xs:element ref="owlx:Annotation" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="ruleml:_body"/>
+						<xs:element ref="ruleml:_head"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="ruleml:_head"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="ruleml:_rlab"/>
+						<xs:element ref="ruleml:_body"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="ruleml:_body"/>
+						<xs:element ref="ruleml:_rlab" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<!-- addition -->
+				<xs:element ref="owlx:Annotation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ruleml:_body"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="ruleml:_rlab"/>
+						<xs:element ref="ruleml:_head"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="ruleml:_head"/>
+						<xs:element ref="ruleml:_rlab" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="imp.type">
+		<xs:group ref="ruleml:imp.content"/>
+		<xs:attributeGroup ref="ruleml:imp.attlist"/>
+	</xs:complexType>
+	<xs:element name="imp" type="ruleml:imp.type"/>
+	
+	<!-- END modified elements -->
+	
+	<!--
+		*** rulebase ***
+		content model:
+		(
+		  ( (_rbaselab, (fact | query | imp)* ) |
+		  ( (fact | query | imp)+, _rbaselab?) )?
+		)
+
+		A knowledge base of rules.
+
+		The 'rulebase' root element uses 'fact' assertions, 'query' tests, and 'imp' rules as
+		top-level elements. A rulebase may have an optional label, '_rbaselab', and/or a 'direction'
+		attribute which indicates the intended direction of imp inferencing.
+	-->
+	<xs:attributeGroup name="rulebase.attlist">
+		<xs:attributeGroup ref="ruleml:direction.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>	
+	<xs:group name="rulebase.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="ruleml:_rbaselab"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="ruleml:fact"/>
+					<xs:element ref="ruleml:query"/>
+				  	<xs:element ref="ruleml:imp"/>
+				</xs:choice>				
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="ruleml:fact"/>
+					<xs:element ref="ruleml:query"/>
+				  	<xs:element ref="ruleml:imp"/>
+				</xs:choice>	
+				<xs:element ref="ruleml:_rbaselab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="rulebase.type">
+		<xs:group ref="ruleml:rulebase.content" minOccurs="0"/>
+		<xs:attributeGroup ref="ruleml:rulebase.attlist"/>
+	</xs:complexType>
+	<xs:element name="rulebase" type="ruleml:rulebase.type" /> 
+
+	<!--
+		*** _rbaselab ***
+		content model: (ind)
+		
+		A rulebase label.
+	
+		Rulebases may have an optional label, '_rbaselab', allowing the naming of an entire
+		individual rulebase in a fashion that is accessible within the knowledge representation.
+		These labels use individual constants (or, in hornlog, complex terms).
+
+		For example, this can help for representing prioritization between rulebases, or perhaps
+		to enable forward inferencing of selected rulebase(s).
+	-->
+	<xs:attributeGroup name="_rbaselab.attlist"/>
+	<xs:group name="_rbaselab.content">
+		<xs:sequence>
+			<xs:element ref="ruleml:ind"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rbaselab.type">
+		<xs:group ref="ruleml:_rbaselab.content"/>
+		<xs:attributeGroup ref="ruleml:_rbaselab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rbaselab" type="ruleml:_rbaselab.type"/>	
+
+	<!--
+		*** fact ***
+		content model: ( (_rlab, _head) | (_head, _rlab?) )
+
+		A fact within the rulebase.
+
+		'fact' assertions are usable as degenerate rules on the top-level, using just 
+		a conclusion role '_head'.  They can be viewed logically as implication rules
+		that have empty bodies.
+		e.g. "<fact>_head</fact>" stands for "_head is implied by true", i.e., "_head is true".
+
+		A fact may also have a label, '_rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:attributeGroup name="fact.attlist"/>
+	<xs:group name="fact.content">
+		<xs:all>
+			<xs:element ref="ruleml:_rlab" minOccurs="0"/>
+			<xs:element ref="ruleml:_head"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="fact.type">
+		<xs:group ref="ruleml:fact.content"/>
+		<xs:attributeGroup ref="ruleml:fact.attlist"/>
+	</xs:complexType>
+	<xs:element name="fact" type="ruleml:fact.type"/>
+	
+	<!--
+		*** query ***
+		content model: ( (_rlab, _body) | (_body, _rlab?) )
+
+		A query within the rulebase.
+
+		'query' elements are usable as degenerate rules on the rulebase top-level, using
+		just a premise role '_body' in the same way that facts use '_head'.
+
+		e.g.
+		"<query>_body</query>" stands for "false is implied by _body",
+		i.e., "_body cannot be proved", which is to be refuted by generating
+		the bindings for free variables in _body.
+
+		A query may also have a label, '_rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:attributeGroup name="query.attlist"/>
+	<xs:group name="query.content">
+		<xs:all>
+			<xs:element ref="ruleml:_rlab" minOccurs="0"/>
+			<xs:element ref="ruleml:_body"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="query.type" mixed="true">
+		<xs:group ref="ruleml:query.content"/>
+		<xs:attributeGroup ref="ruleml:query.attlist"/>
+	</xs:complexType>
+	<xs:element name="query" type="ruleml:query.type"/>
+
+	<!--
+		*** and ***
+		content model: ( (atom | or)* )
+
+		A conjunctive body expression.
+
+		An 'and' uses zero or more atomic (or, in equalog, equational) formulas or disjunctions.
+		It is usable within '_body'. "<and>atom</and>" is equivalent to "atom", while "<and></and>"
+		is equivalent to "true".
+	-->
+	<xs:attributeGroup name="and.attlist"/>
+	<!-- content model is "((atom | or)*)" -->
+	<xs:group name="and.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="ruleml:atom"/>
+				<xs:element ref="ruleml:or"/>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="and.type">
+		<xs:group ref="ruleml:and.content"/>
+		<xs:attributeGroup ref="ruleml:and.attlist"/>
+	</xs:complexType>
+	<xs:element name="and" type="ruleml:and.type"/>
+	
+	<!--
+		*** or ***
+		content model: ( (atom | and)* )
+
+		An 'or' uses zero or more atomic formulas or conjunctions.  It is usable within '_body'.
+		"<or>atom</or>" is equivalent to "atom".
+	-->
+	<xs:attributeGroup name="or.attlist"/>
+	<!-- content model is "((atom | and)*)" -->
+	<xs:group name="or.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="ruleml:atom"/>
+				<xs:element ref="ruleml:and"/>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="or.type">
+		<xs:group ref="ruleml:or.content"/>
+		<xs:attributeGroup ref="ruleml:or.attlist"/>
+	</xs:complexType>
+	<xs:element name="or" type="ruleml:or.type"/>
+	
+	<!--
+		*** atom ***
+		content model:
+		( (_opr, (_slot)*, (ind | var)*, (_slot)*) | ((_slot)*, (ind | var)+, (_slot)*, _opr) )
+		
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+
+                        (
+                            ( _opr,
+                              (_slot)*, 
+                              ( (ind | var)+, (_slot)*)?
+                            ) 
+                          |
+                            (
+                               (
+                                  ( (_slot)+, 
+                                    ( (ind | var)+, (_slot)* )?
+                                  )
+                                |
+                                  ((ind | var)+, (_slot)*)
+                               ),
+                               _opr
+                            )
+                         )
+
+		A logical atom, i.e. an expression formed from a predicate applied to a collection of its
+		(logical) arguments.
+
+		An atomic formula is usable within '_head','_body', or 'and'. Atom elements use an '_opr' role
+		followed by a sequence of zero or more arguments, or equivalently, with '_opr' at the end.
+		The arguments may be individuals or variables (or, in hornlog, complex terms or plexs).
+		Optional user-defined metaroles ('_slot') are also permitted before and/or after the individuals.
+	-->
+	<xs:attributeGroup name="atom.attlist"/>
+	<!-- content model is "((_opr, (_slot)*, (ind | var)*, (_slot)*) | ((_slot)*, (ind | var)+, (_slot)*, _opr))" -->
+	<xs:group name="atom.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="ruleml:_opr"/>
+				<xs:element ref="ruleml:_slot" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="ruleml:ind"/>
+					<xs:element ref="ruleml:var"/>
+				</xs:choice>
+				<xs:element ref="ruleml:_slot" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="ruleml:_slot" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="ruleml:ind"/>
+					<xs:element ref="ruleml:var"/>
+				</xs:choice>
+				<xs:element ref="ruleml:_slot" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ruleml:_opr"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="atom.type">
+		<xs:group ref="ruleml:atom.content"/>
+		<xs:attributeGroup ref="ruleml:atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="atom" type="ruleml:atom.type"/>
+	
+	<!--
+		*** _opr ***
+		content model: (rel)
+
+		A relational operator expression.
+
+		'_opr' is usable within atoms. It uses a rel(ation) symbol.
+	-->
+	<xs:attributeGroup name="_opr.attlist"/>
+	<!-- content model is "(rel)" -->
+	<xs:group name="_opr.content">
+		<xs:sequence>
+			<xs:element ref="ruleml:rel"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_opr.type">
+		<xs:group ref="ruleml:_opr.content"/>
+		<xs:attributeGroup ref="ruleml:_opr.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opr" type="ruleml:_opr.type"/>
+	
+	<!--
+		*** _slot ***
+		content model: ( ind | var )
+
+		User-defined non-positional metaroles.
+
+		'_slot' uses either an individual constant or a variable (or, in hornlog, a complex term),
+		and must have a name given in the 'name' attribute.  Optional attributes are 'card',
+		specifying the role's cardinality, and 'weight', specifying the role's relative weight.
+	-->
+	<xs:attributeGroup name="_slot.attlist">
+		<xs:attributeGroup ref="ruleml:_slot.attrib"/>		
+	</xs:attributeGroup>
+	<xs:attributeGroup name="_slot.attrib">
+		<xs:attribute name="n" type="xs:string" use="required"/>
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+		<xs:attribute name="w" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!-- content model is "(ind | var)" -->
+	<xs:group name="_slot.content">
+		<xs:choice>
+			<xs:element ref="ruleml:ind"/>
+			<xs:element ref="ruleml:var"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_slot.type">
+		<xs:group ref="ruleml:_slot.content"/>
+		<xs:attributeGroup ref="ruleml:_slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="_slot" type="ruleml:_slot.type"/>
+
+
+	<!--
+		*** var ***
+		content model: (#PCDATA)
+
+		A logical variable, as in logic programming.
+
+		The one kind of variable argument.
+ 
+		Variables may have an optional 'type' attribute for term typing.
+	-->
+	<xs:attributeGroup name="var.attlist"/>
+	<xs:group name="var.content">
+		<!-- content model is "(#PCDATA)" -->
+	   	<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="var.type" mixed="true">
+		<xs:group ref="ruleml:var.content"/>
+		<xs:attributeGroup ref="ruleml:var.attlist"/>
+	</xs:complexType>
+	<xs:element name="var" type="ruleml:var.type"/>
+
+	
+	<xs:attributeGroup name="href.attrib">
+		<xs:attribute name="href" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** ind ***
+		content model: (#PCDATA)
+
+		An individual constant, as in predicate logic.
+		
+		The one kind of fixed argument, generalizing RDF literals and resources.  It can be
+		viewed logically as logical function whose arity is zero.
+
+		Individuals may have an optional 'type' attribute for term typing.
+	-->
+	<xs:attributeGroup name="ind.attlist">
+		<xs:attributeGroup ref="ruleml:href.attrib"/>
+	</xs:attributeGroup>
+	<!-- content model is "(#PCDATA)" -->
+	<xs:group name="ind.content">
+    		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="ind.type" mixed="true">
+		<xs:group ref="ruleml:ind.content"/>
+		<xs:attributeGroup ref="ruleml:ind.attlist"/>
+	</xs:complexType>
+	<xs:element name="ind" type="ruleml:ind.type"/>
+	
+	<!--
+		*** rel ***
+		content model: (#PCDATA)
+
+		A relation, i.e. a logical predicate.
+	-->
+	<xs:attributeGroup name="rel.attlist">
+		<xs:attributeGroup ref="ruleml:href.attrib"/>
+	</xs:attributeGroup>
+	<!-- content model is "(#PCDATA)" -->
+	<xs:group name="rel.content">
+   		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="rel.type" mixed="true">
+		<xs:group ref="ruleml:rel.content"/>
+		<xs:attributeGroup ref="ruleml:rel.attlist"/>
+	</xs:complexType>
+	<xs:element name="rel" type="ruleml:rel.type"/>
+	
+</xs:schema>

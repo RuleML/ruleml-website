@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/datalog.xsd">
+
+<Assert mapClosure="universal">
+
+<Implies>
+<!--If John does not eat and it is not the case that somebody feeds him then John is hungry.-->
+  <body>
+     <And>
+      <Neg>
+	    <Atom>
+			<Rel>eat</Rel>
+			<Var>John</Var>
+		</Atom>
+	  </Neg>
+	  <Neg>
+		<Atom>
+			<Rel>feed</Rel>
+			<Var>somebody</Var>
+			<Var>John</Var>
+		</Atom>
+	   </Neg>	
+    </And>
+  </body>
+  <head> 
+   <Atom>
+      <Rel>hungry</Rel>
+      <Var>John</Var>
+    </Atom>
+  </head>
+</Implies>
+
+<Implies>
+<!--If there is a member of the human race then he/she is mortal-->
+    <body>
+   	    <Atom>
+			<Rel>human</Rel>
+			<Var>X</Var>
+		</Atom>
+	 </body>
+	 <head>
+		<Atom>
+			<Rel>mortal</Rel>
+			<Var>X</Var>
+		</Atom>
+		</head>
+</Implies>
+
+<Implies>
+<!--Every honest student who doesnot procrastinate receives a good mark and passes his course easily-->
+    <body>
+   	   <And>  
+		<Atom>
+			<Rel>student</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Atom>
+			<Rel>honest</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Neg>
+			<Atom>
+				<Rel>procrastinate</Rel>
+				<Var>X</Var>
+			</Atom>
+	    </Neg>
+	  </And>
+	  
+      <head>
+	    <And>
+			<Atom>
+				<Rel>receives</Rel>
+				<Var>X</Var>
+				<Ind>good marks</Ind>
+			</Atom>	
+			<Atom>
+				<Rel>passes</Rel>
+				<Var>X</Var>
+				<Var>course</Var>
+			</Atom>	
+		</And>			
+		</head>
+</Implies>
+
+<!-- The third rule is a fact that asserts that
+John is a student who gets good marks-->
+ 
+
+  <Atom>
+    <Rel>student</Rel>
+    <Ind>John</Ind>
+  </Atom>
+  
+  <!--John is honest-->
+  <Atom>
+    <Rel>honest</Rel>
+    <Ind>John</Ind>
+  </Atom>
+  <!--John doesnot procrastinate-->
+  <Neg>
+	<Atom>
+		<Rel>procrastinate</Rel>
+		<Ind>John</Ind>
+	</Atom>
+  </Neg>	
+	
+<!--John is human-->  
+  <Atom>
+    <Rel>human</Rel>
+    <Ind>John</Ind>
+   </Atom>
+   
+</RuleML>

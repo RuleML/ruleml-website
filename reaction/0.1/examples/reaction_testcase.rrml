@@ -1,0 +1,855 @@
+<?xml version="1.0"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+	This file contains many (meaningless) examples to test the rr.xsd.
+	
+	It first has the following event-initial Reaction exec="active"  rule test cases:
+		event, body
+		event, body, action
+		event, body, action, postcondition
+		event, body, action, postcondition, alternative
+		event, body, action, alternative
+		event, action
+		event, action, postcondition
+		event, action, postcondition, alternative
+		event, action, alternative
+		
+	Then it has body-initial test cases:
+		body, action
+		body, action, postcondition
+		body, action, postcondition, alternative
+		body, action, alternative
+
+	Then, it has action-initial test cases:
+		action
+		action, postcondition
+		action, postcondition, alternative
+		action, alternative
+		
+	Finally, it repeates all above examples with role skipping
+	
+-->
+
+<Assert>
+
+	<!-- start event-initial test cases -->
+		
+	<Reaction exec="active" kind="ec">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+
+		<body>
+			<Atom><Rel>dummy</Rel></Atom>
+		</body>
+	</Reaction>
+	
+	
+	
+	<!--
+		Rule 1 from
+	    http://ibis.in.tum.de/research/ReactionRuleML/0.1/docs/Reaction-RuleML-Talk-2006-10-19.pdf
+	-->
+	<Reaction exec="active"  kind="eca">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+
+		<body>
+			<Atom><Rel>dummy</Rel></Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+	</Reaction>
+
+	
+	
+	
+	<Reaction exec="active"  kind="ecap">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom><Rel>dummy</Rel></Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+		<postcond>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="ecap">
+
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom><Rel>dummy</Rel></Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+		<postcond>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+
+	</Reaction>
+	
+	<Reaction exec="active"  kind="eca">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom><Rel>dummy</Rel></Atom>
+
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="ea">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+
+		</action>
+	</Reaction>
+
+	<Reaction exec="active"  kind="eap">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+		<postcond>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="eapa">
+
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy</Rel></Atom>
+
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+		<postcond>
+
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</alternative>
+	</Reaction>
+
+	<Reaction exec="active"  kind="eaa">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy</Rel></Atom>
+				</event>
+				<action>
+
+					<Atom><Rel>dummy</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</action>
+
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom><Rel>dummy</Rel></Atom>
+		</alternative>
+	</Reaction>
+
+	<!-- end event-initial test cases -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- start condition-initial test cases -->
+	
+	<!--
+		Forward-directed Production Rule:
+		 occurs(heartbeat(Service),T) ? assert ( alive(Service,T) )
+
+		ECA-LP/Prova Syntax (related to ISO Prolog notation)
+		eca(
+			occurs(heartbeat(Service),T),   % condition
+			add("availability values","alive(_0,_1).", [Service, T]) % action 
+		). 
+	 -->
+
+	<Reaction exec="active"  kind="ca">
+		<body>
+			<Atom>
+			 	<Rel>dummy</Rel>
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+	    </action>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="cap">
+		<body>
+			<Atom>
+
+			<Rel>dummy</Rel>
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+
+	    </action>
+		<postcond>
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="capa">
+		<body>
+			<Atom>
+
+			 <Rel>dummy</Rel>
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+
+	    </action>
+		<postcond>
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+		<alternative>
+			<Atom><Rel>dummy</Rel></Atom>
+		</alternative>
+	</Reaction>
+
+	
+	<Reaction exec="active"  kind="caa">
+		<body>
+			<Atom>
+			 <Rel>dummy</Rel>
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<alternative>
+			<Atom><Rel>dummy</Rel></Atom>
+		</alternative>
+
+	</Reaction>
+	
+	<!-- end condition-initial test cases -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- start condition-initial test cases -->
+	
+	<Reaction exec="active"  kind="a">
+	    <action>
+	         <Assert>
+				 <Atom>
+				 <Rel>dummy</Rel>
+
+				 </Atom>            
+	         </Assert>
+	    </action>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="apa">
+	    <action>
+	         <Assert>
+				 <Atom>
+				 <Rel>dummy</Rel>
+
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<postcond>
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+		<alternative>
+			<Atom><Rel>dummy</Rel></Atom>
+
+		</alternative>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="ap">
+	    <action>
+	         <Assert>
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+
+	    </action>
+		<postcond>
+			<Atom><Rel>dummy</Rel></Atom>
+		</postcond>
+	</Reaction>
+	
+	<Reaction exec="active"  kind="aa">
+	    <action>
+	         <Assert>
+
+				 <Atom>
+				 <Rel>dummy</Rel>
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<alternative>
+			<Atom><Rel>dummy</Rel></Atom>
+		</alternative>
+
+	</Reaction>
+	
+	<!-- end action-initial test cases -->
+	
+	
+	
+	
+	
+	
+	
+		<!-- start role skipping test cases -->
+		
+		
+		
+		
+		
+			
+		<Reaction exec="active" kind="ec">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+		
+		
+		
+		<!--
+			Rule 1 from
+		    http://ibis.in.tum.de/research/ReactionRuleML/0.1/docs/Reaction-RuleML-Talk-2006-10-19.pdf
+		-->
+		<Reaction exec="active"  kind="eca">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+
+					
+				</Reaction>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+		
+		
+		
+		<Reaction exec="active"  kind="ecap">
+			 
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+
+			
+		</Reaction>
+		
+		<Reaction exec="active"  kind="ecap">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+
+			
+		</Reaction>
+
+		
+		<Reaction exec="active"  kind="eca">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+
+			
+		</Reaction>
+		
+		<Reaction exec="active"  kind="ea">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+	
+		<Reaction exec="active"  kind="eap">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+		
+		<Reaction exec="active"  kind="eap">
+			 
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+
+			
+		</Reaction>
+	
+		<Reaction exec="active"  kind="eaa">
+			
+				<Reaction exec="active" kind="ea">
+					
+						<Atom><Rel>dummy</Rel></Atom>
+
+					
+					
+						<Atom><Rel>dummy</Rel></Atom>
+					
+				</Reaction>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<!-- Boolean-valued procedural attachment -->
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+	
+		<!-- end event-initial test cases -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- start condition-initial test cases -->
+		
+		<!--
+			Forward-directed Production Rule:
+			 occurs(heartbeat(Service),T) ? assert ( alive(Service,T) )
+	
+			ECA-LP/Prova Syntax (related to ISO Prolog notation)
+			eca(
+				occurs(heartbeat(Service),T),   % condition
+				add("availability values","alive(_0,_1).", [Service, T]) % action 
+			). 
+		 -->
+		<Reaction exec="active"  kind="ca">
+			
+				<Atom>
+				 	<Rel>dummy</Rel>
+				</Atom>
+			
+		    
+		         <Assert>
+
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+		</Reaction>
+		
+		<Reaction exec="active"  kind="cap">
+			
+				<Atom>
+				<Rel>dummy</Rel>
+
+				</Atom>
+			
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+		
+		<Reaction exec="active"  kind="capa">
+			
+				<Atom>
+				 <Rel>dummy</Rel>
+				</Atom>
+			
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+		
+		<Reaction exec="active"  kind="caa">
+			
+				<Atom>
+				 <Rel>dummy</Rel>
+				</Atom>
+
+			
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+		
+		<!-- end condition-initial test cases -->
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- start condition-initial test cases -->
+		
+		<Reaction exec="active"  kind="a">
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+		</Reaction>
+		
+		<Reaction exec="active"  kind="apa">
+
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+		
+		<Reaction exec="active"  kind="ap">
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+		
+		<Reaction exec="active"  kind="aa">
+		    
+		         <Assert>
+					 <Atom>
+					 <Rel>dummy</Rel>
+					 </Atom>            
+		         </Assert>
+		    
+			
+				<Atom><Rel>dummy</Rel></Atom>
+			
+		</Reaction>
+
+		
+	<!-- end role-skipping test cases -->
+	
+	
+	
+</Assert>
+
+</RuleML>

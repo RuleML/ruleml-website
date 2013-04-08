@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd" 
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Ind -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: urcbindatagroundlog.xsd
+			Version: 0.88
+			Last Modification: 2005-02-24
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatalog.xsd">
+		<!--
+			remove Vars so that arg's content model is: (Ind)
+		-->
+		<!--
+			note that this automatically removes Vars from Atom so that Atom's content model is:
+			(
+				oid?,
+	                    ( (opr | Rel), (slot)*, (arg | Ind), (arg | Ind), (slot)* ) |
+	                    ( (slot)*, (arg | Ind), (arg | Ind), (slot)*, opr )
+	     		)
+	     		
+	     		and also from slot so that its content model is: ( Ind, Ind )
+		-->		
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:element name="Ind" type="Ind-normal.type"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			remove Forall (since ground) so that top level And's content model is:
+			( oid?, (formula | Atom | Implies | Equivalent)* )			
+		-->
+		<xs:group name="formula-top-and.content">
+			<xs:choice>
+				<xs:element ref="Atom"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			similarly, remove Exists (since ground) so that Query's content model is:
+			( content | Atom | And | Or )						
+		-->
+		<xs:group name="content-query.content">
+			<xs:choice>
+				<xs:element ref="Atom"/>
+				<xs:element name="And" type="And-query.type"/>
+				<xs:element name="Or" type="Or-query.type"/>					
+			</xs:choice>
+		</xs:group>	
+
+	</xs:redefine>
+
+</xs:schema>

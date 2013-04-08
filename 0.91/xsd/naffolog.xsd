@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a First-Order Logic RuleML sublanguage, including negation as failure (NAF)
+			File: naffolog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- naffolog includes the 'naf' module and redefines it slightly -->
+	<xs:redefine schemaLocation="modules/naf_module.xsd">	
+
+		<!--
+			Allow unrestricted nesting of first order logic formulas in Naf.
+			
+			weak's content model becomes:
+			(Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists )
+		-->		
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>				
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Forall"/>				
+				<xs:element ref="Exists"/>	
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly changes Naf's content model to become:
+			( weak | Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists )		
+		-->
+		
+		<!-- Also allow map attributes on Naf -->
+		<xs:attributeGroup name="Naf.attlist">
+			<xs:attributeGroup ref="Naf.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>			
+
+	</xs:redefine>
+
+	<!-- note the addition of Naf (negation as failure) from the 'naf' module -->
+	<xs:redefine schemaLocation="folog.xsd">
+
+		<!--
+			add Naf so that body's content model is:
+			(Atom | And | Or | Neg | Naf | Implies | Equivalent | Forall | Exists)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly changes the content model of Implies to become:		
+			(
+				oid?, (head, body) | (body, head) |
+				(
+					(Atom | And | Or | Neg | Naf | Implies | Equivalent | Forall | Exists),
+					(Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists)
+				) 
+			)
+		-->		
+		
+		<!--
+			add Naf so that Query's content model is:
+			( oid?,(formula|Atom|Rulebase|And|Or|Neg|Implies|Equivalent|Entails|Forall|Exists|Naf)* )
+		-->
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:group ref="formula-query.content"/>
+				<xs:element ref="Naf"/>	
+			</xs:choice>	
+		</xs:group>
+		
+		<!--
+			add Naf so that And/Or's content model is:
+			( oid?, (formula | Atom | And | Or | Neg | Naf | Implies | Equivalent | Forall | Exists)* )
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>	
+		</xs:group>	
+
+	</xs:redefine>
+
+</xs:schema>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a local active reaction rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+
+ContractLog / Prova formalization in RBSLA (related to ISO Prolog notation)
+
+available(Service):-
+	service(Service),
+	T = java.util.Calendar.getInstance(),
+    eca(_,rbsla.utils.WebService.ping(Service), _, add(id1,"occurs(alive(_0),_1).",[Service,T]),_,_).
+
+
+ -->
+ 
+<Assert>
+
+
+  <Implies>
+	
+	<head>
+	    <Atom>
+	      <Rel>available</Rel>
+	      <Var>Service</Var>
+	    </Atom>
+	</head>
+	
+	<body>
+	  <And>
+	
+	   <Atom> 
+	      <Rel>service</Rel>
+	      <Var>Service</Var>
+	    </Atom>
+	
+	   
+	   <!-- T = java.util.Calendar.getInstance() -->
+	   <Equal>
+	       <Var>T</Var>
+	       <Expr>
+				<oid><Ind uri="java.util.Calendar"/></oid>
+				<Fun in="yes" lang="java">getInstance</Fun>
+			</Expr>	       
+	    </Equal> 
+	    
+	    
+	
+	    <Reaction kind="ea" exec="active" eval="strong"> 
+	    	<event> <!-- role tag; can be omitted-->
+		        <Atom>
+		        	<!-- class/object -->
+					<oid><Ind uri="rbsla.utils.WebService"/></oid>
+					<!-- method -->
+					<Rel in="yes" lang="java">ping</Rel>
+					<!-- parameter -->
+					<Var>Service</Var> 
+		     	</Atom>
+	        </event>
+	       
+	        <action> 
+	           <Assert> 
+	              <oid><Ind>id1</Ind></oid>
+
+	                 <Atom>
+	                   <Rel>occurs</Rel>
+	                   <Expr in="no">
+	                      <Fun>alive</Fun>                  
+	                      <Var>Service</Var> 
+	                   </Expr>                       
+	                   <Var>T</Var>
+	                 </Atom>
+	              
+	           </Assert>         
+	        </action>       
+	    </Reaction>       
+	     
+
+	     
+	    </And>
+	 </body>
+   </Implies>
+
+
+</Assert>
+
+</RuleML>

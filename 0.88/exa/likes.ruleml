@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/datalog.xsd">
+
+<!-- Clocksin/Mellish sample rule -->
+
+<And innerclose="universal">
+
+<Implies>
+ <head>
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Ind>John</Ind>
+    <Var>x</Var>
+  </Atom>
+ </head>
+ <body>
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Var>x</Var>
+    <Ind>wine</Ind>
+  </Atom>
+ </body>
+</Implies>
+
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Ind>Mary</Ind>
+    <Ind>wine</Ind>
+  </Atom>
+
+</And>
+
+</Assert>

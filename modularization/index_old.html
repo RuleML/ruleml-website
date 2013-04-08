@@ -1,0 +1,434 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>The Modularization of RuleML</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#FFFFFF">
+        <center>
+		<br>
+            <h1>The Modularization of RuleML</h1>
+            <h2>David Hirtle, <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>
+</h2>
+	    <h2>2005-08-25 - Version 0.9</h2>
+	    <h2>Quick link: <a href="#Model">Official Model</a>
+</h2>
+        </center>
+<br>
+        <p>Three alternative versions of RuleML modularization are evaluated, including
+        their implementations in XML Schema.  Finally, the official model
+        is presented and explained.</p>
+    <h2>Contents</h2>
+<ul>
+<li><a href="#Motivation">Motivation</a></li>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="#Version 1: &quot;Bus&quot;">Version 1: &quot;Bus&quot;</a></li>
+<li><a href="#Version 2: &quot;Star&quot;">Version 2: &quot;Star&quot;</a></li>
+<li><a href="#Version 3: &quot;Tree&quot;">Version 3: &quot;Tree&quot;</a></li>
+<li><a href="#Evaluation">Evaluation</a></li>
+<li><a href="#Model">Official Model</a></li>
+</ul>
+<h2><a name="Motivation">Motivation</a></h2>
+        
+        <p>Specifying RuleML with XML Schema has proven to be problematic, beginning with the <a href="http://www.ruleml.org/inxsd0.8.html#Issues">first attempt in 0.8</a> and then
+            with the <a href="http://www.ruleml.org/xsd/0.85/">more complete
+                representation in 0.85</a>. While many issues have been resolved, the <a href="http://www.ruleml.org/0.85/#Re-Modularization">re-modularization of the
+                sublanguage hierarchy in 0.85</a> revealed an inconsistency in XML Schema: using
+            xs:redefine, it is straight-forward to extend a particle's occurrence range
+            by increasing the upperbound (i.e. the value of the maxOccurs attribute), but not when
+            it comes to decreasing the lowerbound (i.e. the value of the minOccurs attribute). The
+            issue has been raised twice (<a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2004Jan/0004.html">1</a>, <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2004May/0001.html">2</a>) on the
+                <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/">W3C XML Schema
+                developers list</a> (xmlschema-dev@w3.org) but is still outstanding.</p>
+        <p>Particular to RuleML, this &quot;expressiveness gap&quot; in XML Schema does not permit extending a
+            binary atom (e.g. in bindatalog) to have an unbounded number of terms (e.g. in datalog).
+            This means that the <a href="http://www.ruleml.org/0.85/Inheritance_diagram.gif">modularization
+                introduced in RuleML 0.85</a> with urcbindatagroundfact as the ultimate root cannot
+            (easily) be implemented using XML Schema.</p>
+    <h2><a name="Introduction">Introduction</a></h2>
+        
+        <p>Related elements and/or attributes of RuleML have been grouped into static modules which are
+           often referred to in this discussion.  These modules contain element and/or attribute definitions
+           and are not intended to be used directly for validation. They may, however, be used to create
+           new document types by others wishing to &quot;borrow&quot; certain elements of RuleML much like XHTML.
+         </p>
+         <p>The modules and their contents as of RuleML 0.87 are as follows (where attributes are prefixed with &quot;@&quot;):
+            <ul>
+               <li>
+<b>toplevel</b> - Rulebase, @direction, clause, Fact, Imp, Query</li>
+               <li>
+<b>clause</b> - head, body</li>
+               <li>
+<b>desc</b> - rbaselab, rlab</li>
+               <li>
+<b>atom</b> - Atom, opr, Rel</li>
+               <li>
+<b>boole</b> - And, Or, wff</li>
+               <li>
+<b>role</b> - role, Slot, @card, @weight, name, filler</li>
+               <li>
+<b>term</b> - arg, @index, Ind, Var, @type</li>
+               <li>
+<b>ur</b> - @href</li>                  
+               <li>
+<b>cterm</b> - Cterm, opc, Ctor, Plex</li>
+               <li>
+<b>equality</b> - Eq, side, Nano, opf, Fun</li>
+               <li>
+<b>negation</b> - Neg, strong, Naf, weak</li> 
+               </ul>
+         </p>
+         <p>Also note that the schemas developed as part of this evaluation are not necessarily
+            complete and do not represent actual releases of RuleML. They are experimental in nature
+            and are only included here for illustrative purposes.</p>
+    <h2><a name="Version 1: &quot;Bus&quot;">Version 1: &quot;Bus&quot;</a></h2>
+      
+      <p>Numerous approaches to working around the encountered <a href="#Motivation">XML Schema problem</a>
+      have been attempted, but none were found to be satisfactory when implemented
+      (i.e. according to popular validators, W3C's
+      <a href="http://www.w3.org/2001/03/webdata/xsv">XML Schema Validator</a> aka XSV in particular).
+      This first of the three alternative versions of RuleML modularization involves a novel
+      approach, but <a href="bus/">its implementation</a>
+      still involves a workaround which causes problems for XSV in some cases.</p>
+      <p>The basis of this approach is the separation of the actual schema driver from an &quot;auxiliary&quot;
+      container module for each sublanguage.  The auxiliary modules inherit from one another while the
+      drivers are not directly related, except through the auxiliary modules which they include.
+      For example, the datalog sublanguage is specified in the driver
+      <a href="bus/datalog.xsd">datalog.xsd</a>, which includes auxiliary module
+      <a href="bus/aux_datalog.xsd">aux_datalog.xsd</a>.  Because of the XML Schema limitation,
+      the 'atom' module must be handled as a special case and be independent of the auxiliary
+      modules, instead being included or redefined by each driver as needed.  In this way, the atom module
+      does not have to begin as being binary, so no problems arise as a result of trying to
+      decrease its lower bound.  The following diagram may clarify:</p>
+<b><pre>     ...                          atom
+      |                             |
+aux_bindatalog -- [bindatalog] -----|
+      |                             |
+ aux_datalog ----- [datalog] -------|
+      |                             |
+aux_urdatalog --- [urdatalog] ------|
+      |                             |
+     ...                           ...</pre></b>
+      <p>The similarity between this representation and a bus architecture diagram should be quite clear,
+      hence the mnemonic of &quot;bus&quot; for this version.</p>
+                
+       <p>When attempting to validate hornlog.xsd, urhornlog.xsd, equalog.xsd or urequalog.xsd with XSV, the following message appears
+       in addition to the usual results of successful validation:</p>
+<table border="1" cellpadding="5" bgcolor="white"><tr><td>
+<b>Schema validator crashed</b><br>
+The maintainers of XSV will be notified, you don't need to send mail about this unless you have extra information to provide.
+If there are Schema errors reported below, try correcting them and re-running the validation.
+</td></tr></table>
+        <p>Other validators such as XMLSpy and Saxon respond much better, but this error nonetheless
+           casts doubt on the validity of these schemas. Because there are better alternatives to this approach,
+           however, we will not pursue the matter further.</p>
+    <h2><a name="Version 2: &quot;Star&quot;">Version 2: &quot;Star&quot;</a></h2>
+        
+            <p>This second approach is largely monolithic in the sense that the driver for each sublanguage is
+               entirely independent of other sublanguage drivers (except for urdatalog, urhornlog, urequalog
+               and negation sublanguages). Thus each driver includes (and/or redefines, as the case may be)
+               from various modules, e.g. <a href="star/bindatalog.xsd">bindatalog.xsd</a>:</p>
+
+   <b><pre>  ...
+	
+  &lt;xs:include schemaLocation=&quot;modules/core_module.xsd&quot;/&gt;
+
+  &lt;xs:include schemaLocation=&quot;modules/desc_module.xsd&quot;/&gt;
+	
+  &lt;xs:include schemaLocation=&quot;modules/clause_module.xsd&quot;/&gt;
+	
+  &lt;xs:include schemaLocation=&quot;modules/boole_module.xsd&quot;/&gt;
+	
+  &lt;xs:redefine schemaLocation=&quot;modules/atom_module.xsd&quot;&gt;
+    &lt;!-- restrict atoms to binary --&gt;
+    &lt;xs:group name=&quot;atom.extend&quot;&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:choice minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;&gt;
+          &lt;xs:element ref=&quot;ind&quot;/&gt;
+          &lt;xs:element ref=&quot;var&quot;/&gt;
+        &lt;/xs:choice&gt;
+      &lt;/xs:sequence&gt;	
+    &lt;/xs:group&gt;
+  &lt;/xs:redefine&gt;
+	
+  &lt;xs:include schemaLocation=&quot;modules/role_module.xsd&quot;/&gt;
+	
+  &lt;xs:include schemaLocation=&quot;modules/term_module.xsd&quot;/&gt;	
+  
+  ...</pre></b>
+
+<p>This might be visualized as follows, revealing the reason behind this approach being labeled &quot;star&quot;:</p>
+<b><pre>
+          atom    boole    term
+             \      |       /
+              \     |      /
+       core -- [bindatalog] 
+              /     |      \    
+             /      |       \    
+           role   clause   desc  
+</pre></b>
+      <p>The <a href="star/">implementation</a> of this version of modularization is quite straightforward
+      and validates fine in <a href="http://www.w3.org/2001/03/webdata/xsv">XSV</a>; the monolithic quality
+      of the schemas avoids the <a href="#Motivation">aforementioned problem</a> altogether. However, it
+      deviates from previous versions of RuleML by involving very little inheritance, making sublanguage
+      relationships (and expressivity) unclear.  Another downside is that there is a lot of redundancy among
+      the sublanguage drivers with modules being included separately in each.</p>
+      <p>This approach is basically the same as that used for the 
+         <a href="http://www.w3.org/TR/2004/WD-xhtml-modularization-20040218/">modularization of XHTML</a>,
+      but it seems much better suited for such scenarios where only a few sublanguages are involved. It is
+      far from ideal for RuleML.
+      </p>
+    <h2><a name="Version 3: &quot;Tree&quot;">Version 3: &quot;Tree&quot;</a></h2>
+        
+        <p>The final approach considered here is similar to a
+           <a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">previous modularization</a> though
+           oriented slightly differently and now involving 
+           <a href="#Introduction">elementary modules</a>. It might be visualized as follows,
+           a tree centered around the datalog sublanguage:</p>
+<b><pre>
+                    core
+                      |
+                atom  | desc
+                   |  |  | 
+             role  |  |  |   term
+                 \ |  |  | / 
+         boole -- [datalog] -- clause
+                 *    *    *
+              *       *       *    
+           *          *          *          
+     [urdatalog] [bindatalog] [hornlog]
+          *     \              *     *
+          *      \           *         *          
+    [urcdatalog]  \     [urhornlog] [equalog]
+          *        \    /               *    
+          *         \  /                *              
+   [urcbindatalog]   ur ---------- [urequalog]
+          *
+          *          
+ [urcbindatagroundlog]
+          *
+          *         
+[urcbindatagroundfact]
+</pre></b>
+       <p>Clearly this version of modularization involves much more direct inheritance (indicated
+          by &quot;*&quot;) than the other versions so far considered. Its <a href="tree/">implementation</a>
+          avoids the <a href="#Motivation">XSD-technical problem</a> and is consistent with previous
+          RuleML specifications wherein sublanguage relationships are
+          explicitly indicated by taking advantage of inheritance.  For example, bindatalog
+          is fundamentally the same as datalog except with binary atoms, so
+          <a href="tree/bindatalog.xsd">bindatalog.xsd</a> need only slightly 
+          redefine <a href="tree/datalog.xsd">datalog.xsd</a>:
+       </p>
+
+<b><pre>  ...
+
+  &lt;!-- bindatalog redefines datalog so that atoms are binary --&gt;
+  &lt;xs:redefine schemaLocation=&quot;datalog.xsd&quot;&gt;
+    &lt;xs:group name=&quot;atom.extend&quot;&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:choice minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;&gt;
+          &lt;xs:element ref=&quot;ind&quot;/&gt;
+          &lt;xs:element ref=&quot;var&quot;/&gt;
+        &lt;/xs:choice&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:group&gt;		
+  &lt;/xs:redefine&gt;
+  
+  ...</pre></b>
+       <p>Thus, the XSDs implementing this approach not only capture sublanguage expressiveness,
+          but manage to do it in a compact and efficient way.          
+       </p>
+    <h2><a name="Evaluation">Evaluation</a></h2>
+        
+        <p>The following table summarizes the relative advantages and disadvantages of each version
+            of modularization (where 1 is best, 3 is worst):</p>
+        <table border="1" cellpadding="3">
+            <tr align="center">
+                <td>
+                    <b>Criterion</b>
+                </td>
+                <td>
+                    <b>Version 1: &quot;Bus&quot;</b>
+                </td>
+                <td>
+                    <b>Version 2: &quot;Star&quot;</b>
+                </td>
+                <td>
+                    <b>Version 3: &quot;Tree&quot;</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td align="left"><a href="#compactness">Compactness</a></td>
+                <td>3</td>
+                <td>2</td>
+                <td><b>1</b></td>
+            </tr>
+            <tr align="center">
+                <td align="left"><a href="#conciseness">Conciseness</a></td>
+                <td>2</td>
+                <td>3</td>
+                <td><b>1</b></td>
+            </tr>
+            <tr align="center">
+                <td align="left"><a href="#extensibility">Extensibility</a></td>
+                <td>3</td>
+                <td><b>1</b></td>
+                <td>2</td>
+            </tr>            
+            <tr align="center">
+                <td align="left"><a href="#inheritance">Inheritance</a></td>
+                <td>2</td>
+                <td>3</td>
+                <td><b>1</b></td>
+            </tr>
+            <tr align="center">
+                <td align="left"><a href="#maintainability">Maintainability</a></td>
+                <td>3</td>
+                <td><b>1</b></td>
+                <td>2</td>
+            </tr>
+            <tr align="center">
+                <td align="left"><a href="#readability">Readability</a></td>
+                <td>3</td>
+                <td>2</td>
+                <td><b>1</b></td>
+            </tr>            
+            <tr align="center">
+                <td align="left"><a href="#stability">Stability</a></td>
+                <td>3</td>
+                <td><b>1</b></td>
+                <td><b>1</b></td>
+            </tr>
+        </table>
+        <p>
+<a name="compactness"><b>compactness</b></a> - the number of files and associated
+        storage space required to implement the modularization</p>
+        
+        <p>
+<a name="conciseness"><b>conciseness</b></a> - a measure of the lack of redundancy within the
+        modularization</p>
+        
+        <p>
+<a name="extensibility"><b>extensibility</b></a> - how easily the modularization (and its
+        implementation) will be able to accommodate predicted extensions to RuleML (e.g. transformation
+        and reaction rules)</p>
+        
+        <p>
+<a name="inheritance"><b>inheritance</b></a> - the level of inheritance involved in the
+        modularization
+        </p>
+         
+        <p>
+<a name="maintainability"><b>maintainability</b></a> - how easily the implementation can be
+        re-used and modified (as necessary) for future versions of RuleML (related to 
+        readability and non-proliferation of files)</p>
+         
+        <p>
+<a name="readability"><b>readability</b></a> - how easily the modularization and its
+        implementation can be read and understood (related to consistency and simplicity)
+        </p>
+        
+        <p>
+<a name="stability"><b>stability</b></a> - how well popular validators (e.g. XSV, XMLSpy and
+        Saxon) react to the implementation</p>
+        
+        <p>As indicated by the table, the &quot;tree&quot; version of modularization is the most favourable
+        approach, judged to be better than the other versions on every level except extensibility
+        and maintainability. It has therefore been further developed and is now proposed as the
+        <a href="#Model">official model</a> for the modularization of RuleML.</p>
+    <h2><a name="Model">Official Model</a></h2>
+        
+        <p>The most recent model of the RuleML family of (derivation rule) sublanguages is shown below, with more
+explanation further down.  Use the following links to switch between four levels of refinement (the default view is minimal refinement).</p>
+        <center>
+<p><b><a href="#" onClick="official_model.src='model/ruleml_m12n_09_uml_05-08-25.png';return false;">Sublanguages &amp; modules</a> (<a href="#" onClick="official_model.src='model/ruleml_m12n_09_uml_05-08-25_min.png';return false;">minimized</a>)  |||  <a href="#" onClick="official_model.src='model/ruleml_m12n_09_uml_05-08-25_subsonly.png'; return false;">Sublanguages only</a> (<a href="#" onClick="official_model.src='model/ruleml_m12n_09_uml_05-08-25_subsonly_min.png';return false;">minimized</a>)</b></p>
+
+        <img src="http://www.ruleml.org/modularization/model/ruleml_m12n_09_uml_05-08-25_subsonly_min.png" border="0" alt="Official model of the modularization of RuleML" name="official_model">
+
+<p>(<a href="model/ruleml_m12n_09_uml_05-08-25.svg">SVG source</a>)</p>
+</center>
+
+	<p>Consistent with object-oriented modelling conventions, the most
+            expressive &quot;class&quot; (i.e. sublanguage) is shown at the top and generality decreases in top-down
+            order. As in the the Unified Modeling Language (UML), a diamond-headed arrow
+            indicates an aggregation association (e.g. &quot;datalog is <i>part of</i> hornlog&quot; and
+            &quot;cterm is <i>part of</i> hornlog&quot;) while regular-headed arrows indicate generalization
+            or inheritance (e.g. &quot;bindatalog <i>is a</i> datalog&quot;). Note that certain aggregation associations,
+	such as hornlog to nafhornlog and hornlogeq, branch and have two targets.  This new notation logically places all
+	target nodes on the same (horizontal) level.
+	</p>
+	<p>The ovals in this model represent elementary modules which act as &quot;private&quot;
+            constituents of the actual sublanguages (which are represented as rectangles). This composition
+            may happen directly, as is most obvious for datalog, or indirectly through subsequent
+            associations.  For example, the model shows that bindatalog is not directly associated with any modules, 
+            but it inherits them (with some modification) when it derives from datalog. According
+            to these conventions, ovals cannot be associated with one another because they are
+            dependent on rectangles. A dashed line indicates this dependency, as distinct from
+            the standard aggregation relationship shown with a solid line.
+	</p>
+        <p>The model conveys meaning on the &quot;implementation&quot; (i.e. XML Schema specification) level as well.  In XSD, ovals become
+            non-standalone modules containing element and/or attribute definitions, and are not intended to be
+            used directly for validation.  They may, however, be used to create new document types by users
+            wishing to &quot;borrow&quot; certain elements of RuleML 
+            <a href="http://www.w3.org/TR/xhtml-modularization/introduction.html#s_intro_xhtml_mods">much like in XHTML</a>.
+            Rectangles, on the other hand, are schema drivers composed in whole or in part of these modules or
+            derived entirely from other schema drivers.
+	</p>
+	<p>The association lines in this model also reveal schema
+            dependencies within the &quot;implementation&quot;.  In XML Schema, connected rectangles are joined using
+            <a href="http://www.w3.org/TR/xmlschema-1/#modify-schema">xs:redefine</a>,
+            whereas ovals are connected to rectangles using
+            <a href="http://www.w3.org/TR/xmlschema-1/#compound-schema">xs:include</a>.  Elementary modules are generally
+            included &quot;as is&quot;, but sublanguages connected with xs:redefine either extend or restrict one another.  In XML Schema,
+            extension via redefine is distinguished from restriction by whether or not there is a self-reference 
+            (see <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2002Oct/0113.html">this explanation</a>).  In other words,
+            if there is no self-reference, the containing schema is deriving from a parent; otherwise, there is a self-reference and the
+            schema is generalizing from a child.
+	</p>
+          <p>For example, consider the following section of hornlog.xsd:</p>
+<b><pre>&lt;xs:redefine schemaLocation=&quot;datalog.xsd&quot;&gt;
+    &lt;xs:group name=&quot;atom&quot;&gt;
+        &lt;xs:sequence&gt;
+            &lt;xs:choice minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                &lt;xs:group ref=&quot;atom&quot;/&gt;
+                &lt;xs:element ref=&quot;cterm&quot;/&gt;
+                &lt;xs:element ref=&quot;plex&quot;/&gt;
+            &lt;/xs:choice&gt;
+        &lt;/xs:sequence&gt;	
+    &lt;/xs:group&gt;
+&lt;/xs:redefine&gt;</pre></b>
+            <p>The group self-reference in this XML Schema excerpt identifies hornlog as being an extension of datalog.  On the other hand, 
+            the absence of a self-reference, as in the section of bindatalog.xsd below, indicates a restriction:</p>
+            
+            
+<b><pre>&lt;xs:redefine schemaLocation=&quot;datalog.xsd&quot;&gt;
+    &lt;xs:group name=&quot;atom&quot;&gt;
+        &lt;xs:sequence&gt;
+            &lt;xs:choice minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;&gt;
+                &lt;xs:element ref=&quot;ind&quot;/&gt;
+                &lt;xs:element ref=&quot;var&quot;/&gt;
+            &lt;/xs:choice&gt;
+        &lt;/xs:sequence&gt;
+    &lt;/xs:group&gt;		
+&lt;/xs:redefine&gt;</pre></b>
+            
+<p>Currently all sublanguages contain mixtures of positional and slotted terms: a design decision was made to &quot;mix in&quot; optional slots in all existing sublanguages instead of creating all new sublanguages differing only by this one feature.  With the frame module in 0.89, purely slotted Atoms (called frames) are introduced.  Likewise, a purely positional sublanguage (c.f. prolog) is also possible.</p>            
+            
+    <br>
+        <p> Site Contact: <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>. Page Version:
+            2005-08-29<br>
+            <br>
+            <br>
+            <a name="Practice-Preach"></a>
+            <small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.ruleml.org/inspec/index.xml">index.xml</a> (<a href="http://www.ruleml.org/inspec/index.xml.txt">index.xml.txt</a>); <br>
+                transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View |
+                Page Source) </small>
+        </p>
+    </body>
+</html>

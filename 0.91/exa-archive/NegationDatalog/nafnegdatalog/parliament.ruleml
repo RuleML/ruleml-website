@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/nafnegdatalog.xsd">
+
+<!-- An example rulebase for testing the Datalog RuleML sublanguage, with negation  -->
+
+<Assert mapClosure="universal">
+
+ <!--person1 is a Member of Parliament(MP) of Canada in  year02--> 
+ 
+  <Atom>
+    <op><Rel>mp</Rel></op>
+    <Ind>Canada</Ind>
+    <Ind>person1</Ind>
+    <Ind>year02</Ind>
+  </Atom>
+  
+<!-- A person is in an opposition party of countryX in a year if the person is a Member of Parliament (MP) but is not in the Government in that year -->
+    
+<Implies>
+  <head>
+    <Atom>
+      <op><Rel>opposition</Rel></op>
+      <Var>countryX</Var>
+      <Var>person</Var>
+      <Var>year</Var>
+    </Atom>  
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>mp</Rel></op>
+        <Var>countryX</Var>
+        <Var>person</Var>		  
+        <Var>year</Var> 
+      </Atom>
+      <Naf>
+        <Neg>	  
+          <Atom>
+            <op><Rel>government</Rel></op>
+            <Var>countryX</Var>
+            <Var>person</Var>
+            <Var>year</Var>
+          </Atom>
+        </Neg>		
+      </Naf>
+    </And>		
+  </body>
+</Implies>
+  
+</Assert>
+
+</RuleML>

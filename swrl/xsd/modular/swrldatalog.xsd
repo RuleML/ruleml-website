@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+elementFormDefault="qualified"
+attributeFormDefault="qualified"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a modular SWRL-Datalog RuleML sublanguage
+			which allows accessing SWRL properties as "foreign" atoms
+			File: swrldatalog.xsd
+			Last Modification: 2004-07-12
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.w3.org/2003/11/swrlx"
+	schemaLocation="http://www.daml.org/rules/proposal/swrlx.xsd"/>
+
+	<xs:import namespace="http://www.w3.org/2003/05/owl-xml"
+	schemaLocation="http://www.daml.org/rules/proposal/owlx/schema/owl1-dl.xsd"/>
+
+	<!-- get href attribute -->
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+		
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			imp's content model becomes: 
+				(
+					(_rlab, ( (_head, _body) |  (Annotation*, _body, _head) )) | 
+					(_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+					(Annotation*, _body, ( (_rlab, _head) | (_head, _rlab?) ))
+				)	
+		-->
+		<xs:group name="imp.extenda">
+			<xs:sequence>
+				<xs:group ref="ruleml:imp.extenda"/>
+				<xs:element ref="owlx:Annotation" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:group>
+		
+		<xs:group name="imp.extendb">
+			<xs:sequence>
+				<xs:group ref="ruleml:imp.extendb"/>
+				<xs:element ref="owlx:Annotation" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:group>
+		
+		<!-- _head's content model becomes: ( ruleml:atom | (swrlx:atom)* ) -->
+		<xs:group name="_head.content">
+			<xs:choice>
+				<xs:group ref="ruleml:_head.content"/>
+				<xs:group ref="swrlx:atom" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!-- _body's content model becomes: ( ruleml:atom | and | or | (swrlx:atom)* )	-->
+		<xs:group name="_body.content">
+			<xs:choice>
+				<xs:group ref="ruleml:_body.content"/>
+				<xs:group ref="swrlx:atom" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!-- allow _rlab to have href attribute -->
+		<xs:attributeGroup name="_rlab.attlist">
+			<xs:attributeGroup ref="ruleml:_rlab.attlist"/>
+			<xs:attributeGroup ref="ruleml:href.attrib"/>
+		</xs:attributeGroup>
+		
+		<!-- inds in _rlabs are optional because not required in SWRL? ...  to be discussed
+		<xs:group name="_rlab.content">
+			<xs:choice>
+				<xs:group ref="ruleml:_rlab.content"/>
+			</xs:choice>
+		</xs:group> 
+		-->
+
+	</xs:redefine>
+
+</xs:schema>

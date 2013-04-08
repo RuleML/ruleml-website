@@ -1,0 +1,22 @@
+<!-- An XML DTD for a Binary Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % datalog.module "IGNORE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- atomic formulas are usable within conc's, prem's, 'and's, and 'or's -->
+<!-- atom element uses rel name followed by two arguments of two kinds -->
+
+<!ELEMENT atom (rel, (ind | var), (ind | var))>

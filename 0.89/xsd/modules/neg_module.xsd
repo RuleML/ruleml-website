@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Atom -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Classical negation RuleML elements module.
+			This is the XML Schema classical negation module for RuleML.
+			File: neg_module.xsd
+			Version: 0.89
+			Last Modification: 2005-03-22
+			
+			This module declares the following RuleML elements:
+			* Neg
+			* strong
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Neg ***
+		content model: ( oid?, (strong | Atom) )
+
+		Classical negation.
+
+		The Neg element negates its atom (explicitly, i.e. classical Or "strong" negation).
+	-->
+	<xs:attributeGroup name="Neg.attlist"/>
+	<xs:group name="Neg.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>		
+			<xs:choice>
+				<xs:element ref="strong"/>		
+				<xs:group ref="strong.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Neg.type">
+		<xs:group ref="Neg.content"/>
+		<xs:attributeGroup ref="Neg.attlist"/>
+	</xs:complexType>
+	<xs:element name="Neg" type="Neg.type"/>
+
+	<!--
+		*** strong ***
+		content model: ( Atom )
+
+		This is a metarole for Neg which may be left implicit.
+	-->
+	<xs:attributeGroup name="strong.attlist"/>
+	<xs:group name="strong.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="strong.type">
+		<xs:group ref="strong.content"/>
+		<xs:attributeGroup ref="strong.attlist"/>
+	</xs:complexType>
+	<xs:element name="strong" type="strong.type"/>
+		
+</xs:schema>

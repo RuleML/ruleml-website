@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Assert xmlns="http://www.ruleml.org/0.89/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlog.xsd">
+	<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+	<content>
+		<And mapClosure="universal" mapDirection="bidirectional">
+			<!--  <oid>
+    <Cterm>
+      <opc><Ctor>rule label</Ctor></opc>
+      <slot><Ind>label</Ind><Ind>an example fact</Ind></slot>
+    </Cterm>
+  </oid>-->
+			<formula>
+				<Implies>
+					<head>
+						<Atom>
+							<slot>
+								<Ind>t</Ind>
+								<Var>b</Var>
+							</slot>
+							<resl>
+								<Var>c</Var>
+							</resl>
+							<opr>
+								<Rel>asf</Rel>
+							</opr>
+						</Atom>
+					</head>
+					<body>
+						<And>
+							<formula>
+								<Atom>
+									<opr>
+										<Rel>friend</Rel>
+									</opr>
+									<arg index="1">
+										<Ind>Jane</Ind>
+									</arg>
+									<arg index="2">
+										<Ind>Joan</Ind>
+									</arg>
+									<arg index="3">
+										<Ind>Jack</Ind>
+									</arg>
+									<arg index="4">
+										<Var>y</Var>
+									</arg>
+									<arg index="5">
+										<Ind>Frank</Ind>
+									</arg>
+									<slot>
+										<Ind>yar</Ind>
+										<Cterm>
+											<opc>
+												<Ctor>constructor</Ctor>
+											</opc>
+											<!--<Plex>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+	    <resl><Var>c</Var></resl>
+          </Plex>-->
+										</Cterm>
+									</slot>
+								</Atom>
+							</formula>
+						</And>
+					</body>
+				</Implies>
+			</formula>
+			<formula>
+				<Atom>
+					<opr>
+						<Rel>some relation</Rel>
+					</opr>
+					<slot>
+						<Ind>role_name1</Ind>
+						<Ind>role 1</Ind>
+					</slot>
+					<arg index="1">
+						<Ind>constant a</Ind>
+					</arg>
+					<arg index="2">
+						<Ind>constant b</Ind>
+					</arg>
+					<slot>
+						<Ind>role_name2</Ind>
+						<Ind>role 2</Ind>
+					</slot>
+				</Atom>
+			</formula>
+			<formula>
+				<Atom>
+					<opr>
+						<Rel>another relation</Rel>
+					</opr>
+					<arg index="1">
+						<Ind>constant c</Ind>
+					</arg>
+					<arg index="2">
+						<Ind>constant d</Ind>
+					</arg>
+					<arg index="3">
+						<Cterm>
+							<opc>
+								<Ctor>yac</Ctor>
+							</opc>
+							<arg index="1">
+								<Ind>constant g</Ind>
+							</arg>
+							<arg index="2">
+								<Ind>constant h</Ind>
+							</arg>
+							<arg index="3">
+								<Cterm>
+									<opc>
+										<Ctor>empty</Ctor>
+									</opc>
+								</Cterm>
+							</arg>
+							<arg index="4">
+								<Ind>constant h</Ind>
+							</arg>
+						</Cterm>
+					</arg>
+				</Atom>
+			</formula>
+			<formula>
+				<Atom>
+					<opr>
+						<Rel>some relation</Rel>
+					</opr>
+					<slot>
+						<Ind>role_name1</Ind>
+						<Ind>role 1</Ind>
+					</slot>
+					<arg index="1">
+						<Ind>constant a</Ind>
+					</arg>
+					<arg index="2">
+						<Ind>constant b</Ind>
+					</arg>
+					<arg index="3">
+						<Skolem>constant b</Skolem>
+					</arg>
+					<repo>
+						<Var>b</Var>
+					</repo>
+					<slot>
+						<Ind>role_name2</Ind>
+						<Ind>role 2</Ind>
+					</slot>
+				</Atom>
+			</formula>
+			<formula>
+				<Atom>
+					<opr>
+						<Rel>another relation</Rel>
+					</opr>
+					<arg index="1">
+						<Ind>constant c</Ind>
+					</arg>
+					<arg index="2">
+						<Ind>constant d</Ind>
+					</arg>
+					<repo>
+						<Var>x</Var>
+					</repo>
+					<slot>
+						<Ind>role_name3</Ind>
+						<Ind>role 3</Ind>
+					</slot>
+					<!--<resl><Plex><slot><Skolem/><Ind>test</Ind></slot></Plex></resl>-->
+				</Atom>
+			</formula>
+			<formula>
+				<Atom>
+					<opr>
+						<Rel>yet another relation</Rel>
+					</opr>
+					<arg index="1">
+						<Skolem>constant b</Skolem>
+					</arg>
+					<arg index="2">
+						<Ind>constant e</Ind>
+					</arg>
+					<arg index="3">
+						<Ind>constant b</Ind>
+					</arg>
+					<slot>
+						<Ind>role_name3</Ind>
+						<Ind>role 3</Ind>
+					</slot>
+					<resl>
+						<Var>b</Var>
+					</resl>
+				</Atom>
+			</formula>
+		</And>
+	</content>
+</Assert>

@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:ruleml2010="http://ibis.in.tum.de/projects/paw#"
+	xmlns="http://ibis.in.tum.de/projects/paw#"
+	xml:base="http://ibis.in.tum.de/projects/paw#"
+>
+
+	<owl:Ontology rdf:about="./RuleML-2010.owl">
+	  <owl:versionInfo>v 0.01</owl:versionInfo>
+	  <rdfs:comment>Describes the responsibility assignment matrix of RuleML-2010</rdfs:comment>	  
+	</owl:Ontology>
+
+
+	<owl:Class rdf:ID="RuleML-2010" />	
+	
+
+	<!-- Model of the RuleML-2010 Organizing Committee -->
+
+	<owl:Class rdf:ID="Organizing_Committee">
+		<rdfs:subClassOf rdf:resource="#RuleML-2010" />
+	</owl:Class>
+
+	<owl:Class rdf:ID="General_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="RR_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Program_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>	
+
+	<owl:Class rdf:ID="Publicity_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+
+	<owl:Class rdf:ID="Liaison_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+
+	<owl:Class rdf:ID="Rule_Transformation_And_Extraction">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Rules_And_Uncertainty">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Rules_And_Norms">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Rulebased_Game_AI">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+
+	<owl:Class rdf:ID="Rulebased_Event_And_Reaction">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Rules_And_Cross_Industry">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="RuleML_Challenge">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="Program_Committee">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<owl:Class rdf:ID="EMERALD_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+		<owl:Class rdf:ID="DRD_Chair">
+		<rdfs:subClassOf rdf:resource="#Organizing_Committee" />
+	</owl:Class>
+	
+	<!-- Responsibility Domains -->
+	
+	<owl:Class rdf:ID="Responsibility">
+		<rdfs:subClassOf rdf:resource="#RuleML-2010" />
+	</owl:Class>
+	
+	<!-- TODO: extend responsibilities -->
+	<Responsibility rdf:ID="Symposium" />
+	<Responsibility rdf:ID="SymposiumPlanner" />
+	<Responsibility rdf:ID="Submission" />
+	<Responsibility rdf:ID="Sponsoring" />
+	<Responsibility rdf:ID="Partners" />
+	<Responsibility rdf:ID="RuleTransformationExtraction" />
+	<Responsibility rdf:ID="RulesUncertainty" />
+	<Responsibility rdf:ID="RulesNorms" />
+	<Responsibility rdf:ID="GameAI" />
+	<Responsibility rdf:ID="RulebasedEventReaction" />
+	<Responsibility rdf:ID="RulesCrossIndustry" />
+	<Responsibility rdf:ID="Challenge" />
+	<Responsibility rdf:ID="Program" />
+	<Responsibility rdf:ID="EMERALD" />
+	<Responsibility rdf:ID="DRD" />
+	<!-- Meta Topics -->
+	<Responsibility rdf:ID="PublicityChair" />
+	<Responsibility rdf:ID="LiaisonChair" />
+	<Responsibility rdf:ID="GeneralChair" />
+	<Responsibility rdf:ID="RRChair" />
+	<Responsibility rdf:ID="ProgramChair" />
+	<Responsibility rdf:ID="RuleTransformationAndExtraction" />
+	<Responsibility rdf:ID="RulesAndUncertainty" />
+	<Responsibility rdf:ID="RulesAndNorms" />
+	<Responsibility rdf:ID="RulebasedGameAI" />
+	<Responsibility rdf:ID="RulebasedEventAndReaction" />
+	<Responsibility rdf:ID="RulesAndCrossIndustry" />
+	<Responsibility rdf:ID="RuleMLChallenge" />
+	<Responsibility rdf:ID="ProgramCommittee" />
+	<Responsibility rdf:ID="WellnessRules" />
+	<Responsibility rdf:ID="EMERALDChair" />
+	<Responsibility rdf:ID="DRDChair" />
+	<!-- Assign Responsibilities to organizing committee members -->
+	
+	<owl:ObjectProperty rdf:ID="responsible">
+		<rdfs:comment>This role conducts the actual work/owns the problem. There should be only one R. If multiple R s are listed, then the work needs to be further subdivided to a lower level.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:ID="accountable">
+		<rdfs:comment>This role approves the completed work and is held fully accountable for it.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:ID="supportive">
+		<rdfs:comment>This role provides additional resources to conduct the work or plays a supportive role in implementation.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:ID="consulted">
+		<rdfs:comment>This role has the information and/or capability to complete the work. Two-way communication typically between R and C.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>		
+	
+	<owl:ObjectProperty rdf:ID="informed">
+		<rdfs:comment>This role is to be informed of progress and results. One-way communication (typically from R to A).</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:ID="verifies">
+		<rdfs:comment>This role checks the work to ensure that it meets all defined criteria and standards.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:ID="signs">
+		<rdfs:comment>This role signs off on the completed work.</rdfs:comment>
+	    <rdf:type rdf:resource="owl#FunctionalProperty" />
+	    <rdfs:domain rdf:resource="#Organizing_Committee" />
+	    <rdfs:range rdf:resource="#Responsibility" />
+ 	</owl:ObjectProperty>
+ 	
+ 	
+ 	<!-- Individual agents (individuals) 	
+	Define a Responsibility Assignment Matrix
+	-->
+		
+	<!-- TODO: Complete Responsibility Assignment Matrix --> 		
+
+	<General_Chair rdf:ID="GeneralChair">
+		 <responsible rdf:resource="#Symposium" />
+		 <accountable rdf:resource="#Website" />
+		 <accountable rdf:resource="#Sponsoring" />
+		 <informed rdf:resource="#Sponsoring" />
+		 <responsible rdf:resource="#GeneralChair" />			 
+	</General_Chair>
+	
+	<RR_Chair rdf:ID="RRChair">
+		<responsible rdf:resource="#RRChair" />
+		<responsible rdf:resource="#Symposium" />
+		<responsible rdf:resource="#SymposiumPlanner" />		 
+	</RR_Chair>
+
+	<Program_Chair rdf:ID="ProgramChair">
+		<!-- <responsible rdf:resource="#Website" /> --> 
+		<responsible rdf:resource="#Submission" />
+		<responsible rdf:resource="#ProgramChair" />			
+	</Program_Chair>
+	
+	<Liaison_Chair rdf:ID="LiaisonChair">	
+		<responsible rdf:resource="#Partners" />
+		<responsible rdf:resource="#LiaisonChair" />			
+	</Liaison_Chair> 
+	
+	<Publicity_Chair rdf:ID="PublicityChair">
+		<responsible rdf:resource="#Sponsoring" />	
+		<responsible rdf:resource="#PublicityChair" />		
+	</Publicity_Chair>
+	
+	<Rule_Transformation_And_Extraction rdf:ID="RuleTransformationAndExtraction">
+	    <responsible rdf:resource="#RuleTransformationExtraction" />
+	    <responsible rdf:resource="#RuleTransformationAndExtraction" />	
+	</Rule_Transformation_And_Extraction>
+
+	<Rules_And_Uncertainty rdf:ID="RulesAndUncertainty">
+		<responsible rdf:resource="#RulesUncertainty" />
+		<responsible rdf:resource="#RulesAndUncertainty" />	
+	</Rules_And_Uncertainty>
+	
+	<Rules_And_Norms rdf:ID="RulesAndNorms">
+		<responsible rdf:resource="#RulesNorms" />
+		<responsible rdf:resource="#RulesAndNorms" />	
+	</Rules_And_Norms>
+	
+	<Rulebased_Game_AI rdf:ID="RulebasedGameAI">
+		<responsible rdf:resource="#GameAI" />
+		<responsible rdf:resource="#RulebasedGameAI" />	
+	</Rulebased_Game_AI>
+	
+	<Rulebased_Event_And_Reaction rdf:ID="RulebasedEventAndReaction">
+		<responsible rdf:resource="#RulebasedEventReaction" />
+		<responsible rdf:resource="#RulebasedEventAndReaction" />	
+	</Rulebased_Event_And_Reaction>
+	
+	<Rules_And_Cross_Industry rdf:ID="RulesAndCrossIndustry">
+		<responsible rdf:resource="#RulesCrossIndustry" />
+		<responsible rdf:resource="#RulesAndCrossIndustry" />	
+	</Rules_And_Cross_Industry>
+	
+	<RuleML_Challenge rdf:ID="RuleMLChallenge">
+		<responsible rdf:resource="#Challenge" />
+		<responsible rdf:resource="#RuleMLChallenge" />	
+	</RuleML_Challenge>
+	
+	<Program_Committee rdf:ID="ProgramCommittee">
+		<responsible rdf:resource="#Program" />
+		<responsible rdf:resource="#ProgramCommittee" />	
+	</Program_Committee>
+	
+	<EMERALD_Chair rdf:ID="EMERALDChair">
+		<responsible rdf:resource="#EMERALD" />
+		<responsible rdf:resource="#EMERALDChair" />	
+	</EMERALD_Chair>
+	
+	<DRD_Chair rdf:ID="DRDChair">
+		<responsible rdf:resource="#DRD" />
+		<responsible rdf:resource="#DRDChair" />	
+	</DRD_Chair>
+</rdf:RDF>
