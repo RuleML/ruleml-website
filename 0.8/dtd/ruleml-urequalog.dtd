@@ -1,0 +1,16 @@
+<!-- An XML DTD for a 'UR' (Flat) Equational-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-19 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+
+<!ENTITY % equalog.module "INCLUDE">
+
+<!ENTITY % equalog SYSTEM "ruleml-equalog.dtd">
+%equalog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;

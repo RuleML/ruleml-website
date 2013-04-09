@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Assert>
+	<Implies>
+		<Atom>
+			<Rel in="yes">buy</Rel>
+			<Ind>peters</Ind>
+			<Var>what</Var>
+		</Atom>
+		<Equal oriented="yes">
+			<Expr>
+				<Fun in="yes">peters-buy</Fun>
+			</Expr>
+			<Var>what</Var>
+		</Equal>
+	</Implies>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">customer</Fun>
+			<Ind>peters</Ind>
+		</Expr>
+		<Ind>miller</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">customer</Fun>
+			<Ind>peters</Ind>
+		</Expr>
+		<Ind>fuller</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">cost</Fun>
+			<Ind>stock1</Ind>
+		</Expr>
+		<Ind>165</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">cost</Fun>
+			<Ind>stock2</Ind>
+		</Expr>
+		<Ind>130</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">cost</Fun>
+			<Ind>stock3</Ind>
+		</Expr>
+		<Ind>175</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">benefit</Fun>
+			<Ind>stock1</Ind>
+		</Expr>
+		<Ind>160</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">benefit</Fun>
+			<Ind>stock2</Ind>
+		</Expr>
+		<Ind>130</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">benefit</Fun>
+			<Ind>stock3</Ind>
+		</Expr>
+		<Ind>180</Ind>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Expr in="yes">
+				<Fun in="no">mixtree</Fun>
+				<Var>terfun</Var>
+				<Var>mixvoid</Var>
+			</Expr>
+			<Var>tree</Var>
+		</Expr>
+		<Expr>
+			<Expr in="yes">
+				<Fun in="no">walktree</Fun>
+				<Var>terfun</Var>
+				<Var>mixvoid</Var>
+			</Expr>
+			<Var>tree</Var>
+			<Var>mix</Var>
+			<Var>mix</Var>
+		</Expr>
+	</Equal>
+	<Equal oriented="yes">
+		<Expr>
+			<Expr in="yes">
+				<Fun in="no">walktree</Fun>
+				<Var>terfun</Var>
+				<Var>mixvoid</Var>
+			</Expr>
+			<Ind>void</Ind>
+			<Var>mix</Var>
+			<Var>mixvoid</Var>
+		</Expr>
+		<Ind>void</Ind>
+	</Equal>
+	<Implies>
+		<And>
+			<Equal oriented="yes">
+				<Var>newleft</Var>
+				<Expr>
+					<Expr in="yes">
+						<Fun in="no">walktree</Fun>
+						<Var>terfun</Var>
+						<Var>mixvoid</Var>
+					</Expr>
+					<Var>left</Var>
+					<Var>mix</Var>
+					<Var>mixleft</Var>
+				</Expr>
+			</Equal>
+			<Equal oriented="yes">
+				<Var>newright</Var>
+				<Expr>
+					<Expr in="yes">
+						<Fun in="no">walktree</Fun>
+						<Var>terfun</Var>
+						<Var>mixvoid</Var>
+					</Expr>
+					<Var>right</Var>
+					<Var>mix</Var>
+					<Var>mixright</Var>
+				</Expr>
+			</Equal>
+			<Equal oriented="yes">
+				<Var>mixsofar</Var>
+				<Expr>
+					<Var in="yes">terfun</Var>
+					<Var>label</Var>
+					<Var>mixleft</Var>
+					<Var>mixright</Var>
+				</Expr>
+			</Equal>
+		</And>
+		<Equal oriented="yes">
+			<Expr>
+				<Expr in="yes">
+					<Fun in="no">walktree</Fun>
+					<Var>terfun</Var>
+					<Var>mixvoid</Var>
+				</Expr>
+				<Expr>
+					<Fun in="no">tree</Fun>
+					<Var>label</Var>
+					<Var>left</Var>
+					<Var>right</Var>
+				</Expr>
+				<Var>mix</Var>
+				<Var>mixsofar</Var>
+			</Expr>
+			<Expr>
+				<Fun in="no">tree</Fun>
+				<Var>mix</Var>
+				<Var>newleft</Var>
+				<Var>newright</Var>
+			</Expr>
+		</Equal>
+	</Implies>
+</Assert>

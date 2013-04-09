@@ -1,0 +1,131 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.8/dtd/ruleml-datalog-monolith.dtd">
+
+
+<!-- XML file refers both to DTD (above) and to equivalent Schema (below) -->
+
+
+<rulebase xsi:noNamespaceSchemaLocation="http://www.dfki.uni-kl.de/ruleml/xsd/0.8/ruleml-datalog-monolith.xsd"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+
+<!-- start XML comment ...
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+ imp~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+     head *                    body *
+          *                         *
+        atom~~~~~~~~~~~~~~~~~~     and~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                rel   var   var        atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             rel   var    var     var            rel   var   var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment -->
+
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>own</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <!-- explicit 'and' -->
+    <and>
+      <atom>
+        <_opr><rel>buy</rel></_opr>
+        <var>person</var>
+        <var>merchant</var>
+        <var>object</var>
+      </atom>
+      <atom>
+        <_opr><rel>keep</rel></_opr>
+        <var>person</var>
+        <var>object</var>
+      </atom>
+    </and>
+  </_body>
+</imp>
+
+
+
+<!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+<imp>
+  <_head>
+    <atom>
+      <_opr><rel>buy</rel></_opr>
+      <var>person</var>
+      <var>merchant</var>
+      <var>object</var>
+    </atom>
+  </_head>
+  <_body>
+    <atom>
+      <_opr><rel>sell</rel></_opr>
+      <var>merchant</var>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </_body>
+</imp>
+ 
+ 
+<!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. -->
+ 
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>sell</rel></_opr>
+      <ind>John</ind>
+      <ind>Mary</ind>
+      <ind>XMLBible</ind>
+    </atom>
+  </_head>
+</fact>
+ 
+<!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+ 
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>keep</rel></_opr>
+      <ind>Mary</ind>
+      <ind>XMLBible</ind>
+    </atom>
+  </_head>
+</fact>
+ 
+ 
+</rulebase>

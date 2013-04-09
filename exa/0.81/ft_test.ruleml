@@ -1,0 +1,234 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.uni-kl.de/ruleml/dtd/0.81/ruleml-datafun.dtd">
+
+
+<rulebase>
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>fib</fun>
+        </_opf>
+
+        <ind>0</ind>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <ind>1</ind>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>fib</fun>
+        </_opf>
+
+        <ind>1</ind>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <ind>1</ind>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>fib</fun>
+        </_opf>
+
+        <var>n</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel>&gt;</rel>
+        </_opr>
+
+        <var>n</var>
+
+        <ind>1</ind>
+      </atom>
+    </_body>
+
+    <_foot>
+      <nanov>
+        <_opf>
+          <fun>+</fun>
+        </_opf>
+
+        <nanov>
+          <_opf>
+            <fun>fib</fun>
+          </_opf>
+
+          <nano>
+            <_opf>
+              <fun>-</fun>
+            </_opf>
+
+            <var>n</var>
+
+            <ind>1</ind>
+          </nano>
+        </nanov>
+
+        <nanov>
+          <_opf>
+            <fun>fib</fun>
+          </_opf>
+
+          <nano>
+            <_opf>
+              <fun>-</fun>
+            </_opf>
+
+            <var>n</var>
+
+            <ind>2</ind>
+          </nano>
+        </nanov>
+      </nanov>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>fact</fun>
+        </_opf>
+
+        <ind>0</ind>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <ind>1</ind>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>fact</fun>
+        </_opf>
+
+        <var>n</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel>&gt;</rel>
+        </_opr>
+
+        <var>n</var>
+
+        <ind>0</ind>
+      </atom>
+    </_body>
+
+    <_foot>
+      <nanov>
+        <_opf>
+          <fun>*</fun>
+        </_opf>
+
+        <var>n</var>
+
+        <nanov>
+          <_opf>
+            <fun>fact</fun>
+          </_opf>
+
+          <nano>
+            <_opf>
+              <fun>-</fun>
+            </_opf>
+
+            <var>n</var>
+
+            <ind>1</ind>
+          </nano>
+        </nanov>
+      </nanov>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>sum</fun>
+        </_opf>
+
+        <ind>0</ind>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <ind>0</ind>
+    </_foot>
+  </trans>
+
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>sum</fun>
+        </_opf>
+
+        <var>n</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel>&gt;</rel>
+        </_opr>
+
+        <var>n</var>
+
+        <ind>0</ind>
+      </atom>
+    </_body>
+
+    <_foot>
+      <nanov>
+        <_opf>
+          <fun>+</fun>
+        </_opf>
+
+        <var>n</var>
+
+        <nanov>
+          <_opf>
+            <fun>sum</fun>
+          </_opf>
+
+          <nano>
+            <_opf>
+              <fun>-</fun>
+            </_opf>
+
+            <var>n</var>
+
+            <ind>1</ind>
+          </nano>
+        </nanov>
+      </nanov>
+    </_foot>
+  </trans>
+</rulebase>
+

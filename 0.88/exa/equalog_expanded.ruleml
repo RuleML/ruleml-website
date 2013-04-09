@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd
+http://www.ruleml.org/0.88/xsd/equalog.xsd">
+
+<!-- a trivial example rulebase for testing the Equalog RuleML sublanguage -->
+
+<content>
+
+<And innerclose="universal">
+
+<oid>
+  <Cterm>
+    <opc><Ctor>rulebase label</Ctor></opc>
+    <slot><Ind>label</Ind><Ind>an example rulebase</Ind></slot>
+  </Cterm>
+</oid>
+
+
+<formula>
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <arg index="1"><Var>x</Var></arg>
+      <arg index="2"><Var>y</Var></arg>
+      <arg index="3"><Ind>Steph</Ind></arg>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <formula>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <arg index="1"><Ind>Jane</Ind></arg>
+      <arg index="2"><Ind>Joan</Ind></arg>
+      <arg index="3"><Ind>Jack</Ind></arg>
+      <arg index="4"><Var>y</Var></arg>
+      <arg index="5"><Ind>Frank</Ind></arg>
+      <slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor>constructor</Ctor></opc>
+          <arg index="1"><Plex>
+            <Var>z</Var>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+          </Plex></arg>
+        </Cterm></slot>
+    </Atom>
+     </formula>
+    </And>
+  </body>
+</Implies>
+</formula>
+
+<formula>
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <arg index="1"><Ind>constant a</Ind></arg>
+        <arg index="2"><Ind>constant b</Ind></arg>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+</formula>
+
+<formula> 
+     <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <arg index="1"><Ind>constant c</Ind></arg>
+        <arg index="2"><Ind>constant d</Ind></arg>
+        <arg index="3"><Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <arg index="1"><Ind>constant g</Ind></arg>
+            <arg index="2"><Ind>constant h</Ind></arg>
+            <arg index="3"><Cterm>
+              <opc><Ctor>empty</Ctor></opc>
+            </Cterm></arg>
+            <arg index="4"><Ind>constant h</Ind></arg>
+        </Cterm></arg>
+      </Atom>
+</formula>
+
+<formula> 
+     <Equal>
+       <side>
+        <Nano>
+          <opf><Fun>some function</Fun></opf>
+          <arg index="3"><Ind>arg1</Ind></arg>
+          <arg index="2"><Ind>arg2</Ind></arg>
+          <arg index="1"><Ind>arg3</Ind></arg>
+        </Nano>
+       </side>
+       <side>
+        <Nano>
+          <opf><Fun>some other function</Fun></opf>
+          <arg index="1"><Ind>arg4</Ind></arg>
+          <arg index="3"><Ind>arg5</Ind></arg>
+          <arg index="2"><Ind>arg6</Ind></arg>
+        </Nano>
+       </side>
+      </Equal>
+</formula>
+
+<formula>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <arg index="1"><Ind>constant e</Ind></arg>
+      <arg index="2"><Ind>constant b</Ind></arg>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+</formula>
+
+<formula>
+    <Equal>
+      <side><Ind>some constant</Ind></side>
+      <side><Var>d</Var></side>
+    </Equal>
+</formula>
+
+
+</And>
+
+</content>
+</Assert>

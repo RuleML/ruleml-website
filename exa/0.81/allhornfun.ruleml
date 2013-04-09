@@ -1,0 +1,298 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.uni-kl.de/ruleml/dtd/0.81/ruleml-hornfun.dtd">
+
+<!--
+HORNLOG FUNCTIONAL RULES IN RuleML                  Harold Boley, 9 Jul. 2002
+
+
+This is a test file for Hornlog functional (transformational) rules in RuleML.
+It attempts to give all relevant examples via the systematic combination of
+Hornfun features.
+
+In comments square brackets will be used to denote a cterm's application of its
+ctor to its arguments; i.e., in the unary case: ctor[arg]
+-->
+
+
+<rulebase>
+
+<!-- cterm c[a] transforms into itself -->
+<query>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</query>
+
+<!-- f(c[a]) transforms into value of built-in or user-defined-function f (applied to c[a])-->
+<query>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+    </nano>
+  </_foot>
+</query>
+
+<!-- with successful relation call r(c[a]),
+     f(c[a]) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <atom>
+      <_opr><rel>r</rel></_opr>
+      <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+    </atom>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+    </nano>
+  </_foot>
+</query>
+
+<!-- with successful bindings of relation calls r(c[x]) and s(c[x]),
+     f(c[x]) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>r</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+    </and>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_foot>
+</query>
+
+<!-- f(g(c[a])) transforms into value of built-in or user-defined-function f
+     applied to value of g(c[a]) -->
+<query>
+  <_foot>
+    <nanov>
+      <_opf><fun>f</fun></_opf>
+      <nano>
+        <_opf><fun>g</fun></_opf>
+        <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+      </nano>
+    </nanov>
+  </_foot>
+</query>
+
+<!-- f(g(h(c[a]))) transforms into value of built-in or user-defined-function f
+     applied to value of g(h(c[a])) -->
+<query>
+  <_foot>
+    <nanov>
+      <_opf><fun>f</fun></_opf>
+      <nanov>
+        <_opf><fun>g</fun></_opf>
+        <nano>
+          <_opf><fun>h</fun></_opf>
+          <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+        </nano>
+      </nanov>
+    </nanov>
+  </_foot>
+</query>
+
+<!-- with successful relation call r(f(c[a])), r applied to the transformation result
+     of f(c[a]), transforms into c[a] -->
+<query>
+  <_body>
+    <atomv>
+      <_opr><rel>r</rel></_opr>
+      <nano>
+        <_opf><fun>f</fun></_opf>
+        <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+      </nano>
+    </atomv>
+  </_body>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</query>
+
+<!-- with successful bindings of relation calls r(f(c[x])) and s(c[x]),
+     f(c[x]) transforms into value of built-in or user-defined-function f -->
+<query>
+  <_body>
+    <andv>
+      <atomv>
+        <_opr><rel>r</rel></_opr>
+        <nano>
+          <_opf><fun>f</fun></_opf>
+          <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+        </nano>
+      </atomv>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+    </andv>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_foot>
+</query>
+
+<!-- (user-)define function f to transform every argument c[x] into cterm c[a] -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x] into what it is transformed
+     by function g -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_foot>
+    <nano>
+      <_opf><fun>g</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x], with successful bindings of
+     relation call r(c[x]), into cterm c[a] -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_body>
+    <atom>
+      <_opr><rel>r</rel></_opr>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </atom>
+  </_body>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x], with successful bindings of
+     relation calls r(c[x]) and s(c[x]), into cterm c[a] -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel>r</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+    </and>
+  </_body>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x] into value of built-in or
+     user-defined-function g applied to value of h(c[a]) -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_foot>
+    <nanov>
+      <_opf><fun>g</fun></_opf>
+      <nano>
+        <_opf><fun>h</fun></_opf>
+        <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+      </nano>
+    </nanov>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x], with successful bindings of
+     relation call r(g(c[x])) over g(c[x]), into cterm c[a] -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_body>
+    <atomv>
+      <_opr><rel>r</rel></_opr>
+      <nano>
+        <_opf><fun>g</fun></_opf>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </nano>
+    </atomv>
+  </_body>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</trans>
+
+<!-- define function f to transform every argument c[x], with successful bindings of
+     relation calls r(f(c[x])) and s(c[x]), into cterm c[a] -->
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>f</fun></_opf>
+      <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+    </nano>
+  </_headf>
+  <_body>
+    <andv>
+      <atomv>
+        <_opr><rel>r</rel></_opr>
+        <nano>
+          <_opf><fun>f</fun></_opf>
+          <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+        </nano>
+      </atomv>
+      <atom>
+        <_opr><rel>s</rel></_opr>
+        <cterm><_opc><ctor>c</ctor></_opc><var>x</var></cterm>
+      </atom>
+    </andv>
+  </_body>
+  <_foot>
+    <cterm><_opc><ctor>c</ctor></_opc><ind>a</ind></cterm>
+  </_foot>
+</trans>
+
+</rulebase>

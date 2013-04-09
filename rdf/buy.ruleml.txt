@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/ruleml-datalog-standalone.dtd">
+<?xml-stylesheet href="ruledf.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+
+<rulebase>
+
+
+<!-- 
+In English:
+This rule says that a person buys an object from a merchant 
+if the merchant sells the object to the person. -->
+
+<if>
+  <atom>
+    <rel>buy</rel>
+    <var>person</var>
+    <var>merchant</var>
+    <var>object</var>
+  </atom>
+  <atom>
+    <rel>sell</rel>
+    <var>merchant</var>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+</if>
+
+ 
+</rulebase>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="modules/core_module.xsd"/>
+
+	<xs:redefine schemaLocation="modules/desc_module.xsd">
+		<!-- rulebase labels are extended to permit cterms -->
+		<xs:group name="_rbaselab.extend">
+			<xs:choice>
+				<xs:group ref="_rbaselab.extend"/>
+				<xs:element ref="cterm"/>
+			</xs:choice>
+		</xs:group>
+
+		<!-- rule labels are also extended to permit cterms -->
+		<xs:group name="_rlab.extend">
+			<xs:choice>
+				<xs:group ref="_rlab.extend"/>
+				<xs:element ref="cterm"/>
+			</xs:choice>
+		</xs:group>	
+	</xs:redefine>
+
+	<xs:include schemaLocation="modules/clause_module.xsd"/>
+
+	<xs:include schemaLocation="modules/boole_module.xsd"/>
+
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<!-- atoms are extended to permit cterms and plexs -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:group ref="atom.extend"/>
+					<xs:element ref="cterm"/>
+					<xs:element ref="plex"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>		
+	</xs:redefine>
+
+	<xs:redefine schemaLocation="modules/role_module.xsd">
+		<!-- roles are also extended to permit cterms and plexs -->
+		<xs:group name="_slot.extend">
+			<xs:choice>
+				<xs:group ref="_slot.extend"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="plex"/>				
+			</xs:choice>
+		</xs:group>	
+	</xs:redefine>
+
+	<xs:include schemaLocation="modules/term_module.xsd"/>
+	
+	<xs:include schemaLocation="modules/cterm_module.xsd"/>
+	
+</xs:schema>

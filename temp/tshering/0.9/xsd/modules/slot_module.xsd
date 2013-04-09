@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for slot-related RuleML elements.
+			File: slot_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+			
+			This module declares the following RuleML element and attributes:
+			* slot
+			* @card
+			* @minCard
+			* @maxCard
+			* @weight
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** slot ***
+		A user-defined slot consisting of a name (first position) and a filler (second position).
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-slot
+
+		Note that unary slots are only supported within Atoms in frame sublanguages, not Hterm.
+
+		content model (in frame sublanguages):
+		( (Ind | Data | Skolem | Var | Reify), (Ind | Data | Skolem | Var | Reify)? )
+		
+		content model (normally):
+		( (Ind | Data | Skolem | Var | Reify), (Ind | Data | Skolem | Var | Reify) )
+
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<xs:attributeGroup name="slot.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="slot-frame.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="minCard.attrib"/>
+		<xs:attributeGroup ref="maxCard.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="slot.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>		
+	</xs:group>
+	<xs:group name="slot-frame.extend">
+		<xs:choice>
+			<xs:group ref="arg.content"/>
+		</xs:choice>			
+	</xs:group>
+	<xs:group name="slot-frame.content">
+		<xs:sequence>
+			<xs:group ref="arg.content"/>
+			<xs:sequence minOccurs="0">
+				<xs:group ref="slot-frame.extend"/>
+			</xs:sequence>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="slot.type">
+		<xs:group ref="slot.content"/>
+		<xs:attributeGroup ref="slot.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="slot-frame.type">
+		<xs:group ref="slot-frame.content"/>
+		<xs:attributeGroup ref="slot-frame.attlist"/>
+	</xs:complexType>
+	<xs:element name="slot" type="slot.type"/>
+
+	<!--
+		*** @card ***
+		An attribute optionally specifying a slot's cardinality.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-@card		
+	-->
+	<xs:attributeGroup name="card.attrib">
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @minCard ***
+		An attribute optionally specifying a slot's minimum cardinality.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-@minCard		
+	-->
+	<xs:attributeGroup name="minCard.attrib">
+		<xs:attribute name="minCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @maxCard ***
+		An attribute optionally specifying a slot's maximum cardinality.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-@maxCard		
+	-->
+	<xs:attributeGroup name="maxCard.attrib">
+		<xs:attribute name="maxCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @weight ***
+		An attribute optionally specifying a slot's relative weight.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-@weight		
+	-->
+	<xs:attributeGroup name="weight.attrib">
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

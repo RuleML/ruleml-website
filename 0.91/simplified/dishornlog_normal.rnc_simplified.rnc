@@ -1,0 +1,218 @@
+default namespace ns1 = "http://www.ruleml.org/0.91/xsd"
+
+start =
+  RuleML
+  | Assert
+  | Retract
+  | Query
+  | Atom
+  | Rel
+  | And
+  | Or
+  | And_2
+  | Or_2
+  | Implies
+  | Forall
+  | Exists
+  | Expr
+  | Fun
+  | Rulebase
+  | Entails
+  | Equivalent
+  | Skolem
+  | Reify
+  | Ind
+  | Var
+  | Plex
+  | formula
+  | formula_2
+  | op
+  | formula_3
+  | formula_4
+  | head
+  | body
+  | declare
+  | formula_5
+  | formula_6
+  | op_2
+  | formula_7
+  | head_2
+  | body_2
+  | degree
+  | torso
+  | oid
+  | slot
+  | arg
+  | resl
+  | repo
+RuleML = element RuleML { oid?, (Assert | Retract | Query)* }
+Assert =
+  element Assert {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula*
+  }
+Retract =
+  element Retract {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula*
+  }
+Query =
+  element Query {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_2*
+  }
+Atom =
+  element Atom {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    degree?,
+    op,
+    arg*,
+    repo?,
+    slot*,
+    resl?
+  }
+Rel =
+  element Rel {
+    attribute uri { xsd:anyURI }?,
+    text
+  }
+And = element And { oid?, formula_3* }
+Or = element Or { oid?, formula_4* }
+And_2 =
+  element And {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_3*
+  }
+Or_2 =
+  element Or {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    formula_4*
+  }
+Implies =
+  element Implies {
+    (attribute direction { "bidirectional" | "forward" | "backward" }
+     & attribute material { "yes" | "no" }
+     & attribute closure { "universal" | "existential" }?),
+    oid?,
+    body,
+    head
+  }
+Forall = element Forall { oid?, declare+, formula_5 }
+Exists = element Exists { oid?, declare+, formula_6 }
+Expr =
+  element Expr {
+    (attribute in { "no" }
+     & attribute type { xsd:string }?),
+    oid?,
+    op_2,
+    arg*,
+    repo?,
+    slot*,
+    resl?
+  }
+Fun =
+  element Fun {
+    (attribute in { "no" }
+     & attribute uri { xsd:anyURI }?),
+    text
+  }
+Rulebase =
+  element Rulebase {
+    (attribute mapMaterial { "yes" | "no" }
+     & attribute mapDirection {
+         "bidirectional" | "forward" | "backward"
+       }
+     & attribute mapClosure { "universal" | "existential" }?),
+    oid?,
+    formula_7*
+  }
+Entails = element Entails { oid?, body_2, head_2 }
+Equivalent =
+  element Equivalent {
+    attribute closure { "universal" | "existential" }?,
+    oid?,
+    torso,
+    torso
+  }
+Skolem =
+  element Skolem {
+    attribute type { xsd:string }?,
+    text
+  }
+Reify = element Reify { _1? }
+Ind =
+  element Ind {
+    (attribute uri { xsd:anyURI }?
+     & attribute type { xsd:string }?),
+    text
+  }
+Var =
+  element Var {
+    attribute type { xsd:string }?,
+    text
+  }
+Plex = element Plex { oid?, arg*, repo?, slot*, resl? }
+formula =
+  element formula {
+    Atom | Implies | Equivalent | Forall | Entails | Rulebase
+  }
+formula_2 =
+  element formula { Atom | And_2 | Or_2 | Exists | Entails | Rulebase }
+op = element op { Rel }
+formula_3 = element formula { Atom | And | Or }
+formula_4 = element formula { Atom | And | Or }
+head = element head { Atom | Or }
+body = element body { Atom | And | Or }
+declare = element declare { Var }
+formula_5 = element formula { Atom | Implies | Equivalent | Forall }
+formula_6 = element formula { Atom | And | Or | Exists }
+op_2 = element op { Fun }
+formula_7 = element formula { Atom | Implies | Equivalent | Forall }
+head_2 = element head { Rulebase }
+body_2 = element body { Rulebase }
+degree = element degree { Data }
+torso = element torso { Atom | Or }
+oid = element oid { Skolem | Reify | Ind | Data | Var | Expr | Plex }
+slot =
+  element slot {
+    (attribute card { xsd:nonNegativeInteger }?
+     & attribute weight {
+         xsd:decimal { minInclusive = "0.0" maxInclusive = "1.0" }
+       }?),
+    (Ind | Data | Expr | Plex),
+    (Skolem | Reify | Ind | Data | Var | Expr | Plex)
+  }
+arg =
+  element arg {
+    attribute index { xsd:positiveInteger },
+    (Skolem | Reify | Ind | Data | Var | Expr | Plex)
+  }
+resl = element resl { Var | Plex_2 }
+repo = element repo { Var | Plex_3 }
+_1 =
+  element ns1:* {
+    attribute * { text }*,
+    (text & _1*)
+  }
+Data = element Data { text & _2* }
+Plex_2 = element Plex { oid?, slot*, resl? }
+Plex_3 = element Plex { oid?, arg*, repo? }
+_2 =
+  element * {
+    attribute * { text }*,
+    (text & _2*)
+  }

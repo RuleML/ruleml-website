@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.ruleml.org/0.91/xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for the RuleML sublanguage "datalog".
+			File: datalog.xsd
+			Version: 0.91
+			Last Modification: 2006-07-19
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		Note that datalog is entirely composed of modules and that all other
+		schema drivers rely on it, making it the root of the sublanguage family tree.
+	-->
+
+	<!--
+		Datalog includes the following modules:
+		* performative
+		* desc
+		* quantifier
+		* connective
+		* atom
+		* slot
+		* term
+		* uri
+
+		For details on each module, including what element and/or attribute declarations
+		they contain, please refer to them individually.
+	-->
+
+	<xs:include schemaLocation="modules/performative_module.xsd"/>
+	<xs:include schemaLocation="modules/desc_module.xsd"/>
+	<xs:include schemaLocation="modules/quantifier_module.xsd"/>
+	<xs:include schemaLocation="modules/connective_module.xsd"/>
+	<xs:include schemaLocation="modules/atom_module.xsd"/>
+	<xs:include schemaLocation="modules/slot_module.xsd"/>
+	<xs:include schemaLocation="modules/term_module.xsd"/>
+	<xs:include schemaLocation="modules/uri_module.xsd"/>
+
+</xs:schema>

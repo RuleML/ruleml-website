@@ -1,0 +1,49 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML inference direction attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, inference, direction" ]
+dc:description [
+  "The expansion module for the inference direction attribute."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= direction.edge.def | mapDirection.edge.def
+# This module declares the following RuleML attribute:
+#    * @direction
+#    * @mapDirection
+#
+
+## an extension point for alternate spellings and internationalization of the inference direction attribute name.  
+direction-att.choice |= direction.attrib.def
+direction.attrib.def =
+  
+  ##  An attribute indicating the intended direction of an implication rule's (<Implies>) inferencing. 
+  ## It has a neutral default value of "bidirectional". Other allowed values are "forward" and "forward".
+  ## See http://www.ruleml.org/0.91/glossary/#gloss-@direction
+  attribute direction { direction.value }
+direction.value |=
+  direction_default.value | direction_non-default.value
+## FIXME: move all such statements into initialization module.
+direction_default.value |= notAllowed
+direction_non-default.value |= notAllowed
+
+## an extension point for alternate spellings and internationalization of the scope inference direction attribute name.  
+mapDirection-att.choice |= mapDirection.attrib.def
+mapDirection.attrib.def =
+  
+  ##  An attribute indicating the intended direction of implication rule (<Implies>) inferencing of elements 
+  ## falling within its scope (i.e. child elements). See attribute mapping for more details. This attribute has a 
+  ## neutral default value of "bidirectional". Other allowed values are "forward" and "backward".
+  ## See http://www.ruleml.org/0.91/glossary/#gloss-@mapDirection
+  attribute mapDirection { mapDirection.value }
+mapDirection.value |= direction.value
+#
+direction.edge.def = element direction { direction.content }
+direction.content |= direction.value
+mapDirection.edge.def =
+  element mapDirection { mapDirection.content }
+mapDirection.content |= mapDirection.value

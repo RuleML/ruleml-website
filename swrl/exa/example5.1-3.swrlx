@@ -1,0 +1,52 @@
+<?xml version='1.0' ?>
+<!DOCTYPE swrlx:Ontology [
+	 <!ENTITY ulan 'http://example.org/ulan#'>
+	 <!ENTITY aat 'http://example.org/aat#'>
+	 <!ENTITY aatulan 'http://example.org/aatulan#'>
+	 <!ENTITY vra 'http://example.org/vra#'>
+]>
+
+<swrlx:Ontology
+  xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+  xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+  xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3.org/2003/11/swrlx http://www.ruleml.org/swrl/xsd/swrlx.xsd"
+>
+  <owlx:Annotation>
+    <owlx:Documentation>SWRL Example 5.1-3</owlx:Documentation>
+  </owlx:Annotation>
+  <owlx:VersionInfo>$Id: example5.1-3.swrlx,v 1.1 2004/05/21 18:46:39 vivien Exp $</owlx:VersionInfo>
+
+<ruleml:var>x</ruleml:var>
+<ruleml:var>y</ruleml:var>
+<ruleml:var>z</ruleml:var>
+
+<ruleml:imp> 
+  <ruleml:_body> 
+    <swrlx:classAtom> 
+      <owlx:Class owlx:name="&ulan;Artist" />
+      <ruleml:var>x</ruleml:var>
+    </swrlx:classAtom> 
+    <swrlx:classAtom> 
+      <owlx:Class owlx:name="&aat;Style" />
+      <ruleml:var>y</ruleml:var>
+    </swrlx:classAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="&aatulan;artistStyle"> 
+      <ruleml:var>x</ruleml:var>
+      <ruleml:var>y</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="&vra;creator"> 
+      <ruleml:var>x</ruleml:var>
+      <ruleml:var>z</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+  </ruleml:_body> 
+  <ruleml:_head> 
+    <swrlx:individualPropertyAtom  swrlx:property="&vra;style/period"> 
+      <ruleml:var>z</ruleml:var>
+      <ruleml:var>y</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+</swrlx:Ontology>

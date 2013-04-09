@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Disjunctive Horn-Logic RuleML sublanguage
+			File: dishornlog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="hornlog.xsd">
+
+		<!--
+			Add Or so that head's content model is: (Atom | Or)
+
+			Note: And could also be added to head.
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>		
+				<xs:element name="Or" type="Or-inner.type"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Or to Implies so that its content model is:
+			( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or), (Atom | Or) ) )	
+		-->
+		
+	</xs:redefine>
+
+</xs:schema>

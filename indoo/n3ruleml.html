@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="txt2html v1.24 modified by M.P.">
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<PRE>
+
+<A NAME="section-1"><H1>N3 in Object-Oriented RuleML</H1></A>
+
+<PRE>
+Harold Boley, NRC                    Original Version: 2003-04-02
+                                     Current Version:  2006-05-30
+
+
+This document is on how to serialize key constructs of Notation 3 (N3)
+in Object-Oriented RuleML (OO RuleML). N3 and RDF facts plus rules will
+thus be exchangeable as valid XML documents. The alignment of N3 and
+OO RuleML constructs shows N3's "ASCII writing compactness" and RuleML's
+"XML tagging discipline": both are useful for their respective purposes
+in Semantic Web KR.
+
+OO RuleML:  <A HREF="http://www.ruleml.org/indoo">http://www.ruleml.org/indoo</A>
+FOL RuleML: <A HREF="http://www.ruleml.org/fol">http://www.ruleml.org/fol</A>
+N3 facts: <A HREF="http://www.w3.org/2000/10/swap/Primer.html">http://www.w3.org/2000/10/swap/Primer.html</A>
+N3 rules: <A HREF="http://www.w3.org/2000/10/swap/doc/Rules">http://www.w3.org/2000/10/swap/doc/Rules</A>
+
+
+N3 subject-verb-object triples as oid-anchored slotted atoms in RuleML
+(since subject has no class or rdf:type, no relation is used):
+
+&lt;#pat&gt; &lt;#child&gt; &lt;#al&gt; .
+
+&lt;Atom&gt;
+  &lt;oid&gt; &lt;Ind uri="#pat"/&gt; &lt;/oid&gt;
+  &lt;slot&gt;
+    &lt;Ind uri="#child"/&gt;
+    &lt;Ind uri="#al"/&gt;
+  &lt;/slot&gt;
+&lt;/Atom&gt;
+
+
+N3 subject classes as webized relations in RuleML:
+
+&lt;#pat&gt; a &lt;#Person&gt; ;
+       &lt;#child&gt; &lt;#al&gt; .
+
+&lt;Atom&gt;
+  &lt;oid&gt; &lt;Ind uri="#pat"/&gt; &lt;/oid&gt;
+  &lt;Rel uri="#Person"/&gt;
+  &lt;slot&gt;
+    &lt;Ind uri="#child"/&gt;
+    &lt;Ind uri="#al"/&gt;
+  &lt;/slot&gt;
+&lt;/Atom&gt;
+
+
+N3 "[...]"-bNodes as 'uninterpreted' slotted atoms in RuleML
+(the embedded Atom's in="no" makes it uninterpreted):
+
+&lt;#pat&gt; &lt;#child&gt; [ &lt;#age&gt; "3" ] .
+
+&lt;Atom&gt;
+  &lt;oid&gt; &lt;Ind uri="#pat"/&gt; &lt;/oid&gt;
+  &lt;slot&gt;
+    &lt;Ind uri="#child"/&gt;
+    &lt;Atom in="no"&gt;
+      &lt;slot&gt;
+        &lt;Ind uri="#age"/&gt;
+        &lt;Ind&gt;3&lt;/Ind&gt;
+      &lt;/slot&gt;
+    &lt;/Atom&gt;
+  &lt;/slot&gt;
+&lt;/Atom&gt;
+
+
+N3 data tables as conjoined atoms in RuleML:
+
+&lt;#pat&gt;   &lt;#age&gt; "24";  &lt;#eyecolor&gt; "blue" .
+&lt;#al&gt;    &lt;#age&gt;  "3";  &lt;#eyecolor&gt; "green" .
+&lt;#jo&gt;    &lt;#age&gt;  "5";  &lt;#eyecolor&gt; "green" .
+
+&lt;And&gt;
+  &lt;Atom&gt;
+    &lt;oid&gt; &lt;Ind uri="#pat"/&gt; &lt;/oid&gt;
+    &lt;slot&gt; &lt;Ind uri="#age"/&gt; &lt;Ind&gt;24&lt;/Ind&gt; &lt;/slot&gt;
+    &lt;slot&gt; &lt;Ind uri="#eyecolor"/&gt; &lt;Ind&gt;blue&lt;/Ind&gt; &lt;/slot&gt;
+  &lt;/Atom&gt;
+  &lt;Atom&gt;
+    &lt;oid&gt; &lt;Ind uri="#al"/&gt; &lt;/oid&gt;
+    &lt;slot&gt; &lt;Ind uri="#age"/&gt; &lt;Ind&gt;3/Ind&gt; &lt;/slot&gt;
+    &lt;slot&gt; &lt;Ind uri="#eyecolor"/&gt; &lt;Ind&gt;green&lt;/Ind&gt; &lt;/slot&gt;
+  &lt;/Atom&gt;
+  &lt;Atom&gt;
+    &lt;oid&gt; &lt;Ind uri="#jo"/&gt; &lt;/oid&gt;
+    &lt;slot&gt; &lt;Ind uri="#age"/&gt; &lt;Ind&gt;5/Ind&gt; &lt;/slot&gt;
+    &lt;slot&gt; &lt;Ind uri="#eyecolor"/&gt; &lt;Ind&gt;green&lt;/Ind&gt; &lt;/slot&gt;
+  &lt;/Atom&gt;
+&lt;/And&gt;
+
+
+N3 rules in RuleML:
+
+@forAll :x.
+{ :thermostat :temp :x } log:implies { :cooling :power :x } .
+
+&lt;Forall&gt;
+  &lt;Var&gt;x&lt;/Var&gt;
+  &lt;Implies&gt;
+    &lt;Atom&gt;
+      &lt;oid&gt; &lt;Ind uri=":thermostat"/&gt; &lt;/oid&gt;
+      &lt;slot&gt; &lt;Ind uri=":temp"&gt; &lt;Var&gt;x&lt;/Var&gt; &lt;/slot&gt;
+    &lt;/Atom&gt;
+    &lt;Atom&gt;
+      &lt;oid&gt; &lt;Ind uri=":cooling"/&gt; &lt;/oid&gt;
+      &lt;slot&gt; &lt;Ind uri=":power"&gt; &lt;Var&gt;x&lt;/Var&gt; &lt;/slot&gt;
+    &lt;/Atom&gt;
+  &lt;/Implies&gt;
+&lt;/Forall&gt;
+</PRE>
+
+</BODY>
+</HTML>

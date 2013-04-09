@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+      "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>RuleML Primer</title>
+  <!--
+  .highlighted {background:silver}
+  -->
+</head>
+
+<body>
+
+<div class="head">
+<h1><a id="top1" name="top1">RuleML Primer</a></h1>
+
+<h2>11 December 2011</h2>
+<dl>
+  <dt>This version:</dt>
+    <dd><a
+      href="http://www.ruleml.org/papers/Primer/RuleMLPrimer2011-12-11.html">http://www.ruleml.org/papers/Primer/RuleMLPrimer2011-12-11.html</a></dd>
+  <dt>Latest version:</dt>
+    <dd><a
+      href="http://www.ruleml.org/papers/Primer">http://www.ruleml.org/papers/Primer</a></dd>
+  <dt>Authors:</dt>
+    <dd>Harold Boley (<a
+      href="http://www.cs.unb.ca/~boley">http://www.cs.unb.ca/~boley</a>)</dd>
+    <dd>Tara Athan (<a
+      href="http://www.alt2is.com/">http://www.alt2is.com/</a>)</dd>
+</dl>
+
+<p></p>
+
+<p class="copyright">Copyright 2011, <a
+href="http://www.ruleml.org/">The RuleML Initiative</a>.</p>
+<hr title="Separator for header">
+</div>
+
+<h2><a id="section-abstract" name="section-abstract">Abstract</a></h2>
+
+<p>This document is a primer on RuleML 1.0 (Rule Markup Language, which has also become a Rule Modeling Language and a Rule MetaLogic). RuleML is being used for sharing rule bases in XML  and publishing  them on the Web.
+RuleML constitutes a layered family of rule sublanguages of which this primer focuses Datalog. The XML serialization of Datalog will be visualized with OrdLab trees, developing the discount example from its parts.</p>
+
+<hr>
+<!-- <h2><a id="section_4" name="section_4">The Datalog Sublanguage</a></h2> -->
+
+<p><a href="http://www.unbsj.ca/sase/csas/data/awoss2-2010/RuleML-AWoSS2.pdf">RuleML as a non-profit organization</a> has been the driver of Web rule research, building interoperation bridges between other Web rule languages, partnering with standards bodies, and working with industry. <a href="http://ruleml.org/1.0/">RuleML as a de facto language standard</a><a href="http://www.unbsj.ca/sase/csas/data/awoss2-2010/RuleML-AWoSS2.pdf"></a> has developed a RuleML version 1.0 for Derivation RuleML, whose Datalog sublanguage will be introduced here.</p>
+<p>The Datalog (function-free) sublanguage of Horn logic is at the semantic
+  foundation of RuleML.
+  Datalog is the language in the intersection of <a
+href="http://www.sql.org/">SQL</a> and <a
+href="http://pauillac.inria.fr/~deransar/prolog/docs.html">Prolog</a>. It can
+  thus be considered as the subset of logic programming needed for representing
+  the information of relational databases, including
+  (recursive) views. That is, in Datalog we can define <span
+style="font-style: italic">facts</span>, corresponding to explicit rows of
+  relational tables (<span style="font-style: italic">extensional</span> definition), and <span style="font-style: italic">rules</span>,
+  corresponding to tables defined implictly by views (<span style="font-style: italic">intensional</span> definition).</p>
+
+<p>Datalog RuleML, as a markup language, can conveniently serialize
+relational information where all of the columns are natural-language phrases.
+To explain the Datalog features, we will develop a small example formalizing
+natural-language business rules in RuleML. This example correspond to the
+'Eligibility' Category of Terry Moriarty's <a
+href="http://www.w3.org/2004/12/rules-ws/paper/35/">Business Rule
+Classification</a>.</p>
+
+<p>Consider the English sentence</p>
+
+<p><span style="font-style: italic">"Peter Miller's spending has been min
+5000 euro in the previous year."</span></p>
+
+<p>This ternary 'spending' relationship between the individual Peter Miller, the lower bound of min 5000 euro, and the temporal reference to the previous year can be serialized as the following Datalog RuleML fact. Here tags -- similar to non-terminals in linguistics -- directly mark up PCDATA (Parsed Character Data) of the surface sentence -- similar to linguistic terminals:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;spending&lt;/Rel&gt;
+  &lt;Ind&gt;Peter Miller&lt;/Ind&gt;
+  &lt;Data&gt;min 5000 euro&lt;/Data&gt;
+  &lt;Ind&gt;previous year&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>This XML fact serialization can thus be visualized as a kind of linguistic parse tree, which we call an Order-Labeled (<a href="http://www.dfki.uni-kl.de/~boley/xmlrdf.html">OrdLab</a>) Tree. Here tags  label  both inner nodes (oval, RDF-like anonymous
+resources), e.g. with 'Atom' (atomic formula), and leaf nodes (rectangular, RDF-like literals
+containing PCDATA), e.g. with 'Rel' (relation constant), 'Ind' (individual constant), or 'Data' (data constant):</p>
+
+<p> <img src="spending_atom.png"></p>
+
+<p>Going through the tags from inside out, we find that <span
+style="font-style: italic">"spending"</span> is marked up as the relation
+name (table name) of the fact: <span
+style="font-family: courier">&lt;Rel&gt;spending&lt;/Rel&gt;</span>. On the
+same level, the three phrases <span style="font-style: italic">"</span><span
+style="font-style: italic">Peter Miller"</span>, <span
+style="font-style: italic">"min 5000 euro"</span>, and <span
+style="font-style: italic">"previous year"</span> are marked up as individual
+constants that are the three arguments (table columns) of the relation, in
+the given order: <span style="font-family: courier">&lt;Ind&gt;Peter
+Miller&lt;/Ind&gt;, &lt;Data&gt;min 5000 euro&lt;/Data&gt;, and
+&lt;Ind&gt;previous year&lt;/Ind&gt;</span>. The entire relation application
+constitutes an atomic formula, marked up by <span
+style="font-family: courier">&lt;Atom&gt;</span> ... <span
+style="font-family: courier">&lt;/Atom&gt;</span>.</p>
+
+<p>In the above Datalog markup, the three top-level <span
+style="font-family: courier; font-style: italic"></span><span
+style="font-style: italic">"spending"</span> arguments are not further
+analyzed; they are considered as just individual or data constants. For
+identification purposes, they would need to be repeated verbatim by a query
+that is to retrieve the above fact (as illustrated by the query in the if part
+of rule below). A step-wise refining analysis could exhibit the internal
+structure and natural-language meaning of the basic three arguments using
+further, auxiliary, arguments, or proceeding from Datalog to Hornlog  (function-ful) RuleML, with all steps marked
+up in RuleML.</p>
+
+<p>Notice that in Datalog RuleML a relation can be n-ary, i.e.
+have any fixed number, n = 0, 1, 2, 3, ..., of arguments. A Datalog restricted to unary and binary
+ relations  is an important special case, e.g. for combining
+RuleML with <a href="http://www.w3.org/TR/owl-primer/">OWL</a><a href="http://www.w3.org/TR/owl2-overview/"></a><a href="http://www.w3.org/TR/owl-ref/"></a>, as in <a
+href="http://www.w3.org/Submission/2004/SUBM-SWRL-20040521/">SWRL</a>. While
+the above markup uses one 3-ary<span
+style="font-family: courier; font-style: italic"></span><span
+style="font-style: italic">"spending"</span> relation, it could also be
+reduced to three binary relations branching off from an individual constant
+that stands for the ternary relationship, as suggested by the above RDF-oriented XML visualization and explained in a <a
+href="http://www.w3.org/TR/swbp-n-aryRelations/">W3C Working Group Note</a>.
+However, to preserve the expressiveness of the relational model for databases and SQL as well as of Prolog, Datalog RuleML permits the straight representation of n-ary relations, as visualized with directed hyperarcs in <a href="http://ruleml.org/#Grailog">Grailog</a>.
+Moreover, Datalog RuleML provides for the markup of SQL-style null values via empty
+individuals, &lt;Ind/&gt;.</p>
+
+<p>Now consider the English sentence</p>
+
+<p><span style="font-style: italic">"A customer is premium if their spending
+has been min 5000 euro in the previous year."</span></p>
+
+<p>This can be marked up as the following Datalog RuleML rule (an
+implication):</p>
+<pre>&lt;Implies&gt;
+  &lt;then&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;premium&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/then&gt;
+  &lt;if&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;spending&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Data&gt;min 5000 euro&lt;/Data&gt;
+      &lt;Ind&gt;previous year&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/if&gt;
+&lt;/Implies&gt;</pre>
+
+<p>Like  the fact, this XML rule serialization can be visualized as an OrdLab tree:</p>
+
+<p> <img src="premium_implies.png"></p>
+
+<p>Looking at these tags, notice that RuleML follows the Java
+class-vs.-method naming convention by distinguishing upper-case <em>node
+tags</em> from lower-case <em>edge tags</em>. The atomic formula within the
+<span style="font-family: courier">&lt;if&gt;</span> edge of the <span style="font-family: courier">&lt;Implies&gt;</span> is like the <span style="font-family: courier">&lt;Atom&gt;</span>
+constituting the above fact, except that <span style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span> is replaced with <span style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span>, the
+markup of a variable named <span
+style="font-style: italic; font-family: courier">"customer"</span>. This
+variable also occurs in an <span style="font-family: courier">&lt;Atom&gt;</span> within the
+<span style="font-family: courier">&lt;then&gt;</span> edge of the
+&lt;Implies&gt;, which applies the unary relation<span
+style="font-family: courier; font-style: normal">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+to <span style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span>.</p>
+
+<p>The rule and the fact can be used together for a first derivation example:
+The rule's <span style="font-family: courier">&lt;if&gt;</span> matches the fact, binding <span
+style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span>;
+using this binding to instantiate the same variable in the rule's <span style="font-family: courier">&lt;then&gt;</span>, a new
+<span style="font-family: courier">&lt;Atom&gt;</span> is derived expressing that
+<span style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span> is a
+<span style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+customer.</p>
+
+<p>Besides using a single atomic formula in the <span style="font-family: courier">&lt;if&gt;</span>, a Datalog RuleML rule
+can also use an entire conjunction of atoms. This will allow complex
+conditions via 'and-ed' atoms, which can involve various variables.</p>
+
+<p>As an example with an <span style="font-family: courier">&lt;if&gt;</span> 'and-ing' two atoms, consider the English
+sentence</p>
+
+<p><span style="font-style: italic">"The discount for a customer buying a
+product is 7.5 percent if the customer is premium and the product is
+luxury."</span></p>
+
+<p>It can be marked up as the following Datalog RuleML (implication) rule:</p>
+<pre>&lt;Implies&gt;
+  &lt;then&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;discount&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Var&gt;product&lt;/Var&gt;
+      &lt;Data&gt;7.5 percent&lt;/Data&gt;
+    &lt;/Atom&gt;
+  &lt;/then&gt;
+  &lt;if&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;premium&lt;/Rel&gt;
+        &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;luxury&lt;/Rel&gt;
+        &lt;Var&gt;product&lt;/Var&gt;
+      &lt;/Atom&gt;
+    &lt;/And&gt;
+  &lt;/if&gt;
+&lt;/Implies&gt;</pre>
+
+<p>Visualized as an OrdLab tree, this XML serialization contains an 'and' branch with atomic
+subtrees:</p>
+
+<p> <img src="discount_implies.png"></p>
+
+<p>The main &lt;Implies&gt; tag here has an <span style="font-family: courier">&lt;if&gt;</span> whose <span style="font-family: courier">&lt;And&gt;</span> conjoins
+the <span style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span>
+atom of the earlier rule and a similar <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> atom; they
+are used for tests over two different variables. The rule's <span style="font-family: courier">&lt;then&gt;</span> is an atom
+applying a <span style="font-style: italic">"discount"</span> relation to
+these two variables and to a data constant that marks up <span
+style="font-style: italic">"7.5 percent"</span>.</p>
+
+<p>While <span
+style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span> was
+defined by our first rule, <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> could be
+(partially) defined as</p>
+
+<p><span style="font-style: italic">"A Porsche is luxury."</span></p>
+
+<p>by another Datalog RuleML fact:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;luxury&lt;/Rel&gt;
+  &lt;Ind&gt;Porsche&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+
+<p>Again, this  XML serialization can be visualized as an OrdLab tree:</p>
+
+<p> <img src="luxury_atom.png"></p>
+
+<p>The new rule and fact can augment our earlier rule and fact for a <span
+style="font-style: italic">chaining</span> derivation example as follows: The
+first conjunct of the <span
+style="font-family: courier">&lt;Rel&gt;discount&lt;/Rel&gt;</span> rule's
+<span style="font-family: courier">&lt;if&gt;</span> chains to the <span
+style="font-family: courier">&lt;Rel&gt;premium&lt;/Rel&gt;</span> rule,
+which succeeds as shown earlier, binding<span
+style="font-family: courier"></span><span
+style="font-family: courier">&lt;Var&gt;customer&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span>. The
+second conjunct just matches the <span
+style="font-family: courier">&lt;Rel&gt;luxury&lt;/Rel&gt;</span> fact,
+binding <span
+style="font-family: courier">&lt;Var&gt;product&lt;/Var&gt;</span> to <span
+style="font-family: courier">&lt;Ind&gt;Porsche&lt;/Ind&gt;</span>. So, the
+<span style="font-family: courier">&lt;Rel&gt;discount&lt;/Rel&gt;</span>
+rule succeeds with those bindings, proving an atom shown here with its
+translation to English:</p>
+
+<p><span style="font-style: italic">"The discount for Peter Miller buying a
+Porsche is 7.5 percent."</span></p>
+
+<p>This derived atom markup may be stored for further processing:</p>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;discount&lt;/Rel&gt;
+  &lt;Ind&gt;Peter Miller&lt;/Ind&gt;
+  &lt;Ind&gt;Porsche&lt;/Ind&gt;
+  &lt;Data&gt;7.5 percent&lt;/Data&gt;
+&lt;/Atom&gt;</pre>
+
+<p>As always, such an XML serialization can be visualized as an OrdLab tree:</p>
+
+<p> <img src="discount_atom.png"></p>
+
+<p>Notice that we explained the first rule in a bottom-up manner and the
+second rule in a top-down manner. Actually, each rule can be used in both
+ways; by default, RuleML  is neutral with respect to rule use direction.</p>
+
+<p>RuleML uses Datalog as part of its <a href="http://www.cs.unb.ca/~boley/talks/RuleML-Overarching-Talk.pdf">family of sublanguages</a>. The XML syntax of RuleML 1.0 is defined by <a href="http://ruleml.org/1.0/xsd/">XML schemas</a> and
+<a href="http://ruleml.org/1.0/relaxng/">Relax NG schemas</a>. Its  presentation <a href="http://ruleml.org/#POSL">POSL</a> can be  translated online to RuleML/XML. The
+semantics of Datalog RuleML and Hornlog RuleML employ Herbrand models. Various Datalog and Hornlog RuleML
+implementations exist, including the (Naf Hornlog) RuleML reference implementation <a
+href="http://ruleml.org/oojdrew/">OO jDREW</a>.</p>
+
+</body>
+</html>

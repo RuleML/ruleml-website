@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema Driver for an Equational-Logic RuleML sublanguage
+			File: equalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- include the auxiliary schema -->	
+	<xs:include schemaLocation="aux_equalog.xsd"/>
+
+	<!-- 	the atom module is redefined to permit cterms and plexs, and to remove href attributes -->
+	<!-- (just like hornlog) -->
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<!-- atoms are extended to permit cterms and plexs -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:group ref="atom.extend"/>
+					<xs:element ref="cterm"/>
+					<xs:element ref="plex"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>	
+		
+		<!-- remove href attributes -->
+		<xs:attributeGroup name="rel.attlist"/>
+		
+	</xs:redefine>	
+	
+</xs:schema>

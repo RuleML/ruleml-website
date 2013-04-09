@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<meta name="author" content="Sandeep Singh">
+<meta name="author" content="Onut Iosif-Viorel">
+<meta name="description" content="Taxonomic RuleML Tab is a plug-in to Protégé which converts RuleML files to taxonomic class hierarchies in Protégé and vice versa. It also acts as a validator to the RuleML file, recognizing and reporting errors like incomplete or misplaced tags or invalid symbols.">
+<meta name="keywords" content="Onut, Iosif, Viorel, Sandeep, Singh, Taxonomic, RuleML,Protege, Tab, plug-in">
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>The TX RuleML Tab:&nbsp;&nbsp;&nbsp;&nbsp; A Bridge Between Protege and Taxonomic RuleML</title>
+<link rel="stylesheet" type="text/css" href="http://protege.stanford.edu/styles/plugins.css">
+
+</head>
+
+<body><br>
+
+<!-- Insert your plug-in name here -->
+<div style="font-weight:bold; font-size:18px; text-align:center;">The TX RuleML 
+  Tab:&nbsp;&nbsp;&nbsp;&nbsp; A Bridge Between Protégé and Taxonomic RuleML</div><br>
+
+<!-- DESCRIPTION -->
+
+
+<b>Taxonomic RuleML</b> <b>Tab</b> is a plug-in to Protégé which converts RuleML files to taxonomic class hierarchies in Protégé and vice versa. It also acts as a validator to the RuleML file, recognizing and reporting errors like incomplete or misplaced tags or invalid symbols. 
+<br>
+&nbsp;<p><b>Taxonomic RuleML (TX RuleML)&nbsp; </b>introduces a set of experimental 
+<b>RuleML</b> tags that are used to represent  subsumption (type of) relationships. Some of the important tags are 
+the role tags <b>_shead</b> for the superclass and <b>_sbody</b> for the subclass. Class disjunctions (like ‘class a 
+<b>OR</b> class b’) are represented by <sor> <b>&lt;sor&gt; </b>tag and class conjunctions (like ‘class a 
+<b>AND</b> class b’) are represented by <b>&lt;sand&gt;</b> <sand> 
+tag.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; For example:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the 
+relationship: “a mammal may be a cat <b>or</b> a dog” can be represented as:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;sub&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;_shead&gt;&lt;rel&gt;mammal&lt;/rel&gt;&lt;/_shead&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;_sbody&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;sor&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;rel&gt;cat&lt;/rel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;rel&gt;dog&lt;/rel&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/sor&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/_sbody&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/sub&gt;<br>
+<br><br>
+For a industrial example see
+<a href="http://www.dfki.uni-kl.de/~boley/ontotherm/"><i>OntoTherm: The ELOTHERM 
+Ontology for Heating Design</i></a>.<br>
+For the translation from<b> sub</b>sumptions to<b> imp</b>lications see <i>
+<a href="http://www.dfki.uni-kl.de/ruleml/insub">Taxonomies in RuleML</a></i>.<b>&nbsp;&nbsp;
+</b><br><br>
+
+<!-- SCREENSHOTS -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>Screenshots</b><br><br>
+<div style="margin-left:3%; width:93; height:14">
+
+View <a href="screenshots.html">screenshots</a>.
+
+</div><br><br>
+
+<!-- DOWNLOAD -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>Download</b><br><br>
+<div style="margin-left:3%">
+
+Get <a href="TXRuleMLTab.jar">binary distribution</a> -
+<span style="FONT-STYLE: italic">(compiled for Protégé-2000 v1.9)</span><br>
+Get <a href="TXRuleMLTab.zip">source distribution</a><br>
+<br>
+<br>
+Last updated: January 22, 2004</div>
+<p><br>
+
+<!-- DOCUMENTATION -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>Documentation</b><br>
+</p>
+<div style="margin-left:3%">
+
+Plugin Documentation: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+PowerPoint <a href="Taxonomic%20RuleML%20Tab.ppt">presentation</a>.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Word
+<a href="Report.doc">document</a>. (updated January 22) <br>
+<br>
+RuleML Documentation:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://www.dfki.uni-kl.de/ruleml/insub">Taxonomies in RuleML</a>.</div><br><br>
+
+<!-- AUTHOR -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>Author</b><br><br>
+<div style="margin-left:3%">
+
+Authors: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<a href="http://www.geocities.com/onut_viorel/">Onut 
+Iosif-Viorel</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<a href="http://www.geocities.com/sandy_unb/">Sandeep 
+Singh</a><br>
+<br>
+Project Coordinators: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://www.cs.unb.ca/profs/bspencer/">Bruce Spencer</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://www.dfki.uni-kl.de/~boley/">Harold Boley</a><br>
+<br>
+Institution: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<a href="http://www.cs.unb.ca/">Computer Science Department</a>,
+<a href="http://www.unb.ca/">University of New Brunswick</a> Fredericton, Canada<br>
+&nbsp;</div><br><br>
+
+<!-- LEVEL OF SUPPORT -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>Level of Support</b><br><br>
+<div style="margin-left:3%">
+
+This plug-in was developed as a student project. Any suggestions and comments 
+can be sent to the authors. <br>
+<br>
+You can also e-mail to
+<a href="mailto:protege-discussion@smi.stanford.edu">protégé-discussion</a> for 
+questions and discussions.</div>
+<p><br>
+
+<!-- LICENSE -->
+<b><img src="arrow.gif" width="12" height="12" alt=""></b>&nbsp;<b>License</b><br>
+</p>
+<div style="margin-left:3%">
+
+No LICENSE !&nbsp;Open Source. Please feel free to use the implementation of the Plug-in.</div>
+
+<br><br><br>
+</body>
+</html>

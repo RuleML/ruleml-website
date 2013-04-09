@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/inspec"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: urcbindatagroundfact.dtd
+			Version: 0.85
+			Last Modification: 2003-12-17
+			
+			Approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+			
+			This involves several layers of abstraction and almost completely global
+			declarations/definitions.  In the XHTML modularization, these layers of
+			abstraction are spread out through (at least) 4 different schemas: module,
+			model, redefine and driver.  Given that this is superfluous for our purposes,
+			this information is instead condensed into a single schema for each sublanguage.
+			
+			Note also that an extra layer of abstraction (.extend) is (somewhat inconsistently)
+			used to facilitate the extension of content models by other schemas.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:group name="rulebase.extend">
+		<xs:choice>
+			<xs:element ref="fact"/>
+			<xs:element ref="query"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="rulebase.attlist"/>
+	<!-- content model is  "(((_rbaselab, (fact | query)*) | ((fact | query)+, _rbaselab?))?)" -->
+	<xs:group name="rulebase.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_rbaselab"/>
+				<xs:group ref="rulebase.extend" minOccurs="0" maxOccurs="unbounded"/>			
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="rulebase.extend" minOccurs="1" maxOccurs="unbounded"/>							
+				<xs:element ref="_rbaselab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="rulebase.type">
+		<xs:group ref="rulebase.content" minOccurs="0"/>
+		<xs:attributeGroup ref="rulebase.attlist"/>
+	</xs:complexType>
+	<xs:element name="rulebase" type="rulebase.type"/>
+
+	<xs:group name="_rbaselab.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_rbaselab.attlist"/>
+	<!-- content model is "(ind)" -->
+	<xs:group name="_rbaselab.content">
+		<xs:sequence>
+			<xs:group ref="_rbaselab.extend"/>	
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rbaselab.type">
+		<xs:group ref="_rbaselab.content"/>
+		<xs:attributeGroup ref="_rbaselab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rbaselab" type="_rbaselab.type"/>
+
+	<xs:attributeGroup name="fact.attlist"/>
+	<!-- content model is "((_rlab, _head) | (_head, _rlab?))" -->
+	<xs:group name="fact.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_head"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="fact.type">
+		<xs:group ref="fact.content"/>
+		<xs:attributeGroup ref="fact.attlist"/>
+	</xs:complexType>
+	<xs:element name="fact" type="fact.type"/>
+
+	<xs:attributeGroup name="query.attlist"/>
+	<!-- content model is "((_rlab, _body) | (_body, _rlab?))" -->
+	<xs:group name="query.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_body"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="query.type" mixed="true">
+		<xs:group ref="query.content"/>
+		<xs:attributeGroup ref="query.attlist"/>
+	</xs:complexType>
+	<xs:element name="query" type="query.type"/>
+
+	<xs:group name="_rlab.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_rlab.attlist"/>
+	<!-- content model is "(ind)" -->
+	<xs:group name="_rlab.content">
+		<xs:sequence>
+			<xs:group ref="_rlab.extend"/>	
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_rlab.type">
+		<xs:group ref="_rlab.content"/>
+		<xs:attributeGroup ref="_rlab.attlist"/>
+	</xs:complexType>
+	<xs:element name="_rlab" type="_rlab.type"/>
+
+	<xs:group name="_head.extend">
+		<xs:choice>
+			<xs:element ref="atom"/>
+		</xs:choice>
+	</xs:group>	
+	<xs:attributeGroup name="_head.attlist"/>
+	<!-- content model is "(atom)" -->
+	<xs:group name="_head.content">
+		<xs:choice>
+			<xs:group ref="_head.extend"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_head.type">
+		<xs:group ref="_head.content"/>
+		<xs:attributeGroup ref="_head.attlist"/>
+	</xs:complexType>
+	<xs:element name="_head" type="_head.type"/>
+
+	<xs:group name="_body.extend">
+		<xs:choice>
+			<xs:element ref="atom"/>
+			<xs:element ref="and"/>
+			<xs:element ref="or"/>
+		</xs:choice>
+	</xs:group>	
+	<xs:attributeGroup name="_body.attlist"/>
+	<!-- content model is "(atom | and | or)" -->
+	<xs:group name="_body.content">
+		<xs:choice>
+			<xs:group ref="_body.extend"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_body.type">
+		<xs:group ref="_body.content"/>
+		<xs:attributeGroup ref="_body.attlist"/>
+	</xs:complexType>
+	<xs:element name="_body" type="_body.type"/>
+
+	<xs:group name="and.extend">
+		<xs:choice>
+			<xs:element ref="atom"/>
+			<xs:element ref="or"/>
+		</xs:choice>
+	</xs:group>	
+	<xs:attributeGroup name="and.attlist"/>
+	<!-- content model is "((atom | or)*)" -->
+	<xs:group name="and.content">
+		<xs:sequence>
+			<xs:group ref="and.extend" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="and.type">
+		<xs:group ref="and.content"/>
+		<xs:attributeGroup ref="and.attlist"/>
+	</xs:complexType>
+	<xs:element name="and" type="and.type"/>
+
+	<xs:group name="or.class">
+		<xs:choice>
+			<xs:element ref="atom"/>
+			<xs:element ref="and"/>
+		</xs:choice>
+	</xs:group>	
+	<xs:attributeGroup name="or.attlist"/>
+	<!-- content model is "((atom | and)*)" -->
+	<xs:group name="or.content">
+		<xs:choice>
+			<xs:group ref="or.class" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="or.type">
+		<xs:group ref="or.content"/>
+		<xs:attributeGroup ref="or.attlist"/>
+	</xs:complexType>
+	<xs:element name="or" type="or.type"/>
+
+	<xs:group name="atom.extend.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="atom.extend">
+		<xs:sequence>
+			<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:group ref="atom.extend.extend" minOccurs="2" maxOccurs="2"/>
+			<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>	
+	<xs:attributeGroup name="atom.attlist"/>
+	<!-- content model is "((_opr, (_slot)*, ind, ind, (_slot)*) | ((_slot)*, ind, ind, (_slot)*, _opr))" -->
+	<xs:group name="atom.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_opr"/>
+				<xs:group ref="atom.extend"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="atom.extend"/>
+				<xs:element ref="_opr"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="atom.type">
+		<xs:group ref="atom.content"/>
+		<xs:attributeGroup ref="atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="atom" type="atom.type"/>
+
+	<xs:attributeGroup name="_opr.attlist"/>
+	<!-- content model is "(rel)" -->
+	<xs:group name="_opr.content">
+		<xs:sequence>
+			<xs:element ref="rel"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_opr.type">
+		<xs:group ref="_opr.content"/>
+		<xs:attributeGroup ref="_opr.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opr" type="_opr.type"/>
+
+	<xs:attributeGroup name="_slot.attrib">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:group name="_slot.extend">
+		<xs:choice>
+			<xs:element ref="ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="_slot.attlist">
+		<xs:attributeGroup ref="_slot.attrib"/>		
+	</xs:attributeGroup>
+	<!-- content model is "(ind)" -->
+	<xs:group name="_slot.content">
+		<xs:sequence>
+			<xs:group ref="_slot.extend"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_slot.type">
+		<xs:group ref="_slot.content"/>
+		<xs:attributeGroup ref="_slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="_slot" type="_slot.type"/>
+	
+	<xs:attributeGroup name="href.attrib">
+		<xs:attribute name="href" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="ind.attlist">
+		<xs:attributeGroup ref="href.attrib"/>
+	</xs:attributeGroup>
+	<!-- content model is "(#PCDATA)" -->
+	<xs:group name="ind.content">
+    		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="ind.type" mixed="true">
+		<xs:group ref="ind.content"/>
+		<xs:attributeGroup ref="ind.attlist"/>
+	</xs:complexType>
+	<xs:element name="ind" type="ind.type"/>
+
+	<xs:attributeGroup name="rel.attlist">
+		<xs:attributeGroup ref="href.attrib"/>
+	</xs:attributeGroup>
+	<!-- content model is "(#PCDATA)" -->
+	<xs:group name="rel.content">
+   		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="rel.type" mixed="true">
+		<xs:group ref="rel.content"/>
+		<xs:attributeGroup ref="rel.attlist"/>
+	</xs:complexType>
+	<xs:element name="rel" type="rel.type"/>
+	
+</xs:schema>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+Testing Extension Points
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY rif    "http://www.w3.org/2007/rif#">
+  <!ENTITY xs     "http://www.w3.org/2001/XMLSchema#">
+]>
+
+<Document dialect="FOL"
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#">
+  <payload>
+   <Group>
+    <sentence>
+     <NEWQUANTIFIER>
+       <declare><Var>X</Var></declare>
+       <formula>
+         <NEWCONNECTIVE>
+           <formula>
+             <Member>
+               <instance><Var>X</Var></instance>
+               <class><Const type="&rif;iri">ex:SomeClasse</Const></class>
+             </Member>
+           </formula>
+           <formula>
+             <Atom>
+               <op><Const type="&rif;iri">ex:partof</Const></op>
+               <args ordered="yes">
+                 <Var>X</Var>
+                 <Const type="&rif;iri">http://www.example.org</Const>
+               </args>
+             </Atom>
+           </formula>
+         </NEWCONNECTIVE>
+       </formula>
+     </NEWQUANTIFIER>
+    </sentence>
+    <sentence>
+     <Forall>
+       <declare><Var>X</Var></declare>
+       <formula>
+         <Or>
+           <formula>
+             <NEWTERM>
+             </NEWTERM>
+           </formula>
+           <formula>
+             <NEWTERM>
+               <yourroletag1><Const type="&rif;iri">ex:partof</Const></yourroletag1>
+             </NEWTERM>
+           </formula>
+           <formula>
+             <NEWTERM>
+               <yourroletag1><Const type="&rif;iri">ex:partof</Const></yourroletag1>
+               <yourroletag2><Var>X</Var></yourroletag2>
+             </NEWTERM>
+           </formula>
+           <formula>
+             <NEWTERM>
+               <yourroletag1><Const type="&rif;iri">ex:partof</Const></yourroletag1>
+               <yourroletag2><Var>X</Var></yourroletag2>
+               <yourroletag3><Var>X</Var></yourroletag3>
+             </NEWTERM>
+           </formula>
+         </Or>
+       </formula>
+     </Forall>
+    </sentence>
+    <sentence>
+     <Equal>
+       <left><Var>Z</Var></left>
+       <right>
+	 <Min>
+           <declare><Var>X</Var></declare>
+           <declare><Var>Y</Var></declare>
+           <formula>
+             <And/>
+           </formula>
+         </Min>
+       </right>
+     </Equal>
+    </sentence>
+    <sentence>
+     <Equal>
+       <left><Var>Z</Var></left>
+       <right>
+	 <NEWAGGRFUNC>
+           <declare><Var>X</Var></declare>
+           <declare><Var>Y</Var></declare>
+           <formula>
+             <And/>
+           </formula>
+         </NEWAGGRFUNC>
+       </right>
+     </Equal>
+    </sentence>
+   </Group>
+  </payload>
+ </Document> 

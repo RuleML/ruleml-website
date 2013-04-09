@@ -1,0 +1,13 @@
+<!-- XML DTD for a 'UR'-Centered Datalog RuleML sublanguage -->
+<!-- File: urcdatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-10-22 -->
+
+<!-- atom's content model is further extended (from that of urcbindatalog) to permit infinitely many ind/vars -->
+<!ENTITY % atom.content "((_opr, (_slot)*, (ind | var)+, (_slot)*) | ((_slot)*, (ind | var)+, (_slot)*, _opr))">
+
+<!-- this module inherits from the 'UR'-Centered Binary Datalog RuleML sublanguage (urcbindatalog) -->
+<!-- note the modification to the previously declared atom element above (using a parameter entity, which -->
+<!-- overrides the entity specified in DTDs higher in hierarchy) -->
+<!ENTITY % urcbindatalog_include SYSTEM "urcbindatalog.dtd">
+%urcbindatalog_include;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Conference
+xmlns="http://www.conferenceML.com" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.conferenceML.com http://www.ruleml.org/temp/tshering/conferenceML.xsd"
+kind = "summer"
+>
+  <Date>2006-08-06</Date>
+  <Time>2:30:00</Time>
+  <Location>NRC unb`campus,Fredericton,Canada</Location>
+  <Presenters>
+	 <person>Tshering Dema</person>
+	 <person>Jie Li</person>
+	 <person>David Hirtle</person>
+  </Presenters>
+</Conference>

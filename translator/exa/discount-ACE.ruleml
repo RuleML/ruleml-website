@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+Text:
+If the customer is a:premium and the product is regular then The discount is a:five-percent. If the customer is a:premium and the product is a:luxury then The discount is a:seven-and-a-half-percent. If the customer's a:previous-year n:spending is at least 5000 n:euro then A customer is a:premium. A n:Porsche is a:luxury. A n:Honda is regular. p:Peter-Miller's a:previous-year n:spending is at least 5000 n:euro.
+
+Paraphrase:
+   a  Porsche B  is luxury   .   a  Honda E  is regular   .   a previous-year spending J of Peter-Miller is   at least 5000  euros H    . if   a  customer M  is premium   and   a  product P  is regular   then   a  discount S  is five-percent   . if   a  customer V  is premium   and   a  product Y  is luxury   then   a  discount B1  is seven-and-a-half-percent   . if   a previous-year spending F1 of   a  customer E1  is   at least 5000  euros C1    then   a  customer G1  is premium   .
+
+DRS:
+[A, B, C, D, E, F, G, H, I, J]
+named(A, Peter-Miller)-6
+object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-6
+   [K, L, M, N, O, P]
+   property(K, premium)-1
+   predicate(L, state, be, M, K)-1
+   object(M, atomic, customer, person, cardinality, count_unit, eq, 1)-1
+   property(N, regular)-1
+   predicate(O, state, be, P, N)-1
+   object(P, atomic, product, object, cardinality, count_unit, eq, 1)-1
+   =>
+   [Q, R, S]
+   property(Q, five-percent)-1
+   predicate(R, state, be, S, Q)-1
+   object(S, atomic, discount, object, cardinality, count_unit, eq, 1)-1
+   [T, U, V, W, X, Y]
+   property(T, premium)-2
+   predicate(U, state, be, V, T)-2
+   object(V, atomic, customer, person, cardinality, count_unit, eq, 1)-2
+   property(W, luxury)-2
+   predicate(X, state, be, Y, W)-2
+   object(Y, atomic, product, object, cardinality, count_unit, eq, 1)-2
+   =>
+   [Z, A1, B1]
+   property(Z, seven-and-a-half-percent)-2
+   predicate(A1, state, be, B1, Z)-2
+   object(B1, atomic, discount, object, cardinality, count_unit, eq, 1)-2
+   [C1, D1, E1, F1]
+   object(C1, group, euro, unspecified, cardinality, count_unit, geq, 5000)-3
+   predicate(D1, state, be, F1, C1)-3
+   object(E1, atomic, customer, person, cardinality, count_unit, eq, 1)-3
+   property(F1, previous-year)-3
+   object(F1, atomic, spending, unspecified, cardinality, count_unit, eq, 1)-3
+   relation(F1, spending, of, E1)-3
+   =>
+   [G1, H1, I1]
+   object(G1, atomic, customer, person, cardinality, count_unit, eq, 1)-3
+   property(H1, premium)-3
+   predicate(I1, state, be, G1, H1)-3
+object(B, atomic, Porsche, unspecified, cardinality, count_unit, eq, 1)-4
+property(C, luxury)-4
+predicate(D, state, be, B, C)-4
+object(E, atomic, Honda, unspecified, cardinality, count_unit, eq, 1)-5
+property(F, regular)-5
+predicate(G, state, be, E, F)-5
+object(H, group, euro, unspecified, cardinality, count_unit, geq, 5000)-6
+predicate(I, state, be, J, H)-6
+property(J, previous-year)-6
+object(J, atomic, spending, unspecified, cardinality, count_unit, eq, 1)-6
+relation(J, spending, of, A)-6
+
+FOL:
+exists(A, exists(B, exists(C, exists(D, exists(E, exists(F, exists(G, exists(H, exists(I, exists(J, (named(A, Peter-Miller)-6)? (object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-6)?forall(K, forall(L, forall(M, forall(N, forall(O, forall(P, (property(K, premium)-1)? (predicate(L, state, be, M, K)-1)? (object(M, atomic, customer, person, cardinality, count_unit, eq, 1)-1)? (property(N, regular)-1)? (predicate(O, state, be, P, N)-1)?object(P, atomic, product, object, cardinality, count_unit, eq, 1)-1=>exists(Q, exists(R, exists(S, (property(Q, five-percent)-1)? (predicate(R, state, be, S, Q)-1)?object(S, atomic, discount, object, cardinality, count_unit, eq, 1)-1)))))))))?forall(T, forall(U, forall(V, forall(W, forall(X, forall(Y, (property(T, premium)-2)? (predicate(U, state, be, V, T)-2)? (object(V, atomic, customer, person, cardinality, count_unit, eq, 1)-2)? (property(W, luxury)-2)? (predicate(X, state, be, Y, W)-2)?object(Y, atomic, product, object, cardinality, count_unit, eq, 1)-2=>exists(Z, exists(A1, exists(B1, (property(Z, seven-and-a-half-percent)-2)? (predicate(A1, state, be, B1, Z)-2)?object(B1, atomic, discount, object, cardinality, count_unit, eq, 1)-2)))))))))?forall(C1, forall(D1, forall(E1, forall(F1, (object(C1, group, euro, unspecified, cardinality, count_unit, geq, 5000)-3)? (predicate(D1, state, be, F1, C1)-3)? (object(E1, atomic, customer, person, cardinality, count_unit, eq, 1)-3)? (property(F1, previous-year)-3)? (object(F1, atomic, spending, unspecified, cardinality, count_unit, eq, 1)-3)?relation(F1, spending, of, E1)-3=>exists(G1, exists(H1, exists(I1, (object(G1, atomic, customer, person, cardinality, count_unit, eq, 1)-3)? (property(H1, premium)-3)?predicate(I1, state, be, G1, H1)-3)))))))? (object(B, atomic, Porsche, unspecified, cardinality, count_unit, eq, 1)-4)? (property(C, luxury)-4)? (predicate(D, state, be, B, C)-4)? (object(E, atomic, Honda, unspecified, cardinality, count_unit, eq, 1)-5)? (property(F, regular)-5)? (predicate(G, state, be, E, F)-5)? (object(H, group, euro, unspecified, cardinality, count_unit, geq, 5000)-6)? (predicate(I, state, be, J, H)-6)? (property(J, previous-year)-6)? (object(J, atomic, spending, unspecified, cardinality, count_unit, eq, 1)-6)?relation(J, spending, of, A)-6))))))))))
+-->
+
+<RuleML xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/folog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ruleml.org/0.9/xsd">
+   <oid>
+      <Ind>Translated version of ACE text "If the customer is
+         a:premium and the product is regular then The discount
+         is a:five-percent. If the customer is a:premium and
+         the product is a:luxury then The discount is a:seven-and-a-half-percent.
+         If the customer's a:previous-year n:spending is at least
+         5000 n:euro then A customer is a:premium. A n:Porsche
+         is a:luxury. A n:Honda is regular. p:Peter-Miller's
+         a:previous-year n:spending is at least 5000 n:euro."</Ind>
+   </oid>
+   <Assert>
+      <Exists>
+         <Var>A</Var>
+         <Var>B</Var>
+         <Var>C</Var>
+         <Var>D</Var>
+         <Var>E</Var>
+         <Var>F</Var>
+         <Var>G</Var>
+         <Var>H</Var>
+         <Var>I</Var>
+         <Var>J</Var>
+         <And>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>A</Var>
+               <Ind>'Peter-Miller'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>A</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Forall>
+               <Var>K</Var>
+               <Var>L</Var>
+               <Var>M</Var>
+               <Var>N</Var>
+               <Var>O</Var>
+               <Var>P</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>K</Var>
+                        <Ind>premium</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>L</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>M</Var>
+                        <Var>K</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>M</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>customer</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>N</Var>
+                        <Ind>regular</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>O</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>P</Var>
+                        <Var>N</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>P</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>product</Ind>
+                        <Ind>object</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>Q</Var>
+                     <Var>R</Var>
+                     <Var>S</Var>
+                     <And>
+                        <Atom>
+                           <Rel>property</Rel>
+                           <Var>Q</Var>
+                           <Ind>'five-percent'</Ind>
+                        </Atom>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>R</Var>
+                           <Ind>state</Ind>
+                           <Ind>be</Ind>
+                           <Var>S</Var>
+                           <Var>Q</Var>
+                        </Atom>
+                        <Atom>
+                           <Rel>object</Rel>
+                           <Var>S</Var>
+                           <Ind>atomic</Ind>
+                           <Ind>discount</Ind>
+                           <Ind>object</Ind>
+                           <Ind>cardinality</Ind>
+                           <Ind>count_unit</Ind>
+                           <Ind>eq</Ind>
+                           <Data>1</Data>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Forall>
+               <Var>T</Var>
+               <Var>U</Var>
+               <Var>V</Var>
+               <Var>W</Var>
+               <Var>X</Var>
+               <Var>Y</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>T</Var>
+                        <Ind>premium</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>U</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>V</Var>
+                        <Var>T</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>V</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>customer</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>W</Var>
+                        <Ind>luxury</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>X</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>Y</Var>
+                        <Var>W</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>Y</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>product</Ind>
+                        <Ind>object</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>Z</Var>
+                     <Var>A1</Var>
+                     <Var>B1</Var>
+                     <And>
+                        <Atom>
+                           <Rel>property</Rel>
+                           <Var>Z</Var>
+                           <Ind>'seven-and-a-half-percent'</Ind>
+                        </Atom>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>A1</Var>
+                           <Ind>state</Ind>
+                           <Ind>be</Ind>
+                           <Var>B1</Var>
+                           <Var>Z</Var>
+                        </Atom>
+                        <Atom>
+                           <Rel>object</Rel>
+                           <Var>B1</Var>
+                           <Ind>atomic</Ind>
+                           <Ind>discount</Ind>
+                           <Ind>object</Ind>
+                           <Ind>cardinality</Ind>
+                           <Ind>count_unit</Ind>
+                           <Ind>eq</Ind>
+                           <Data>1</Data>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Forall>
+               <Var>C1</Var>
+               <Var>D1</Var>
+               <Var>E1</Var>
+               <Var>F1</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>C1</Var>
+                        <Ind>group</Ind>
+                        <Ind>euro</Ind>
+                        <Ind>unspecified</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>geq</Ind>
+                        <Data>5000</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>D1</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>F1</Var>
+                        <Var>C1</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>E1</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>customer</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>F1</Var>
+                        <Ind>'previous-year'</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>F1</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>spending</Ind>
+                        <Ind>unspecified</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>relation</Rel>
+                        <Var>F1</Var>
+                        <Ind>spending</Ind>
+                        <Ind>of</Ind>
+                        <Var>E1</Var>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>G1</Var>
+                     <Var>H1</Var>
+                     <Var>I1</Var>
+                     <And>
+                        <Atom>
+                           <Rel>object</Rel>
+                           <Var>G1</Var>
+                           <Ind>atomic</Ind>
+                           <Ind>customer</Ind>
+                           <Ind>person</Ind>
+                           <Ind>cardinality</Ind>
+                           <Ind>count_unit</Ind>
+                           <Ind>eq</Ind>
+                           <Data>1</Data>
+                        </Atom>
+                        <Atom>
+                           <Rel>property</Rel>
+                           <Var>H1</Var>
+                           <Ind>premium</Ind>
+                        </Atom>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>I1</Var>
+                           <Ind>state</Ind>
+                           <Ind>be</Ind>
+                           <Var>G1</Var>
+                           <Var>H1</Var>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>B</Var>
+               <Ind>atomic</Ind>
+               <Ind>'Porsche'</Ind>
+               <Ind>unspecified</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>property</Rel>
+               <Var>C</Var>
+               <Ind>luxury</Ind>
+            </Atom>
+            <Atom>
+               <Rel>predicate</Rel>
+               <Var>D</Var>
+               <Ind>state</Ind>
+               <Ind>be</Ind>
+               <Var>B</Var>
+               <Var>C</Var>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>E</Var>
+               <Ind>atomic</Ind>
+               <Ind>'Honda'</Ind>
+               <Ind>unspecified</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>property</Rel>
+               <Var>F</Var>
+               <Ind>regular</Ind>
+            </Atom>
+            <Atom>
+               <Rel>predicate</Rel>
+               <Var>G</Var>
+               <Ind>state</Ind>
+               <Ind>be</Ind>
+               <Var>E</Var>
+               <Var>F</Var>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>H</Var>
+               <Ind>group</Ind>
+               <Ind>euro</Ind>
+               <Ind>unspecified</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>geq</Ind>
+               <Data>5000</Data>
+            </Atom>
+            <Atom>
+               <Rel>predicate</Rel>
+               <Var>I</Var>
+               <Ind>state</Ind>
+               <Ind>be</Ind>
+               <Var>J</Var>
+               <Var>H</Var>
+            </Atom>
+            <Atom>
+               <Rel>property</Rel>
+               <Var>J</Var>
+               <Ind>'previous-year'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>J</Var>
+               <Ind>atomic</Ind>
+               <Ind>spending</Ind>
+               <Ind>unspecified</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>relation</Rel>
+               <Var>J</Var>
+               <Ind>spending</Ind>
+               <Ind>of</Ind>
+               <Var>A</Var>
+            </Atom>
+         </And>
+      </Exists>
+   </Assert>
+</RuleML>

@@ -1,0 +1,4 @@
+ Ask for the defined roles in the virtual organization.
+     The role models are defined in an external OWL ontology.
+     The information is derived by the RuleML-2007 organizational
+     agent by DL queries to the external ontology.

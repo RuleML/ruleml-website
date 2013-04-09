@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.7/dtd/ruleml-urhornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- a simplified broker definition -->
+
+<if>
+  <!-- conc: atomic formula -->
+  <atom>
+    <rel>buy</rel>
+    <var>broker</var>
+    <var>prod</var>
+  </atom>
+  <!-- prem: explicit and -->
+  <and>
+    <atom>
+      <rel>want</rel>
+      <ind>customer-of-broker</ind>
+      <var>prod</var>
+    </atom>
+    <atom>
+      <rel>deal</rel>
+      <var>prod</var>
+      <cterm>
+        <ctor>cost</ctor>
+        <ind>prod</ind>
+      </cterm>
+      <ind>benefit-of-prod</ind>
+    </atom>
+  </and>
+</if>
+
+<if>
+  <atom>
+    <rel>deal</rel>
+    <var>prod</var>
+    <var>cost</var>
+    <var>benefit</var>
+  </atom>
+  <atom>
+    <rel>greater-or-equal</rel>
+    <var>benefit</var>
+    <var>cost</var>
+  </atom>
+</if>
+
+<if>
+  <atom>
+    <rel>want</rel>
+    <ind>miller</ind>
+    <ur label="current info on stock1">www.stock.com/stock1</ur>
+  </atom>
+  <and/>
+</if>
+
+<if>
+  <atom>
+    <rel>want</rel>
+    <ind>miller</ind>
+    <ur>www.stock.com/stock2</ur>
+  </atom>
+  <and/>
+</if>
+
+
+</rulebase>

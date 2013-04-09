@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="eng">
+<head>
+  <meta name="robots" content="index,follow">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta name="language" content="en-gb">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="author" content="Suzanne M. Embury">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="Keywords" content="business rule, conference">
+  <meta name="Description"
+ content="This is the website for the 2008 International RuleML Symposium on Rule Applications and Interchange.">
+  <title>RuleML-2008 Rule Responder: Experimental Demo</title>
+  <link rel="stylesheet" href="default.css" type="text/css">
+  <style type="text/css">
+<!--
+.style2 {font-size: 92%}
+.style3 {font-size: 88%}
+-->
+      </style>
+  <script type="text/javascript">
+
+	function elementSelected(){
+
+		var choice = document.form1.select1.selectedIndex;
+
+		var choice1 = "\t <Message mode=\"outbound\" directive=\"query-sync\">" + "\n" +
+			      "\t\t<oid>" + "\n" + 
+			      "\t\t\t<Ind>RuleML-2008</Ind>" + "\n" +
+			      "\t\t</oid>" + "\n" +
+			      "\t\t<protocol>" + "\n" +
+			      "\t\t\t<Ind>esb</Ind>" + "\n" +
+			      "\t\t</protocol>" + "\n" +
+			      "\t\t<sender>" + "\n" +
+			      "\t\t<Ind>User</Ind>" + "\n" +
+			      "\t\t</sender>" + "\n" +
+			      "\t\t<content>" + "\n" +
+			      "\t\t\t<Atom>" + "\n" +
+			      "\t\t\t\t<Rel>getContact</Rel>" + "\n" +
+			      "\t\t\t\t<Ind>ruleml2007_Website</Ind>" + "\n" +
+			      "\t\t\t\t<Ind>update</Ind>" + "\n" +
+			      "\t\t\t\t<Var>Contact</Var>" + "\n" +
+			      "\t\t\t</Atom>" + "\n" +
+			      "\t\t</content>" + "\n" +
+			      "\t</Message>" + "\n" +
+			      "</RuleML>";
+				  
+		var choice2 = "\t <Message mode=\"outbound\" directive=\"query-sync\">" + "\n" +
+			      "\t\t<oid>" + "\n" + 
+			      "\t\t\t<Ind>RuleML-2008</Ind>" + "\n" +
+			      "\t\t</oid>" + "\n" +
+			      "\t\t<protocol>" + "\n" +
+			      "\t\t\t<Ind>esb</Ind>" + "\n" +
+			      "\t\t</protocol>" + "\n" +
+			      "\t\t<sender>" + "\n" +
+			      "\t\t<Ind>User</Ind>" + "\n" +
+			      "\t\t</sender>" + "\n" +
+			      "\t\t<content>" + "\n" +
+			      "\t\t\t<Atom>" + "\n" +
+			      "\t\t\t\t<Rel>getContact</Rel>" + "\n" +
+			      "\t\t\t\t<Ind>ruleml2007_Challenge</Ind>" + "\n" +
+			      "\t\t\t\t<Ind>update</Ind>" + "\n" +
+			      "\t\t\t\t<Var>Contact</Var>" + "\n" +
+			      "\t\t\t</Atom>" + "\n" +
+			      "\t\t</content>" + "\n" +
+			      "\t</Message>" + "\n" +
+			      "</RuleML>";
+				  
+		var choice3 = "\t <Message mode=\"outbound\" directive=\"query-sync\">" + "\n" +
+			      "\t\t<oid>" + "\n" + 
+			      "\t\t\t<Ind>RuleML-2008</Ind>" + "\n" +
+			      "\t\t</oid>" + "\n" +
+			      "\t\t<protocol>" + "\n" +
+			      "\t\t\t<Ind>esb</Ind>" + "\n" +
+			      "\t\t</protocol>" + "\n" +
+			      "\t\t<sender>" + "\n" +
+			      "\t\t<Ind>User</Ind>" + "\n" +
+			      "\t\t</sender>" + "\n" +
+			      "\t\t<content>" + "\n" +
+			      "\t\t\t<Atom>" + "\n" +
+			      "\t\t\t\t<Rel>getContact</Rel>" + "\n" +
+			      "\t\t\t\t<Ind>ruleml2007_Panel</Ind>" + "\n" +
+			      "\t\t\t\t<Ind>update</Ind>" + "\n" +
+			      "\t\t\t\t<Var>Contact</Var>" + "\n" +
+			      "\t\t\t</Atom>" + "\n" +
+			      "\t\t</content>" + "\n" +
+			      "\t</Message>" + "\n" +
+			      "</RuleML>";
+
+	       var messageHeader = "<RuleML xmlns=\"http://www.ruleml.org/0.91/xsd\"" + "\n" +
+				   " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + "\n" +
+				   " xsi:schemaLocation=\"http://www.ruleml.org/0.91/xsd" + "\n" +
+				   " http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd\"" + "\n" +
+				   " xmlns:ruleml2007=\"http://ibis.in.tum.de/projects/paw#\">" + "\n";					
+
+
+		if(choice == 0){
+			document.form2.box1.value = messageHeader + choice1;
+		}else if(choice == 1){
+			document.form2.box1.value = messageHeader + choice2;
+		}else if(choice == 2){
+			document.form2.box1.value = messageHeader + choice3;
+		}		
+
+	}
+
+	  </script>
+  <script type="text/javascript">
+
+	function selectFirst(){
+
+    	var choice1 = "\t <Message mode=\"outbound\" directive=\"query-sync\">" + "\n" +
+			      "\t\t<oid>" + "\n" + 
+			      "\t\t\t<Ind>RuleML-2008</Ind>" + "\n" +
+			      "\t\t</oid>" + "\n" +
+			      "\t\t<protocol>" + "\n" +
+			      "\t\t\t<Ind>esb</Ind>" + "\n" +
+			      "\t\t</protocol>" + "\n" +
+			      "\t\t<sender>" + "\n" +
+			      "\t\t<Ind>User</Ind>" + "\n" +
+			      "\t\t</sender>" + "\n" +
+			      "\t\t<content>" + "\n" +
+			      "\t\t\t<Atom>" + "\n" +
+			      "\t\t\t\t<Rel>getContact</Rel>" + "\n" +
+			      "\t\t\t\t<Ind>ruleml2007_Website</Ind>" + "\n" +
+			      "\t\t\t\t<Ind>update</Ind>" + "\n" +
+			      "\t\t\t\t<Var>Contact</Var>" + "\n" +
+			      "\t\t\t</Atom>" + "\n" +
+			      "\t\t</content>" + "\n" +
+			      "\t</Message>" + "\n" +
+			      "</RuleML>";
+
+	       var messageHeader = "<RuleML xmlns=\"http://www.ruleml.org/0.91/xsd\"" + "\n" +
+				   " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + "\n" +
+				   " xsi:schemaLocation=\"http://www.ruleml.org/0.91/xsd" + "\n" +
+				   " http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd\"" + "\n" +
+				   " xmlns:ruleml2007=\"http://ibis.in.tum.de/projects/paw#\">" + "\n";					
+
+		   document.form2.box1.value = messageHeader + choice1;
+	}
+
+  </script>
+</head>
+<body onload="selectFirst()">
+<div id="container"><!-- Introduce header panel -->
+<div id="banner"> <a href="http://www.ruleml.org">
+<div id="logoimg"></div>
+</a>
+<h1><a href="http://2008.ruleml.org/"><span class="green">RuleML-2008</span></a></h1>
+</div>
+<div id="bannertext">
+<p><span class="black">The International RuleML Symposium on Rule
+Interchange and Applications</span></p>
+<p><span class="green">Orlando, Florida: October 30-31, 2008</span></p>
+</div>
+<div id="navigation">
+<ul>
+  <li> <a href="http://www.cs.manchester.ac.uk/ruleML/index.php">HOME</a></li>
+  <li> <a href="http://www.cs.manchester.ac.uk/ruleML/objectives.php">ABOUT</a>
+  </li>
+  <li> <a href="http://www.cs.manchester.ac.uk/ruleML/cfp.pdf">CALL
+FOR PAPERS</a> </li>
+  <li> <a href="http://www.cs.manchester.ac.uk/ruleML/sponsoring.php">SPONSORSHIP</a>
+  </li>
+  <li> <a href="http://www.cs.manchester.ac.uk/ruleML/news.php"
+ class="last">NEWS</a></li>
+  <li> <a href="http://www.targetwire.com/vpo/rm/">PRESS</a></li>
+</ul>
+</div>
+<div id="main"><!-- Introduce navigation panel -->
+<div class="mainleft">
+<div class="title">Latest News</div>
+   <div class="date" style="width: 90%;">Updated - June 20, 2008</div>
+   <p><span style="font-weight: bold;">Calls for lightning talks,
+highlight talks and fast abstracts opened.</span> <br />
+      <a href="http://www.cs.manchester.ac.uk/ruleML/news.php">read more news</a></p>
+
+
+   <div class="title">The Symposium</div>
+   <div class="navcontainer">
+    <ul class="navlist">
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/attend.php">Who Will Attend</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/highlights.php">Highlights</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/keynotes.php">Keynote Speakers</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/venue.php">Venue</a></li>
+    <li><a href="http://www.businessrulesforum.com/">Business Rule Forum</a></li>
+    </ul>
+   </div>
+   
+   <div class="title">Authors</div>
+   <div class="navcontainer">
+   <ul class="navlist">
+<!--    <li class="active"><a href="#" id="current"></a></li> -->
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/objectives.php">Objectives</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/topics.php">Topics</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/lightning.php">Open Calls</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/challenge.php">RuleML-2008 Challenge</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/submissions.php">Submission Guidelines</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/cfp.pdf">Call for Papers (PDF)</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/dates.php">Important Dates</a></li>
+   </ul>
+   </div>
+   
+   <div class="title">Organisation</div>
+   <div class="navcontainer">
+    <ul class="navlist">
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/oc.php">Organising Committee</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/pc.php">Program Committee</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/sponsoring.php">Sponsorship</a></li>
+    <li><a href="http://www.ruleml.org/RuleML-2008/RuleResponder/"
+           target="_top">
+        Rule Responder Q&A</a></li>
+    <li><a href="http://www.cs.manchester.ac.uk/ruleML/promotion.php">Promotional Materials</a></li>
+<!--
+    <li><a href="/ruleML/press.php">Press Corner</a></li>
+-->
+    </ul>
+   </div>
+<div class="title">RuleML Initiative</div>
+<div class="navcontainer">
+<ul class="navlist">
+  <li><a href="http://www.cs.manchester.ac.uk/ruleML/about.php">About Us</a></li>
+  <li><a href="http://www.cs.manchester.ac.uk/ruleML/past.php">Past
+Events</a></li>
+</ul>
+</div>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+
+</div>
+<!-- Main body -->
+<div class="mainright"> <a name="DESCRIPTION"></a>
+<h3>Rule Responder:<br>RuleML-2008 Description</h3>
+<br>
+<div id="navigation2">
+<ul>
+  <li> <a href="index.html#DEMO">DEMO</a> </li>
+  <li> <a href="architecture.html#ARCHITECTURE">ARCHITECTURE</a></li>
+  <li> <a href="description.html#DESCRIPTION">DESCRIPTION</a> </li>
+  <li> <a href="intention.html#INTENTION">INTENTION</a> </li>
+  <li> <a href="ontology.html#ONTOLOGY">ONTOLOGY</a></li>
+</ul>
+</div>
+
+ <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ The RuleML-2008 Responder use case implements the RuleML-2008 organization as a virtual organization consisting of self-autonomous
+ rule-based agents who fulfil typical conference organization and project management tasks and respond respectively react to incoming
+ requests to the RuleML-2008 organization.
+ </p>
+ <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ The RuleML-2008 Responder agent (organizational agent) acts as a single point of
+ entry for the RuleML-2008 organization. It filters, decides and delegates incoming queries and requested tasks to the organizations&#39;
+ members (e.g. the organizing committee members) which are implemented as distributed rule-based personal agents. Project management
+ methodologies such as a responsibility assignment matrix are used by the RuleML-2008 Responder to describe the roles and responsibilities
+ of the personal agents in the virtual organization and typical negotiation and distributed coordination mechanisms are used to manage and
+ communicate with the project team and external agents. The personal agents act as self-autonomous agents having their own rule-based decision
+ and behavioural logic on top of their personal information sources, web services, vocabularies / ontologies and knowledge structures.
+ This allows them, e.g., to selectively reveal personal information such contact information (e.g. show only parts of FOAF profiles or vCards)
+ or react respectively proactively plan according to the situation (e.g. schedule a meeting based on personal iCal calendar data).
+ </p>
+ <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ Each agent in the RuleML-2008 virtual organization is implemented as a web-based service consisting of a set of internal or
+ external data and knowledge sources and a rule execution environment (a rule engine). An enterprise service bus (ESB) is used as a scalable,
+ highly distributable object broker to manage, integrate and seamlessly handle the interactions between the distributed rule-based agents using
+ disparate transport and messaging technologies. In the concrete reference implementation of this use case Reaction RuleML
+ (Reaction RuleML project) is applied as rule interchange and event messaging format, Prova (Prova project) and OO jDrew (OO jDrew project)
+ are used as two exemplary rule engines in the implementation of the organizational and personal agents, and Mule (Mule project) is used as
+ communication middleware between the agent endpoints. Reaction RuleML messages (event messages) are transported by the ESB to the appropriate
+ internal agent nodes or external communication interfaces based on a broad spectrum of selectable transport protocols such as HTTP, JMS,
+ Web Service protocols (SOAP) or agent communication languages (JADE). The platform-independent interchanged RuleML messages which contain
+ the message payload, e.g. queries or answers, as well as meta information about the conversation and the pragmatic context of the message,
+ are translated by translator services (e.g. XSLT style sheets) into the platform-dependent, specific execution language of the rule-based
+ execution environment at the agent endpoint(s). According to their rule-based decision logic the agents derive answers and react appropriately
+ to the incoming messages, e.g. by sending out further messages, e.g. with answers to the original query or with new messages starting
+ a sub-conversation. The rules typically access various data such as organizational project management data and personal information either
+ by external data integration, e.g., by Provas&#39; integration interfaces for distributed relational databases or Semantic Web data
+ (RDF, RDFS, OWL), or by replication of pre-translated data into the rule engines fact base.
+ </p>
+
+
+</div>
+</div>
+<div id="footer">
+<div class="right"> <a href="http://www.ruleml.org">RuleML.org</a> | <a
+ href="http://2008.ruleml.org">RuleML-2008</a> | <a
+ href="http://2007.ruleml.org">RuleML-2007</a> </div>
+<div class="left"> <a href="mailto:ruleml2008@easychair.org">Contact Us</a>
+</div>
+</div>
+</div>
+<!-- end of container -->
+</body>
+</html>

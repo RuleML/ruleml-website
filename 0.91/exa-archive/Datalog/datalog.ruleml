@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/datalog.xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+<!-- note the addition of the XML Schema namespace because a built-in datatype is used -->
+
+<!-- a trivial example rulebase for testing the Datalog RuleML sublanguage -->
+
+<Assert mapClosure="universal">
+
+<Implies>
+  <oid><Ind>(implication) rule label</Ind></oid>
+  <head>
+     <Atom>
+      <op><Rel>friend</Rel></op>
+      <slot><Ind>t</Ind><Data>1</Data></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+  <Reify>
+   <Reify>
+    <Implies>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Implies>
+   </Reify>
+  </Reify>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <op><Rel>friend</Rel></op>
+      <Ind>Jane</Ind>
+        <Skolem>constant b</Skolem>
+
+<Data xsi:type="xs:string">test</Data>
+<Data xsi:type="xs:integer">12</Data>
+<Data>tomorrow</Data>
+<Data xsi:type="xs:dateTime">2002-10-10T17:00:00Z</Data>
+<Data>test12</Data>
+
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+
+</Assert>
+
+</RuleML>

@@ -1,0 +1,840 @@
+<RuleML>
+<Assert>
+   <Rulebase mapClosure="universal">
+      <Atom>
+         <Rel>foafname</Rel>
+         <Expr>
+            <Fun>firstName</Fun>
+            <Ind>Suzette</Ind>
+         </Expr>
+         <Expr>
+            <Fun>lastName</Fun>
+            <Ind>Stoutenburg</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>foaftitle</Rel>
+         <Expr>
+            <Fun>title</Fun>
+            <Ind>Dr</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>foafmbox</Rel>
+         <Expr>
+            <Fun>email</Fun>
+            <Ind>suzetteATmitreDOTorg</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>exphones</Rel>
+         <Expr>
+            <Fun>TelephoneNumbers</Fun>
+            <Expr>
+               <Fun>office</Fun>
+               <Ind>0235</Ind>
+            </Expr>
+            <Expr>
+               <Fun>cellPhone</Fun>
+               <Ind>2222</Ind>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>foafname</Rel>
+               <Expr>
+                  <Fun>firstName</Fun>
+                  <Var>FirstName</Var>
+               </Expr>
+               <Expr>
+                  <Fun>lastName</Fun>
+                  <Var>LastName</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>foaftitle</Rel>
+               <Expr>
+                  <Fun>title</Fun>
+                  <Var>Title</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>foafmbox</Rel>
+               <Expr>
+                  <Fun>email</Fun>
+                  <Var>Email</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>exphones</Rel>
+               <Expr>
+                  <Fun>TelephoneNumbers</Fun>
+                  <Expr>
+                     <Fun>office</Fun>
+                     <Var>Telephone</Var>
+                  </Expr>
+                  <Expr>
+                     <Fun>cellPhone</Fun>
+                     <Var/>
+                  </Expr>
+               </Expr>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>contact</Rel>
+            <Var>FirstName</Var>
+            <Var>LastName</Var>
+            <Var>Title</Var>
+            <Var>Email</Var>
+            <Var>Telephone</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>requestSponsoringLevel</Rel>
+               <Var type="integer">Amount</Var>
+               <Var>Level</Var>
+            </Atom>
+            <Atom>
+               <Rel>requestBenefits</Rel>
+               <Var>Level</Var>
+               <Var>Benefits</Var>
+            </Atom>
+            <Atom>
+               <Rel>checkDeadline</Rel>
+               <Var>DeadlineResults</Var>
+            </Atom>
+            <Atom>
+               <Rel>checkAction</Rel>
+               <Var>Action</Var>
+               <Var>Level</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>sponsor</Rel>
+            <Expr>
+               <Fun>contact</Fun>
+               <Var>Name</Var>
+               <Var>Organization</Var>
+            </Expr>
+            <Var type="integer">Amount</Var>
+            <Expr>
+               <Fun>results</Fun>
+               <Var>Level</Var>
+               <Var>Benefits</Var>
+               <Var>DeadlineResults</Var>
+            </Expr>
+            <Expr>
+               <Fun>performative</Fun>
+               <Var>Action</Var>
+            </Expr>
+         </Atom>
+      </Implies>
+      <Implies>
+         <Atom>
+            <Rel>actionPerformed</Rel>
+            <Var>Action</Var>
+            <Var>Level</Var>
+         </Atom>
+         <Atom>
+            <Rel>checkAction</Rel>
+            <Var>Action</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>none</Ind>
+         <Ind>preSponsor</Ind>
+      </Atom>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>email</Ind>
+         <Ind>bronze</Ind>
+      </Atom>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>email</Ind>
+         <Ind>silver</Ind>
+      </Atom>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>phone</Ind>
+         <Ind>gold</Ind>
+      </Atom>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>phone</Ind>
+         <Ind>platinum</Ind>
+      </Atom>
+      <Atom>
+         <Rel>actionPerformed</Rel>
+         <Ind>phone</Ind>
+         <Ind>emerald</Ind>
+      </Atom>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>date</Rel>
+               <Var type="integer">X</Var>
+            </Atom>
+            <Atom>
+               <Rel>deadline</Rel>
+               <Ind>sponsoring</Ind>
+               <Var type="integer">D</Var>
+            </Atom>
+            <Atom>
+               <Rel>greaterThan</Rel>
+               <Var type="integer">X</Var>
+               <Var type="integer">D</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>checkDeadline</Rel>
+            <Expr>
+               <Fun>passed</Fun>
+               <Ind>deadline</Ind>
+            </Expr>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>date</Rel>
+               <Var type="integer">X</Var>
+            </Atom>
+            <Atom>
+               <Rel>deadline</Rel>
+               <Ind>sponsoring</Ind>
+               <Var type="integer">D</Var>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">X</Var>
+               <Var type="integer">D</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>checkDeadline</Rel>
+            <Expr>
+               <Fun>onGoing</Fun>
+               <Ind>deadline</Ind>
+            </Expr>
+         </Atom>
+      </Implies>
+      <Atom>
+         <Rel>deadline</Rel>
+         <Ind>sponsoring</Ind>
+         <Ind type="integer">20070830</Ind>
+      </Atom>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelUnderBronze</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>under</Fun>
+                  <Expr>
+                     <Fun>us$</Fun>
+                     <Var type="integer">UnderBronzeAmount</Var>
+                  </Expr>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">UnderBronzeAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelBronze</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">BronzeAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>greaterThanOrEqual</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">BronzeAmount</Var>
+            </Atom>
+            <Atom>
+               <Rel>sponsoringLevelSilver</Rel>
+               <Ind>silver</Ind>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">SilverAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">SilverAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelSilver</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">SilverAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>greaterThanOrEqual</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">SilverAmount</Var>
+            </Atom>
+            <Atom>
+               <Rel>sponsoringLevelGold</Rel>
+               <Ind>gold</Ind>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">GoldAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">GoldAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelGold</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">GoldAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>greaterThanOrEqual</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">GoldAmount</Var>
+            </Atom>
+            <Atom>
+               <Rel>sponsoringLevelPlatinum</Rel>
+               <Ind>platinum</Ind>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">PlatinumAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">PlatinumAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelPlatinum</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">PlatinumAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>greaterThanOrEqual</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">PlatinumAmount</Var>
+            </Atom>
+            <Atom>
+               <Rel>sponsoringLevelEmerald</Rel>
+               <Ind>emerald</Ind>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">EmeraldAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>lessThan</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">EmeraldAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>sponsoringLevelEmerald</Rel>
+               <Var>Level</Var>
+               <Expr>
+                  <Fun>us$</Fun>
+                  <Var type="integer">EmeraldAmount</Var>
+               </Expr>
+            </Atom>
+            <Atom>
+               <Rel>greaterThanOrEqual</Rel>
+               <Var type="integer">Amount</Var>
+               <Var type="integer">EmeraldAmount</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>requestSponsoringLevel</Rel>
+            <Var type="integer">Amount</Var>
+            <Var>Level</Var>
+         </Atom>
+      </Implies>
+      <Atom>
+         <Rel>sponsoringLevelUnderBronze</Rel>
+         <Ind>preSponsor</Ind>
+         <Expr>
+            <Fun>under</Fun>
+            <Expr>
+               <Fun>us$</Fun>
+               <Ind type="integer">500</Ind>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>sponsoringLevelBronze</Rel>
+         <Ind>bronze</Ind>
+         <Expr>
+            <Fun>us$</Fun>
+            <Ind type="integer">500</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>sponsoringLevelSilver</Rel>
+         <Ind>silver</Ind>
+         <Expr>
+            <Fun>us$</Fun>
+            <Ind type="integer">1000</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>sponsoringLevelGold</Rel>
+         <Ind>gold</Ind>
+         <Expr>
+            <Fun>us$</Fun>
+            <Ind type="integer">3000</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>sponsoringLevelPlatinum</Rel>
+         <Ind>platinum</Ind>
+         <Expr>
+            <Fun>us$</Fun>
+            <Ind type="integer">5000</Ind>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>sponsoringLevelEmerald</Rel>
+         <Ind>emerald</Ind>
+         <Expr>
+            <Fun>us$</Fun>
+            <Ind type="integer">7500</Ind>
+         </Expr>
+      </Atom>
+      <Implies>
+         <Atom>
+            <Rel>benefits</Rel>
+            <Var>Level</Var>
+            <Var>Benefits</Var>
+         </Atom>
+         <Atom>
+            <Rel>requestBenefits</Rel>
+            <Var>Level</Var>
+            <Var>Benefits</Var>
+         </Atom>
+      </Implies>
+      <Atom>
+         <Rel>benefits</Rel>
+         <Ind>bronze</Ind>
+         <Expr>
+            <Fun>benefits</Fun>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>on</Fun>
+                  <Ind>site</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>acknowledgement</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>benefits</Rel>
+         <Ind>silver</Ind>
+         <Expr>
+            <Fun>benefits</Fun>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>on</Fun>
+                  <Ind>site</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>acknowledgement</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Expr>
+                  <Fun>sponsor</Fun>
+                  <Ind>student</Ind>
+               </Expr>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>benefits</Rel>
+         <Ind>gold</Ind>
+         <Expr>
+            <Fun>benefits</Fun>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>on</Fun>
+                  <Ind>site</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>acknowledgement</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Expr>
+                  <Fun>sponsor</Fun>
+                  <Ind>student</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>free</Fun>
+               <Ind>registration</Ind>
+               <Expr>
+                  <Fun>amount</Fun>
+                  <Ind>1</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Ind>demo</Ind>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>benefits</Rel>
+         <Ind>platinum</Ind>
+         <Expr>
+            <Fun>benefits</Fun>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>on</Fun>
+                  <Ind>site</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>acknowledgement</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Expr>
+                  <Fun>sponsor</Fun>
+                  <Ind>student</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>free</Fun>
+               <Ind>registration</Ind>
+               <Expr>
+                  <Fun>amount</Fun>
+                  <Ind>2</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Ind>demo</Ind>
+            </Expr>
+            <Expr>
+               <Fun>name</Fun>
+               <Expr>
+                  <Fun>all</Fun>
+                  <Expr>
+                     <Fun>advance</Fun>
+                     <Ind>publicity</Ind>
+                  </Expr>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>distrubtion</Fun>
+               <Expr>
+                  <Fun>brochures</Fun>
+                  <Expr>
+                     <Fun>all</Fun>
+                     <Ind>participants</Ind>
+                  </Expr>
+               </Expr>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>benefits</Rel>
+         <Ind>emerald</Ind>
+         <Expr>
+            <Fun>benefits</Fun>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>on</Fun>
+                  <Ind>site</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>acknowledgement</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Expr>
+                  <Fun>sponsor</Fun>
+                  <Ind>student</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>free</Fun>
+               <Ind>registration</Ind>
+               <Expr>
+                  <Fun>amount</Fun>
+                  <Ind>3</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>logo</Fun>
+               <Expr>
+                  <Fun>in</Fun>
+                  <Ind>proceedings</Ind>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>option</Fun>
+               <Ind>demo</Ind>
+            </Expr>
+            <Expr>
+               <Fun>name</Fun>
+               <Expr>
+                  <Fun>all</Fun>
+                  <Expr>
+                     <Fun>advance</Fun>
+                     <Ind>publicity</Ind>
+                  </Expr>
+               </Expr>
+            </Expr>
+            <Expr>
+               <Fun>distrubtion</Fun>
+               <Expr>
+                  <Fun>brochures</Fun>
+                  <Expr>
+                     <Fun>all</Fun>
+                     <Ind>participants</Ind>
+                  </Expr>
+               </Expr>
+            </Expr>
+         </Expr>
+      </Atom>
+      <Atom>
+         <Rel>checkFreeRegistrationForLevel</Rel>
+         <Ind>bronze</Ind>
+         <Ind type="integer">0</Ind>
+      </Atom>
+      <Atom>
+         <Rel>checkFreeRegistrationForLevel</Rel>
+         <Ind>silver</Ind>
+         <Ind type="integer">0</Ind>
+      </Atom>
+      <Atom>
+         <Rel>checkFreeRegistrationForLevel</Rel>
+         <Ind>gold</Ind>
+         <Ind type="integer">1</Ind>
+      </Atom>
+      <Atom>
+         <Rel>checkFreeRegistrationForLevel</Rel>
+         <Ind>platinum</Ind>
+         <Ind type="integer">2</Ind>
+      </Atom>
+      <Atom>
+         <Rel>checkFreeRegistrationForLevel</Rel>
+         <Ind>emerald</Ind>
+         <Ind type="integer">3</Ind>
+      </Atom>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>checkFreeRegistrationForLevel</Rel>
+               <Var>Level</Var>
+               <Var type="integer">NumberOfFreeRegistrations</Var>
+            </Atom>
+            <Atom>
+               <Rel>lessThanOrEqual</Rel>
+               <Var type="integer">NumberOfRegistrations</Var>
+               <Var type="integer">NumberOfFreeRegistrations</Var>
+            </Atom>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">IndividualDiscountCost</Var>
+               <Var type="real">RegistrationCost</Var>
+               <Ind type="real">0</Ind>
+            </Atom>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">TotalCost</Var>
+               <Ind type="real">0</Ind>
+               <Ind type="real">0</Ind>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>registrationDiscount</Rel>
+            <Var type="sponsor">Organization</Var>
+            <Var type="real">RegistrationCost</Var>
+            <Var>Level</Var>
+            <Var type="integer">NumberOfRegistrations</Var>
+            <Var type="real">IndividualDiscountCost</Var>
+            <Var type="real">TotalCost</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>checkFreeRegistrationForLevel</Rel>
+               <Var>Level</Var>
+               <Var type="integer">NumberOfFreeRegistrations</Var>
+            </Atom>
+            <Atom>
+               <Rel>greaterThan</Rel>
+               <Var type="integer">NumberOfRegistrations</Var>
+               <Var type="integer">NumberOfFreeRegistrations</Var>
+            </Atom>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">IndividualDiscountCost</Var>
+               <Var type="real">RegistrationCost</Var>
+               <Ind type="real">1</Ind>
+            </Atom>
+            <Atom>
+               <Rel>subtract</Rel>
+               <Var type="integer">AmountOfNonFreeRegistrations</Var>
+               <Var type="integer">NumberOfRegistrations</Var>
+               <Var type="integer">NumberOfFreeRegistrations</Var>
+            </Atom>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">TotalCost</Var>
+               <Var type="integer">AmountOfNonFreeRegistrations</Var>
+               <Var type="real">IndividualDiscountCost</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>registrationDiscount</Rel>
+            <Var type="sponsor">Organization</Var>
+            <Var type="real">RegistrationCost</Var>
+            <Var>Level</Var>
+            <Var type="integer">NumberOfRegistrations</Var>
+            <Var type="real">IndividualDiscountCost</Var>
+            <Var type="real">TotalCost</Var>
+         </Atom>
+      </Implies>
+      <Implies>
+         <And>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">IndividualDiscountCost</Var>
+               <Var type="real">RegistrationCost</Var>
+               <Ind type="real">0.9</Ind>
+            </Atom>
+            <Atom>
+               <Rel>multiply</Rel>
+               <Var type="real">TotalCost</Var>
+               <Var type="integer">NumberOfRegistrations</Var>
+               <Var type="real">IndividualDiscountCost</Var>
+            </Atom>
+         </And>
+         <Atom>
+            <Rel>registrationDiscount</Rel>
+            <Var type="collaborationPartner">Organization</Var>
+            <Var type="real">RegistrationCost</Var>
+            <Var type="integer">NumberOfRegistrations</Var>
+            <Var type="real">IndividualDiscountCost</Var>
+            <Var type="real">TotalCost</Var>
+         </Atom>
+      </Implies>
+   </Rulebase>
+</Assert>
+</RuleML>

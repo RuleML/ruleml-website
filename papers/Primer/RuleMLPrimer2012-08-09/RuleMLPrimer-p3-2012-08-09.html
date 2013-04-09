@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML as de facto language standard." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Datalog</title>
+    <script>
+      var nextpage="RuleMLPrimer-p4-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p3-slide">
+      <h1>Datalog</h1>
+      <ul>
+        <li>(Function-free) sublanguage of Horn logic</li>
+        <li>Intersection of SQL and Prolog</li>
+        <li>Subset of logic programming needed for representing
+          the information of relational databases, including
+          (recursive) views</li>
+        <li>Facts: explicit rows of
+          relational tables</li>
+        <li>Rules: tables defined implictly by views</li>
+      </ul>
+      
+    </section>
+    <section id="section-p3-prose">
+      <h3>Datalog - Notes</h3>
+      <p>The Datalog (function-free) sublanguage of Horn logic is at the semantic
+        foundation of RuleML.
+        Datalog is the language in the intersection of <a
+          href="http://www.sql.org/">SQL</a> and <a
+            href="http://pauillac.inria.fr/~deransar/prolog/docs.html">Prolog</a>. It can
+        thus be considered as the subset of logic programming needed for representing
+        the information of relational databases, including
+        (recursive) views. That is, in Datalog we can define <span
+          style="font-style: italic">facts</span>, corresponding to explicit rows of
+        relational tables (<span style="font-style: italic">extensional</span> definition), and <span style="font-style: italic">rules</span>,
+        corresponding to tables defined implictly by views (<span style="font-style: italic">intensional</span> definition).</p>
+      
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p2-2012-08-09.html">&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p4-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

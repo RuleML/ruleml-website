@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/temp/cs-attributes-5.xsd"
+>
+
+<Assert>
+
+	<!-- this is a defining equation, so the toplevel function of the lhs must be interpreted -->
+	<Equal>
+		<lhs>
+			<Expr>
+				<Fun in="yes">age</Fun> 
+				<Expr>
+					<Fun in="no">first-born</Fun> 
+					<Ind>John</Ind>
+					<Ind>Mary</Ind>
+				</Expr>
+			</Expr>
+		</lhs>
+		<rhs>
+			<Expr>
+				<Fun in="yes">subtract</Fun>
+				<Expr>
+					<Fun in="yes">this-year</Fun> 
+				</Expr>
+				<Ind>1993</Ind>
+			</Expr>
+		</rhs>
+	</Equal>
+
+	<!--
+	<Implies>
+		<body>
+			<Equal>
+			  <lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> 
+					<Expr>
+						<Fun in="no">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			  </lhs>
+			  <rhs>
+				<Expr>
+					<Fun in="no">subtract</Fun>
+					<Expr>
+						<Fun in="yes">this-year</Fun> 
+					</Expr>
+					<Ind>1993</Ind>
+				</Expr>
+			  </rhs>
+			</Equal>
+		</body>
+		<head>
+			<Equal>
+			  <lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> 
+					<Expr>
+						<Fun in="no">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			  </lhs>
+			  <rhs>
+				<Expr>
+					<Fun in="yes">subtract</Fun>
+					<Expr>
+						<Fun in="yes">this-year</Fun> 
+					</Expr>
+					<Ind>1993</Ind>
+				</Expr>
+			  </rhs>
+			</Equal>		
+		</head>	
+	</Implies>
+-->
+</Assert>
+
+</RuleML>

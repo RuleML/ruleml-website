@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR' Equational-Logic RuleML sublanguage
+			File: urequalog.xsd
+			Version: 0.87
+			Last Modification: 2004-07-23
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- urequalog includes the 'UR' module -->
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+
+	<xs:redefine schemaLocation="equalog.xsd">
+
+		<!--
+			href is added to Rel's list of attributes
+		-->
+		<xs:attributeGroup name="Rel.attlist">
+			<xs:attributeGroup ref="Rel.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>	
+
+		<!--
+			href is added to Ind's list of attributes
+		-->
+		<xs:attributeGroup name="Ind.attlist">
+			<xs:attributeGroup ref="Ind.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>	
+		
+		<!--
+			href is added to Ctor's list of attributes
+		-->
+		<xs:attributeGroup name="Ctor.attlist">
+			<xs:attributeGroup ref="Ctor.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>	
+		
+		<!--
+			href is added to Fun's list of attributes
+		-->
+		<xs:attributeGroup name="Fun.attlist">
+			<xs:attributeGroup ref="Fun.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>					
+	</xs:redefine>
+	
+</xs:schema>

@@ -1,0 +1,206 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.uni-kl.de/ruleml/dtd/0.81/ruleml-datafun.dtd">
+
+
+<rulebase>
+<!-- this is case no. 1 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel>premium</rel>
+          </_opr>
+
+          <var>customer</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>regular</rel>
+          </_opr>
+
+          <var>product</var>
+        </atom>
+      </and>
+    </_body>
+
+    <_foot>
+      <ind>5.0 percent</ind>
+    </_foot>
+  </trans>
+
+<!-- this is case no. 2 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <nano>
+        <_opf>
+          <fun>tup</fun>
+        </_opf>
+
+        <ind>normally</ind>
+
+        <ind>"1.0 percent"</ind>
+
+        <ind>only</ind>
+      </nano>
+    </_foot>
+  </trans>
+
+<!-- this is case no. 3 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_foot>
+      <ind>5.0 percent</ind>
+    </_foot>
+  </trans>
+
+<!-- this is case no. 4 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel>premium</rel>
+          </_opr>
+
+          <var>customer</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>regular</rel>
+          </_opr>
+
+          <var>product</var>
+        </atom>
+      </and>
+    </_body>
+
+    <_foot>
+      <nano>
+        <_opf>
+          <fun>tup</fun>
+        </_opf>
+
+        <ind>normally</ind>
+
+        <ind>"1.0 percent"</ind>
+
+        <ind>only</ind>
+      </nano>
+    </_foot>
+  </trans>
+
+<!-- this is case no. 5 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel>premium</rel>
+        </_opr>
+
+        <var>customer</var>
+      </atom>
+    </_body>
+
+    <_foot>
+      <nano>
+        <_opf>
+          <fun>regular</fun>
+        </_opf>
+
+        <var>product</var>
+      </nano>
+    </_foot>
+  </trans>
+
+<!-- this is case no. 6 -->
+  <trans>
+    <_headf>
+      <nano>
+        <_opf>
+          <fun>discount</fun>
+        </_opf>
+
+        <var>customer</var>
+
+        <var>product</var>
+      </nano>
+    </_headf>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel>premium</rel>
+        </_opr>
+
+        <var>customer</var>
+      </atom>
+    </_body>
+
+    <_foot>
+      <ind>5.0 percent</ind>
+    </_foot>
+  </trans>
+</rulebase>
+

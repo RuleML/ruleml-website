@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+          Defines meta data labels, qualifications and scopes
+          RBSLA root used in the RBSLA Language, not directly needed for Reaction RuleML
+          
+          
+            Root module part of Reaction RuleML and RBSLA language.
+			This is the XML Schema root element for Reaction RuleML  and RBSLA.
+			File: root_module.xsd
+			Version: 0.3
+			Last Modification: 2007-07-01
+			
+			* RBSLA		root element
+			* label     meta data label
+			* scope     scope label
+			* qualification  qualification label
+			
+			
+			This schema declares the following RBSLA elements and attributes:   
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+	 *** RBSLA ***
+
+		content model:
+		( label?, scope?, qualification?, oid?, (Assert | Retract | Query)* )
+	-->
+	<xs:attributeGroup name="RBSLA.attlist"/>
+	<xs:group name="RBSLA.content">
+		<xs:sequence>		
+			<xs:group ref="labels.content"/>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Assert"/>
+				<xs:element ref="Retract"/>
+				<xs:element ref="Query"/>
+			</xs:choice>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="RBSLA.type">
+		<xs:group ref="RBSLA.content"/>
+		<xs:attributeGroup ref="RBSLA.attlist"/>
+	</xs:complexType>
+	<xs:element name="RBSLA" type="RBSLA.type"/>
+
+<!--
+     optional labels group
+     
+     content model: (label?, scope?, qualification? )
+          
+-->	
+	<xs:group name="labels.content">
+		<xs:sequence>				
+				<xs:element name="label"  minOccurs="0"/>
+				<xs:element name="scope"  minOccurs="0"/>
+				<xs:element name="qualification"  minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+
+
+<!--
+     *** quantification ***
+     
+     content model: (Ind | Expr | Plex )
+          
+-->
+	<xs:attributeGroup name="quantification.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="quantification.content">
+		<xs:choice>
+				<xs:element name="Ind"/>
+				<xs:element name="Expr"/>
+				<xs:element name="Plex"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="quantification.type">
+		<xs:group ref="quantification.content"/>
+		<xs:attributeGroup ref="quantification.attlist"/>
+	</xs:complexType>
+	<xs:element name="quantification" type="quantification.type"/>
+
+<!--
+     *** scope ***
+     
+     content model: (Ind)
+          
+-->
+	<xs:attributeGroup name="scope.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="scope.content">
+		<xs:choice>
+				<xs:element name="Ind"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="scope.type">
+		<xs:group ref="scope.content"/>
+		<xs:attributeGroup ref="scope.attlist"/>
+	</xs:complexType>
+	<xs:element name="scope" type="scope.type"/>
+
+<!--
+     *** label ***
+     
+     content model: (Ind | Expr | Plex )
+          
+-->
+	<xs:attributeGroup name="label.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="label.content">
+		<xs:choice>
+				<xs:element name="Ind"/>
+				<xs:element name="Expr"/>
+				<xs:element name="Plex"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="label.type">
+		<xs:group ref="label.content"/>
+		<xs:attributeGroup ref="label.attlist"/>
+	</xs:complexType>
+	<xs:element name="label" type="label.type"/>
+	
+</xs:schema>

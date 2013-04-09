@@ -1,0 +1,5 @@
+ Returns the submitted Submissions.
+     This data is dynamically retrieved by the program
+     chair from the easy chair RuleML-2007 system.
+
+     Note: A dummy easy chair database is used (to protect personal data)

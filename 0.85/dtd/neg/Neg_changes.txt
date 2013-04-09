@@ -1,0 +1,11 @@
+<!-- RuleML sublanguage XML DTD changes to include classical (aka strong) negation -->
+
+<!-- _head, _body, and, & or's content models are extended to also permit neg(ation) element -->
+<!ENTITY % _head.content "(atom | neg)">
+<!ENTITY % _body.content "(atom | neg | and | or)">
+<!ENTITY % and.content "((atom | neg | or)*)">
+<!ENTITY % or.content "((atom | neg | and)*)">
+
+<!-- the neg element negates the specified atom (explicitly, i.e. classical or "strong" negation) -->
+<!ENTITY % neg.content "(atom)">
+<!ELEMENT neg %neg.content;>

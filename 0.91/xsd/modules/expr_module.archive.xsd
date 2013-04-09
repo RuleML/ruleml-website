@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:sch="http://www.ascc.net/xml/schematron"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML expressions.
+			File: expr_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-23
+			
+			This module declares the following RuleML elements and attributes:
+			* Expr
+			* op
+			* Fun
+			* Plex
+			* @in
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+        <xs:appinfo>
+			<!-- necessary for schematron -->
+            <sch:ns prefix="r" uri="http://www.ruleml.org/0.91/xsd"/>
+        </xs:appinfo>
+	</xs:annotation>
+	
+	<!--
+		*** Expr ***
+		A logical function of the form "f(...)" where f is a function name.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Expr
+
+		content model:
+		( 
+		  (op|Fun), (slot)*, (resl)?,
+		  (arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)*,
+		  (repo)?, (slot)*, (resl)?
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+			oid?, (op | Fun), (slot)*, (resl)?,
+			( 
+				( 
+					( (arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)+, (repo)? )
+					|
+					(repo)
+				),
+				(slot)*, (resl)?
+			)?
+		)
+		
+		Note the 'positionalized' normal form where the op role is only
+		at the beginning of the Expr.
+	-->
+	<xs:attributeGroup name="Expr.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+		<xs:attributeGroup ref="in.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Expr.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="op" type="op-Expr.type"/>
+				<xs:group ref="op-Expr.content"/>
+			</xs:choice>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="resl" minOccurs="0"/>
+			<xs:sequence minOccurs="0">
+				<xs:choice>
+					<xs:sequence>
+						<xs:choice maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:group ref="arg.content"/>
+						</xs:choice>
+						<xs:element ref="repo" minOccurs="0"/>
+					</xs:sequence>
+					<xs:element ref="repo"/>
+				</xs:choice>
+				<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="resl" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Expr.type">
+		<xs:annotation>
+			<xs:appinfo>
+				<sch:pattern name="Uninterpreted functions">
+					<sch:rule context="r:Expr/r:Fun[@in='no']">
+						<sch:assert test=
+							"not(../r:Expr/r:Fun[@in='yes'] or
+							     ../r:arg/r:Expr/r:Fun[@in='yes'] or
+								 ../r:Expr/r:op/r:Fun[@in='yes'] or 
+								 ../r:arg/r:Expr/r:op/r:Fun[@in='yes'])">
+							Functions nested within an uninterpreted function must also be uninterpreted.
+						</sch:assert>
+					</sch:rule>
+					<sch:rule context="r:Expr/r:op/r:Fun[@in='no']">
+						<sch:assert test=
+							"not(../../r:Expr/r:Fun[@in='yes'] or
+								 ../../r:arg/r:Expr/r:Fun[@in='yes'] or
+								 ../../r:Expr/r:op/r:Fun[@in='yes'] or 
+								 ../../r:arg/r:Expr/r:op/r:Fun[@in='yes'])">
+							Functions nested within an uninterpreted function must also be uninterpreted.
+						</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:group ref="Expr.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>
+	<xs:element name="Expr" type="Expr.type"/>
+	
+	<!--
+		*** op ***
+		An operator expression including the function name of an expression.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-op
+				
+		content model (within Expr): (Fun)
+		
+		Other (context-sensitive) versions of <op> are in the atom and holog modules.
+	-->
+	<!-- the (empty) attribute list is declared in the atom module -->
+	<xs:group name="op-Expr.content">
+		<xs:sequence>
+			<xs:element ref="Fun"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="op-Expr.type">
+		<xs:group ref="op-Expr.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+	
+	<!--
+		*** Fun ***
+		A user-defined function name.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Fun
+
+		content model: (#PCDATA)
+	-->
+	<xs:attributeGroup name="Fun.attlist">
+		<xs:attributeGroup ref="uri.attrib"/>
+		<xs:attributeGroup ref="in.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Fun.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Fun.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun.attlist"/>
+	</xs:complexType>
+	<xs:element name="Fun" type="Fun.type"/>
+	
+	<!--
+		*** Plex ***
+		An unordered collection of arguments without a constructor.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Plex
+		
+		content model (within Atom, Plex, slot):
+		( (slot)*, (arg | Ind | Skolem | Var | Expr | Plex)*, (repo)?, (slot)*, (resl)? )
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+		   oid?, (slot)*,
+		     (
+		        ( (arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)+, (repo)?, (slot)*, (resl)? )?
+		        |
+                     ( (repo), (slot)*, (resl)? )
+                     |
+                     (resl)
+		     )
+		)
+
+		content model (within repo): ( (arg | Ind | Skolem | Var | Expr | Plex | repo)* )
+		content model (within resl): ( (slot | resl)* )
+	-->
+	<xs:attributeGroup name="Plex.attlist"/>
+	<xs:group name="Plex.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:choice>
+				<xs:sequence minOccurs="0">
+					<xs:choice maxOccurs="unbounded">
+						<xs:element ref="arg"/>
+						<xs:group ref="arg.content"/>
+					</xs:choice>
+					<xs:element ref="repo" minOccurs="0"/>
+					<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="resl" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element ref="repo"/>
+					<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="resl" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element ref="resl"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Plex-repo.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="arg"/>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="repo"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Plex-resl.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="slot" type="slot.type"/>
+				<xs:element ref="resl"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Plex.type">
+		<xs:group ref="Plex.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Plex-repo.type">
+		<xs:group ref="Plex-repo.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Plex-resl.type">
+		<xs:group ref="Plex-resl.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:element name="Plex" type="Plex.type"/>
+	
+	<!--
+		*** @in ***
+		An attribute indicating whether a function or expression is interpreted.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@in
+	-->
+	<xs:attributeGroup name="in.attrib">
+		<xs:attribute name="in" use="optional" default="no">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!-- this version replaces the above one in equality sublanguages -->
+	<xs:attributeGroup name="in-equality.attrib">
+		<xs:attribute name="in" use="optional" default="no">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+					<xs:enumeration value="yes"/>
+					<xs:enumeration value="semi"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+</xs:schema>

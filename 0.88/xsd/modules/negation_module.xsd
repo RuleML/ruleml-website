@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd"
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Negation RuleML elements module.
+			This is the XML Schema negation module for RuleML.
+			File: negation_module.xsd
+			Version: 0.88
+			Last Modification: 2005-01-18
+			
+			This module declares the following negation RuleML elements:
+			* Neg
+			* strong
+			* Naf
+			* weak
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Neg ***
+		content model: (strong | Atom)
+
+		Classical negation.
+
+		The Neg element negates its atom (explicitly, i.e. classical Or "strong" negation).
+	-->
+	<xs:attributeGroup name="Neg.attlist"/>
+	<xs:group name="Neg.content">
+		<xs:choice>
+			<xs:element ref="strong"/>		
+			<xs:group ref="strong.content"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Neg.type">
+		<xs:group ref="Neg.content"/>
+		<xs:attributeGroup ref="Neg.attlist"/>
+	</xs:complexType>
+	<xs:element name="Neg" type="Neg.type"/>
+
+	<!--
+		*** strong ***
+		content model: ( Atom )
+
+		This is a metarole which may be left implicit.  It must contain an Atom.
+	-->
+	<xs:attributeGroup name="strong.attlist"/>
+	<xs:group name="strong.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="strong.type">
+		<xs:group ref="strong.content"/>
+		<xs:attributeGroup ref="strong.attlist"/>
+	</xs:complexType>
+	<xs:element name="strong" type="strong.type"/>
+
+	<!--
+		*** Naf ***
+		content model: (weak | Atom)
+
+		Negation as failure.
+
+		The Naf element negates its atom (by default, i.e. negation as failure).
+	-->
+	<xs:attributeGroup name="Naf.attlist"/>
+	<xs:group name="Naf.content">
+		<xs:choice>
+			<xs:element ref="weak"/>
+			<xs:group ref="weak.content"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Naf.type">
+		<xs:group ref="Naf.content"/>
+		<xs:attributeGroup ref="Naf.attlist"/>
+	</xs:complexType>
+	<xs:element name="Naf" type="Naf.type"/>
+
+	<!--
+		*** weak ***
+		content model: ( Atom )
+
+		This is a metarole which may be left implicit.  It must contain an Atom.
+	-->
+	<xs:attributeGroup name="weak.attlist"/>
+	<xs:group name="weak.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="weak.type">
+		<xs:group ref="weak.content"/>
+		<xs:attributeGroup ref="weak.attlist"/>
+	</xs:complexType>
+	<xs:element name="weak" type="weak.type"/>
+	
+</xs:schema>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wg/wiki/Core/Horn_Rules)
+
+Example 4 (A RIF rule set in XML syntax):
+
+-->
+
+<Ruleset
+  xmlns="http://www.w3.org/2007/rif#"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <formula>
+  <Forall>
+    <declare><Var>item</Var></declare>
+    <declare><Var>deliverydate</Var></declare>
+    <declare><Var>scheduledate</Var></declare>
+    <declare><Var>diffdate</Var></declare>
+    <formula>
+      <Implies>
+        <if>
+          <And>
+            <formula>
+              <Uniterm>
+                <op><Const>perishable</Const></op>
+                <arg><Var>item</Var></arg>
+              </Uniterm>
+            </formula>
+            <formula>
+              <Uniterm>
+                <op><Const>delivered</Const></op>
+                <arg><Var>item</Var></arg>
+                <arg><Var>deliverydate</Var></arg>
+                <arg><Const>John</Const></arg>
+              </Uniterm>
+            </formula>
+            <formula>
+              <Uniterm>
+                <op><Const>scheduled</Const></op>
+                <arg><Var>item</Var></arg>
+                <arg><Var>scheduledate</Var></arg>
+              </Uniterm>
+            </formula>
+            <formula>
+              <Uniterm>
+                <op><Const>timediff</Const></op>
+                <arg><Var>diffdate</Var></arg>
+                <arg><Var>deliverydate</Var></arg>
+                <arg><Var>scheduledate</Var></arg>
+              </Uniterm>
+            </formula>
+            <formula>
+              <Uniterm>
+                <op><Const>greaterThan</Const></op>
+                <arg><Var>diffdate</Var></arg>
+                <arg><Const>10</Const></arg>
+              </Uniterm>
+            </formula>
+          </And>
+        </if>
+        <then>
+          <Uniterm>
+            <op><Const>reject</Const></op>
+            <arg><Const>John</Const></arg>
+            <arg><Var>item</Var></arg>
+          </Uniterm>
+        </then>
+      </Implies>
+    </formula>
+  </Forall>
+  </formula>
+  <formula>
+  <Forall>
+    <declare><Var>item</Var></declare>
+    <formula>
+      <Implies>
+        <if>
+          <Uniterm>
+            <op><Const>unsolicited</Const></op>
+            <arg><Var>item</Var></arg>
+          </Uniterm>
+        </if>
+        <then>
+          <Uniterm>
+            <op><Const>reject</Const></op>
+            <arg><Const>Fred</Const></arg>
+            <arg><Var>item</Var></arg>
+          </Uniterm>
+        </then>
+      </Implies>
+    </formula>
+  </Forall>
+  </formula>
+</Ruleset>

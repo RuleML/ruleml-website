@@ -1,0 +1,35 @@
+Rule Responder Guide Production Cycle                                2011-02-10
+
+
+Announce your planned edits to all co-authors.
+
+With your browser at http://ruleml.org/RuleResponder/RuleResponderGuide/SOURCE/
+(or, with FileZilla in iitfrdextprd01's /var/www/ruleml.org/RuleResponder/RuleResponderGuide/SOURCE),
+download (or copy) *newest* RuleResponderGuide-20xy-mm-dd.doc
+and rename it, using current date, to something like RuleResponderGuide-20xy-nn-ee.doc.
+
+Using Word 2007 [Compatibility Mode], with "Track changes" on,
+edit 'son' version RuleResponderGuide-20xy-nn-ee.doc.
+
+On the 'son' title page, update URL 'behind' Previous version
+from 'grandfather' version to 'father' version  .../RuleResponderGuide-20xy-mm-dd.pdf.
+
+In DOC 'son' version, using "Save As" submenu "PDF or XPS",
+create corresponding PDF 'son' version RuleResponderGuide-20xy-nn-ee.pdf.
+
+Using FileZilla,
+go to iitfrdextprd01's /var/www/ruleml.org/RuleResponder/RuleResponderGuide/SOURCE
+to upload-copy RuleResponderGuide-20xy-nn-ee.doc.
+
+Go up to iitfrdextprd01's /var/www/ruleml.org/RuleResponder/RuleResponderGuide
+to upload-copy RuleResponderGuide-20xy-nn-ee.pdf.
+
+Also there, copy index.html,
+change <meta ...URL=RuleResponderGuide-20xy-mm-dd.pdf">
+to     <meta ...URL=RuleResponderGuide-20xy-nn-ee.pdf">
+and upload-overwrite there.
+
+Point co-author(s) to your DOC version to do "Accept/Reject changes",
+iterating to a finished release with no remaining "Track changes".
+
+Announce finished release to all co-authors.

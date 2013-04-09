@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML as de facto language standard." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Datalog Characteristics</title>
+    <script>
+      var nextpage="RuleMLPrimer-p7-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p6-slide">
+      <h1>Datalog Characteristics</h1>
+      <ul>
+        <li>Queries must repeat arguments and relations verbatim</li>
+        <li>Refinement of phrases requires Hornlog (function-ful) RuleML </li>
+        <li>Relations have a variable (finite) number of arguments (polyadic)</li>
+        <li>Dyadic case relevant for RDF and OWL</li>
+        <li>RuleML combined with OWL in SWRL</li>
+        <li>Each edge of OrdLab graph can be considered as a binary predicate</li>
+        <li>SQL-style null values may be represented by &lt;Ind/&gt;</li>
+      </ul>
+     
+    </section>
+    <section id="section-p6-prose">
+      <h3>Datalog Characteristics - Notes</h3>
+      <p>In the above Datalog markup, the three top-level <span
+        style="font-family: courier; font-style: italic"></span><span
+          style="font-style: italic">"spent at least"</span> arguments are not further
+        analyzed; they are considered as just individual constants. For
+        identification purposes, they, and the relation itself, would need to be repeated verbatim by a query
+        that is to retrieve the above fact (as illustrated by the query in the if part
+        of the rule below). A step-wise refining analysis could exhibit the internal
+        structure and natural-language meaning of the relation and basic three arguments using
+        further, auxiliary, arguments, or proceeding from Datalog to Hornlog  (function-ful) RuleML, 
+        with all steps marked up in RuleML.</p>
+      
+      <p>Notice that in Datalog RuleML a relation can be n-ary (polyadic), i.e.
+        have a variable, but finite, number, n = 0, 1, 2, 3, ..., of arguments. 
+        A Datalog restricted to unary (monadic) and binary (dyadic)
+        relations  is an important special case, e.g. for combining
+        RuleML with <a href="http://www.w3.org/TR/owl-primer/">OWL</a><a href="http://www.w3.org/TR/owl2-overview/"></a><a href="http://www.w3.org/TR/owl-ref/"></a>, as in <a
+          href="http://www.w3.org/Submission/2004/SUBM-SWRL-20040521/">SWRL</a>. While
+        the above markup uses one 3-ary<span
+          style="font-family: courier; font-style: italic"></span><span
+            style="font-style: italic">"spent at least"</span> relation, it could also be
+        reduced to three binary relations branching off from an individual constant
+        that stands for the ternary relationship, as suggested by the above RDF-oriented XML visualization and explained in a <a
+          href="http://www.w3.org/TR/swbp-n-aryRelations/">W3C Working Group Note</a>.
+        However, to preserve the expressiveness of the relational model for databases and SQL as well as of Prolog, Datalog RuleML permits the straight representation of n-ary relations, as visualized with directed hyperarcs in <a href="http://ruleml.org/#Grailog">Grailog</a>.
+        Moreover, Datalog RuleML provides for the markup of SQL-style null values via empty
+        individuals, &lt;Ind/&gt;.</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p5-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p7-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

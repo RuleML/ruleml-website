@@ -1,0 +1,37 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Variables" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, variables, interpretable names" ]
+dc:description [ "The expansion module for variables." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Var.Node.def
+# This module declares the following RuleML elements and attributes:
+#            * <Var>
+
+## terms that can be bound by a quantifier include variables.
+SimpleQuantifiableTerm.choice |= Variable-node.choice
+
+## an extension point for alternate spellings and internationalization of the variable tag name. 
+Variable-node.choice |= Var.Node.def
+Var.Node.def =
+    
+    ## A logical variable, as in logic programming.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Var
+    element Var { (Var-datt.choice & reVar.attlist), Var.content }
+
+## Variables optionally accept the attribute pattern of objects with user-defined types.
+reVar.attlist &= Type.attlist?
+
+## The content model for variables is text.
+Var.content |= text
+Node.choice |= Var.Node.def
+# 
+
+
+

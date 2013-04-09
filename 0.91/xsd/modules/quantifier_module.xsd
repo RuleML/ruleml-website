@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd" 
+elementFormDefault="qualified"
+>
+ 
+<!-- note that elementFormDefault is qualified because of local declarations -->
+ 
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML quantifiers.
+			File: quantifier_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-16
+			
+			This module declares the following RuleML elements:
+			* Forall
+			* Exists
+			* declare
+			* formula
+						
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Forall ***
+		Explicit universal quantifier.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Forall
+
+		content model: ( oid?, (declare|Var)+, (formula|Atom|Implies|Equivalent|Forall) )
+	-->
+	<xs:attributeGroup name="Forall.attlist"/>
+	<xs:group name="Forall.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="declare"/>
+				<xs:group ref="declare.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="formula" type="formula-forall.type"/>
+				<xs:group ref="formula-forall.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Forall.type">
+		<xs:group ref="Forall.content"/>
+		<xs:attributeGroup ref="Forall.attlist"/>
+	</xs:complexType>
+	<xs:element name="Forall" type="Forall.type"/>
+
+	<!--
+		*** Exists ***
+		Explicit existential quantifier.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Exists
+
+		content model: ( oid?, (declare|Var)+, (formula|Atom|And|Or|Exists) )
+	-->
+	<xs:attributeGroup name="Exists.attlist"/>
+	<xs:group name="Exists.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="declare"/>
+				<xs:group ref="declare.content"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="formula" type="formula-exists.type"/>
+				<xs:group ref="formula-exists.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Exists.type">
+		<xs:group ref="Exists.content"/>
+		<xs:attributeGroup ref="Exists.attlist"/>
+	</xs:complexType>
+	<xs:element name="Exists" type="Exists.type"/>
+	
+	<!--
+		*** declare ***
+		A role used for variables declared within a quantifier.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-declare
+
+		content model: ( Var )
+	-->
+	<xs:attributeGroup name="declare.attlist"/>
+	<xs:group name="declare.content">
+		<xs:sequence>
+			<xs:element ref="Var"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="declare.type">
+		<xs:group ref="declare.content"/>
+		<xs:attributeGroup ref="declare.attlist"/>
+	</xs:complexType>
+	<xs:element name="declare" type="declare.type"/>
+	
+	<!--
+		*** formula ***
+		The formula role of a quantifier (<Forall> or <Exists>).
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-formula
+
+		content model (below Forall): ( Atom | Implies | Equivalent | Forall )
+		content model (below Exists): ( Atom | And | Or | Exists )
+		
+		Other (context-sensitive) versions of <formula> are in the
+		connective and performative modules.
+	-->
+	<!-- the (empty) attribute list is declared in the connective module -->
+	<xs:group name="formula-forall.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element ref="Implies"/>			
+			<xs:element ref="Equivalent"/>			
+			<xs:element ref="Forall"/>				
+		</xs:choice>
+	</xs:group>	
+	<xs:complexType name="formula-forall.type">
+		<xs:group ref="formula-forall.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+	<xs:group name="formula-exists.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+			<xs:element name="And" type="And-inner.type"/>
+			<xs:element name="Or" type="Or-inner.type"/>		
+			<xs:element ref="Exists"/>	
+		</xs:choice>
+	</xs:group>	
+	<xs:complexType name="formula-exists.type">
+		<xs:group ref="formula-exists.content"/>
+		<xs:attributeGroup ref="formula.attlist"/>
+	</xs:complexType>
+		
+</xs:schema>

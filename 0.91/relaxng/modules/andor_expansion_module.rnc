@@ -1,0 +1,189 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+dc:title [ "RuleML Conjunctions and Disjunctions" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, conjunction, disjunction" ]
+dc:description [
+  "The expansion module for conjunctions and disjunctions."
+]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= andor.Node.defs | andor.edge.defs
+Node.choice |= andor.Node.defs
+edge.choice |= andor.edge.defs
+# This module declares the following RuleML elements and attributes:
+#            * <And>
+#            * <Or>
+#            * <formula>
+# This module also declares the following RuleML choice pattern:
+#            * AndFormula.choice
+#            * OrFormula.choice
+# 
+# Schema Design Pattern Key
+# .choice : choice pattern that must be defined using choice combine (|=)
+# .def : definition of element or attribute using no-combine assignment (=)
+# .defs : choice pattern for more than one .def pattern
+# -datt.choice : choice pattern for attributes of Node elements that are given default values in the XSD
+# re ... .attlist : interleave pattern for optional attributes of Node elements, must be defined using interleave combine (&=)
+# .header : modifying elements that precede the main content of Node elements, defined using interleave combine
+# .main : the main content of a Node element, defined using choice combine
+# -node.choice : an extension point for alternate spellings and internationalization of the conjunction tag name
+# -fo.choice : a pattern that is notAllowed for all languages except those with full first-order expressive power
+# -edge.choice : a pattern that matches an edge (role) element, and may match the content of that element (stripe-skipping) 
+# .content : content of an edge element
+# Formula.choice : a choice pattern of zero to many patterns matching formulas 
+# .edge.def : definition of dummy elements for workaround to bug in translation to XSD of modules with only attributes
+
+##
+andor.Node.defs |=
+  And.Node.def
+  | Or.Node.def
+  | And-Query.Node.def
+  | Or-Query.Node.def
+andor.edge.defs |= formula_And.edge.def | formula_Or.edge.def
+
+##
+And-node.choice |= And.Node.def
+
+## A polyadic conjunctive expression, 
+## Within anything other than Query...
+And.Node.def =
+  
+  ## <And>: polyadic conjunction where <And/> is true. See
+  ## http://www.ruleml.org/0.91/glossary/#gloss-And
+  element And {
+    (And-datt.choice & reAnd.attlist), And.header, And.main
+  }
+
+## The attribute list of the conjunction element will accept a scoped closure attribute at full first-order logic.
+reAnd.attlist &= mapClosure-att-fo.choice?
+
+## an extension point for alternate spellings and internationalization of the conjunction tag name in queries.  
+And-Query-node.choice |= And-Query.Node.def
+
+## Within Query...
+And-Query.Node.def =
+  
+  ##
+  element And {
+    (And-Query-datt.choice & reAnd-Query.attlist),
+    And.header,
+    And.main
+  }
+
+## Within query, conjunctions may have an optional existential closure attribute.
+reAnd-Query.attlist &=
+  closure-att.choice? & mapClosure-att-fo.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## The header section of the implication content model follows a common pattern for compound formulas.
+And.header &= CompoundFormula.header?
+
+## Compound formulas are crisp (not fuzzifiable) and therefore contain only the pattern for general formulas
+CompoundFormula.header &= Formula.header?
+# The formula header may be serialization-dependent, 
+# see the serialization modules (orderlax_module, orderstrict_module, ordermix_module).
+
+## The main section of the conjunction content model contains zero or more formulas.
+And.main |= formula_And-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in conjunctions.  
+formula_And-edge.choice |= formula_And.edge.def
+
+## The formula role of a conjunctive (<And>) expression, 
+## Within And ...
+formula_And.edge.def =
+  
+  ## <formula>: contains a single formula. See  
+  ## http://www.ruleml.org/0.91/glossary/#gloss-formula
+  element formula { formula_And.content }
+
+## Formulas within disjunctions consist of a single formula
+formula_And.content |= AndFormula.choice
+
+## formulas allowed to participate in conjunctions. 
+AndFormula.choice |=
+  SimpleFormula-node.choice
+  | And-node.choice
+  | Or-node.choice
+  | Negation-node.choice
+  | NegationAsFailure-node.choice
+  | Implication-fo-node.choice
+  | Forall-fo-node.choice
+  | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+
+## an extension point for alternate spellings and internationalization of the disjunction tag name.  
+Or-node.choice |= Or.Node.def
+
+## A polyadic disjunctive expression, 
+Or.Node.def =
+  
+  ## <Or>: polyadic disjunction where <Or/> is false. See
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Or
+  element Or {
+    (Or-datt.choice & reOr.attlist), Or.header, Or.main
+  }
+
+## The attribute list of the disjunction element will accept a scoped closure attribute at full first-order logic.
+reOr.attlist &= mapClosure-att-fo.choice?
+
+## an extension point for alternate spellings and internationalization of the disjunction tag name in queries.  
+Or-Query-node.choice |= Or-Query.Node.def
+
+## Within Query...
+Or-Query.Node.def =
+  
+  ##
+  element Or {
+    (Or-Query-datt.choice & reOr-Query.attlist),
+    Or.header,
+    Or.main
+  }
+
+## Within query, disjunctions may have an optional existential closure attribute.
+reOr-Query.attlist &=
+  closure-att.choice? & mapClosure-att-fo.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## The header section of the implication content model follows a common pattern for compound formulas.
+Or.header &= CompoundFormula.header?
+
+## The main section of the conjunction content model contains zero or more formulas.
+Or.main |= formula_Or-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in disjunctions.  
+formula_Or-edge.choice |= formula_Or.edge.def
+
+## The formula role of a disjunctive (<Or>) expression, 
+formula_Or.edge.def =
+  
+  ##
+  element formula { formula_Or.content }
+
+## Formulas within disjunctions consist of a single formula
+formula_Or.content |= OrFormula.choice
+
+## formulas allowed to participate in disjunctions. 
+OrFormula.choice |=
+  SimpleFormula-node.choice
+  | And-node.choice
+  | Or-node.choice
+  | Negation-node.choice
+  | NegationAsFailure-node.choice
+  | Implication-fo-node.choice
+  | Forall-fo-node.choice
+  | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula and equation modules ( atom_expansion_module) 
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)

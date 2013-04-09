@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="../homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley "boley@informatik.uni-kl.de" -->
+
+<homepage>
+
+  <title>Object-Oriented RuleML</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+
+<h1>Object-Oriented RuleML</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://www.cs.sunysb.edu/~kifer">Michael Kifer</a>, <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h2>2004-12-17: Version 0.9</h2>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This paper describes Object-Oriented RuleML (OO RuleML), which has been incorporated into RuleML
+since version <a href="http://www.ruleml.org/0.87/">0.87</a>.
+The OO RuleML version described here makes use of the syntactic principles of
+<a href="http://www.ruleml.org/fol/">FOL RuleML</a>.
+OO RuleML is a
+synthesis of three expressive notions:
+(1) User-level roles
+provide frame-like slot representations as unordered argument
+collections in atoms, nanos, and complex terms. (2) Anchored clauses
+allow for clause labeling, in particual 'webizing' using URIs as object identifiers for facts
+and rules. (3) Order-sorted terms permit typed variables via Web
+links into taxonomies such as RDF Schema class hierarchies, thus
+reusing the Semantic Web's light-weight ontologies.
+</p>
+
+  </opening>
+
+<section>
+<header>Introduction</header>
+<p>
+Object-Oriented RuleML (OO RuleML) is developed here starting with a sublanguage
+that will be called 'Slotted RuleML'.
+This makes the 'type tag'-attached 'role tags' ('features', 'attributes', 'keys', or 'slots')
+of RuleML's own 'system-level syntax' available as a 'user-level syntax',
+creating a 'slotted' sublanguage in contrast to the earlier positional markup.
+Together with (2), a sublanguage providing object identity via (URI-)anchored clauses, and
+(3), a sublanguage for accessing order-sorted type hierarchies, one arrives at Object-Oriented RuleML,
+which could also have been called 'Frame RuleML'.
+OO RuleML permits the kind of 'object modeling' of
+Deductive Object-Oriented Databases (DOOD)
+and object-extended LP systems such as Life, F-logic, TRIPLE, Flora 2, SWSL-Rules, etc. in RuleML.
+A discussion of the three sublanguages and their combination can be found in an
+<a href="http://www.cs.unb.ca/~boley/ruleml/ruleml-rgs.pdf">OO RuleML paper</a>
+(still before replacing the metarole-tag element '_r' by a metarole 'slot'
+and replacing its 'n' or 'name' attribute by a type-tag subelement 'Ind', as well as
+renaming the attribute 'w' into 'weight')
+and in an <a href="ruleml-rgs-talk.ppt">OO RuleML (0.83) talk</a>.
+</p>
+
+<p>
+The 'slotted' sublanguage requires a surprisingly small change to the DTDs/Schemas of the exisiting Positional RuleML
+for permitting user roles in Atoms, Nanos, and Cterms; this also allows
+for mixed positional and object-oriented representations.
+The 'anchored' sublanguage syntactically just adds an 'oid' role to Atom and Implies elements.
+The 'order-sorted' sublanguage principally extends Var elements by a 'type' attribute,
+referring to a separate taxonomy sublanguage.
+For the current release of the XML Schema specification of RuleML
+see <a href="http://www.ruleml.org/spec">www.ruleml.org/spec</a>.
+</p>
+<p>
+The semantics of OO RuleML has been studied in the
+<a href="http://www.cs.unb.ca/~boley/ruleml/ruleml-rgs.pdf">OO RuleML paper</a> and in the context of
+<a href="http://www.ruleml.org/submission/ruleml-shortation.html">POSL</a>.
+</p>
+</section>
+
+<section>
+<header>The Basic Slotted Language</header>
+<p>
+The basic slotted language of Object-Oriented RuleML is summarized in the talk
+<a href="ruleml-nonpos.ppt">Slotted RuleML for Metarole-Based Object-Centered Knowledge Representation</a>.
+</p>
+
+
+<p>
+For example, the Positional RuleML <a href="http://www.ruleml.org/fol/#Quantifiers">'own' rule</a>
+is written thus:
+<code><![CDATA[
+<Implies>
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code>
+
+With slots written 
+as &lt;slot> slotname slotfiller &lt;/slot>, it can be re-represented in Slotted RuleML thus:
+
+<code><![CDATA[
+<Implies> 
+  <head> 
+    <Atom> 
+      <Rel>own</Rel> 
+      <slot><Ind>owner</Ind><Var>person</Var></slot> 
+      <slot><Ind>item</Ind><Var>object</Var></slot> 
+    </Atom> 
+  </head> 
+  <body> 
+    <And> 
+      <Atom> 
+        <Rel>buy</Rel> 
+        <slot><Ind>buyer</Ind><Var>person</Var></slot> 
+        <slot><Ind>seller</Ind><Var>merchant</Var></slot> 
+        <slot><Ind>item</Ind><Var>object</Var></slot> 
+      </Atom> 
+      <Atom> 
+        <Rel>keep</Rel> 
+        <slot><Ind>keeper</Ind><Var>person</Var></slot> 
+        <slot><Ind>item</Ind><Var>object</Var></slot> 
+      </Atom> 
+    </And> 
+  </body> 
+</Implies>]]></code>
+In this OO RuleML version, the former positional arguments such as &lt;Var>person&lt;/Var>,
+which needed to be in argument position 1, have become
+slotted arguments such as &lt;slot>&lt;Ind>owner&lt;/Ind>&lt;Var>person&lt;/Var>&lt;/slot>,
+which could be in any argument position.
+</p>
+<p>
+Generally, 'slot', like 'head', 'body', etc., is a system-level role-tag (hence lower-cased) element.
+However, unlike 'head', 'body', or any other role tag, it is a 'metarole' that represents
+an arbitrary user-level role tag (which cannot be written directly in a generic, domain-independent, markup language).
+The actual (domain-dependent) name of the represented user-level role is (not the metarole name 'slot' but) the first subelement of 'slot', here &lt;Ind>owner&lt;/Ind>.
+The filler of the represented user role is the second subelement of 'slot', here &lt;Var>person&lt;/Var>.
+This generic slot representation, with two subelements (rather than just one),
+permits (not only 'Ind'-like fixed/simple slot names but also) 'Var'/'Cterm' slot names,
+as needed, e.g., for Michal Kifer's F-logic.
+While role tags usually have one subelement, the metarole tag 'slot' thus calls for two
+(in <a href="http://www.daml.org/listarchive/joint-committee/1490.html">RuleML Lite</a>,
+we even permitted an arbitrary number of -- conjunctive -- subelements for the role tag 'body').
+There are also reasons to generalize slots on the user-level from unary to N-ary.
+</p>
+<p>
+Notice that in different relations the same variable, e.g. person,
+can be used as slot filler for different slot names, e.g. owner, buyer, and keeper;
+the same variable, e.g. object,
+can be also used as slot filler for the same slot name, e.g. item.
+</p>
+
+<p>
+The original Positional RuleML <a href="http://www.ruleml.org/fol/#Quantifiers">'own' rule</a>
+could also be changed to a Slotted RuleML 'own' rule as follows:
+<code><![CDATA[
+<Implies>
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+      <slot><Ind>value</Ind><Var>amount</Var></slot>
+      <slot><Ind>region</Ind><Var>where</Var></slot>
+      <slot><Ind>period</Ind><Var>when</Var></slot>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+        <slot><Ind>seller</Ind><Var>merchant</Var></slot>
+        <slot><Ind>price</Ind><Var>amount</Var></slot>
+        <slot><Ind>region</Ind><Var>where</Var></slot>
+        <slot><Ind>period</Ind><Var>when</Var></slot>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+        <slot><Ind>region</Ind><Var>where</Var></slot>
+        <slot><Ind>period</Ind><Var>when</Var></slot>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code>
+
+In this OO RuleML version, all relations have the same positional arguments, person and object,
+used throughout in positions 1 and 2, respectively. The former 2nd positional argument, merchant,
+of the buy premise is now a "seller"-slotted argument; a "price"-slotted argument is added,
+which becomes a "value"-slotted argument in the own conclusion.
+All relations use extra "region"-slotted and "period"-slotted arguments. More slotted arguments
+may be added without affecting the interpretations of any existing ones. The remaining two
+positional arguments could also be converted, to versions of "buyer"-slotted and "item"-slotted arguments,
+leading to a purely object-centered representation.
+
+</p>
+</section>
+
+<section label="Weighted">
+<header>The Slot-Weighted Extension</header>
+<p>
+The slot-Weighted extension of Object-Oriented RuleML (WOO RuleML) is summarized in the talk
+<a href="ruleml-treesim.ppt">Weighted Slotted RuleML for Similarity Matching in AgentMatcher Information Agents</a>
+and was presented in the <a href="http://www.cs.unb.ca/baseweb/">BASeWEB'03</a> paper
+<a href="BhavsarBoleyYang-Final.pdf">A Weighted-Tree Similarity Algorithm for Multi-Agent Systems in e-Business Environments</a>.
+</p>
+</section>
+
+
+
+<section label="Anchored">
+<header>Anchored Clauses</header>
+<p>
+Clauses (facts and rules) can be 'grounded' or 'anchored' via a role tag, oid, for object identifiers.
+The oid role can contain an Ind, Var, or Cterm, where the Ind may contain an attribute wlab (web label) with a URI value.
+</p>
+
+<p>
+For example, the respective Positional and Slotted RuleML (non-ground) facts
+
+        <table border="0" cellspacing="10">
+            <tr align="center">
+                <td>
+<code><![CDATA[
+<Atom>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code>
+                </td>
+                <td>
+and
+                </td>
+                <td>
+<code><![CDATA[
+<Atom>
+  <Rel>keep</Rel>
+  <slot><Ind>keeper</Ind><Ind>Mary</Ind></slot> 
+  <slot><Ind>item</Ind><Var>object</Var></slot> 
+</Atom>]]></code>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+can be anchored with the Ind keep17 as in
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Ind>keep17</Ind></oid>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code>
+                </td>
+                <td>
+and
+                </td>
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Ind>keep17</Ind></oid>
+  <Rel>keep</Rel>
+  <slot><Ind>keeper</Ind><Ind>Mary</Ind></slot> 
+  <slot><Ind>item</Ind><Var>object</Var></slot> 
+</Atom>]]></code>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+or with the Var ?object as in
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Var>object</Var></oid>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code>
+                </td>
+                <td>
+and
+                </td>
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Var>object</Var></oid>
+  <Rel>keep</Rel>
+  <slot><Ind>keeper</Ind><Ind>Mary</Ind></slot> 
+  <slot><Ind>item</Ind><Var>object</Var></slot> 
+</Atom>]]></code>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+or with the Cterm focus[?object] as in
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Cterm><Ctor>focus</Ctor>
+              <Var>object</Var>
+       </Cterm></oid>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code>
+                </td>
+                <td>
+and
+                </td>
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Cterm><Ctor>focus</Ctor>
+              <Var>object</Var>
+       </Cterm></oid>
+  <Rel>keep</Rel>
+  <slot><Ind>keeper</Ind><Ind>Mary</Ind></slot> 
+  <slot><Ind>item</Ind><Var>object</Var></slot> 
+</Atom>]]></code>
+                </td>
+            </tr>
+	    
+	    
+            <tr align="center">
+                <td>
+or via an empty Ind with wlab="http://mkb.ca" as in
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Ind wlab="http://mkb.ca"/></oid>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code>
+                </td>
+                <td>
+and
+                </td>
+                <td>
+<code><![CDATA[
+<Atom>
+  <oid><Ind wlab="http://mkb.ca"/></oid>
+  <Rel>keep</Rel>
+  <slot><Ind>keeper</Ind><Ind>Mary</Ind></slot> 
+  <slot><Ind>item</Ind><Var>object</Var></slot> 
+</Atom>]]></code>
+                </td>
+            </tr>
+
+        </table>
+</p>
+<p>
+Anchoring works the same way for Positional and Slotted RuleML rules,
+except that the oid role moves from the Atom to an Implies.
+</p>
+</section>
+
+
+<section>
+<header>The Central RDF Extension</header>
+<p>
+Our approach to the central RDF extension of Object-Oriented RuleML is summarized in the talk
+<a href="ruleml-swarch.pdf">Object-Oriented RuleML for RDF: Facts, Queries, and Inferences</a>
+(<a href="ruleml-swarch.ppt">slide source</a>).
+</p>
+</section>
+
+<section>
+<header>An N3 Comparison</header>
+<p>
+An alignment of Object-Oriented RuleML and N3 (Notation 3) has been developed at
+<a href="n3ruleml.html">N3 in Object-Oriented RuleML</a>.
+</p>
+</section>
+
+<section>
+<header>The OO DTDs</header>
+<p>
+The Atom, Nano, and Cterm elements now also have - surrounding their zero or more positional argument children - zero
+or more non-positional argument children 'slot' (for the metarole tag 'slot') with an optional CDATA attribute
+'card' (for the slot's cardinality - with default: "single", overridden via card="multiple") and 'weight'
+(for the slot's relative weight - a float number from [0.0 .. 1.0]).
+The 'slot' element has two children. The first, usually an 'Ind', stands for the slot name.
+The second is the slot filler.
+More generally, both can be arbitrary terms (e.g., may - again - be
+object-oriented Cterms).
+The slot filler - within certain Nanos - can even be an active expression, evaluating to a term.
+</p>
+
+<p>
+Basically, to obtain the DTD of Slotted RuleML,
+expand the DTD of Positional RuleML (one possibly empty block of 'XML/math/logic-positional' elements) ...
+
+<code><![CDATA[
+<!ELEMENT Cterm (Ctor?, (Ind | Var | Cterm)*)>
+
+<!ELEMENT Atom  (Rel?,  (Ind | Var | Cterm)*)>]]></code>
+
+to (one possibly empty block of 'XML/math/logic-positional' elements surrounded by two possibly empty groups of 'RDF/F-logic/DL-slotted' elements) ...
+
+<code><![CDATA[
+<!ELEMENT Cterm (Ctor?, (slot)*, (Ind | Var | Cterm)*, (slot)*)>
+
+<!ELEMENT Atom  (Rel?,  (slot)*, (Ind | Var | Cterm)*, (slot)*)>]]></code>
+
+... and add
+
+<code><![CDATA[
+<!ELEMENT slot ((Ind | Var | Cterm), (Ind | Var | Cterm))>
+
+<!ATTLIST slot card CDATA #IMPLIED>]]></code>
+
+For <a href="#Weighted">the Slot-Weighted Extension</a> we also include an optional attribute 'weight':
+<code><![CDATA[
+<!ATTLIST slot weight CDATA #IMPLIED>]]></code>
+
+Further optional attributes are of course possible.
+</p>
+
+<p>
+For <a href="#Anchored">Anchored Facts</a> we give an optional role 'oid' to Atom:
+<code><![CDATA[
+<!ELEMENT Atom  (oid?,  Rel?,  (slot)*, (Ind | Var | Cterm)*, (slot)*)>]]></code>
+Similarly, for Anchored Rules, using 'oid' in Implies.
+</p>
+</section>
+
+<section>
+<header>POSL: Merging Prolog and F-logic</header>
+<p>
+A shared Positional-Slotted Language, <a href="http://www.ruleml.org/submission/ruleml-shortation.html">POSL</a>,
+has been proposed that merges the concrete syntax, abstract (constructor and selector) syntax,
+and unification algorithms of Prolog and F-logic.
+POSL can help bridging work done by, e.g., the <a href="http://forum.semanticweb.org/">FORUM Technical Group</a>
+of RuleML and other work related to OO RuleML. Marcel Ball has implemented convertors from and to POSL,
+which were instrumental in building and maintaining the <a href="#Applications">OO RuleML Applications</a>:
+<itemize>
+  <item>The POSL parser servlet is available online at <a href="http://www.ruleml.org:8080/converters/servlet/AsciiToRuleML">POSL2RuleML</a>.
+</item>
+
+<item>The POSL generator servlet is available online at <a href="http://www.ruleml.org:8080/converters/servlet/RuleMLToAscii">RuleML2POSL</a>.
+</item>
+</itemize>
+</p>
+</section>
+
+<section label="Applications">
+<header>OO RuleML Applications</header>
+<p>
+The Rule Applying Learning Object Comparison Agent, <a href="http://198.164.40.138/raloca/">RALOCA</a>,
+was created as an early e-learning application in Object-Oriented RuleML; this has been further developed
+as part of the <a href="http://racofi.elg.ca/">RACOFI</a> (Composer) and <a href="http://www.indiscover.net/">inDiscover</a> systems.
+The New Brunswick Business Knowledge Base, <a href="http://www.ruleml.org/usecases/nbbizkb/">NBBizKB</a>,
+is a major use case for OO RuleML.
+The UNB/NRC Agent Match-Making System, <a href="http://www.cs.unb.ca/agentmatcher/">AgentMatcher</a>,
+has long used Weighted Object-Oriented (WOO) RuleML terms for representing product description trees.
+Further OO RuleML applications are being worked on, e.g. in the context of Production RuleML (PR RuleML)
+and Jess.
+</p>
+</section>
+
+<section>
+<header>Two Implementations</header>
+<p>
+The first implementation, translating Object-Oriented to Positional RuleML on top of Bruce Spencer's jDREW engine, has been
+developed by Stephen Greene in XSLT:
+<a href="http://www.ruleml.org/ooruleml-xslt/">OO RuleML in XSLT</a>.
+The second implementation, directly modifying Bruce Spencer's jDREW engine, has been
+developed by Marcel Ball in Java:
+<a href="http://www.jdrew.org/oojdrew/">OO jDREW</a>.
+</p>
+</section>
+
+<section label="Programs-as-Data">
+<header>RuleML "Programs as Data"</header>
+<p>
+Object-oriented Cterms and the 'metarole' feature of Object-Oriented RuleML permit "Programs as Data",
+as pioneered by Lisp and Prolog, in the XML world: RuleML facts, rules, and
+even entire rule bases can be elegantly encoded in OO RuleML.
+At the core, a 'system role' like &lt;head> simply becomes encoded as a 'user role' &lt;Ind>head&lt;/Ind>.
+
+For example, the original Positional RuleML <a href="http://www.ruleml.org/fol/#Quantifiers">'own' rule</a>
+(abridged through 'role skipping') could be encoded directly.
+Also, after making the system role 'opr' of its 'Rel' occurrences explicit (through 'role reconstruction'), the rule
+<code><![CDATA[
+<Implies>
+  <head>
+    <Atom>
+      <opr><Rel>own</Rel></opr>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel>buy</Rel></opr>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <opr><Rel>keep</Rel></opr>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code> 
+
+becomes encoded thus (after including a 'Rel' choice into the content model of 'slot', higher-order-like):
+
+<code><![CDATA[
+<Cterm>
+  <Ctor>Implies</Ctor>
+  <slot>
+    <Ind>head</Ind>
+    <Cterm>
+      <Ctor>Atom</Ctor>
+      <slot><Ind>opr</Ind><Rel>own</Rel></slot>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Cterm>
+  </slot>
+  <slot>
+    <Ind>body</Ind>
+    <Cterm>
+      <Ctor>And</Ctor>
+      <Cterm>
+        <Ctor>Atom</Ctor>
+        <slot><Ind>opr</Ind><Rel>buy</Rel></slot>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Cterm>
+      <Cterm>
+        <Ctor>Atom</Ctor>
+        <slot><Ind>opr</Ind><Rel>keep</Rel></slot>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Cterm>
+    </Cterm>
+  </slot>
+</Cterm>]]></code>
+
+This permits among other things (1) to specify meta-interpreters for RuleML in RuleML,
+thus extending RuleML's operational semantics, and (2) to have RuleML rules generate
+(encoded) RuleML rules.
+
+</p>
+</section>
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2005-02-26
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.ruleml.org/indoo/indoo.xml">indoo.xml</a>;
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="../cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

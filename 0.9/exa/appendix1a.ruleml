@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/hornlog.xsd">
+
+<!-- 'own' example as universal 'Assert' (changed from not-currently-supported 'Consider') -->
+
+<!-- Universally closed 'And' elements in 'Assert' wrapper -->
+
+  <Assert mapClosure="universal">
+
+    <Implies>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Implies>
+    
+    <Atom>
+      <Rel>buy</Rel>
+      <Ind>Mary</Ind>
+      <Ind>John</Ind>
+      <Cterm>
+        <Ctor>book</Ctor>
+        <Ind>Elliotte Rusty Harold</Ind>
+        <Ind>XML Bible</Ind>
+        <Ind>2001</Ind>
+      </Cterm>
+    </Atom>
+
+    <Atom>
+      <Rel>keep</Rel>
+      <Ind>Mary</Ind>
+      <Var>object</Var>
+    </Atom>
+    
+  </Assert>
+    
+</RuleML>

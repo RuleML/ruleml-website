@@ -1,0 +1,73 @@
+
+<HTML>
+
+<HEAD>
+
+<meta name="GENERATOR" content="Microsoft Internet Assistant for PowerPoint 97">
+ <TITLE>A Relational Language:</TITLE> 
+</HEAD>
+
+<BODY     >
+
+ <H1>A Relational Language:ruleml-datalog.dtd (II)</H1> 
+ <P><UL>
+&#060!-- ELEMENT and ATTLIST Declarations --&#062
+</UL><UL>
+
+</UL><UL>
+&#060!-- 'rulebase' root element uses 'if' implications as top-level rules --&#062
+</UL><UL>
+ 
+</UL><UL>
+&#060!-- label attribute allows naming of an entire individual rulebase; --&#062
+</UL><UL>
+&#060!-- e.g., this can help enable forward inferencing of selected rulebase(s)  --&#062
+</UL><UL>
+ 
+</UL><UL>
+&#060!-- direction attribute indicates the intended direction of rule inferencing;  --&#062
+</UL><UL>
+&#060!-- it is a preliminary design choice and has a 'neutral' default value --&#062
+</UL><UL>
+ 
+</UL><UL>
+&#060!ELEMENT rulebase (if*)&#062
+</UL><UL>
+&#060!ATTLIST rulebase label CDATA #IMPLIED&#062
+</UL><UL>
+&#060!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional"&#062
+</UL><UL>
+ 
+</UL><UL>
+ 
+</UL><UL>
+&#060!-- 'if' implications are usable as top-level rules --&#062
+</UL><UL>
+&#060!-- 'if' element uses a conclusion followed by a premise --&#062
+</UL><UL>
+&#060!-- "&#060if&#062conc prem&#060/if&#062" stands for "conc if prem", i.e., "conc is true if prem is true" --&#062
+</UL><UL>
+ 
+</UL><UL>
+&#060!-- label attribute is a handle for the rule: for various uses, including editing --&#062
+</UL><UL>
+ 
+</UL><UL>
+&#060!ELEMENT if (%conc;, %prem;)&#062
+</UL><UL>
+&#060!ATTLIST if label CDATA #IMPLIED&#062</UL></P>
+<P></P> 
+<P>
+<TABLE>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld014.htm">Vorherige Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=100> <A HREF="tsld016.htm">Nächste Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="tsld001.htm">Zurück zur ersten Folie</A> </TD>
+  <TD HEIGHT=100 WIDTH=150> <A HREF="sld015.htm">Graphik-Version anzeigen</A> </TD>
+</TABLE>
+<BR>
+</P>
+
+
+
+</Body>
+</HTML>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Written by Stephen Greene "stephen.greene@nrc.gc.ca" -->
+<homepage>
+	<title>OO RuleML Translators Homepage</title>
+	<opening>
+		<center>
+			<big>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+-->]]></code>
+				</box>
+				<box bgcolor="#FFCCCC">R u l e M L</box>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+<--]]></code>
+				</box>
+			</big>
+			<br/>
+			<br/>
+			<h1>Object-Oriented RuleML Translators</h1>
+		</center>
+		<br/>
+		<br/>
+		<br/>
+	</opening>
+	<uplink href="http://www.dfki.uni-kl.de/ruleml/indoo"/>
+	<section label="Introduction">
+		<header>Introduction</header>
+		<p>
+		As Object-Oriented RuleML has been developed, the need for translators to and from Object-Oriented RuleML has become apparent.
+		This site contains current translators pairs to and from Object-Oriented RuleML.
+		If you have developed any translators dealing with Object-Oriented RuleML please contact <a href="http://www.dfki.uni-kl.de/~boley">Harold Boley</a> 
+		to share your work.
+		</p>
+	</section>
+	<section label="Object-Oriented to Positional RuleML">
+		<header>Object-Oriented to Positional RuleML</header>
+		<p>
+		2003-03-26: <a href="mailto:stephen.greene@nrc.gc.ca">Stephen Greene</a> has specified <a href="oo2prml.html">XSLT translators</a> between 
+		Positional RuleML and Object-Oriented RuleML. 
+		</p>
+	</section>
+	<closing>
+		<p>
+		Site Contact:
+		<a href="http://www.dfki.uni-kl.de/~boley/">Harold Boley</a>.
+		Page Version: 2003-03-28
+<br/>
+			<br/>
+			<br/>
+			<a name="Practice-Preach"/>
+			<small>"Practice what you preach": XML source of this homepage at <a href="http://198.164.40.138/ruleml/ooruleml/translators/index.xml">index.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/index.xml.txt">index.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> 	stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+		</p>
+	</closing>
+</homepage>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+Test Example (Lists)
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY rif "http://www.w3.org/2007/rif#">
+  <!ENTITY xs  "http://www.w3.org/2001/XMLSchema#">
+]>
+
+<List
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#">
+ <items ordered="yes">
+  <List/>
+  <List>
+   <items ordered="yes">
+    <Const type="&rif;local">a</Const>
+    <Var>Y</Var>
+    <Const type="&rif;local">c</Const>
+   </items>
+  </List>
+  <List>
+   <items ordered="yes">
+    <Const type="&rif;local">a</Const>
+    <Var>Y</Var>
+    <Const type="&rif;local">c</Const>
+   </items>
+   <rest><Var>Z</Var></rest>
+  </List>
+  <List>
+   <items ordered="yes">
+    <Const type="&rif;local">a</Const>
+    <List>
+     <items ordered="yes">
+      <Var>X</Var>
+      <Const type="&rif;local">b</Const>
+     </items>
+    </List>
+    <Const type="&rif;local">c</Const>
+   </items>
+  </List>
+ </items>
+</List>

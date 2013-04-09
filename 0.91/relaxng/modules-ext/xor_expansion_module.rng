@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:dcterms="http://purl.org/dc/terms/" xmlns="http://relaxng.org/ns/structure/1.0">
+  <dc:title>RuleML Exclusive Disjunctions</dc:title>
+  <dc:version>0.91.01</dc:version>
+  <dc:creator>Tara Athan (taraathan AT gmail.com</dc:creator>
+  <dc:subject>RuleML, exclusive disjunction</dc:subject>
+  <dc:description>The expansion module for exclusive disjunctions.</dc:description>
+  <dc:date>2011-10-01</dc:date>
+  <dc:language>en</dc:language>
+  <dcterms:rights>LGPL-3.0</dcterms:rights>
+  <dc:relation>http://wiki.ruleml.org/index.php/Relax_NG</dc:relation>
+  <start combine="choice">
+    <choice>
+      <ref name="xor.Node.def"/>
+      <ref name="formula_Xor.edge.def"/>
+    </choice>
+  </start>
+  <define name="Node.choice" combine="choice">
+    <ref name="xor.Node.def"/>
+  </define>
+  <define name="edge.choice" combine="choice">
+    <ref name="formula_Xor.edge.def"/>
+  </define>
+  <!--
+    This module declares the following RuleML elements and attributes:
+               * <Xor>
+               * <formula>
+    This module also declares the following RuleML choice pattern:
+               * XorFormula.choice
+    
+  -->
+  <define name="Xor-node.choice" combine="choice">
+    <a:documentation/>
+    <ref name="xor.Node.def"/>
+  </define>
+  <define name="xor.Node.def">
+    <a:documentation>A polyadic exclusive disjunctive expression, 
+Within anything other than Query...</a:documentation>
+    <element name="Xor">
+      <a:documentation>&lt;Xor&gt;: polyadic exclusive disjunction where &lt;Xor/&gt; is false. </a:documentation>
+      <interleave>
+        <ref name="Xor-datt.choice"/>
+        <ref name="reXor.attlist"/>
+      </interleave>
+      <ref name="Xor.header"/>
+      <ref name="Xor.main"/>
+    </element>
+  </define>
+  <define name="reXor.attlist" combine="interleave">
+    <a:documentation>The attribute list of the exclusive disjunction element will accept a scoped closure attribute at full first-order logic.</a:documentation>
+    <optional>
+      <ref name="mapClosure-att-fo.choice"/>
+    </optional>
+  </define>
+  <define name="Xor-Query-node.choice" combine="choice">
+    <a:documentation>an extension point for alternate spellings and internationalization of the exclusive disjunction tag name in queries.  </a:documentation>
+    <ref name="Xor-Query.Node.def"/>
+  </define>
+  <define name="Xor-Query.Node.def">
+    <a:documentation>Within Query...</a:documentation>
+    <element name="Xor">
+      <a:documentation/>
+      <interleave>
+        <ref name="Xor-Query-datt.choice"/>
+        <ref name="reXor-Query.attlist"/>
+      </interleave>
+      <ref name="Xor.header"/>
+      <ref name="Xor.main"/>
+    </element>
+  </define>
+  <define name="reXor-Query.attlist" combine="interleave">
+    <a:documentation>Within query, exclusive disjunctions may have an optional existential closure attribute.</a:documentation>
+    <optional>
+      <interleave>
+        <optional>
+          <ref name="closure-att.choice"/>
+        </optional>
+        <optional>
+          <ref name="mapClosure-att-fo.choice"/>
+        </optional>
+      </interleave>
+    </optional>
+  </define>
+  <!-- For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module) -->
+  <define name="Xor.header" combine="interleave">
+    <a:documentation>The header section of the exclusive disjunction content model follows a common pattern for compound formulas.</a:documentation>
+    <optional>
+      <ref name="CompoundFormula.header"/>
+    </optional>
+  </define>
+  <define name="Xor.main" combine="choice">
+    <a:documentation>The main section of the exclusive disjunction content model contains zero or more formulas.</a:documentation>
+    <zeroOrMore>
+      <ref name="formula_Xor-edge.choice"/>
+    </zeroOrMore>
+  </define>
+  <define name="formula_Xor-edge.choice" combine="choice">
+    <a:documentation>an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in exclusive disjunctions.  </a:documentation>
+    <ref name="formula_Xor.edge.def"/>
+  </define>
+  <define name="formula_Xor.edge.def">
+    <a:documentation>The formula role of a exclusive disjunctive (&lt;Xor&gt;) expression, 
+Within Xor ...</a:documentation>
+    <element name="formula">
+      <a:documentation>&lt;formula&gt;: contains a single formula. See  
+http://www.ruleml.org/0.91/glossary/#gloss-formula</a:documentation>
+      <ref name="formula_Xor.content"/>
+    </element>
+  </define>
+  <define name="formula_Xor.content" combine="choice">
+    <a:documentation>Formulas within exclusive disjunctions consist of a single formula</a:documentation>
+    <ref name="XorFormula.choice"/>
+  </define>
+  <define name="XorFormula.choice" combine="choice">
+    <a:documentation>formulas allowed to participate in exclusive disjunctions. </a:documentation>
+    <choice>
+      <ref name="SimpleFormula-node.choice"/>
+      <ref name="And-node.choice"/>
+      <ref name="Or-node.choice"/>
+      <ref name="Xor-node.choice"/>
+      <ref name="Negation-node.choice"/>
+      <ref name="NegationAsFailure-node.choice"/>
+      <ref name="Implication-fo-node.choice"/>
+      <ref name="Forall-fo-node.choice"/>
+      <ref name="Exists-fo-node.choice"/>
+    </choice>
+  </define>
+  <!--
+    For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+    For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+    For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+    For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+    For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+  -->
+  <define name="AndFormla.choice" combine="choice">
+    <a:documentation>All formulas except conclusions accept exclusive disjunctions at any expressive power
+Conclusion only accept exclusive disjunctions at disjunctive Horn logic or higher</a:documentation>
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="OrFormla.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="NegFormla.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="NafFormla.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="PremiseFormula.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="ExistsFormula.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="ForallFormula.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="RulebaseFormula.choice" combine="choice">
+    <ref name="Xor-node.choice"/>
+  </define>
+  <define name="ConclusionFormula.choice" combine="choice">
+    <ref name="Xor-dis-node.choice"/>
+  </define>
+  <define name="Xor-datt.choice" combine="choice">
+    <a:documentation>exclusive disjunctions have scoped attributes that are activated at full first-order logic</a:documentation>
+    <interleave>
+      <ref name="mapMaterial-att-fo.choice"/>
+      <ref name="mapDirection-att-fo.choice"/>
+    </interleave>
+  </define>
+  <define name="Xor-Query-datt.choice" combine="choice">
+    <a:documentation>exclusive disjunctions have scoped attributes that are activated at full first-order logic</a:documentation>
+    <interleave>
+      <ref name="mapMaterial-att-fo.choice"/>
+      <ref name="mapDirection-att-fo.choice"/>
+    </interleave>
+  </define>
+  <define name="Xor-dis-node.choice" combine="choice">
+    <a:documentation>this pattern is initialized notAllowed, and will be overriden if the xor_dis_expansion module is included</a:documentation>
+    <notAllowed/>
+  </define>
+</grammar>

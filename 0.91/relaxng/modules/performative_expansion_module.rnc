@@ -1,0 +1,174 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Performative Components" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, performative, assert, retract, query" ]
+dc:description [ "The expansion module for performative components." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= performative.Node.defs | performative.edge.defs
+# This module declares the following RuleML elements and attribute:
+#            * <RuleML> !
+#            * <Assert> !
+#            * <Retract>
+#            * <Query>
+#            * <formula>
+#            * AssertRetractFormula.choice
+#            * QueryFormula.choice
+
+##
+performative.Node.defs |= RuleML.def | Assert.Node.def | Retract.Node.def | Query.Node.def
+performative.edge.defs |= formula_AssertRetract.edge.def | formula_Query.edge.def
+RuleML.def =
+    
+    ##The polyadic top_level of a RuleML document.
+    ##See http://www.ruleml.org/0.91/glossary/#gloss-RuleML
+    element RuleML { (RuleML-datt.choice & reRuleML.attlist), RuleML.header, RuleML.main }
+# The header of the RuleML root element accepts the Performative header pattern.
+RuleML.header &= Performative.header?
+
+## The RuleML root element contains zero or more performatives.
+RuleML.main |= Performative.choice*
+
+## Performatives include assertions, retractions and queries.
+Performative.choice |= AssertRetract-node.choice | Query-node.choice
+
+## a convenience pattern combining assertions and retractions
+AssertRetract-node.choice |= Assert-node.choice | Retract-node.choice
+
+## an extension point for alternate spellings and internationalization of the assertion tag name.  
+Assert-node.choice |= Assert.Node.def
+Assert.Node.def =
+    
+    ## A KQML-like performative acting as a wrapper specifying that its content is 
+    ## asserted, making an 'implicit <Rulebase>' assumption.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Assert
+    element Assert { (AssertRetract-datt.choice & reAssertRetract.attlist), AssertRetract.header, AssertRetract.main }
+
+## an extension point for alternate spellings and internationalization of the retraction tag name.  
+Retract-node.choice |= Retract.Node.def
+Retract.Node.def =
+    
+    ## A performative similar to KQML's 'untell' that acts as a wrapper specifying that its
+    ## content is to be deleted, making an 'implicit <Rulebase>' assumption.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Retract
+    element Retract { (AssertRetract-datt.choice & reAssertRetract.attlist), AssertRetract.header, AssertRetract.main }
+
+## Assertions and retractions may have an optional scope closure attribute.
+reAssertRetract.attlist &= mapClosure-att.choice?
+# For the declaration of the scope closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## Assertions and retractions accept the performative header pattern.
+AssertRetract.header &= Performative.header?
+# The object header is initialized to be empty, and may be over-ridden by optional modules. See the object identifier module (desc_module).
+
+## Assertions and retractions contain zero or more formulas.
+AssertRetract.main |= formula_AssertRetract-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in assertions and retractions.  
+formula_AssertRetract-edge.choice |= formula_AssertRetract.edge.def
+formula_AssertRetract.edge.def =
+    
+    ## The formula role of a conjunctive (<And>) or disjunctive (<Or>) expression, 
+    ## quantifier (<Forall> or <Exists>), or performative (<Assert>, <Query> or <Retract>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-formula
+    ## Within Assert or Retract...
+    element formula { formula_AssertRetract.content }
+
+## Forumulas within assertions and retractions contain a single formula.
+formula_AssertRetract.content |= AssertRetractFormula.choice
+
+## Formulas allowed in assertions and retractions:
+## Simple formulas are allowed in assertions and retractions in all sub-languages.
+## Conjunctions and disjunctions are allowed in assertions and retractions in sub-languages that contain these components.
+## Implications and universal quantifications is allowed in assertions and retractions for all quantified sub-languages.
+## Strong and weak negation are allowed in assertions and retractions for all sub-languages that contain these components.
+## Existential quantification is added to assertions and retractions for full first-order sub-languages.
+AssertRetractFormula.choice |=
+    SimpleFormula-node.choice
+    | And-fo-node.choice
+    | Or-fo-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-node.choice
+    | Forall-node.choice
+    | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+# For patterns containing "fo" see the first-order logic module (folog_base_module)
+
+## Also meta-logic statements of proof-theoretic entailment and rulebase declaration may be allowed in assertions and retractions. 
+AssertRetractFormula.choice |= Entails-node.choice | Rulebase-node.choice
+# For the declaration of the entailment and rulebase patterns, see the meta-logic module (meta_module)
+
+## an extension point for alternate spellings and internationalization of the query tag name.  
+Query-node.choice |= Query.Node.def
+Query.Node.def =
+    
+    ## A KQML-like performative acting as a wrapper specifying that its content is
+    ## queried, making an 'implicit <Rulebase>' assumption.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Query
+    element Query { (Query-datt.choice & reQuery.attlist), Query.header, Query.main }
+
+## Queries may have an optional map closure attribute 
+## and will accept a scoped closure attribute at full first-order logic.
+reQuery.attlist &= closure-att.choice? & mapClosure-att-fo.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## Queries accept the header patter common to formulas.
+Query.header &= Performative.header?
+# The object header may be positionally-dependent, 
+# see the position-(in)dependence serialization modules (orderstrict_module, orderlax_module).
+
+## The content model of queries consists of zero or more formulas.
+Query.main |= formula_Query-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in queries.  
+formula_Query-edge.choice |= formula_Query.edge.def
+formula_Query.edge.def =
+    
+    ## The formula role of a conjunctive (<And>) or disjunctive (<Or>) expression, 
+    ## quantifier (<Forall> or <Exists>), or performative (<Assert>, <Query> or <Retract>).
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-formula
+    ## Within Query ...
+    element formula { formula_Query.content }
+
+## The content model of a forumula within queries is a single formula.
+formula_Query.content |= QueryFormula.choice
+
+## Formulas allowed in queries:
+## Simple formulas are allowed in queries in all sub-languages.
+## Conjunctions and disjunctions are allowed in queries in sub-languages that contain these components.
+## Existential quantifications is allowed in queries for all quantified sub-languages.
+## Strong and weak negation are allowed in queries for all sub-languages that contain these components.
+## Implications and universal quantification are added to queries for full first-order sub-languages.
+QueryFormula.choice |=
+    SimpleFormula-node.choice
+    | And-Query-node.choice
+    | Or-Query-node.choice
+    | Negation-node.choice
+    | NegationAsFailure-node.choice
+    | Implication-fo-node.choice
+    | Forall-fo-node.choice
+    | Exists-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+
+## Also meta-logic statements of proof-theoretic entailment and rulebase declaration are  allowed in queries. 
+QueryFormula.choice |= Entails-node.choice | Rulebase-node.choice
+# For the declaration of the entailment and rulebase formula pattern, see the meta-logic and rulebase modules ( meta_module and rulebase_module) 
+Node.choice |= performative.Node.defs
+edge.choice |= performative.edge.defs

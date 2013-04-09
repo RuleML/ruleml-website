@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a global active ECA reaction rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+<!-- 
+Every minute actively detect "TroubleTicket" if not "maintenance" do "processTicket"
+
+
+ContractLog / Prova formalization (related to ISO Prolog notation)
+
+eca(
+	everyMinute(), % processing schedule for rule
+	detect(TroubleTicket:event_EventType,T), % event
+	neg(maintenance(T)), % condition state
+	rbsla.utils.TroubleSystem.processTicket(TroubleTicket:event_EventType), %action
+	 _, % empty post condition
+	 _ % empty alternative action
+).
+
+ -->
+ 
+<Assert>
+<Rule style="active" evaluation="strong">
+
+	<!-- event -->
+
+	<on>
+		<!-- local nested reaction rule with "clock" to save processing time
+			 The rule it triggered by the everyMinute event function
+			 and tries to detect the the TroubleTicket event which becomes the 
+			 trigger for the outer event of the ECA rule	
+		 -->
+		<Rule style="active">
+			<on> 
+				<Atom><Rel per="value">everyMinute</Rel></Atom>
+			</on>
+			<do> <!-- raise new event -->
+				 <Atom>
+					 <Rel per="value">detect</Rel>
+					 <Var type="event:EventType">TroubleTicket</Var> 
+					 <Var>T</Var>
+				</Atom>
+			</do>  
+		</Rule>  
+
+	</on>
+
+	<!-- condition -->
+
+	<if>
+	  <Neg>
+		<Atom>
+		    <Rel per="plain">maintenance</Rel>
+		    <Var>T</Var>
+		</Atom>
+	  </Neg>	
+	</if>
+
+	<!-- action -->	
+
+	<do> 
+		<Atom>
+			<!-- class/object -->
+			<oid><Ind uri="java://rbsla.utils.TroubleTicketSystem"/></oid>
+			<!-- Boolean-valued static method -->
+			<Rel per="effect">processTicket</Rel>
+			<!-- input parameter/argument -->
+			<Var type="rbsla:EventType" mode="+">TroubleTicket</Var> 
+		</Atom>
+	</do>
+
+</Rule>
+
+</Assert>
+
+</RuleML>

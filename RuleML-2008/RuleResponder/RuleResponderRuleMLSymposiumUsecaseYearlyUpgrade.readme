@@ -1,0 +1,50 @@
+Readme for 2008 to 2009 and 20xy to 20xy + 1
+
+All code for Rule Responder can be download through svn go here for more information: http://ibis.in.tum.de/projects/paw/index.php?option=com_content&task=view&id=5&Itemid=7
+
+Organizational Agent Updates:
+
+A new organizational agent must be created.  The Organizational agent will run on a external production server at NRC(10.1.3.4).  Current Organizational code is at:
+http://ruleml.org/RuleML-2008/RuleResponder/RuleML-2008-Responder.prova
+
+The organizational agent has to be changed so that it can delegate new queries to the new oo jdrew servlets.
+
+Mule Config Updates:
+
+Mule-all-config.xml is the configuration file and can be found in the SVN directory under the conf folder.
+
+The config file needs to update the location of the new PAs and the New OA.  After looking at the file it is is easy to determine how to update it.
+
+Ontology Update:
+
+The ontology (current one is at: http://ruleml.org/RuleML-2008/RuleResponder/RuleML-2008.owl) must be updated with the new chairs, and the responsiblities for the chairs. The ontology is used
+by the Prova Organizational agent.  The ontology is used to infer the end points that are created in the Mule Config file.
+
+Personal Agents:
+
+Update OO jDREW Servlets (Personal Agents) - all the personal agent code is checked into the OOjDREW SVN.
+To upgrade to the 2009 you need to create a new knowledge base for the personal agents.  For current knowledge bases
+check:  http://ruleml.org/RuleML-2008/RuleResponder/
+
+Once the knowledge base has been updated the servlets are all stored on a production server at NRC.
+Serverlets are currently stored at (using he liasison chair as an example): http://10.1.3.4:8080/LiaisonChairRuleML2008/
+The CS people at NRC will help people get setup on the server and how to deploy servlets.
+
+Compiling Rule Responder:
+
+Rule Responder uses Maven2.0 to build the project. It can be intergrated into eclipse and is easy to do.
+
+Running Rule Responder:
+
+Update the new jar file produced by the maven build to the external production server.  All files are currently under the paschkea account on the server.
+To run rule responder execute the start up script on the server: ./startUp < startup.input&
+
+Updating Webpage:
+
+To update the web page at:
+
+http://ruleml.org/RuleML-2008/RuleResponder/index.html
+
+You have to use the new CSS of the next RuleML-20XY site.
+
+You also have to change the queries in the text box by editing the java script.

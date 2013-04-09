@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.85/dtd/urequalog.dtd">
+
+<!-- a trivial example rulebase for testing the 'UR' Equalog RuleML sublanguage -->
+
+<rulebase
+xmlns="http://www.ruleml.org/inspec"
+xsi:schemaLocation="http://www.ruleml.org/inspec http://www.ruleml.org/0.85/xsd/urequalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+direction="backward"
+>
+
+<imp>
+  <_head>
+     <atom>
+      <_opr><rel>friend</rel></_opr>
+      <_slot name="t"><var>b</var></_slot>
+      <var type="string">x</var>
+      <var>y</var>
+      <ind href="some_URI">Steph</ind>
+     </atom>
+  </_head>
+  <_rlab><ind>(implication) rule label</ind></_rlab>
+  <_body>
+    <and>
+    <atom>
+      <_opr><rel>friend</rel></_opr>
+      <ind type="test" href="some_URI">Jane</ind>
+      <ind href="another_URI">Joan</ind>
+      <ind href="another_URI" type="long">Jack</ind>
+      <var>y</var>
+      <ind href="another_URI">Frank</ind>
+      <_slot name="yar">
+        <cterm type="string">
+          <_opc><ctor href="another_URI">constructor</ctor></_opc>
+          <plex>
+            <var>z</var>
+            <_slot name="yar2"><var>c</var></_slot>
+          </plex>
+        </cterm>      
+      </_slot>
+    </atom>
+    </and>
+  </_body>
+</imp>
+
+<query>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel href="some_URI">some relation</rel></_opr>
+        <_slot name="role_name1"><ind>role 1</ind></_slot>
+        <ind>constant a</ind>
+        <ind href="another_URI">constant b</ind>
+        <_slot name="role_name2"><ind href="another_URI">role 2</ind></_slot>
+      </atom>
+      <atom>
+        <_opr><rel>another relation</rel></_opr>
+        <ind href="another_URI">constant c</ind>
+        <ind>constant d</ind>
+        <cterm>
+          <_opc><ctor>yac</ctor></_opc>
+            <ind>constant g</ind>
+            <ind href="another_URI">constant h</ind>
+            <cterm>
+              <_opc><ctor href="empty_URI">empty</ctor></_opc>
+            </cterm>
+            <ind>constant h</ind>
+        </cterm>
+      </atom>
+      <eq>
+        <nano>
+          <_opf><fun href="fun_URI">some function</fun></_opf>
+          <ind>arg1</ind>
+          <ind>arg2</ind>
+          <ind type="test2">arg3</ind>
+        </nano>
+        <nano>
+          <_opf><fun href="fun_URI">some other function</fun></_opf>
+          <ind>arg4</ind>
+          <ind>arg5</ind>
+          <ind>arg6</ind>
+        </nano>
+      </eq>
+    </and>
+  </_body>
+  <_rlab><ind>rule (query) label</ind></_rlab>
+</query>
+
+<fact>
+  <_rlab>
+    <cterm>
+      <_opc><ctor href="ctor_URI">rule label</ctor></_opc>
+      <_slot name="label"><ind>an example fact</ind></_slot>
+    </cterm>
+  </_rlab>
+  <_head>
+    <atom>
+      <_opr><rel>yet another relation</rel></_opr>
+      <ind>constant e</ind>
+      <ind>constant b</ind>
+      <_slot name="role_name3"><ind>role 3</ind></_slot>
+    </atom>
+  </_head>
+</fact>
+
+<fact>
+  <_rlab><ind>rule (fact) label</ind></_rlab>
+  <_head>
+    <eq>
+      <ind>some constant</ind>
+      <var type="test">d</var>
+    </eq>
+  </_head>
+</fact>
+
+<_rbaselab>
+  <cterm>
+    <_opc><ctor>rulebase label</ctor></_opc>
+    <_slot name="label"><ind>an example rulebase</ind></_slot>
+  </cterm>
+</_rbaselab>
+
+</rulebase>
+
+
+<!--
+expected validation results (using http://www.stg.brown.edu/service/xmlvalid):
+
+Warnings:
+
+line 25, http://198.164.40.138/ruleml/0.85/dtd/datalog_mod.mod:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): atom.content 
+line 7, http://198.164.40.138/ruleml/0.85/dtd/urcdatalog.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): atom.content 
+line 7, http://198.164.40.138/ruleml/0.85/dtd/urcbindatalog.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _slot.content 
+line 10, http://198.164.40.138/ruleml/0.85/dtd/urcbindatalog.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): atom.content 
+line 31, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): rulebase.content 
+line 38, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _rbaselab.content 
+line 57, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _rlab.content 
+line 62, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _head.content 
+line 67, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _body.content 
+line 73, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): and.content 
+line 82, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): atom.content 
+line 92, http://198.164.40.138/ruleml/0.85/dtd/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _slot.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _slot.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _slot.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: and.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: and.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _body.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _body.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _head.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _head.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _rlab.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _rlab.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _rbaselab.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _rbaselab.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: rulebase.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: rulebase.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _slot.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _slot.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: atom.content 
+line 13, http://198.164.40.138/ruleml/0.85/dtd/urequalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: atom.content 
+
+Document validates OK.
+-->

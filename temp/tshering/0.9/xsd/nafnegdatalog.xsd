@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd" 
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including both explicit
+				and default (strong/weak) negation
+			File: nafnegdatalog.xsd
+			Version: 0.9
+			Last Modification: 2005-11-09
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafnegdatalog includes the 'naf' module and redefines it slightly -->
+	<xs:redefine schemaLocation="modules/naf_module.xsd">
+
+		<!--
+			add False so that weak's content model is:
+			(Atom | False)
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="False"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds False to Naf so that Naf's content model is:
+			(weak | Atom | False)
+		-->		
+
+	</xs:redefine>
+	
+	<!--
+		note the addition of Naf (negation as failure)
+	-->
+	<xs:redefine schemaLocation="negdatalog.xsd">
+
+		<!--
+			add Naf so that body's content model is:
+			(Atom | And | Or | False | Naf)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds Naf to Implies so that its content model is:
+			( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or | False | Naf), (Atom | False) ) )
+		-->	
+		
+		<!--
+			add Naf so that Query's content model is:
+			( (formula | Atom | And | Or | Exists | False | Naf)* )
+		-->
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:group ref="formula-query.content"/>
+				<xs:element ref="Naf"/>	
+			</xs:choice>	
+		</xs:group>
+
+		<!--
+			add Naf so that formula's content model (when under And/Or) is:
+			(Atom | And | Or | Naf | False)
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Naf"/>				
+			</xs:choice>	
+		</xs:group>		
+		<!--
+			note that the above indirectly adds Naf to And and Or so their content models are:
+			( (formula | Atom | And | Or | Naf | False)* )
+		-->		
+
+	</xs:redefine>
+	
+</xs:schema>

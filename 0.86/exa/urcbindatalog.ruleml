@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<!-- a trivial example rulebase for testing the 'UR'-Centered Binary Datalog RuleML sublanguage -->
+
+<rulebase
+xmlns="http://www.ruleml.org/0.86/xsd"
+xsi:schemaLocation="http://www.ruleml.org/0.86/xsd http://www.ruleml.org/0.86/xsd/urcbindatalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+direction="backward"
+>
+
+<imp>
+  <_head>
+     <atom>
+      <_opr><rel>friend</rel></_opr>
+      <_slot name="t"><var>b</var></_slot>
+      <var>x</var>
+      <var>y</var>
+     </atom>
+  </_head>
+  <_rlab><ind>(implication) rule label</ind></_rlab>
+  <_body>
+    <and>
+    <atom>
+      <_opr><rel>friend</rel></_opr>
+      <var>y</var>
+      <ind href="some_URI">Frank</ind>
+    </atom>
+    </and>
+  </_body>
+</imp>
+
+<query>
+  <_body>
+    <and>
+      <atom>
+        <_opr><rel href="some_URI">some relation</rel></_opr>
+        <_slot name="role_name1"><var>role 1 variable</var></_slot>
+        <ind>constant a</ind>
+        <ind href="another_URI">constant b</ind>
+        <_slot name="role_name2"><var>role 2 variable</var></_slot>
+      </atom>
+      <atom>
+        <_opr><rel href="some_URI">another relation</rel></_opr>
+        <ind>constant c</ind>
+        <ind>constant d</ind>
+      </atom>
+    </and>
+  </_body>
+  <_rlab><ind>rule (query) label</ind></_rlab>
+</query>
+
+<fact>
+  <_rlab><ind>rule (fact) label</ind></_rlab>
+  <_head>
+    <atom>
+      <_opr><rel>yet another relation</rel></_opr>
+      <ind href="URI">constant e</ind>
+      <ind>constant b</ind>
+      <_slot name="role_name3"><ind>role 3</ind></_slot>
+    </atom>
+  </_head>
+</fact>
+
+<_rbaselab><ind>test rulebase</ind></_rbaselab>
+</rulebase>
+
+
+<!--
+expected validation results (using http://www.stg.brown.edu/service/xmlvalid):
+
+Warnings:
+
+line 31, http://198.164.40.138/ruleml/dtd/0.85/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): rulebase.content 
+line 82, http://198.164.40.138/ruleml/dtd/0.85/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): atom.content 
+line 92, http://198.164.40.138/ruleml/dtd/0.85/urcbindatagroundfact.dtd:
+    warning (745): duplicate parameter entity declaration (will be discarded if used): _r.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: rulebase.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: rulebase.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: atom.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: atom.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (750): discarding duplicate parameter entity declaration: _r.content 
+line 16, http://198.164.40.138/ruleml/dtd/0.85/urcbindatalog.dtd:
+    warning (751): incompatible parameter entity redeclaration: _r.content 
+
+Document validates OK.
+-->

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Primer Page Template</title>
+    <script>
+      var nextpage="RuleMLPrimer-p13-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p12-slide">
+      <h1>Backward Chaining Derivation</h1>
+      <ol start="3">
+        <li>Goal succeeds if both conjuncts of antecedent succeed.
+          <ul>
+            <li>Subgoal: "Peter Miller is premium."</li>
+            <li>Subgoal: "A Porsche is a luxury product."</li>
+          </ul>
+        </li>
+        <li>Both subgoals succeed.
+          <ul>
+            <li>"Peter Miller is premium" succeeds by chaining.</li>
+            <li>"A Porsche is a luxury product." succeeds by fact. </li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+    <section id="section-p12-prose">
+      <h3>Backward Chaining Derivation - Notes</h3>
+      <p>So, the
+        <span style="font-family: courier"
+          >&lt;Rel&gt;discount&lt;/Rel&gt;</span>
+        rule succeeds with those bindings, proving an atom shown next.</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p12a-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p13-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

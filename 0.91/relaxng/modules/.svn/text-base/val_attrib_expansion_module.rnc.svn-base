@@ -1,0 +1,32 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML set-valued Function Attribute Schema" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, set-valued" ]
+dc:description [ "The expansion module for the set-valued attribute." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= val.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * @val
+
+## an extension point for alternate spellings and internationalization of the attribute for set-valued functions.  
+singlevalued-att.choice |= val.attrib.def
+val.attrib.def =
+    #
+    
+    ## This attribute is used to indicate whether a function (<Fun>) is deterministic or non-deterministic. 
+    ## It has two values: "1" (deterministic: exactly one) and "0.." (set-valued: zero or more).    
+    ## See http://www.ruleml.org/1.0/glossary/#gloss-@val
+    attribute val { val.value }
+val.value |= val_default.value | val_non-default.value
+## FIXME: move all such statements into initialization module.
+val_default.value |= notAllowed
+val_non-default.value |= notAllowed
+#
+val.edge.def = element val { val.content }
+val.content |= val.value

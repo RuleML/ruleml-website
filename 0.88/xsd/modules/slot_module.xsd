@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd"
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Role RuleML elements module.
+			This is the XML Schema slot element module for RuleML.
+			File: slot_module.xsd
+			Version: 0.88
+			Last Modification: 2005-01-18
+			
+			This module declares the following RuleML element and attributes:
+			* slot
+			* @card
+			* @weight
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** slot ***
+		content model:
+		( (Ind | Var), (Ind | Var) )
+
+		User-defined slots.
+
+		'slot' consists of a name given in the first position and a filler, supplied as the second child.
+		Both the name and the filler are an individual constant or a variable (or, in hornlog, a
+		complex term or Plex).
+
+		Optional attributes are 'card',	specifying the role's cardinality, and 'weight', specifying the
+		role's relative weight.
+	-->
+	<xs:attributeGroup name="slot.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="slot.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="slot.type">
+		<xs:group ref="slot.content"/>
+		<xs:attributeGroup ref="slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="slot" type="slot.type"/>
+
+	<!--
+		*** @card ***
+		
+		Optionally specifies the metarole's cardinality.
+	-->
+	<xs:attributeGroup name="card.attrib">
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @weight ***
+		
+		Optionally specifies the metarole's relative weight.
+	-->
+	<xs:attributeGroup name="weight.attrib">
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

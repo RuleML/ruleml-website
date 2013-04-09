@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            TestCases module part of RBSLA.
+			This is the XML Schema test cases module for RBSLA.
+			File: testcases_module.xsd
+			Version: 0.2
+			Last Modification: 2005-11-26
+			
+			This schema declares the following RBSLA elements and attributes:
+			
+			* TestCase	
+			* Test
+			* atom_implies_testcase.content
+			* @semantic
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+<!--
+     *** TestCase ***
+     
+     content model: ( oid?,  Test+, Atom*, Implies*, Integrity* )
+-->
+	<xs:attributeGroup name="TestCase.attlist">
+		<xs:attributeGroup ref="semantic.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="TestCase.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="Test" maxOccurs="unbounded"/>
+			<xs:group ref="atom_implies_testcase.content"/>
+			<xs:element ref="Integrity" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="TestCase.type">
+		<xs:group ref="TestCase.content"/>
+		<xs:attributeGroup ref="TestCase.attlist"/>
+	</xs:complexType>
+	<xs:element name="TestCase" type="TestCase.type"/>
+	<!--
+	  group atom_implies_testcase.content
+
+	  content model: ( Atom*, Implies* )
+-->
+	<xs:group name="atom_implies_testcase.content">
+		<xs:sequence>
+			<xs:element ref="Atom" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Implies" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!--
+     *** Test ***
+     
+     content model: ( oid?, Ind?, Query)
+-->
+	<xs:attributeGroup name="Test.attlist"/>
+	<xs:group name="Test.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="Ind" minOccurs="0"/>
+			<xs:element ref="Query"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Test.type">
+		<xs:group ref="Test.content"/>
+		<xs:attributeGroup ref="Test.attlist"/>
+	</xs:complexType>
+	<xs:element name="Test" type="Test.type"/>
+	
+<!--
+     *** @semantic ***
+     
+     
+-->
+	<xs:attributeGroup name="semantic.attrib">
+		<xs:attribute name="semantic" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+</xs:schema>

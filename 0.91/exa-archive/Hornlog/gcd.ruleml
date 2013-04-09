@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<Assert>
+  <!--
+	Euclidean function:
+
+    GCD(a,b)=a if a = b, 
+    GCD(a,b)=GCD(a-b,b) if a > b, 
+    GCD(a,b)=GCD(a,b-a) if a < b. 
+  -->
+
+  <!--
+    GCD(a,b)= a if a = b
+    simplified to unconditional equation:
+    GCD(a,a)= a
+  -->
+
+  <Equal oriented="yes">
+    <Expr>
+      <Fun in="yes">GCD</Fun>
+        <Var>a</Var>
+        <Var>a</Var>
+    </Expr>
+    <Var>a</Var>
+  </Equal>
+
+
+ <!--
+  GCD(a,b)=GCD(a-b,b) if a > b
+ -->
+
+ <Implies>
+   <head>
+     <Equal oriented="yes">
+       <Expr>
+         <Fun in="yes">GCD</Fun>
+           <Var>a</Var>
+           <Var>b</Var>
+       </Expr>
+       <Expr>
+         <Fun in="yes">GCD</Fun>
+           <Expr>
+             <Fun in="yes">subtract</Fun>
+               <Var>a</Var>
+               <Var>b</Var>
+           </Expr>
+           <Var>b</Var>
+       </Expr>
+     </Equal>
+   </head>
+   <body>
+     <Atom>
+       <Rel>greaterThan</Rel>
+       <Var>a</Var>
+       <Var>b</Var>
+     </Atom>
+   </body>
+ </Implies>
+
+	
+	<!--
+	  GCD(a,b)=GCD(b,a) if a < b
+	-->
+	
+  <Implies>
+    <head>
+      <Equal oriented="yes">
+        <Expr in="yes">
+          <Fun>GCD</Fun>
+            <Var>a</Var>
+            <Var>b</Var>
+        </Expr>
+        <Expr in="yes">
+          <Fun>GCD</Fun>
+            <Var>b</Var>
+            <Var>a</Var>
+        </Expr>
+      </Equal>
+    </head>
+    <body>
+      <Atom>
+        <Rel>lessThan</Rel>
+        <Var>a</Var>
+        <Var>b</Var>
+      </Atom>
+    </body>
+  </Implies>
+</Assert>
+</RuleML> 
+ 

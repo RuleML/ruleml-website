@@ -1,0 +1,34 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Skolems" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, skolem" ]
+dc:description [ "The expansion module for skolems." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Skolem.Node.def
+# This module declares the following RuleML elements, attributes and patterns:
+#            * <Skolem>
+
+## an extension point to allow alternate names and internationalization for Skolem constants
+Skolem-node.choice |= Skolem.Node.def
+Skolem.Node.def =
+    
+    ## A Skolem individual constant, like RDF's blank nodes.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Skolem
+    element Skolem { (Skolem-datt.choice & reSkolem.attlist), Skolem.content }
+
+## Skolems optionally accept the attribute pattern of objects with user-defined types.
+reSkolem.attlist &= Type.attlist?
+
+## The content model for skolems is text.
+Skolem.content |= text
+Node.choice |= Skolem.Node.def
+
+

@@ -1,0 +1,616 @@
+/***************************************************************************
+* @package Export Content
+* @copyright Copyright (C) 2007 www.bestdownloadsites.com All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL,
+* Export Content is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*****************************************************************************/
+.static_warn{
+ font-size: 11px;
+  font-weight:normal;
+ 
+  padding-top: 6px;
+  padding-bottom: 2px;	
+}
+#cpanel {  text-align: center;  vertical-align: middle; }
+
+#cpanel {  text-align: center;  vertical-align: middle; }
+
+#cpanel div.icon_stat   { margin: 3px; }
+#cpanel div.icon_stat a { 
+	display: block; float: left;
+	height: 97px !important;
+	height: 100px; 
+	width: 360px !important;/*was 108*/
+	width: 110px; 
+	vertical-align: middle; 
+	text-decoration : none;
+	border: 1px solid #DDD;
+	padding: 2px 5px 1px 5px;
+}
+
+#cpanel div.icon_stat a:link    {  color : #808080;  }
+#cpanel div.icon_stat a:hover   { 
+	color : #333; 
+/*	background-color: #f1e8e6;*/
+  background-color:#F7F8F9  
+	border: 1px solid #c24733;
+	padding: 3px 4px 0px 6px; 
+}
+#cpanel div.icon_stat a:active  {  color : #808080;  }
+#cpanel div.icon_stat a:visited {  color : #808080;  }
+
+#cpanel div.icon_stat img { margin-top: 5px; }
+#cpanel div.icon_stat span { display: block; padding-top: 3px;}
+.intro_border{
+   border: 1px;
+  border-style:solid;
+  border-bottom-color:#EFEFEF;
+  border-right-color:#EFEFEF;
+  border-left-color:#EFEFEF;
+  border-top-color:#EFEFEF;	
+ }
+ table.thisform {
+  
+  background-color: #F7F8F9;
+  border: solid 0px #d5d5d5;
+  width: 100%;
+  padding: 10px;
+  border-collapse: collapse;
+}
+
+ table.thisform tr.row0 {
+  background-color: #F7F8F9;
+}
+
+ table.thisform tr.row1 {
+  background-color: #eeeeee;
+}
+
+ table.thisform th {
+  font-size: 15px;
+  font-weight:normal;
+  font-variant:small-caps;
+  padding-top: 6px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: left;
+  height: 25px;
+  color: #666666;
+  background: url(../images/background.gif);
+  background-repeat: repeat;
+}
+
+ table.thisform td {
+  padding: 3px;
+  text-align: left;
+  border: 1px;
+  border-style:solid;
+  border-bottom-color:#EFEFEF;
+  border-right-color:#EFEFEF;
+  border-left-color:#EFEFEF;
+  border-top-color:#EFEFEF;	
+}
+
+table.thisform2 {
+  background-color: #F7F8F9;
+  border: solid 1px #d5d5d5;
+  width: 100%;
+  padding: 5px;
+}
+
+ table.thisform2 td {
+  padding: 5px;
+  text-align: center;
+  border: 1x;
+  border-style: solid;
+  border-bottom-color:#EFEFEF;
+  border-right-color:#EFEFEF;
+  border-left-color:#EFEFEF;
+  border-top-color:#EFEFEF;
+}
+
+ .thisform2 td:hover {
+  background-color: #B5CDE8;
+  border:	1px solid #30559C;
+}
+
+ table.thisform3 {
+  background-color: #F7F8F9;
+  border: solid 1px #d5d5d5;
+  width: 100%;
+  padding: 10px;
+  border-collapse: collapse;
+  text-align:left;
+	}
+
+ table.thisform3 tr.row0 {
+  background-color: #333;
+}
+
+ table.thisform3 tr.row1 {
+  background-color: #333;
+}
+/***********************
+export heading
+***********************/
+ table.thisform3 th {
+  font-size: 15px;
+  font-weight:normal;
+  font-variant:small-caps;
+  padding-top: 6px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: left;
+  height: 25px;
+  color: #999999;
+  background: url(../images/background.gif);
+  background-repeat: repeat;
+}
+/***********************
+export heading td
+***********************/
+table.thisform3 td {
+  padding-left: 20px;
+  padding-right: 10px;
+  text-align: left;
+  border: 1px;
+  border-style:solid;
+  border-bottom-color:#d5d5d5;
+  border-right-color:#d5d5d5;
+  border-left-color:#d5d5d5;
+  border-top-color:#d5d5d5;	
+  color:#000000;
+}
+/******export logo******/
+.config_logo{
+	text-align:center;
+	background-image: url(images/binarycodex.gif);
+	height:40px;
+	padding-top:2px;
+	padding-bottom:2px;
+	margin:0px;
+}
+
+
+.page_dropdowns{
+color:#930;
+  font-weight:500;
+    background-image: url(images/background.gif);
+  border-style:solid;
+  border-left-width:0px;
+  border-top-width:0px;
+  border-bottom-width:0px;
+  border-right-width:0px;
+  border-left-color:#E7E7E7;
+  border-top-color:#E7E7E7;
+  background-color:#EEEEEE;
+  text-align:left;
+ /* line-height:20px;*/	
+  padding-left:15px;
+  padding-top:10px;
+  padding-bottom:10px;
+  
+   
+}
+
+.version{
+  color:#930;
+  font-weight:600;
+  font-size:9px;
+  text-align:left;
+  display:block;
+  margin-left:2px;
+  margin-top:2px;
+  background-image: url(images/background.gif);
+  border-style:solid;
+  border-left-width:0px;
+  border-top-width:0px;
+  border-bottom-width:1px;
+  border-right-width:0px;
+  border-left-color:#E7E7E7;
+  border-top-color:#E7E7E7;
+  background-color:#EEEEEE;
+}
+/*************
+ Menu table
+ ************/
+.menu{
+  border-style:solid;
+  border-left-width:0px;
+  border-top-width:1px;
+  border-bottom-width:0px;
+  border-right-width:0px;
+  border-left-color:#E7E7E7;
+  border-top-color:#E7E7E7;
+  background-color:#EEEEEE;
+}
+/****************
+Menu cells
+*****************/
+.nav {
+   background-color:#F9F9F9;
+   text-align:left;
+   padding-left:2px;
+   padding-right:2px;
+   padding-top:3px;
+   padding-bottom:3px;
+   font-size:12px;
+   border-style:solid;
+   border-color:#E7E7E7;
+   border-right-width:1px;
+   border-left-width:0px;
+   border-bottom-width:1px;
+   border-top-width:0px;
+}
+/******************************
+nav
+*******************************/
+th.nav {
+  border-style:solid;
+  border-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:1px;
+  border-top-width:0px;
+    }
+/******************************
+nav
+*******************************/
+th.nav a{
+  height:18px;
+  text-align:left;
+  width:150px;
+  padding-left:8px;
+  padding-right:2px;
+  padding-top:3px;
+  padding-bottom:3px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-right-width:0px;
+  border-color:#E7E7E7;
+  border-style:solid;
+  text-decoration:none;
+  cursor:hand;
+}
+/******************************
+Nav
+*******************************/
+th.nav hover{
+  color:green;
+  height:18px;
+  text-align:center;
+  width:150px;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:3px;
+  padding-bottom:3px;
+  border-left-width:1px;
+  border-bottom-width:1px;
+  border-top-width:1px;
+  border-right-width:1px;
+  border-color:#E7E7E7;
+  background-color:#000000;
+  border-style:solid;
+  text-decoration:none;
+  cursor:hand;
+}
+/**************
+menu headings
+**************/
+td.menu_head{
+  padding-left:6px;
+  padding-right:6px;
+  border-style:solid;
+  border-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:1px;
+  border-top-width:0px;
+  font-family: Tahoma;
+}
+/******************************
+Menu heading
+*******************************/
+.menu_head{
+  padding-top:6px;
+  padding-bottom:6px;
+  height: 25px
+  background-color:#d5d5d5;
+  background-image: url(images/background.gif);
+  border-style:solid;
+  border-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:1px;
+  border-top-width:0px;
+  font-family: Tahoma, arial, verdana;
+}
+/******************************
+Popup help page
+*******************************/
+/*.help_txt{
+  color:#006699;
+  font-weight:500;
+  text-align:left;
+  display:block;
+  margin-left:15px;
+  }*/
+/**********************************
+All text in section ,categories ect
+**********************************/
+.titles {
+  display:block;
+  color:#006699;
+  font-weight:500;
+  text-align:left;
+  }
+/******************************
+About us page
+*******************************/
+.about{
+  text-align:left;
+  color:#5575B0;
+  background-color:#FBFBFB;
+  font-size:12px;
+  font-weight:500;
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+  display:block;
+  margin-left:0px;
+  padding-top:5px;
+ 
+ }
+ .about_heading{
+  /* background-image: url(images/logo_back.png);*/
+}
+
+/******************************
+Download data page
+*******************************/
+ .download_page{
+  color:#333333;
+  font-weight:500;
+  font-size:12px;
+  text-align:left;
+  margin-left:40px;
+  
+ }
+/******************************
+Buttons
+*******************************/
+
+.button_size{
+  color:#930;
+  font-family: verdana arial Tahoma;
+  font-size:12px;
+  font-weight:500;
+  border-style:solid;
+  border-width:1px;
+  border-color:#E7E7E7;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:2px;
+  padding-bottom:2px;
+  background-image: url(images/background.gif);
+/*  filter:progid:DXImageTransform.Microsoft.Gradient
+  (GradientType=0,StartColorStr='#ffffffff',EndColorStr='#33CCCC');*/
+}
+/******************************
+layout for buttons table
+*******************************/
+.button_tab{
+  text-align:left;
+  width:33%;
+}
+/******************************
+ Menu table
+*******************************/
+.menu_tab{
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:1px;
+  border-left-width:1px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+  /*background-image: url(images/formbg.jpg);*/
+  height:auto;
+   background-color:#FBFBFB;
+}
+/******************************
+foot notes
+*******************************/
+.foot{
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+}
+/******************************
+Table wrapping pages
+*******************************/
+.main_tab{
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+}
+/******************************
+Download page
+*******************************/
+div.download_page_txt{
+  text-align:left;
+  width:98%;
+  color:#930;
+  font-family:verdana;
+  font-size:11px;
+  font-weight:500;
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+  padding-top:20px;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:15px;
+   background-color:#FFFFFF;
+
+}
+/******************************
+File sizes on download page
+*******************************/
+div.filesizes{
+  width:90%;
+  height:190px;
+  font-family:verdana;
+  font-size:11px;
+  font-weight:500;
+  border-top-color:#c63;
+  border-left-color:#c63;
+  border-right-color:#930;
+  border-bottom-color:#930;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+  padding:10px;
+  text-align:left;
+  margin-bottom:50px;
+   
+}
+/***************************************************
+Controls the instructions at the top of each page
+***************************************************/
+div.static_page_txt{
+  display:block;
+  text-align:left;
+  width:95%;/*firefox fix*/
+  color:#930;
+  font-family:verdana;
+  font-size:11px;
+  font-weight:500;
+  border-top-color:#E7E7E7;
+  border-left-color:#E7E7E7;
+  border-right-color:#E7E7E7;
+  border-bottom-color:#E7E7E7;
+  border-right-width:0px;
+  border-left-width:0px;
+  border-bottom-width:0px;
+  border-top-width:0px;
+  border-style:solid;
+  padding:20px;
+  float:right;
+  margin-top:0px;
+  margin-left:0px;
+  background-color:#EEEEEE;
+  /*background-image: url(images/formbg.jpg);*/
+   background-color:#FBFBFB;
+   background-color:#FFFFFF;
+}
+/***************************************************
+Controls the headings at the top of each page
+***************************************************/
+table.main_headings th {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	width: 100%;
+/*	border-collapse: collapse;*/
+/*	color: #C64934;*/
+    color:#930;
+	font-size : 16px;
+	font-weight: bold;
+     /*background-image: url(images/formbg.jpg);*/
+ 
+   background-color:#FBFBFB;
+	text-align: left;
+	height: 50px;
+    padding-left: 50px;
+   /* #c63 red border*/
+    border-top-color:#E7E7E7;
+    border-left-color:#E7E7E7;
+    border-right-color:#E7E7E7;
+    border-bottom-color:#E7E7E7;
+    border-right-width:0px;
+    border-left-width:0px;
+    border-bottom-width:1px;
+    border-top-width:1px;
+    border-style:solid;
+}
+.main_headings  {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	width: 100%;
+    color:#930;
+	font-size : 16px;
+	font-weight: bold;
+	}
+/*********************************
+Section/category/filter boxes
+********************************/
+.content_select_boxes{
+  display:block;
+  float:right;
+  margin-right:40px;
+  width:95%;/*firefox fix*/
+  color:#930;
+  font-family:verdana;
+  font-size:11px;
+  font-weight:500;
+  padding-top:10px;
+  margin-top:10px;
+}
+/*********************************
+Trouble Shooting
+********************************/
+.trouble_shoot{
+  width:55%;
+  border-top-color:#c63;
+  border-left-color:#c63;
+  border-right-color:#930;
+  border-bottom-color:#930;
+  border-right-width:1px;
+  border-left-width:1px;
+  border-bottom-width:1px;
+  border-top-width:1px;
+  border-style:solid;
+  padding-left:10px;
+  padding-top:10px;
+  margin-top:30px;
+}
+input.text_area{
+	text-align:left;
+	color:red;
+}

@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+>
+
+	<!--
+		*** Reaction ***
+		A reaction rule.
+
+		See http://www.ruleml.org/ ??
+
+		content model:
+
+		(
+		   event,
+		   (
+		     ( body, (action)?, (postcondition)?, (alternative)? )
+		     |
+		     ( action, (postcondition)?, (alternative)? )
+		   )?
+		)
+		| ( body, action, (postcondition)?, (alternative)? )
+		| ( action, (postcondition)?, (alternative)? )
+
+		@@@ need to add in oid and skippable role tags as with Implies:
+		( oid?, (head, body) | (body, head) | ( (Atom | Rulebase | And | Or), Atom ) )		
+	-->
+
+	<xs:attributeGroup name="Reaction.attlist">
+		<!-- remove for now
+		<xs:attributeGroup ref="exec.attrib"/>
+		<xs:attributeGroup ref="kind.attrib"/>
+		<xs:attributeGroup ref="eval.attrib"/>
+		-->
+	</xs:attributeGroup>
+	<xs:group name="Reaction.content">
+		<xs:sequence>
+			<!-- remove for now
+			<xs:element ref="oid" minOccurs="0"/>
+			-->
+			<xs:choice>
+				<xs:sequence>
+				<!--
+					   event,
+					   (
+					     ( body, (action)?, (postcondition)?, (alternative)? )
+					     |
+					     ( action, (postcondition)?, (alternative)? )
+					   )?
+				-->
+					<xs:element ref="event"/>
+					<xs:choice minOccurs="0">
+						<xs:sequence>
+							<xs:element ref="body"/>
+							<xs:element ref="action" minOccurs="0"/>
+							<xs:element ref="postcondition" minOccurs="0"/>
+							<xs:element ref="alternative" minOccurs="0"/>
+						</xs:sequence>
+						<xs:sequence>
+							<xs:element ref="action"/>
+							<xs:element ref="postcondition" minOccurs="0"/>
+							<xs:element ref="alternative" minOccurs="0"/>
+						</xs:sequence>	
+					</xs:choice>
+				</xs:sequence>
+				<xs:sequence> <!-- (  body, action, (postcondition)?, (alternative)? ) -->
+					<xs:element ref="body"/>
+					<xs:element ref="action"/>
+					<xs:element ref="postcondition" minOccurs="0"/>
+					<xs:element ref="alternative" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence> <!-- ( action, (postcondition)?, (alternative)? ) -->
+					<xs:element ref="action"/>
+					<xs:element ref="postcondition" minOccurs="0"/>
+					<xs:element ref="alternative" minOccurs="0"/>
+				</xs:sequence>				
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Reaction.type">
+		<xs:group ref="Reaction.content"/>
+		<xs:attributeGroup ref="Reaction.attlist"/>
+	</xs:complexType>
+	<xs:element name="Reaction" type="Reaction.type"/>
+
+	<!--
+		*** event ***
+	-->
+	<xs:attributeGroup name="event.attlist">
+	</xs:attributeGroup>
+	<xs:group name="event.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<xs:element ref="Reaction"/>
+			<!--  etc. -->
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="event.type">
+		<xs:group ref="event.content"/>
+		<xs:attributeGroup ref="event.attlist"/>
+	</xs:complexType>
+	<xs:element name="event" type="event.type"/>
+	
+	<!--
+		*** action ***
+	-->
+	<xs:attributeGroup name="action.attlist">
+	</xs:attributeGroup>
+	<xs:group name="action.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<xs:element ref="Assert"/>
+			<!--  etc. -->
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="action.type">
+		<xs:group ref="action.content"/>
+		<xs:attributeGroup ref="action.attlist"/>
+	</xs:complexType>
+	<xs:element name="action" type="action.type"/>
+	
+	<!--
+		*** postcondition ***
+	-->
+	<xs:attributeGroup name="postcondition.attlist">
+	</xs:attributeGroup>
+	<xs:group name="postcondition.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<!--  etc. -->
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="postcondition.type">
+		<xs:group ref="postcondition.content"/>
+		<xs:attributeGroup ref="postcondition.attlist"/>
+	</xs:complexType>
+	<xs:element name="postcondition" type="postcondition.type"/>
+	
+	<!--
+		*** alternative ***
+	-->
+	<xs:attributeGroup name="alternative.attlist">
+	</xs:attributeGroup>
+	<xs:group name="alternative.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<!--  etc. -->
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="alternative.type">
+		<xs:group ref="alternative.content"/>
+		<xs:attributeGroup ref="alternative.attlist"/>
+	</xs:complexType>
+	<xs:element name="alternative" type="alternative.type"/>
+	
+	
+	
+	<!-- include this (simplified) Derivation RuleML stuff for now instead of referencing from another module -->
+	
+	<xs:attributeGroup name="body.attlist">
+	</xs:attributeGroup>
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<!--  etc. -->
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="body.type">
+		<xs:group ref="body.content"/>
+		<xs:attributeGroup ref="body.attlist"/>
+	</xs:complexType>
+	<xs:element name="body" type="body.type"/>
+	
+	
+	<xs:attributeGroup name="Atom.attlist">
+	</xs:attributeGroup>
+	<xs:group name="Atom.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Atom.type" mixed="true">
+		<xs:group ref="Atom.content"/>
+		<xs:attributeGroup ref="Atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="Atom" type="Atom.type"/>
+	
+	<xs:attributeGroup name="RuleML.attlist"/>
+	<xs:group name="RuleML.content">
+		<xs:sequence>
+			<!-- remove for now
+			<xs:element ref="oid" minOccurs="0"/>
+			-->
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Assert"/>
+				<!-- remove for now
+				<xs:element ref="Retract"/>
+				<xs:element ref="Query"/>
+				-->
+			</xs:choice>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="RuleML.type">
+		<xs:group ref="RuleML.content"/>
+		<xs:attributeGroup ref="RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="RuleML" type="RuleML.type"/>
+	
+	<xs:attributeGroup name="Assert.attlist">
+	</xs:attributeGroup>	
+	<xs:group name="Assert.content">
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="Reaction"/>
+				<xs:element ref="Atom"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Assert.type">
+		<xs:group ref="Assert.content"/>
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:complexType>
+	<xs:element name="Assert" type="Assert.type"/>
+
+</xs:schema>

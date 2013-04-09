@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:sch="http://www.ascc.net/xml/schematron"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for equality in RuleML.
+			File: equality_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+			
+			This module declares the following RuleML elements and attributes:
+			* Equal
+			* lhs
+			* rhs
+			* @oriented
+			* @val
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+        <xs:appinfo>
+			<!-- necessary for schematron -->
+            <sch:ns prefix="r" uri="http://www.ruleml.org/0.91/xsd"/>
+        </xs:appinfo>
+	</xs:annotation>
+
+	<!--
+		*** Equal ***
+		An equational formula consisting of two expressions.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Equal
+
+		content model:
+		(
+			(oid)?, (degree)?
+			(lhs, rhs) |
+			(  (Ind | Data | Skolem | Var | Reify), (Ind | Data | Skolem | Var | Reify)  )
+		)
+	-->	
+	<xs:attributeGroup name="Equal.attlist">
+		<xs:attributeGroup ref="oriented.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Equal.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="degree" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="lhs"/>
+					<xs:element ref="rhs"/>
+				</xs:sequence>
+				<!-- note that (rhs, lhs) is disallowed -->
+				<xs:sequence>
+					<xs:group ref="lhs.content"/>
+					<xs:group ref="rhs.content"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Equal.type">
+		<xs:annotation>
+			<xs:appinfo>
+				<sch:pattern name="Defining equality">
+					<sch:rule context=
+						"r:Implies/r:head/r:Equal/r:lhs/r:Expr/r:Fun |
+						 r:Implies/r:Equal[2]/r:lhs/r:Expr/r:Fun |
+						 r:Implies/r:head/r:Equal/r:Expr[1]/r:Fun |
+						 r:Implies/r:Equal[2]/r:Expr[1]/r:Fun">
+						<sch:assert test="@in='yes'">
+							A defining equality must have an interpreted left-hand side.
+						</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</xs:appinfo>
+		</xs:annotation>
+		
+			
+		<xs:group ref="Equal.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equal" type="Equal.type"/>
+
+	<!--
+		*** lhs ***
+		The left-hand side of an equational formula.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-lhs
+
+		content model: (Ind|Data|Var|Skolem|Reify)
+	-->
+	<xs:attributeGroup name="lhs.attlist"/>
+	<xs:group name="lhs.content">
+		<xs:choice>
+			<xs:group ref="arg.content"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="lhs.type">
+		<xs:group ref="lhs.content"/>
+		<xs:attributeGroup ref="lhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="lhs" type="lhs.type"/>
+	
+	<!--
+		*** rhs***
+		The right-hand side of an equational formula.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-rhs
+
+		content model: (Ind|Data|Var|Skolem|Reify)
+	-->
+	<xs:attributeGroup name="rhs.attlist"/>
+	<xs:group name="rhs.content">
+		<xs:choice>
+			<xs:group ref="arg.content"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="rhs.type">
+		<xs:group ref="rhs.content"/>
+		<xs:attributeGroup ref="rhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="rhs" type="rhs.type"/>
+	
+	<!--
+		*** @oriented ***
+		An attribute indicating whether an equation is oriented (directed)
+		or unoriented (symmetric).
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@oriented
+	-->
+	<xs:attributeGroup name="oriented.attrib">
+		<xs:attribute name="oriented" use="optional" default="no">
+			<xs:simpleType>
+		        <xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="yes"/>
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @val ***
+		An attribute indicating whether a function is deterministic (exactly one)
+		or non-deterministic (set-valued).
+		
+		May be unified with @card/@minCard/@maxCard for slots in a future version.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@val
+	-->
+	<xs:attributeGroup name="val.attrib">
+		<xs:attribute name="val" use="optional" default="0..">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="0.."/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

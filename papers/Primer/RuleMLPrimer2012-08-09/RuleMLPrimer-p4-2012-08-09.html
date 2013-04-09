@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="A natural language sentence parsed into an OrdLab tree." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Datalog Spending Fact</title>
+    <script>
+      var nextpage="RuleMLPrimer-p5-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p4-slide">
+      <h1>Customer Spending Fact as OrdLabTree</h1>
+      
+      <figure>
+        <img src="../png/spending_atom.png" />
+      </figure>
+      
+      <div class="natural-language" >"Peter Miller spent at least 5000 euros in the previous year."</div>       
+    </section>
+    <section id="section-p4-prose">
+      <h3>Customer Spending Fact as OrdLabTree - Notes</h3>
+      <p>Datalog RuleML, as a markup language, can conveniently serialize
+        relational information where all of the columns are natural-language phrases.
+        To explain the Datalog features, we will develop a small example formalizing
+        natural-language business rules in RuleML. This example correspond to the
+        'Eligibility' Category of Terry Moriarty's <a
+          href="http://www.w3.org/2004/12/rules-ws/paper/35/">Business Rule
+          Classification</a>.</p>     
+      <p>The structure of this natural language sentence can be 
+        visualized with a kind of linguistic parse tree, 
+        which we call an Order-Labeled (<a
+          href="http://www.dfki.uni-kl.de/~boley/xmlrdf.html"
+          >OrdLab</a>) Tree. 
+        Here tags  label  both inner nodes (oval, RDF-like anonymous
+        resources), e.g. with 'Atom' (atomic formula), and leaf nodes (rectangular, RDF-like literals
+        containing PCDATA), e.g. with 'Rel' (relation constant), 'Ind' (individual constant), 
+        or 'Data' (data constant).
+        The edge connecting the 'Atom' node to the 'Rel' node is labelled 'op' 
+        to distinguish it from the edges corresponding to arguments.
+        An infix ordering for the operator is used to mimic the natural language ordering 
+        in the original sentence.
+      </p>
+      <p>OrdLab trees were introduced in "A Web Data Model Unifying XML and RDF"
+        <a href="http://www.dfki.uni-kl.de/~boley/xmlrdf.html"
+          >http://www.dfki.uni-kl.de/~boley/xmlrdf.html</a>
+      </p>     
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p3-2012-08-09.html">&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p5-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

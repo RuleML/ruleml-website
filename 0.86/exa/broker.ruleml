@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<rulebase
+xmlns="http://www.ruleml.org/0.86/xsd"
+xsi:schemaLocation="http://www.ruleml.org/0.86/xsd http://www.ruleml.org/0.86/xsd/urhornlog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+
+<!-- a simplified broker definition -->
+
+<imp>
+ <_head>
+  <atom>
+    <_opr><rel>buy</rel></_opr>
+    <var>broker</var>
+    <var>prod</var>
+  </atom>
+ </_head>
+ <_body>
+  <and>
+    <atom>
+      <_opr><rel>want</rel></_opr>
+      <ind>customer-of-broker</ind>
+      <var>prod</var>
+    </atom>
+    <atom>
+      <_opr><rel>deal</rel></_opr>
+      <var>prod</var>
+      <cterm>
+        <_opc><ctor>cost</ctor></_opc>
+        <ind>prod</ind>
+      </cterm>
+      <ind>benefit-of-prod</ind>
+    </atom>
+  </and>
+ </_body>
+</imp>
+
+<imp>
+ <_head>
+  <atom>
+    <_opr><rel>deal</rel></_opr>
+    <var>prod</var>
+    <var>cost</var>
+    <var>benefit</var>
+  </atom>
+ </_head>
+ <_body>
+  <atom>
+    <_opr><rel>greater-or-equal</rel></_opr>
+    <var>benefit</var>
+    <var>cost</var>
+  </atom>
+ </_body>
+</imp>
+
+<fact>
+ <_head>
+  <atom>
+    <_opr><rel>want</rel></_opr>
+    <ind>miller</ind>
+    <ind href="www.stock.com/stock1"/>
+  </atom>
+ </_head>
+</fact>
+
+<fact>
+ <_head>
+  <atom>
+    <_opr><rel>want</rel></_opr>
+    <ind>miller</ind>
+    <ind href="www.stock.com/stock2"/>
+  </atom>
+ </_head>
+</fact>
+
+</rulebase>

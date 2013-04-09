@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://example.com"
+xmlns="http://example.com"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:attributeGroup name="object.attlist"/>
+	<xs:group name="object.content">
+		<xs:sequence>
+				<xs:element ref="id"/>
+				<xs:element ref="owner"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="object.type">
+		<xs:group ref="object.content"/>
+		<xs:attributeGroup ref="object.attlist"/>
+	</xs:complexType>
+	<xs:element name="object" type="object.type"/>
+
+
+	<xs:element name="id" type="xs:string"/>
+	
+	<xs:element name="owner" type="xs:string"/>
+	
+</xs:schema>

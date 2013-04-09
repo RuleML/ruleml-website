@@ -1,0 +1,10 @@
+
+
+
+    Asks for the currently open phase of RuleML-2007.
+
+    This phase is dynamically computed by the program chair agent
+
+    on the basis of the defined phases in the external Google calendar
+
+    and the rule-based state logic of the agent (a Prova implementation).

@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- <?xml-stylesheet href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl" type="text/xsl"?> -->
+<?xml-stylesheet href="../homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley "boley@informatik.uni-kl.de" -->
+
+<homepage>
+
+  <title>FOL RuleML</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+
+<h1>First-Order-Logic RuleML</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://www.daml.org/people/mdean/">Mike Dean</a>, <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://www.cs.unb.ca/~bspencer/">Bruce Spencer</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h3>Version History, 2004-08-10: Version 0.7</h3>
+<h3>Version History, 2004-09-10: Version 0.8</h3>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This document describes First-Order-Logic RuleML (FOL RuleML),
+a version of which is planned to become part of
+<a href="">RuleML 0.9</a>.
+FOL RuleML is based on a
+modular combination of two syntactically characterized sublanguages:
+(1) Quantifier RuleML extends RuleML 0.85 by explicit quantifiers.
+(2) Disjunctive RuleML extends RuleML 0.85 by head disjunctions.
+Connectives for equivalence and negation
+are then added for FOL RuleML.
+</p>
+
+  </opening>
+
+<section>
+<header>Introduction</header>
+<p>
+First-Order-Logic RuleML (FOL RuleML) is considered here on the basis of combining Quantifier RuleML
+and Disjunctive RuleML. This sublanguage combination is then enriched by further connectives
+for FOL RuleML.
+</p>
+
+<p>
+Since RuleML top-level elements -- directly below 'Rulebase' -- 
+(currently 'Imp', 'Fact', and -- still -- 'Query') can contain extra information
+such as a rule label (also planned: a rule salience etc.) that is not needed in sublevel elements,
+a top-level/sublevel distinction such as 'Imp'/'Implies' will be introduced for connectives.
+This will also support the convention of Prolog and many other (LP) systems of regarding free variables
+as universally quantified variables, where, e.g., an 'Imp' semantically expands into a 'Forall' over an 'Implies'.
+This can also reflect the distinction between the (e.g., 'Imp') axioms on the 'Rulebase'
+top-level, postulated as true, from the (e.g., 'Implies') subformulas within them, whose truth-value is to be evaluated.
+</p>
+
+</section>
+
+
+<section label="Changes">
+<header>Type/Role Tag Syntax Changes</header>
+<p>
+Since <a href="http://www.ruleml.org/indtd0.8.html#Overview">RuleML 0.8</a> we have marked up 'role' tags
+via a "<tt>_</tt>"-prefix and have left 'type' tags unprefixed.
+Already at that time we also considered the convention Java uses for a similar distinction:
+having method-like 'role' tags start with a lower-case letter,
+and having class-like 'type' tags start with an upper-case letter.
+Such a Java convention is now proposed for RuleML 0.9 and is employed in the following.
+</p>
+<p>
+Specifically, the type/role tag syntax is changed as follows:
+<br/> <br/>
+
+        <table border="1" cellpadding="3">
+            <tr align="center">
+                <td>
+                    <b>Old (Principle)</b>
+                </td>
+                <td>
+                    <b>New (Principle)</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>type</td>
+                <td>Type</td>
+            </tr>
+	    <tr align="center">
+                <td>_role</td>
+                <td>role</td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <b>Old (Examples)</b>
+                </td>
+                <td>
+                    <b>New (Examples)</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>imp</td>
+                <td>Imp</td>
+            </tr>
+	    <tr align="center">
+                <td>_head</td>
+                <td>head</td>
+            </tr>
+	    <tr align="center">
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        </table>
+
+</p>
+</section>
+
+
+<section label="Quantifiers">
+<header>Explicit Quantifiers</header>
+<p>
+In the Quantifier RuleML module, explicit ('Forall' and 'Exists') quantifiers are allowed
+on all levels of 'rulebase' elements,
+in particular immediately above and anywhere within implication elements.
+</p>
+
+<p>
+For example, the RuleML <a href="http://www.ruleml.org/indtd0.8.html#Context">'own' rule</a>
+(where the 'Imp' element contains no rule-label child)
+<code><![CDATA[
+<Imp>
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Imp>]]></code>
+
+can be semantically considered as a short form of an 'own' rule with an explicit quantifier (a 'Forall' quantifier)
+binding the declared free variables of an 'Implies'-connective formula, as follows:
+
+<code><![CDATA[
+<Forall>
+  <declare>
+    <Var>person</Var>
+    <Var>merchant</Var>
+    <Var>object</Var>
+  </declare>
+  <formula>
+    <Implies>
+      <head>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </head>
+      <body>
+        <And>
+          <Atom>
+            <Rel>buy</Rel>
+            <Var>person</Var>
+            <Var>merchant</Var>
+            <Var>object</Var>
+          </Atom>
+          <Atom>
+            <Rel>keep</Rel>
+            <Var>person</Var>
+            <Var>object</Var>
+          </Atom>
+        </And>
+      </body>
+    </Implies>
+  </formula>
+</Forall>]]></code>
+
+
+We will use the convention for role-tag reconstruction of <a href="http://www.ruleml.org/0.87">RuleML 0.87</a>,
+which allows us to omit the 'declare' and 'formula' roles, as follows:
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+    <body>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+    </body>
+  </Implies>
+</Forall>]]></code>
+
+This itself can be semantically considered as the prenex normal form of an 'own' rule with an explicit outer 'Forall' and
+an explicit inner (body-side) 'Exists' quantifier:
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Implies>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+    <body>
+      <Exists>
+        <Var>merchant</Var>
+        <And>
+          <Atom>
+            <Rel>buy</Rel>
+            <Var>person</Var>
+            <Var>merchant</Var>
+            <Var>object</Var>
+          </Atom>
+          <Atom>
+            <Rel>keep</Rel>
+            <Var>person</Var>
+            <Var>object</Var>
+          </Atom>
+        </And>
+      </Exists>
+    </body>
+  </Implies>
+</Forall>]]></code>
+
+Because of the unorderedness of roles, here 'head' and 'body' roles, the last but first version is syntactically equivalent to
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <body>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+    </body>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+  </Implies>
+</Forall>]]></code>
+
+The role-tag reconstruction of <a href="http://www.ruleml.org/0.87">RuleML 0.87</a>
+now allows us to omit the 'head' and 'body' roles, as suggested by the type tag 'Implies' (rather than 'IsImpliedBy'):
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </Implies>
+</Forall>]]></code>
+
+
+While the above examples are just different ways of expressing
+a Horn rule using explicit quantifiers, the following example uses them for added FOL expressiveness.
+This new rule about claiming, whose 'Imp' element contains a rule label, leaves the outer 'Forall' implicit and employs
+an explicit inner (body-side) 'Forall' over an embedded 'Implies': 
+
+<code><![CDATA[
+<Imp>
+  <rlab><Ind>claiming-through-disclaimers</Ind></rlab>
+  <head>
+    <Atom>
+      <Rel>claim</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Forall>
+        <Var>x</Var>
+        <Implies>
+          <body>
+            <Atom>
+              <Rel>unequal</Rel>
+              <Var>x</Var>
+              <Var>person</Var>
+            </Atom>
+          </body>
+          <head>
+            <Atom>
+              <Rel>disclaim</Rel>
+              <Var>x</Var>
+              <Var>object</Var>
+            </Atom>
+          </head>
+        </Implies>
+      </Forall>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Imp>]]></code>
+
+In a similar way, the RuleML 'keep' fact
+(where the 'fact' element contains no rule-label child)
+
+<code><![CDATA[
+<Fact>
+  <head>
+    <Atom>
+      <Rel>keep</Rel>
+      <Ind>Mary</Ind>
+      <Var>object</Var>
+    </Atom>
+  </head>
+</Fact>]]></code>
+
+can be semantically considered as a short form of a 'keep' atom with an explicit quantifier (a 'Forall' quantifier)
+binding the declared free variable of the atomic formula, as follows:
+
+<code><![CDATA[
+<Forall>
+  <Var>object</Var>
+  <Atom>
+    <Rel>keep</Rel>
+    <Ind>Mary</Ind>
+    <Var>object</Var>
+  </Atom>
+</Forall>]]></code>
+
+</p>
+</section>
+
+
+<section label="Disjunctions">
+<header>Head Disjunctions</header>
+<p>
+Disjunctions in the head of clauses and in all sublevel positions
+are allowed in the Disjunctive RuleML module.
+</p>
+
+<p>
+For example, the RuleML <a href="http://www.ruleml.org/indtd0.8.html#Context">'own' rule</a>
+<code><![CDATA[
+<Imp>
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Imp>]]></code>
+
+can be changed into a disjunctive ('own'-or-'relinquish') rule as follows:
+
+<code><![CDATA[
+<Imp>
+  <head>
+    <Or>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>relinquish</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Or>
+  </head>
+  <body>
+    <Atom>
+      <Rel>buy</Rel>
+      <Var>person</Var>
+      <Var>merchant</Var>
+      <Var>object</Var>
+    </Atom>
+  </body>
+</Imp>]]></code>
+
+In a similar manner, we permit a disjunctive fact that could be derived by the above rule and a suitable 'buy' fact:
+
+<code><![CDATA[
+<Fact>
+  <head>
+    <Or>
+      <Atom>
+        <Rel>own</Rel>
+        <Ind>Mary</Ind>
+        <Ind>XMLBible</Ind>
+      </Atom>
+      <Atom>
+        <Rel>relinquish</Rel>
+        <Ind>Mary</Ind>
+        <Ind>XMLBible</Ind>
+      </Atom>
+    </Or>
+  </head>
+</Fact>]]></code>
+
+</p>
+</section>
+
+
+<section label="QuantiDisjuns">
+<header>Combined Quantifiers and Disjunctions</header>
+<p>
+Explicit ('Forall' and 'Exists') quantifiers can be combined with
+disjunctions in the head of clauses and in all sublevel positions.
+</p>
+<p>
+For example, this is a disjunctive ('claim'-or-'relinquish') rule with
+an inner (body-side) explicit quantifier (a 'Forall') over an embedded 'implies': 
+
+<code><![CDATA[
+<Imp>
+  <rlab><Ind>claiming-or-relinquishing-through-disclaimers</Ind></rlab>
+  <head>
+    <Or>
+      <Atom>
+        <Rel>claim</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>relinquish</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Or>
+  </head>
+  <body>
+    <Forall>
+      <Var>x</Var>
+      <Implies>
+        <body>
+          <Atom>
+            <Rel>unequal</Rel>
+            <Var>x</Var>
+            <Var>person</Var>
+          </Atom>
+        </body>
+        <head>
+          <Atom>
+            <Rel>disclaim</Rel>
+            <Var>x</Var>
+            <Var>object</Var>
+          </Atom>
+        </head>
+      </Implies>
+    </Forall>
+  </body>
+</Imp>]]></code>
+
+</p>
+</section>
+
+
+<section label="Equivalence">
+<header>Equivalence</header>
+<p>
+Besides reducing 'Equiv'/'Equivalent' to a pair of conjoined converse 'Imp'/'Implies',
+we also allow to represent it directly, modeled on 'Imp'/'Implies', but
+with a symmetric 'torso' role that combines the asymmetric 'head' and 'body' roles.
+</p>
+
+For example, without introducing a new connective, a pair of conjoined converse
+'Implies' formulas can express an 'own'/'belongs' equivalence as follows:
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <And>
+    <Implies>
+      <body>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </body>
+      <head>
+        <Atom>
+          <Rel>belongs</Rel>
+          <Var>object</Var>
+          <Var>person</Var>
+        </Atom>
+      </head>
+    </Implies>
+    <Implies>
+      <body>
+        <Atom>
+          <Rel>belongs</Rel>
+          <Var>object</Var>
+          <Var>person</Var>
+        </Atom>
+      </body>
+      <head>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </head>
+    </Implies>
+  </And>
+</Forall>]]></code>
+
+
+However, with the 'Equivalent' connective, this 'own'/'belongs' equivalence can be shortened into a single rule thus:
+
+<code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Equivalent>
+    <torso>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </torso>
+    <torso>
+      <Atom>
+        <Rel>belongs</Rel>
+        <Var>object</Var>
+        <Var>person</Var>
+      </Atom>
+    </torso>
+  </Equivalent>
+</Forall>]]></code>
+
+</section>
+
+
+<section label="Negation">
+<header>Negation</header>
+<p>
+Classical negation is introduced as a 'Not' element besides the partial 'Neg' element and the as-failure 'Naf' element of RuleML 0.85.
+A top-level/sublevel distinction for negation (e.g., 'Neg'/'Negate') can again be modeled on 'Imp'/'Implies'.
+</p>
+
+For instance, in the earlier FOL-expressive example, the 'unequal' relation can be replaced by a 'Not'-negated 'equal' relation: 
+
+<code><![CDATA[
+<Imp>
+  <rlab><Ind>claiming-through-disclaimers</Ind></rlab>
+  <head>
+    <Atom>
+      <Rel>claim</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Forall>
+        <Var>x</Var>
+        <Implies>
+          <body>
+            <Not>
+	      <Atom>
+                <Rel>equal</Rel>
+                <Var>x</Var>
+                <Var>person</Var>
+              </Atom>
+	    </Not>
+          </body>
+          <head>
+            <Atom>
+              <Rel>disclaim</Rel>
+              <Var>x</Var>
+              <Var>object</Var>
+            </Atom>
+          </head>
+        </Implies>
+      </Forall>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Imp>]]></code>
+
+
+
+
+</section>
+
+
+
+<section label="Nestings">
+<header>Connective Nestings</header>
+<p>
+The FOL RuleML grammar defines the content of the connectives co-recursively in the usual FOL manner
+so that arbitrary nestings are allowed. The usual formula simplifications apply.
+</p>
+<p>
+For example, 'And' is permitted in the body and (mainly for SWRL) in the head of clauses;
+'And' is not required on the rulebase top-level since each rulebase implicitly conjoins its child elements
+(such as a pair of converse 'Imp' elements). An 'And' of atoms can also be expressed via
+a 'fact' with the 'and' being in the head (complementary to the above 'Fact' with an 'Or' in the head).
+</p>
+<p>
+Using de Morgan, a top-level 'Or' of 'Implies' (and 'Equivalent') rules can be re-expressed via the classical negation
+of an 'And' of the classically negated rules.
+</p>
+
+
+</section>
+
+<section>
+<header>The FOL XSDs</header>
+
+<p>
+To obtain the <a href="">Schema of RuleML 0.9</a>
+we will incorporate the FOL modules along with other ones into the current XML Schema.
+
+</p>
+</section>
+
+<section>
+<header>FOL POSL: A POSL Version of FOL RuleML</header>
+<p>
+
+</p>
+</section>
+
+<section label="Applications">
+<header>FOL RuleML Applications</header>
+<p>
+
+</p>
+</section>
+
+<section>
+<header>Issues List</header>
+<itemize>
+  <item>2004-06-21 Q (Michael Sintek): Should "pragmatic" top-level rulebase elements like 'Rule', 'Fact', 'Query',
+  'Ic' (integrity constraint), etc. be used instead of the top-level connectives (keeping only the corresponding sublevel connectives)?
+  A (Harold Boley): While 'Rule' and 'Fact' elements could be combined into an axiomatic 'Assertion' element,
+  'Query' will be removed from 'Rulebase' anyway (instead becoming the second element of a 'Turnstile', whose
+  first element is the 'Rulebase'), and 'Ic' will likely be introduced outside of 'Rulebase' as well;
+  however, the remaining 'Assertion' element would lead to a deeper markup, which would be a problem
+  especially for all earlier Horn-like sublanguages (alternating speech-act-like "pragmatic" wrapper information
+  with "semantic" content information also is a problem, and an interesting follow-up issue for Reaction Rules).
+  </item>
+</itemize>
+
+</section>
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2004-09-10
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.ruleml.org/fol/fol.xml">fol.xml</a>;
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="../cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

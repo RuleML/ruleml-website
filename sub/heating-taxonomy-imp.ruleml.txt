@@ -1,0 +1,1219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rulebase>
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>Ontotherm (Clockwork Framework Structure)</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>problem (Real World)</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>heating equipment (Conceptual World)</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>inductor calculation (Choice of the Simulation
+            Model)</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>parameter studies (Simulation Runs of the
+            Temperature)</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>validation tests (Comparison Between Simulation
+            and Measured Temperature Distribution for the Real
+            World User</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>problem (Real World)</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>induction heating of bars</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of billets</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of tubes or pipes</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of slabs</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of sheets</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of strips</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>induction heating of wires</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>induction heating of bars</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>round-bar heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>square-bar heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>rectangular-bar heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>induction heating of billets</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>round-billet heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>square-billet heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>rectangular-billet heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>induction heating of tubes or pipes</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>round-tube-or-pipe heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>square-tube-or-pipe heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>rectangular-tube-or-pipe heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>heating equipment (Conceptual World)</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>main transformer</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>frequency converter</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>heating machine</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>recooling unit</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>PLC</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>frequency converter</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>parallel-circuit converter</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>serial-circuit converter</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>parallel-circuit converter</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Thyristor type</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>IGBT type</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>MOSFET type</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>serial-circuit converter</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>high-frequency converter</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>IGBT type</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Elomat 8</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Elomat 16</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Elomat 22</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Elomat 32</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>heating machine</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>BTH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>CTH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>ETH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>PTH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>RTH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>STH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>VTH</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>BTH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Type 1500</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Type 2400</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Type 3600</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Type 4800</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Type 6000</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Type 7200</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>CTH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>bar heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>billet heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>ETH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>partial heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>edge heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>full-body heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>heating of thixo bars</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>PTH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>longitudinal-field heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>transversal-field heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>RTH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>full-body heating of tubes</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>seam heating of tubes</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>STH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>f. AMP 30</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>f. AMP 50</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>f. AMP 70</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>f. AMP 80</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>VTH</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>3600</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>4800</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>6000</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>recooling unit</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>water cooled</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>air cooled</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>water cooled</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>less 50 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>less 100 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>less 200 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>less 500 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>less 1000 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>less 2000 kW</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>PLC</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Siemens</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Allan Bradley</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Mitsubishi</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>Siemens</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>S5</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>S7</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>inductor calculation (Choice of the Simulation
+          Model)</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>1D temperature calculation</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>FEM temperature calculation with ANTRAS</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>FEM field and temperature calculation with
+            ANSYS</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>1D temperature calculation</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>calculation of bar heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>calculation of billet heating</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>calculation of bar heating</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>regular for bars</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>degressive for bars</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>stop and go for bars</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>calculation of billet heating</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>regular for billets</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>degressive for billets</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>stop and go for billets</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>parameter studies (Simulation Runs of the
+          Temperature)</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Optimisation of the temperature distribution</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Documentation and discussion of the results for
+            each possible heating machine</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+
+  <imp>
+    <_head>
+      <atom>
+        <_opr>
+          <rel>validation tests (Comparison Between Simulation and
+          Measured Temperature Distribution for the Real World
+          User</rel>
+        </_opr>
+
+        <var>x</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <or>
+        <atom>
+          <_opr>
+            <rel>Determination of the difference between calculated
+            and measured temperature distribution over time for the
+            heated parts</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel>Determination of the difference between calculated
+            and measured temperature distribution over the cross
+            section for the heated parts</rel>
+          </_opr>
+
+          <var>x</var>
+        </atom>
+      </or>
+    </_body>
+  </imp>
+</rulebase>
+
+<!-- This page was served in 1389 milliseconds by Cocoon 1.8 -->
+

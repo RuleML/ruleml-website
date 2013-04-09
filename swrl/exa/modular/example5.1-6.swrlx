@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE swrlx:Ontology [
+	 <!ENTITY swrlb 'http://www.w3.org/2003/11/swrlb'>
+	 <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema'>
+	 <!ENTITY ex 'http://www.example.org/example-ont'>
+]>
+
+<swrlx:Ontology
+  xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+  xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+  xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3.org/2003/11/swrlx http://www.ruleml.org/swrl/xsd/modular/swrlx.xsd"
+>
+  <owlx:Annotation>
+    <owlx:Documentation>SWRL Builtins Example 5.1-6</owlx:Documentation>
+  </owlx:Annotation>
+  <owlx:VersionInfo>$Id: example5.1-6.swrlx,v 1.1 2004/05/21 18:46:39 vivien Exp $</owlx:VersionInfo>
+
+<ruleml:var>customer</ruleml:var>
+<ruleml:var>discount</ruleml:var>
+<ruleml:var>total</ruleml:var>
+
+<!--
+If a customer has a gold status and has a total purchase greater than or equal to 500 dollars
+Then the customer gets a 10 percent discount.
+-->
+
+<ruleml:imp> 
+  <ruleml:_rlab ruleml:href="#goldDiscount"/>
+  <owlx:Annotation>
+    <owlx:Documentation>Gold customers get a 10% discount on purchases of $500 or more</owlx:Documentation>
+  </owlx:Annotation>
+  <ruleml:_body> 
+    <swrlx:individualPropertyAtom  swrlx:property="&ex;#hasStatus"> 
+      <ruleml:var>customer</ruleml:var>
+      <owlx:Individual owlx:name="&ex;#gold"/>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&ex;#hasTotalPurchase"> 
+      <ruleml:var>customer</ruleml:var>
+      <ruleml:var>total</ruleml:var>
+    </swrlx:datavaluedPropertyAtom>
+    <swrlx:builtinAtom  swrlx:builtin="&swrlb;#greaterThanOrEqual">
+      <ruleml:var>total</ruleml:var>
+      <owlx:DataValue owlx:datatype="&xsd;#int">500</owlx:DataValue>
+    </swrlx:builtinAtom>
+  </ruleml:_body>
+  <ruleml:_head> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&ex;#hasDiscount"> 
+      <ruleml:var>customer</ruleml:var>
+      <owlx:DataValue owlx:datatype="&xsd;#int">10</owlx:DataValue>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+</swrlx:Ontology>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

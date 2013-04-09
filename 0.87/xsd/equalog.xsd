@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Equational-Logic RuleML sublanguage
+			File: equalog.xsd
+			Version: 0.87
+			Last Modification: 2004-07-23
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- equalog includes the 'equality' module -->
+	<xs:include schemaLocation="modules/equality_module.xsd"/>
+
+	<!-- note the addition of Eq(uational formula) and Nanos from the equality module -->
+	<xs:redefine schemaLocation="hornlog.xsd">
+
+		<!--
+			add Eqs so that head's content model is:
+			(Atom | Eq)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Eqs so that Fact's content model is:
+			( (rlab, ( head | Atom | Eq) ) | ( (head | Atom | Eq), rlab?) )
+		-->
+		<xs:group name="Fact.extend">
+			<xs:choice>
+				<xs:group ref="Fact.extend"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>	
+		</xs:group>
+		
+		
+		<!--
+			add Eqs so that body's content model is:
+			(Atom | And | Or | Eq)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Eqs so that Query's content model is:
+			( (rlab, (body | Atom | And | Or | Eq) ) | ( (body | Atom | And | Or | Eq), rlab?) )
+		-->
+		<xs:group name="Query.extend">
+			<xs:choice>
+				<xs:group ref="Query.extend"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>	
+		</xs:group>
+
+		<!--
+			add Eqs so that And's content model is:
+			((Atom | Or | Eq)*)
+		-->
+		<xs:group name="And.content">
+			<xs:choice>
+				<xs:group ref="And.content"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Eqs so that Or's content model is:
+			((Atom | And | Eq)*)
+		-->
+		<xs:group name="Or.content">
+			<xs:choice>
+				<xs:group ref="Or.content"/>
+				<xs:element ref="Eq"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+</xs:schema>

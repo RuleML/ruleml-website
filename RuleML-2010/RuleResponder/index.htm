@@ -1,0 +1,565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0059)http://www.csw.inf.fu-berlin.de/ruleml2010/sponsorship.html -->
+<HTML xmlns="http://www.w3.org/1999/xhtml" lang="en"><!--
+
+	This website is powered by TYPOlight webCMS :: TYPOlight is licensed under GNU/LGPL
+	Copyright ©2005-2010 by Leo Feyer :: Extensions are copyright of their respective owners
+	Visit the project website at http://www.typolight.org for more information
+
+//--><HEAD><META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- <BASE href="http://www.csw.inf.fu-berlin.de/ruleml2010/"> --><BASE href=".">
+	<TITLE>RuleML 2010 4th International Web Rule Symposium                     Research Based and Industry Focused - Sponsorship Package</TITLE>
+
+	<META name="description" content="information for sponsors">
+	<META name="keywords" content="">
+	<META name="author" content="ruleml.org">
+		<LINK rel="stylesheet" href="./RuleResponder_files/slimbox.css" type="text/css" media="screen">
+	<LINK rel="stylesheet" href="./RuleResponder_files/1024px.css" type="text/css" media="projection, screen">
+	<SCRIPT type="text/javascript" src="./RuleResponder_files/mootools.js"></SCRIPT>
+	<SCRIPT type="text/javascript" src="./RuleResponder_files/slimbox.js"></SCRIPT>
+
+<script type="text/javascript">
+
+	function elementSelected(){
+
+		var choice = document.form1.select1.selectedIndex;
+	    //general chair contact
+		var choice0 =
+			"<Atom>" + "\n\t\t" +
+		    "<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_GeneralChair</Ind>" + "\n\t\t" +
+			"<Ind>update</Ind>" + "\n\t\t" +
+		    "<Var>Contact</Var>" + "\n\t    " +
+		    "</Atom>";
+
+	    //publicity chair sponsoring
+		var choice1 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>sponsor</Rel>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>contact</Fun>" + "\n\t\t    " +
+			"<Ind>Mark</Ind>" + "\n\t\t    " +
+			"<Ind>JBoss</Ind>" + "\n\t\t" +
+			"</Expr>" + "\n\t\t" +
+			"<Ind type=\"integer\">500</Ind>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>results</Fun>" + "\n\t\t    " +
+			"<Var>Level</Var>" + "\n\t\t    " +
+			"<Var>Benefits</Var>" + "\n\t\t    " +
+			"<Var>DeadlineResults</Var>" + "\n\t\t" +
+			"</Expr>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>performative</Fun>" + "\n\t\t    " +
+			"<Var>Action</Var>" + "\n\t\t" +
+			"</Expr>" + "\n\t    " +
+			"</Atom>";
+
+       //publicity chair contact
+	   var choice2 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_PublicityChair</Ind>" + "\n\t\t" +
+			"<Ind>update</Ind>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //liaison chair view media partners
+		var choice3 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>viewMediaPartners</Rel>" + "\n\t\t" +
+			"<Var>Meeting</Var>" + "\n\t\t" +
+			"<Var>Partner</Var>" + "\n\t    " +
+			"</Atom>";
+
+		//liaison chair view organization partners
+		var choice4 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>viewOrganizationPartners</Rel>" + "\n\t\t" +
+			"<Var>Meeting</Var>" + "\n\t\t" +
+			"<Var>Partner</Var>" + "\n\t    " +
+			"</Atom>";
+
+		//liaison chair view sponsors with regards to level
+		var choice5 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>viewSponsors</Rel>" + "\n\t\t" +
+			"<Var>Meeting</Var>" + "\n\t\t" +
+			"<Var>Company</Var>" + "\n\t\t" +
+			"<Var>SponsorLevel</Var>" + "\n\t    " +
+			"</Atom>";
+
+		//liaison chair view sponsors
+		var choice6 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>viewSponsors</Rel>" + "\n\t\t" +
+			"<Var>Meeting</Var>" + "\n\t\t" +
+			"<Var>Company</Var>" + "\n\t    " +
+			"</Atom>";
+
+		//liaison chair contact
+		var choice7 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_LiaisonChair</Ind>" + "\n\t\t" +
+			"<Ind>update</Ind>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+		//program chair contact
+		var choice8 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_ProgramChair</Ind>" + "\n\t\t" +
+			"<Ind>update</Ind>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Tracks
+		var choice9 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getTracks</Rel>" + "\n\t\t" +
+			"<Var>Track</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Topics of a Track
+		var choice10 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getTopicsOfATrack</Rel>" + "\n\t\t" +
+			"<Ind type=\"string\">Rules and Norms</Ind>" + "\n\t\t" +
+			"<Var>Topic</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Track of a Topic
+		var choice11 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getTrackOfATopic</Rel>" + "\n\t\t" +
+			"<Ind type=\"string\">The relationship between rules and legal argumentation schemes</Ind>" + "\n\t\t" +
+			"<Var>Track</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Find Tracks relevant to Keywords (string)
+		var choice12 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>findTracks</Rel>" + "\n\t\t" +
+			"<Ind type=\"string\">defeasibility; rule exceptions</Ind>" + "\n\t\t" +
+			"<Var>ScoredTrack</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Find Tracks relevant to Keywords (list with weights per keyword)
+		var choice13 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>findTracks</Rel>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>keys</Fun>" + "\n\t\t    " +
+			"<Ind type=\"string\">exceptions</Ind>" + "\n\t\t    " +
+			"<Ind type=\"real\">2</Ind>" + "\n\t\t    " +
+			"<Expr>" + "\n\t\t\t" +
+			"<Fun>keys</Fun>" + "\n\t\t\t" +
+			"<Ind type=\"string\">rule</Ind>" + "\n\t\t\t" +
+			"<Ind>nil</Ind>" + "\n\t\t    " +
+			"</Expr>" + "\n\t\t" +
+			"</Expr>" + "\n\t\t" +
+			"<Var>ScoredTrack</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve all Track Chairs
+		var choice14 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getTrackChairs</Rel>" + "\n\t\t" +
+			"<Var>TrackChairs</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve names of Chairs for specific Track
+		var choice15 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getChairsOfTrack</Rel>" + "\n\t\t" +
+			"<Ind type=\"string\">Rules and Norms</Ind>" + "\n\t\t" +
+			"<Var>Chairs</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Contact Details of Track Chair
+		var choice16 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_TrackChair</Ind>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>person</Fun>" + "\n\t\t    " +
+			"<Expr>" + "\n\t\t\t" +
+			"<Fun>foafname</Fun>" + "\n\t\t\t    " +
+			"<Expr>" + "\n\t\t\t\t" +
+			"<Fun>firstName</Fun>" + "\n\t\t\t\t" +
+			"<Ind>Guido</Ind>" + "\n\t\t\t    " +
+			"</Expr>" + "\n\t\t\t    " +
+			"<Expr>" + "\n\t\t\t\t" +
+			"<Fun>lastName</Fun>" + "\n\t\t\t\t" +
+			"<Ind>Governatori</Ind>" + "\n\t\t\t    " +
+			"</Expr>" + "\n\t\t\t" +
+			"</Expr>" + "\n\t\t    " +
+			"</Expr>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Contact Details of other Chairs
+		var choice17 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_GeneralChair</Ind>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>person</Fun>" + "\n\t\t    " +
+			"<Expr>" + "\n\t\t\t" +
+			"<Fun>foafname</Fun>" + "\n\t\t\t    " +
+			"<Expr>" + "\n\t\t\t\t" +
+			"<Fun>firstName</Fun>" + "\n\t\t\t\t" +
+			"<Ind>Mike</Ind>" + "\n\t\t\t    " +
+			"</Expr>" + "\n\t\t\t    " +
+			"<Expr>" + "\n\t\t\t\t" +
+			"<Fun>lastName</Fun>" + "\n\t\t\t\t" +
+			"<Ind>Dean</Ind>" + "\n\t\t\t    " +
+			"</Expr>" + "\n\t\t\t" +
+			"</Expr>" + "\n\t\t    " +
+			"</Expr>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Program Chair Retrieve Contact Details of Chairs for specific Track
+		var choice18 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_TrackChair</Ind>" + "\n\t\t" +
+			"<Expr>" + "\n\t\t    " +
+			"<Fun>track</Fun>" + "\n\t\t    " +
+			"<Ind type=\"string\">Rules and Norms</Ind>" + "\n\t\t" +
+			"</Expr>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //symposium planner chair contact
+		var choice19 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>getContact</Rel>" + "\n\t\t" +
+			"<Ind>ruleml2010_RRChair</Ind>" + "\n\t\t" +
+			"<Ind>update</Ind>" + "\n\t\t" +
+			"<Var>Contact</Var>" + "\n\t    " +
+			"</Atom>";
+
+	    //Organizational Agent Agent-Responsibility Assignment
+		var choice20 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>assigned</Rel>" + "\n\t\t" +
+			"<Var>Agent</Var>" + "\n\t\t" +
+			"<Var>Responsibility</Var>" + "\n\t\t" +
+			"<Ind>ruleml2010_responsible</Ind>" + "\n\t    " +
+			"</Atom>";
+
+	    //Suggest Sponsoring Level
+		var choice21 =
+			"<Atom>" + "\n\t\t" +
+			"<Rel>suggested_sponsoring_level</Rel>" + "\n\t\t" +
+			"<Ind>sponsor_1</Ind>" + "\n\t\t" +
+			"<Ind>1400</Ind>" + "\n\t\t" +
+			"<Var>Level</Var>" + "\n\t    " +
+			"</Atom>";
+
+	 var messageHeader =
+			"<RuleML\n    xmlns=\"http://www.ruleml.org/0.91/xsd\"" + "\n    " +
+			"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + "\n    " +
+			"xsi:schemaLocation=\"http://www.ruleml.org/0.91/xsd" + "\n    " +
+			"http://ibis.in.tum.de/research/" + "\n    " +
+			"ReactionRuleML/0.2/rr.xsd\"" + "\n    " +
+			"xmlns:ruleml2007=\"http://ibis.in.tum.de/projects/paw#\">" + "\n" +
+			"\n    " + "<Message mode=\"outbound\" " + "directive=\"query-sync\">" +
+			"\n\t" + "<oid>" + "\n\t    " +
+			"<Ind>RuleML-2010</Ind>" + "\n\t" +
+			"</oid>" + "\n\t" +
+			"<protocol>" + "\n\t    " +
+			"<Ind>esb</Ind>" + "\n\t" +
+			"</protocol>" + "\n\t" +
+			"<sender>" + "\n\t    " +
+			"<Ind>User</Ind>" + "\n\t" +
+			"</sender>" + "\n\t" +
+			"<content>" + "\n\t    ";
+
+	 var messageFooter =
+			"\n\t</content>" + "\n    " +
+			"</Message>" + "\n\n" +
+			"</RuleML>";
+
+
+		if(choice == 0){
+			document.form2.box1.value = messageHeader + choice0 + messageFooter;
+		}else if(choice == 1){
+			document.form2.box1.value = messageHeader + choice1 + messageFooter;
+		}else if(choice == 2){
+			document.form2.box1.value = messageHeader + choice2 + messageFooter;
+		}else if(choice == 3){
+			document.form2.box1.value = messageHeader + choice3 + messageFooter;
+		}else if(choice == 4){
+			document.form2.box1.value = messageHeader + choice4 + messageFooter;
+		}else if(choice == 5){
+			document.form2.box1.value = messageHeader + choice5 + messageFooter;
+		}else if(choice == 6){
+			document.form2.box1.value = messageHeader + choice6 + messageFooter;
+		}else if(choice == 7){
+			document.form2.box1.value = messageHeader + choice7 + messageFooter;
+		}else if(choice == 8){
+			document.form2.box1.value = messageHeader + choice8 + messageFooter;
+		}else if(choice == 9){
+			document.form2.box1.value = messageHeader + choice9 + messageFooter;
+		}else if(choice == 10){
+			document.form2.box1.value = messageHeader + choice10 + messageFooter;
+		}else if(choice == 11){
+			document.form2.box1.value = messageHeader + choice11 + messageFooter;
+		}else if(choice == 12){
+			document.form2.box1.value = messageHeader + choice12 + messageFooter;
+		}else if(choice == 13){
+			document.form2.box1.value = messageHeader + choice13 + messageFooter;
+		}else if(choice == 14){
+			document.form2.box1.value = messageHeader + choice14 + messageFooter;
+		}else if(choice == 15){
+			document.form2.box1.value = messageHeader + choice15 + messageFooter;
+		}else if(choice == 16){
+			document.form2.box1.value = messageHeader + choice16 + messageFooter;
+		}else if(choice == 17){
+			document.form2.box1.value = messageHeader + choice17 + messageFooter;
+		}else if(choice == 18){
+			document.form2.box1.value = messageHeader + choice18 + messageFooter;
+		} else if(choice == 19){
+			document.form2.box1.value = messageHeader + choice19 + messageFooter;
+		} else if(choice == 20){
+			document.form2.box1.value = messageHeader + choice20 + messageFooter;
+		} else if(choice == 21){
+			document.form2.box1.value = messageHeader + choice21 + messageFooter;
+		}
+	}
+</script>
+
+	</HEAD>
+
+	<BODY onLoad="elementSelected()">
+<DIV id="wrap">
+
+	<DIV id="header">
+
+<P id="headerlogo"><A href="http://www.ruleml.org/"><IMG src="./RuleResponder_files/RuleMLlogo2005.jpg"></A></P>
+<P class="huge"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/">RuleML <SPAN class="fade">2010</SPAN></A></P>
+<P id="slogan">The 4th International Web Rule Symposium: Research Based and Industry Focused</P>
+<P id="subslogan">October 21-23, 2010, Washington, DC, USA</P>
+<P id="subslogan">Co-located with the 13th Business Rules Forum</P>
+
+
+
+<DIV class="headerimage">
+  <IMG width="250" src="./RuleResponder_files/Washington_Monument.jpg">
+</DIV>
+<DIV class="headerimagecopyright">
+  <A class="headerimagecopyright" href="http://creativecommons.org/licenses/by/2.0/deed.en_US" title="This image is licensed under the Creative Commons license"><IMG class="headerimagecopyright" src="./RuleResponder_files/CreativeCommons.png"></A>
+  <A class="headerimagecopyright" href="http://www.flickr.com/people/11897392@N04" title="Creator&#39;s Hompage">Image by Josh Carolina</A>
+</DIV>	</DIV>
+
+	<DIV id="content">
+
+<!-- indexer::stop -->
+<DIV class="mod_search block" style="margin-bottom:12px;">
+
+<FORM action="./RuleResponder_files/[NEW]RuleResponder.htm" method="get">
+<DIV class="formbody">
+<INPUT type="text" name="keywords" id="keywords" class="text" value="">
+<INPUT type="submit" id="submit" class="submit" value="Search">
+</DIV>
+</FORM>
+
+</DIV>
+<!-- indexer::continue -->
+
+<DIV class="mod_article block" id="sponsorship-information">
+
+<H1 class="ce_headline">Rule Responder</H1>
+
+<DIV class="ce_text block">
+<DIV style="text-align: justify;">
+Use this text form to send a query in <a name="textfield"></a> <a href="http://ibis.in.tum.de/research/ReactionRuleML/" target="_blank">Reaction RuleML format</a> to the RuleML-2010 Organizational Agent:
+</DIV>
+<br />
+<DIV style="margin: 0px; text-indent: 0px; text-align: center;">
+<form name="form2" method="get" action="http://198.164.40.194:8888">
+<input	name="Horde" value="3a466331bca877eeb014be19eee68790" type="hidden">
+<textarea name="box1" cols="60" rows="30" WRAP=OFF></textarea>
+<div align="center"><input value="Send Message" type="submit"> </div>
+</form>
+</DIV>
+
+<DIV style="text-align: justify;"></DIV>
+<DIV style="margin: 0px; text-indent: 0px; text-align: justify;"><BR></DIV>
+<DIV style="margin: 0px; text-indent: 0px; text-align: justify;"><i>The drop-down box
+shows sample queries you -- as an External Agent -- can send to the RuleML-2010
+Organizational Agent. The agent names inside the square brackets designate the
+agent each query is sent to. These examples can also act as initial templates that
+you can edit to create your own queries.</i></DIV>
+<BR>
+	<form name="form1" method="post">
+	  <div align="center">
+	  <select name="select1" onChange="elementSelected()">
+	  <option value="A">General Chair Contact [General Chair]</option>
+	  <option value="B">Sponsoring [Publicity Chair]</option>
+	  <option value="C">Publicity Chair Contact [Publicity Chair]</option>
+	  <option value="D">View Media Partners [Liaison Chair]</option>
+	  <option value="E">View Organization Partners [Liaison Chair]</option>
+	  <option value="F">View Sponsors With Regards to Level [Liaison Chair]</option>
+	  <option value="G">View Sponsors [Liaison Chair]</option>
+	  <option value="H">Liaison Chair Contact [Liaison Chair]</option>
+	  <option value="I">Program Chair Contact [Program Chair]</option>
+	  <option value="J">Retrieve Tracks [Program Chair]</option>
+	  <option value="K">Retrieve Topics of a Track [Program Chair]</option>
+	  <option value="L">Retrieve Track of a Topic [Program Chair]</option>
+	  <option value="M">Find Tracks relevant to Keywords (string) [Program Chair] (takes longer)</option>
+	  <option value="N">Find Tracks relevant to Keywords (list with weights per keyword) [Program Chair] (takes longer)</option>
+	  <option value="O">Retrieve all Track Chairs [Program Chair]</option>
+	  <option value="P">Retrieve names of Chairs for specific Track [Program Chair]</option>
+	  <option value="Q">Retrieve Contact Details of Track Chair [Program Chair]</option>
+	  <option value="R">Retrieve Contact Details of other Chairs [Program Chair]</option>
+	  <option value="S">Retrieve Contact Details of Chairs for specific Track [Program Chair]</option>
+	  <option value="U">Agent-Responsibility Assignment [Organizational Agent]</option>
+	  <option value="V">Suggest Sponsoring Level [DR-DEVICE/Publicity Chair Agent]</option>
+	  </select>
+	  </div>
+	</form>
+<BR>
+</DIV>
+
+<H2 class="ce_headline">Sources Used by SymposiumPlanner-2010</H2>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">Organizational Agent:</H3>
+<UL>
+<LI>Prova Knowledge Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/RuleML-2010-Responder.prova">Prova</A>]</LI>
+<LI>Role Assignment Matrix [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/RuleML-2010.owl">OWL</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">General Chair Agent:</H3>
+<UL>
+<LI>Rule Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/generalChairRuleML-2010.posl">POSL</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">Publicity Chair Agent:</H3>
+<UL>
+<LI>Rule Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/publicityChairRuleML-2010.posl">POSL</A>]</LI>
+<LI>Taxonomy [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/publicityChairOntologyRuleML-2010.rdf">RDF</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">Liaison Chair Agent:</H3>
+<UL>
+<LI>Rule Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/liaisonChairRuleML-2010.posl">POSL</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">Program Chair Agent:</H3>
+<UL>
+<LI>Rule Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/programChairRuleML-2010.posl">POSL</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+<DIV class="ce_text block">
+<DIV>
+<H3 class="ce_headline">SymposiumPlanner Chair Agent:</H3>
+<UL>
+<LI>Rule Base [<A href="http://emerald.csd.auth.gr:8080/ruleSetsRuleML-2010/rrChairRuleML-2010.posl">POSL</A>]</LI>
+</UL>
+</DIV>
+</DIV>
+
+
+
+</DIV>
+	</DIV>
+
+	<DIV id="sidebar">
+
+<DIV class="mod_newslist block">
+
+<H1>Latest News</H1>
+
+<div class="layout_latest block first last even">
+<p class="info">Jul 08, 2010  </p>
+<h2><a href="news/items/ruleml-2010-challenge.html" title="Read the whole article">4th International Rule Challenge &#40;RuleML-2010 Challenge&#41;</a></h2>
+<p class="teaser"></p>
+<p class="more"><a href="news/items/ruleml-2010-challenge.html" title="Read the whole article">Read more …</a></p>
+</div>
+
+</DIV>
+
+<!-- indexer::stop -->
+<DIV class="mod_navigation sidebar block">
+
+<H1>Navigation</H1>
+
+<A href="http://www.csw.inf.fu-berlin.de/ruleml2010/sponsorship.html#skipNavigation_4" class="invisible" title="Skip navigation"></A>
+
+<UL class="level_1">
+<LI class="submenu trail first"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/the-symposium.html" title="RuleML 2010" class="submenu trail first" onclick="this.blur();">The Symposium</A>
+<UL class="level_2">
+<LI class="first"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/who-will-attend.html" title="Who Will Attend" class="first" onclick="this.blur();">Who Will Attend</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/highlights.html" title="Highlights" onclick="this.blur();">Highlights</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/invited-speakers-demos.html" title="Keynote Speakers" onclick="this.blur();">Keynote Speakers and Invited Demos</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/boxed-lunch-panel.html" title="Boxed Lunch Panel" onclick="this.blur();">Boxed Lunch Panel</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/accepted-papers.html" title="Accepted Papers" onclick="this.blur();">Accepted Papers</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/program-committee.html" title="Program Committee" onclick="this.blur();">Program Committee</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/proceedings.html" title="Proceedings" onclick="this.blur();">Proceedings</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/program.html" title="Program" onclick="this.blur();">Program</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/registration.html" title="Registration" onclick="this.blur();">Registration</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/venue.html" title="Venue" onclick="this.blur();">Venue</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/sponsors-partners.html" title="Sponsors and Partners" onclick="this.blur();">Sponsors and Partners</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/sponsorship.html" title="Sponsorship Package" onclick="this.blur();">Sponsorship</A></LI>
+<LI class="active"><P class="active">Rule Responder Q&amp;A</P></LI>
+<LI class="last"><A href="http://www.businessrulesforum.com/" title="Business Rule Forum" class="last" onclick="this.blur();">Business Rule Forum</A></LI>
+</UL>
+</LI>
+<LI class="submenu"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/authors.html" title="Authors" class="submenu" onclick="this.blur();">Authors</A>
+<UL class="level_2">
+<LI class="first"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/objectives.html" title="Objectives" class="first" onclick="this.blur();">Objectives</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/topics.html" title="Topics" onclick="this.blur();">Topics</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/ruleml-2010-challenge.html" title="RuleML-2010 Challenge" onclick="this.blur();">RuleML-2010 Challenge</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/submission-guidelines.html" title="Submission Guidelines" onclick="this.blur();">Submission Guidelines</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/call-for-papers.html" title="RuleML 2010 Call for Papers" onclick="this.blur();">RuleML 2010 Call for Papers</A></LI>
+<LI><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/other-calls.html" title="Other Calls" onclick="this.blur();">Other Calls</A></LI>
+<LI class="last"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/important-dates.html" title="Important Dates" class="last" onclick="this.blur();">Important Dates</A></LI>
+</UL>
+</LI>
+<LI class="submenu last"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/ruleml-initiative.html" title="RuleML Initiative" class="submenu last" onclick="this.blur();">RuleML Initiative</A>
+<UL class="level_2">
+<LI class="first"><A href="http://ruleml.org/" title="About Us" class="first" onclick="this.blur();">About Us</A></LI>
+<LI class="last"><A href="http://www.csw.inf.fu-berlin.de/ruleml2010/past-events.html" title="Past Events" class="last" onclick="this.blur();">Past Events</A></LI>
+</UL>
+</LI>
+</UL>
+
+<A id="skipNavigation_4" class="invisible" title="Skip navigation"></A>
+
+</DIV>
+<!-- indexer::continue -->
+	</DIV>
+
+	<DIV id="footer">
+
+<P> <A href="http://emerald.csd.auth.gr:8080/RuleResponder.htm#header">Back to top</A><BR> © 2010 <A href="http://www.ruleml.org/">ruleml.org</A> | Created by <A href="http://www.unibo.it/docenti/antonino.rotolo">Antonino Rotolo</A>.</P>	</DIV>
+
+</DIV>
+
+
+<DIV id="lbOverlay"></DIV><DIV id="lbCenter" style="width: 250px; height: 250px; margin-left: -125px; display: none; "><DIV id="lbImage"><A id="lbPrevLink" href="http://www.csw.inf.fu-berlin.de/ruleml2010/#" style="display: none; "></A><A id="lbNextLink" href="http://www.csw.inf.fu-berlin.de/ruleml2010/#" style="display: none; "></A></DIV></DIV><DIV id="lbBottomContainer" style="display: none; "><DIV id="lbBottom"><A id="lbCloseLink" href="http://www.csw.inf.fu-berlin.de/ruleml2010/#"></A><DIV id="lbCaption"></DIV><DIV id="lbNumber"></DIV><DIV style="clear: both; "></DIV></DIV></DIV></BODY></HTML>

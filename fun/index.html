@@ -1,0 +1,425 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>Functional RuleML</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#FFFFFF">
+		<center>
+			<br>
+			
+			<br>
+			<h1>Functional RuleML<br>
+			</h1>
+			<h2>Harold Boley, David Hirtle, Doan Dai Duong, Le Thi Thu Thuy, Jie Li</h2>
+			<br>
+			<h2>Version History, 2006-08-11: Version 0.91
+			</h2>
+		</center>
+		<br>
+		<p>This page describes Functional RuleML (Fun RuleML),
+		   which has been incorporated into RuleML since version <a href="http://www.ruleml.org/0.91/">0.91</a>.
+		   This develops RuleML into a Relational-Functional or Functional-Logic Markup Language (cf. <a href="http://www.relfun.org/rfml/">RFML</a>) that can be regarded as being composed of Relational RuleML plus Transformation Rules
+                   (Oriented-Equality Definitions of Functions).
+ </p>
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Interpretedness And Valuedness">Interpretedness And Valuedness</a></li>
+<li><a href="#Nestings And Testing Equations">Nestings And Testing Equations</a></li>
+<li><a href="#Defining Equations">Defining Equations</a></li>
+<li><a href="#Higher-Order Functions">Higher-Order Functions</a></li>
+<li><a href="#RFML-to-RuleML Translation">RFML-to-RuleML Translation</a></li>
+<li><a href="#Detailed Examples">Detailed Examples</a></li>
+<li><a href="#Functional RuleML DTD">Functional RuleML DTD</a></li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
+		
+		<p>Varieties of Functional Programming (FP) are playing an increasing Web role, with MathML, XSLT and XQuery being prominent examples.
+		We present here Functional RuleML, whose design benefited from previous work on Transformational RuleML
+		(cf.  <a href="http://www.ruleml.org/exa/0.81/">trans examples</a>)
+		and builds on an earlier paper
+		(cf. 
+		<a href="ruleml-fun.pdf">Functional RuleML: From Horn Logic with Equality to Lambda Calculus</a>,
+		published in <a href="http://www.upgrade-cepis.com/issues/2005/6/upgrade-vol-VI-6.html#boley">UPGRADE VI(6)</a> and
+		as part of <a href="http://www.cs.unb.ca/~boley/papers/ruleml-family.pdf">The RuleML Family of Web Rule Languages</a>
+		in <a href="http://www.dbis.informatik.uni-goettingen.de/PPSWR06/ppswr06-program.html">PPSWR 2006</a>).
+Functional RuleML is developed via orthogonal notions and freely combinable with the previous Relational RuleML, including OO RuleML. This will also allow for FP/LP-integrated programming (FLP), including OO FLP.
+<br>
+			<br>
+Since its beginning in 2000, with <a href="http://www.relfun.org/rfml/">RFML</a> as one of its inputs,
+RuleML has permitted the markup of oriented (or directed) equations
+for defining the value(s) of a function applied to arguments,
+optionally conditional on a body as in Horn rules.
+Later, this was extended to logics with symmetric (or undirected)
+equality for the various sublanguages of RuleML,
+but the equality element has still often exploited
+the left-to-right orientation of its (abridged) textual syntax.
+It was a RuleML issue before version 0.91 that
+the constructor <b>Ctor</b> of a complex term <b>Cterm</b> was disjoined,
+as an XML element, from the user-defined function <b>Fun</b> of a call expression <b>Nano</b>,
+although these can be merged by proceeding to a logic with equality.
+In particular, while the earlier function-defining bodies needed
+to specify either <b>Cterm</b> or <b>Nano</b> elements for all levels of function applications,
+we now use a merged <b>Expr</b> element that carries an attribute to allow <b>Cterm</b>-like, <b>Nano</b>-like, or combined specifications.
+Moreover, while currently function-defining <b>Nano</b> patterns can contain <b>Cterm</b>s but not <b>Nano</b>s,
+obeying the 'constructor discipline',
+<b>Nano</b>s could also be permitted within <b>Nano</b>s
+to legalize 'optimization' rules like <b>reverse(reverse(?L)) = ?L.</b>
+			<br>
+			<br>
+
+Functional RuleML thus conceives both <b>Cterm</b>s and <b>Nano</b>s
+as expression (<b>Expr</b>) elements and distinguishes
+<b>uninterpreted</b> (constructor) vs. <b>interpreted</b> (user-defined) functions
+just via an XML attribute <b>in</b>terpreted={<b>&quot;no&quot;</b>,<b>&quot;yes&quot;</b>}.
+Another attribute likewise distinguishes the (single- vs. set-)valuedness of functions.
+Equations are introduced that can be 'testing' or 'defining'.
+We first proceed to the nesting of the two kinds of <b>Expr</b> elements and their use in <b>testing equations</b>.
+Next, for defining (interpreted) functions, unconditional (oriented) equations are introduced as <b>defining equations</b>.
+These are then extended to conditional equations, i.e. Horn logic implications with an equation as the head and possible equations in the body.
+Higher-order functions are finally added, currently named ones such as <b>Compose</b>,
+and later anonymous ones, i.e. 'in-place' <b>Lambda</b> definitions.
+</p>
+	<h2><a name="Interpretedness And Valuedness">Interpretedness And Valuedness</a></h2>
+		
+		<p>The different notions of <b>function</b> in LP and FP have been a continuing design issue:</p>
+		<ul>
+			<li>
+				<i>Uninterpreted functions</i> <b>denote</b> unspecified values when applied to arguments, not using function definitions.
+			</li>
+			<li>
+				<i>Interpreted functions</i> <b>compute</b> specified returned values when applied to arguments, using function definitions.
+			</li>
+		</ul>
+		<p>For example, a function <b>first-born(John, Mary) </b>can be uninterpreted,
+		so that <b>first-born(John, Mary)</b> just denotes the first-born child; or, interpreted, e.g. using definition
+<b>first-born(John, Mary) = Jory</b>, so the application <b>first-born(John, Mary)</b> returns <b>Jory</b>.
+Such interpreted and uninterpreted functions are both allowed in Functional RuleML,
+and are marked up here with a discriminating interpreted attribute <b>in</b> as follows
+(interpreted on the left, uninterpreted on the right):
+		<table border="0" cellspacing="" cellpadding="">
+			<tr>
+				<td>
+					<b><pre>
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;first-born&lt;/Fun&gt;    
+      &lt;Ind&gt;John&lt;/Ind&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/Expr&gt;</pre></b>
+				</td>
+				<td> and </td>
+				<td>
+					<b><pre>
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;no&quot;&gt;first-born&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/Expr&gt;</pre></b>
+				</td>
+			</tr>
+		</table>
+
+If the <b>in</b>terpreted attribute is omitted, <b>in=&quot;no&quot;</b> is now assumed as the default, as proposed by David Hirtle (unlike proposed in the earlier paper).
+For example,
+		<table border="0" cellspacing="" cellpadding="">
+			<tr>
+				<td>
+					<b><pre>
+                                           </pre></b>
+				</td>
+				<td></td>
+				<td>
+					<b><pre>
+    &lt;Expr&gt;
+      &lt;Fun&gt;first-born&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/Expr&gt;</pre></b>
+				</td>
+			</tr>
+		</table>
+is equivalent to the above uninterpreted version (on the right).</p>
+
+<p>The rationale here is to preserve the natural extension hierarchy of the RuleML sublanguages,
+guaranteeing that RuleML 0.91 sublanguages without equality will not need an <b>in=&quot;no&quot;</b> attribute setting
+(on <b>Fun</b>ctions inside <b>Expr</b>essions) to preserve their meaning in RuleML 0.91 sublanguages with equality,
+just as it used to be the case (for <b>C</b>onstruc<b>tor</b>s inside <b>C</b>omplex <b>term</b>s) until RuleML 0.9.
+This entails that, e.g., rules from <a href="http://www.ruleml.org/0.91/xsd/hornlog.xsd">hornlog</a> rulebases can be copied and pasted unchanged
+into <a href="http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">hornlogeq</a> rulebases while preserving their original meaning.</p>
+
+
+		<p>In both XML and UML processing, interpreted functions (like relations in LP)
+		are often set-valued (non-deterministic).
+		This is accommodated by introducing a <b>val</b>ued attribute
+		with values including &quot;1&quot; (deterministic: exactly one) and &quot;0..&quot; (set-valued: zero or more).
+		For example, the function <b>children(John, Mary)</b>
+		can be interpreted in a set-valued manner using a definition <b> children(John, Mary) =
+{Jory, Mahn} </b>, so that the application <b>children(John, Mary) </b>returns <b>{Jory,Mahn} </b>.
+In Functional RuleML, the example is marked up thus:</p>
+		<b><pre>
+&lt;Expr&gt;
+  &lt;Fun in=&quot;yes&quot; val=&quot;0..&quot;&gt;children&lt;/Fun&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+&lt;/Expr&gt;
+</pre></b>
+	<h2><a name="Nestings And Testing Equations">Nestings And Testing Equations</a></h2>
+		
+		<p>Nestings are permitted for all combinations of interpreted and uninterpreted functions
+		except that inside an uninterpreted function application there can be no interpreted function application.
+		For example, consider the function nesting <b>age(first-born(John,Mary))</b>,
+		where both <b>age</b> and <b>first-born</b> can be interpreted or uninterpreted except that
+		inside an uninterpreted <b>age</b> there can only be an uninterpreted <b>first-born</b> .
+		The resulting three versions of the example can be marked up thus (where &quot;u&quot; and &quot;v&quot; can
+                assume &quot;yes&quot; &quot;yes&quot;, &quot;yes&quot; &quot;no&quot;, or &quot;no&quot; &quot;no&quot;, respectively):</p>
+		<b><pre>
+&lt;Expr&gt;
+  &lt;Fun in=&quot;u&quot;&gt;age&lt;/Fun&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;v&quot;&gt;first-born&lt;/Fun&gt;
+    &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;/Expr&gt;
+&lt;/Expr&gt;
+</pre></b>
+
+<p>Testing equations can be considered as (inferential) queries performing equality tests (proofs).
+Nestings as above can be employed on both sides of a testing equation.
+For example, a fully interpreted version of the testing equation
+<b>age(first-born(John,Mary)) = subtract(age(John),age(Mary))</b> can be marked up thus:</p>
+		<b><pre>
+&lt;Equal oriented=&quot;no&quot;&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;first-born&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/Expr&gt;
+  &lt;/Expr&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;subtract&lt;/Fun&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;/Expr&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/Expr&gt;
+  &lt;/Expr&gt;
+&lt;/Equal&gt;
+</pre></b>
+		<p>Here, the <b>Equal</b> element represents an unoriented equation used to test
+		whether its left-hand side evaluates to the same value as its right-hand side does.
+		</p>
+	<h2><a name="Defining Equations">Defining Equations</a></h2>
+		
+		<p>Defining equations are used for function definitions.
+		Let us consider an example defining a function <i>home</i> for a given structured argument:</p>
+		<i> home(father-of(John)) = Mexico City </i>
+		<p>This will be marked up as follows:</p>
+		<b><pre>
+&lt;Equal oriented=&quot;yes&quot;&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;home&lt;/Fun&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;no&quot;&gt;father-of&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;/Expr&gt;
+  &lt;/Expr&gt;
+  &lt;Ind&gt;Mexico City&lt;/Ind&gt;
+&lt;/Equal&gt;
+</pre></b>
+		<p>Here, the <b>Equal</b> element represents an unconditional, oriented equation.
+		In general, <b>Equal</b> permits both symmetric (or undirected) and oriented (or directed) equations
+		via an <b>oriented</b> attribute with respective <b>&quot;no&quot;</b>
+and <b>&quot;yes&quot;</b> values. Since it is more general, <b>oriented=&quot;no&quot;</b> is assumed as the default.
+		</p>
+		<p>Let us consider a variant with an expression on the right-hand side of the equation:</p>
+		<i> home(father-of(John)) = largest-city(Earth)</i>
+		<p>In this example assume that the right-hand side expression is meant to call an interpreted function.
+		This leads to the following markup: </p>
+		<b><pre>
+&lt;Equal oriented=&quot;yes&quot;&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;home&lt;/Fun&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;no&quot;&gt;father-of&lt;/Fun&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;/Expr&gt;
+  &lt;/Expr&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;largest-city&lt;/Fun&gt;
+    &lt;Ind&gt;Earth&lt;/Ind&gt;
+  &lt;/Expr&gt;
+&lt;/Equal&gt;
+</pre></b>
+
+		<p>Conditional equations use an oriented <b>Equal</b> element as the conclusion of
+an <b>Implies</b> element, whose condition may employ other (testing) equations.
+		</p>
+		<p>For example, using
+a unary <b>birth-year</b> function
+in the condition, a nullary <b>this-year</b> function
+on the right-hand side of the conclusion's <b>Equal</b>,
+and two variables,
+the conditional equation (written with a top-level &quot;=&gt;&quot;) </p>
+
+<i>?B = birth-year(?P)
+  =&gt;
+age(?P) =
+subtract(this-year(),?B)</i>
+
+<p>employs an equational condition to test whether the
+<b>birth-year</b> of a person <b>?P</b> is known, assigning
+it to  <b>?B</b> for use within the conclusion.
+This leads to the following markup: </p>
+		<b><pre>
+&lt;Implies&gt;
+  &lt;Equal oriented=&quot;no&quot;&gt;
+    &lt;Var&gt;B&lt;/Var&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;birth-year&lt;/Fun&gt;
+      &lt;Var&gt;P&lt;/Var&gt;
+    &lt;/Expr&gt;
+  &lt;/Equal&gt;
+  &lt;Equal oriented=&quot;yes&quot;&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+      &lt;Var&gt;P&lt;/Var&gt;
+    &lt;/Expr&gt;
+    &lt;Expr&gt;
+      &lt;Fun in=&quot;yes&quot;&gt;subtract&lt;/Fun&gt;
+      &lt;Expr&gt;
+        &lt;Fun in=&quot;yes&quot;&gt;this-year&lt;/Fun&gt;
+      &lt;/Expr&gt;
+      &lt;Var&gt;B&lt;/Var&gt;
+    &lt;/Expr&gt;
+  &lt;/Equal&gt;
+&lt;/Implies&gt;
+</pre></b>
+
+<p>With the above <b>age</b> definition,
+also assuming <b>birth-year(Jory) = 1993</b> and  <b>this-year() = 2006</b>,
+the <b>age</b> call</p>
+		<b><pre>
+&lt;Expr&gt;
+  &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+  &lt;Var&gt;Jory&lt;/Var&gt;
+&lt;/Expr&gt;
+</pre></b>
+
+<p>as well as the nested <b>age</b>-of-<b>first-born</b> call</p>
+		<b><pre>
+&lt;Expr&gt;
+  &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+  &lt;Expr&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;first-born&lt;/Fun&gt;
+    &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;/Expr&gt;
+&lt;/Expr&gt;
+</pre></b>
+<p>return <b>13</b>, where we moreover assume the earlier <b>first-born</b> definition.</p>
+	<h2><a name="Higher-Order Functions">Higher-Order Functions</a></h2>
+		
+		<p>Higher-order functions are characteristic for FP and thus should be supported by Functional RuleML. A higher-order function permits functions to be passed to it as (actual)
+parameters and to be returned from it as values.
+For example, the composition of the <b>age</b> and <b>first-born</b> functions (introduced above),
+both interpreted, is performed by <b>Compose(age,first-born)</b>.
+This example can be marked up thus:</p>
+		<b><pre>
+&lt;Expr in=&quot;yes&quot;&gt;
+  &lt;Fun in=&quot;no&quot;&gt;Compose&lt;/Fun&gt;
+  &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+  &lt;Fun in=&quot;yes&quot;&gt;first-born&lt;/Fun&gt;
+&lt;/Expr&gt;
+</pre></b>
+<p>Here, as in RFML, <b>Compose</b> itself is marked up as an uninterpreted function,
+while the enclosing <b>Expr</b> is employed as an interpreted function
+having the entire <b>Compose</b> application as its structured name.
+This composition can be applied to two (parental) individuals thus:</p>
+		<b><pre>
+&lt;Expr&gt;
+  &lt;Expr in=&quot;yes&quot;&gt;
+    &lt;Fun in=&quot;no&quot;&gt;Compose&lt;/Fun&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;age&lt;/Fun&gt;
+    &lt;Fun in=&quot;yes&quot;&gt;first-born&lt;/Fun&gt;
+  &lt;/Expr&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+&lt;/Expr&gt;
+</pre></b>
+	<h2><a name="RFML-to-RuleML Translation">RFML-to-RuleML Translation</a></h2>
+		
+		<p>The functional part of Relfun's RFML syntax can be translated into Fun RuleML using the <a href="http://www.ruleml.org/fun/rfml2ruleml.xslt">RFML2RuleML.xslt</a> stylesheet, which was
+                 adapted from an <a href="http://www.relfun.org/ruleml/rfml2ruleml.xsl">earlier stylesheet</a> for mapping a Hornlog RFML program into an older version
+                 of RuleML. The new stylesheet is designed to map the functional part of RFML into RuleML 0.91.</p>
+	<h2><a name="Detailed Examples">Detailed Examples</a></h2>
+		
+		<p>	The following are some more detailed Functional RuleML examples, e.g. for testing the translator:</p>
+		<ul>
+			<li>FatherOfJohn in Functional RuleML: <a href="http://www.ruleml.org/fun/FatherOfJohn.xml">FatherOfJohn.xml</a>
+			</li>
+		</ul>
+		<p>and</p>
+		<ul>
+			<li>RFMLFact.xml in RFML: <a href="http://www.ruleml.org/fun/RFMLFact.xml">RFMLFact.xml</a>
+			</li>
+		</ul>
+		<ul>
+			<li>RuleMLResult.xml in RuleML: <a href="http://www.ruleml.org/fun/RuleMLResult.xml">RuleMLResult.xml</a>
+			</li>
+		</ul>
+	<h2><a name="Functional RuleML DTD">Functional RuleML DTD</a></h2>
+		
+		<b><pre>
+&lt;!ENTITY % term &quot;(Data | Ind | Var | Expr)&quot;&gt;
+&lt;!ENTITY % ateq &quot;(Atom | Equal)&quot;&gt;
+&lt;!ENTITY % conclusion &quot;(%ateq;)&quot;&gt;
+&lt;!ENTITY % condition &quot;(And | %ateq;)&quot;&gt;
+&lt;!ELEMENT Assert (Implies | %ateq;)*&gt;
+&lt;!ELEMENT Implies (%condition;, %conclusion;)&gt;
+&lt;!ELEMENT And (%ateq;)*&gt;
+&lt;!ELEMENT Equal (%term;, %term;)&gt;
+&lt;!ELEMENT Atom ((Rel | Expr | Lambda | Var), (%term; | Rel | Fun | Lambda)*)&gt;
+&lt;!ELEMENT Expr ((Fun | Expr | Lambda | Var), (%term; | Rel | Fun | Lambda)*)&gt;
+&lt;!ELEMENT Lambda ((%term;)+, %term;)&gt;
+&lt;!ELEMENT Fun (#PCDATA)&gt;
+&lt;!ELEMENT Rel (#PCDATA)&gt;
+&lt;!ELEMENT Data (#PCDATA)&gt;
+&lt;!ELEMENT Ind (#PCDATA)&gt;
+&lt;!ELEMENT Var (#PCDATA)&gt;
+&lt;!ATTLIST Equal oriented (yes | no) &quot;no&quot;&gt;
+&lt;!ATTLIST Expr	in (yes | no | semi) &quot;no&quot;&gt;
+&lt;!ATTLIST Rel	in (yes | no | semi) &quot;yes&quot;&gt;
+&lt;!ATTLIST Fun	in (yes | no | semi) &quot;no&quot;
+		val (1 | 0..) &quot;0..&quot;&gt;
+&lt;!ATTLIST Var	ord (1 | h) &quot;h&quot;
+		in (yes | no | semi) &quot;no&quot;&gt;
+		</pre></b>
+	<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2006-09-02
+		
+		<br>
+			<br>
+			<br>
+			<a name="Practice-Preach"></a>
+			<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a>;
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

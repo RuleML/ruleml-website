@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            TestCases module part of ECA-RuleML.
+			This is the XML Schema test cases module for ECA-RuleML.
+			File: testcases_module.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			This schema declares the following ECA-RuleML elements and attributes:
+			
+			* TestCase	
+			* Test
+			* Result
+			* @semantic
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+<!--
+     *** TestCase ***
+     
+     content model: ( (Test+, Atom*,Implies*) | Integrity)
+-->
+	<xs:attributeGroup name="TestCase.attlist">
+		<xs:attributeGroup ref="semantic.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="TestCase.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="Test" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:group ref="atom_implies_testcase.content"/>
+			</xs:sequence>
+			<xs:element ref="Integrity"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="TestCase.type">
+		<xs:group ref="TestCase.content"/>
+		<xs:attributeGroup ref="TestCase.attlist"/>
+	</xs:complexType>
+	<xs:element name="TestCase" type="TestCase.type"/>
+	
+	<xs:group name="atom_implies_testcase.content">
+		<xs:sequence>
+			<xs:element ref="Atom" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Implies" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+
+
+<!--
+     *** Test ***
+     
+     content model: (Test, Result)
+-->
+	<xs:attributeGroup name="Test.attlist"/>
+	<xs:group name="Test.content">
+		<xs:sequence>
+			<xs:element ref="Query"/>
+			<xs:element ref="Result"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Test.type">
+		<xs:group ref="Test.content"/>
+		<xs:attributeGroup ref="Test.attlist"/>
+	</xs:complexType>
+	<xs:element name="Test" type="Test.type"/>
+
+<!--
+     *** Result ***
+     
+     content model: (Ind)
+-->
+	<xs:attributeGroup name="Result.attlist"/>
+	<xs:group name="Result.content">
+		<xs:sequence>
+			<xs:element ref="Ind"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Result.type">
+		<xs:group ref="Result.content"/>
+		<xs:attributeGroup ref="Result.attlist"/>
+	</xs:complexType>
+	<xs:element name="Result" type="Result.type"/>
+
+<!--
+     *** @semantic ***
+     
+     
+-->
+	<xs:attributeGroup name="semantic.attrib">
+		<xs:attribute name="semantic" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+</xs:schema>

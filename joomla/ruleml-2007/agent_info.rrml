@@ -1,0 +1,10 @@
+This query asks for all members (agents) of the virtual organization. This means, it
+     retrieves all (implemented) members of the RuleML-2007 organization committee.
+
+     These agents are defined and described as a role model in an external OWL ontology together with other
+     infos about the virtual organization such as tasks, responsibility assignment matrix etc.
+ 
+     The RuleML-2007 organizational agent (Prova inference service) by asking inference queries to
+     this ontology collects the answers and sends them back to the requester.
+
+

@@ -1,0 +1,13 @@
+<!-- XML DTD for a Datalog RuleML sublanguage, including negation as failure (NAF) -->
+<!-- File: nafdatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-16 -->
+
+<!-- the parameter entity modifications affecting previously declared elements are found in -->
+<!-- datalog_mod.mod because they are common in this DTD and urdatalog as well -->
+<!ENTITY % datalog.mod SYSTEM "datalog_mod.mod">
+%datalog.mod;
+
+<!-- this module inherits from the (NAF) Binary Datalog RuleML sublanguage (nafbindatalog) -->
+<!ENTITY % nafbindatalog_include SYSTEM "nafbindatalog.dtd">
+%nafbindatalog_include;

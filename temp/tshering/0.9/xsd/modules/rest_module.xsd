@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Plex -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML elements related to rest variables.
+			File: rest_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+			
+			This module declares the following RuleML elements:
+			* repo
+			* resl
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** repo ***
+		A positional rest variable.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-repo
+		
+		Note that Plex's are generated, so repo's are only available above Datalog.
+
+		content model: (Var | Plex)
+	-->
+	<xs:attributeGroup name="repo.attlist"/>
+	<xs:group name="repo.content">
+		<xs:choice>
+			<xs:element ref="Var"/>
+			<xs:element name="Plex" type="Plex-repo.type"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="repo.type">
+		<xs:group ref="repo.content"/>
+		<xs:attributeGroup ref="repo.attlist"/>
+	</xs:complexType>
+	<xs:element name="repo" type="repo.type"/>
+
+	<!--
+		*** resl ***
+		A slotted rest variable.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-resl		
+		
+		Note that Plex's are generated, so resl's are only available above Datalog.
+
+		content model: (Var | Plex)
+	-->
+	<xs:attributeGroup name="resl.attlist"/>
+	<xs:group name="resl.content">
+		<xs:choice>
+			<xs:element ref="Var"/>
+			<xs:element name="Plex" type="Plex-resl.type"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="resl.type">
+		<xs:group ref="resl.content"/>
+		<xs:attributeGroup ref="resl.attlist"/>
+	</xs:complexType>
+	<xs:element name="resl" type="resl.type"/>
+	
+</xs:schema>

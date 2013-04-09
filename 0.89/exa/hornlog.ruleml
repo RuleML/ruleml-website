@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlog.xsd">
+
+<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+
+<And mapClosure="universal">
+
+  <oid>
+	<!--<Ind wlab="bla" type="bla2"/>-->
+    <Cterm>
+      <opc><Ctor>rule label</Ctor></opc>
+      <slot><Ind>label</Ind><Ind>an example fact</Ind></slot>
+    </Cterm>
+  </oid>
+
+<Implies>
+  <head>
+    <Atom>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <resl><Var>c</Var></resl>
+      <opr><Rel>asf</Rel></opr>
+    </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+      <slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor>constructor</Ctor></opc>
+          <Plex>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+	    <resl><Var>c</Var></resl>
+          </Plex>
+        </Cterm></slot>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind>constant h</Ind>
+            <Cterm>
+              <opc><Ctor>empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+
+
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <Skolem>constant b</Skolem>
+        <repo><Var>b</Var></repo>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <repo><Var>x</Var></repo>
+        <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+        <resl><Plex><slot><Skolem/><Ind>test</Ind></slot></Plex></resl>
+      </Atom>
+
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+        <Skolem>constant b</Skolem>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+      <resl><Var>b</Var></resl>
+    </Atom>
+
+</And>
+
+</Assert>

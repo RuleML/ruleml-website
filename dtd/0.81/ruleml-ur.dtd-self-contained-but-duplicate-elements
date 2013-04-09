@@ -1,0 +1,12 @@
+
+
+
+<!-- Corresponding elements should be included from ruleml-datalog.dtd, ruleml-hornlog.dtd, and ruleml-equalog.dtd, but are given here for making ruleml-ur.dtd self-contained -->
+
+<!ELEMENT ind    (#PCDATA)>
+<!ELEMENT rel    (#PCDATA)>
+
+<!ELEMENT ctor   (#PCDATA)>
+<!ELEMENT arole  (#PCDATA)>
+
+<!ELEMENT fun    (#PCDATA)>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlog.xsd">
+
+<!-- non-ground-fact-like rule with 4-element plex as single argument -->
+
+<Assert>
+
+    <Atom closure="universal">
+      <op><Rel>book</Rel></op>
+      <Plex>
+        <Var>title</Var>
+        <Var>author</Var>
+        <Var>toc</Var>
+        <Var>chapters</Var>
+      </Plex>
+    </Atom>
+
+</Assert>
+
+</RuleML>

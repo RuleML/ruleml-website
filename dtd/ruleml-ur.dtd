@@ -1,0 +1,24 @@
+<!-- An XML DTD for a 'UR' RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-23 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- a Uniform Resource Identifier is currently PCDATA, but see W3C's [RFC2396] -->
+<!ENTITY % URI "#PCDATA">
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<!-- there is an additional kind of fixed argument -->
+
+<!-- objects (resources) use a URL/URI as their OID, as in SHOE or RDF (cf. URML) -->
+<!-- however, unlike for XHTML anchors etc. URI used as content, not as attribute -->
+<!-- 'label' attribute, unlike URI, need not be unique -->
+<!-- if no 'label' attribute is given, browser must highlight the URI itself -->
+<!ELEMENT ur (%URI;)>
+<!ATTLIST ur label CDATA #IMPLIED>

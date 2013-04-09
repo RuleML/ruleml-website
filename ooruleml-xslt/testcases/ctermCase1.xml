@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--*****************************************-->
+<!--Simple cterm Test Case-->
+<!--*****************************************-->
+<rulebase>
+	<!--Object-Oriented Signature for cterms-->
+	<signature formula="cterm" world="open" order="unsorted">
+		<_data>
+			<cterm>
+				<_opc>
+					<ctor>shipment</ctor>
+				</_opc>
+				<_r n="date">
+					<ind/>
+				</_r>
+				<_r n="orderNum">
+					<ind/>
+				</_r>
+				<_r n="order">
+					<cterm/>
+				</_r>
+			</cterm>
+		</_data>
+	</signature>
+	<signature formula="cterm" world="open" order="unsorted">
+		<_data>
+			<cterm>
+				<_opc>
+					<ctor>order</ctor>
+				</_opc>
+				<_r n="orderNum">
+					<ind/>
+				</_r>
+				<_r n="automobile">
+					<ind/>
+				</_r>
+			</cterm>
+		</_data>
+	</signature>
+	<!--Complete order fact-->
+	<fact>
+		<_head>
+			<atom>
+				<cterm>
+					<_opc>
+						<ctor>order</ctor>
+					</_opc>
+					<_r n="automobile">
+						<ind/>
+					</_r>
+					<_r n="orderNum">
+						<ind>3502653</ind>
+					</_r>
+				</cterm>
+			</atom>
+		</_head>
+	</fact>
+	<!--Paritally complete shipment fact-->
+	<fact>
+		<_head>
+			<atom>
+				<cterm>
+					<_opc>
+						<ctor>shipment</ctor>
+					</_opc>
+					<_r n="order">
+						<cterm/>
+					</_r>
+					<_r n="orderNum">
+						<ind>3502653</ind>
+					</_r>
+					<_r n="date">
+						<ind>January</ind>
+					</_r>
+				</cterm>
+			</atom>
+		</_head>
+	</fact>
+	<!--Nested Cterms-->
+	<fact>
+		<_head>
+			<atom>
+				<cterm>
+					<_opc>
+						<ctor>shipment</ctor>
+					</_opc>
+					<_r n="order">
+						<cterm>
+							<_opc>
+								<ctor>order</ctor>
+							</_opc>
+							<_r n="automobile">
+								<ind/>
+							</_r>
+							<_r n="orderNum">
+								<ind/>
+							</_r>
+						</cterm>
+					</_r>
+					<_r n="orderNum">
+						<ind/>
+					</_r>
+					<_r n="date">
+						<ind/>
+					</_r>
+					<cterm>
+						<_opc>
+							<ctor>order</ctor>
+						</_opc>
+						<_r n="automobile">
+							<ind/>
+						</_r>
+						<_r n="orderNum">
+							<ind/>
+						</_r>
+					</cterm>
+					<!--cterm within metarole-->
+					<!--positionalized cterm within a cterm-->
+				</cterm>
+			</atom>
+		</_head>
+	</fact>
+	<!--Implementation of nested cterms-->
+	<imp>
+		<_head>
+			<atom>
+				<cterm>
+					<_opc>
+						<ctor>order</ctor>
+					</_opc>
+					<_r n="automobile">
+						<ind/>
+					</_r>
+					<_r n="orderNum">
+						<ind>3502653</ind>
+					</_r>
+				</cterm>
+			</atom>
+		</_head>
+		<_body>
+			<and>
+				<atom>
+					<cterm>
+						<_opc>
+							<ctor>shipment</ctor>
+						</_opc>
+						<_r n="order">
+							<cterm>
+								<_opc>
+									<ctor>order</ctor>
+								</_opc>
+								<_r n="automobile">
+									<var/>
+								</_r>
+								<_r n="orderNum">
+									<ind>3502653</ind>
+								</_r>
+							</cterm>
+						</_r>
+						<_r n="orderNum">
+							<ind>3502653</ind>
+						</_r>
+						<_r n="date">
+							<ind>January</ind>
+						</_r>
+					</cterm>
+				</atom>
+			</and>
+		</_body>
+	</imp>
+	<!--Example of cterms within a query-->
+	<query>
+		<_body>
+			<and>
+				<atom>
+					<cterm>
+						<_opc>
+							<ctor>shipment</ctor>
+						</_opc>
+						<_r n="order">
+							<var/>
+						</_r>
+						<_r n="orderNum">
+							<ind>3502653</ind>
+						</_r>
+						<_r n="date">
+							<var/>
+						</_r>
+					</cterm>
+				</atom>
+			</and>
+		</_body>
+	</query>
+</rulebase>

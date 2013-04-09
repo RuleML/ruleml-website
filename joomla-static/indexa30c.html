@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr">
+
+<!-- Mirrored from ruleml.org/joomla/index.php?view=article&catid=5%3Arule-responder-for-virtual-organizations&id=7%3Arule-respondernfor-virtual-organizations&tmpl=component&print=1&layout=default&page=&option=com_content&Itemid=5 by HTTrack Website Copier/3.x [XR&CO'2010], Sat, 15 Dec 2012 13:36:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="keywords" content="joomla, Joomla" />
+  <meta name="title" content="RuleML-2007 Rule Responder Use Case" />
+  <meta name="author" content="Administrator" />
+  <meta name="description" content="Joomla! - the dynamic portal engine and content management system" />
+  <meta name="generator" content="Joomla! 1.5 - Open Source Content Management" />
+  <title>RuleML-2007 Rule Responder Use Case</title>
+  <link href="http://ruleml.org/joomla/templates/rhuk_milkyway/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script type="text/javascript" src="http://ruleml.org/joomla/media/system/js/mootools.js"></script>
+  <script type="text/javascript" src="http://ruleml.org/joomla/media/system/js/caption.js"></script>
+
+	<link rel="stylesheet" href="http://ruleml.org/joomla/templates/rhuk_milkyway/css/template.css" type="text/css" />
+
+</head>
+<body class="contentpane">
+	
+	<table class="contentpaneopen">
+<tr>
+		<td class="contentheading" width="100%">
+					RuleML-2007 Rule Responder Use Case			</td>
+				<td align="right" width="100%" class="buttonheading">
+		<a href="#" onclick="window.print();return false;"><img src="http://ruleml.org/joomla/images/M_images/printButton.png" alt="Print"  /></a>		</td>
+	</tr>
+</table>
+
+<table class="contentpaneopen">
+<tr>
+	<td valign="top">
+		<span class="small">
+			Written by Administrator		</span>
+		&nbsp;&nbsp;
+	</td>
+</tr>
+
+<tr>
+	<td valign="top" class="createdate">
+		Sunday, 17 June 2007 10:55	</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<h1>RuleML-2007 Rule Responder Use Case</h1>
+<p> </p>
+<h2>Introduction</h2>
+<p><br />The RuleML-2007 Responder use case implements the RuleML-2007 organization as a virtual organization consisting of self-autonomous rule-based agents who fulfil typical conference organization and project management tasks and respond respectively react to incoming requests to the RuleML-2007 organization.<br /><br />The RuleML-2007 Responder agent (organizational agent) acts as a single point of entry for the RuleML-2007 organization. It filters, decides and delegates incoming queries and requested tasks to the organizations' members (e.g. the organizing committee members) which are implemented as distributed rule-based personal agents. Project management methodologies such as a responsibility assignment matrix are used by the RuleML-2007 Responder to describe the roles and responsibilities of the personal agents in the virtual organization and typical negotiation and distributed coordination mechanisms are used to manage and communicate with the project team and external agents. The personal agents act as self-autonomous agents having their own rule-based decision and behavioural logic on top of their personal information sources, web services, vocabularies / ontologies and knowledge structures. This allows them, e.g., to selectively reveal personal information such contact information (e.g. show only parts of FOAF profiles or vCards) or react respectively proactively plan according to the situation (e.g. schedule a meeting based on personal iCal calendar data).<br /><br />Each agent in the RuleML-2007 virtual organization is implemented as a web-based service consisting of a set of internal or external data and knowledge sources and a rule execution environment (a rule engine). An enterprise service bus (ESB) is used as a scalable, highly distributable object broker to manage, integrate and seamlessly handle the interactions between the distributed rule-based agents using disparate transport and messaging technologies. In the concrete reference implementation of this use case Reaction RuleML (Reaction RuleML project) is applied as rule interchange and event messaging format, Prova (Prova project) and OO jDrew (OO jDrew project) are used as two exemplary rule engines in the implementation of the organizational and personal agents, and Mule (Mule project) is used as communication middleware between the agent endpoints. Reaction RuleML messages (event messages) are transported by the ESB to the appropriate internal agent nodes or external communication interfaces based on a broad spectrum of selectable transport protocols such as HTTP, JMS, Web Service protocols (SOAP) or agent communication languages (JADE). The platform-independent interchanged RuleML messages which contain the message payload, e.g. queries or answers, as well as meta information about the conversation and the pragmatic context of the message, are translated by translator services (e.g. XSLT style sheets) into the platform-dependent, specific execution language of the rule-based execution environment at the agent endpoint(s). According to their rule-based decision logic the agents derive answers and react appropriately to the incoming messages, e.g. by sending out further messages, e.g. with answers to the original query or with new messages starting a sub-conversation. The rules typically access various data such as organizational project management data and personal information either by external data integration, e.g., by Provas' integration interfaces for distributed relational databases or Semantic Web data (RDF, RDFS, OWL), or by replication of pre-translated data into the rule engines fact base. <br /><br />The contributions of this use case are as follows:<br /><br /></p>
+<ul>
+<li>Applies rule-based technologies to the project management in virtual organizations and collaborative teams</li>
+<li>Merits the ideas of multi-agent systems, rule management systems, and service oriented and event driven architectures</li>
+<li>Applies negotiation and distributed coordination mechanisms of rule-based complex event processing</li>
+<li>Demonstrates the interoperation of different distributed platform-specific rule execution environment based on Reaction RuleML as a platform-independent rule interchange format transported over an enterprise service bus as transport middleware</li>
+<li>Demonstrates the integration and interoperation of rule standards (RuleML) and Semantic Web (RDF, RDFS, OWL) and meta data standards (e.g. iCal, vCard)</li>
+<li>Extends the Semantic Web with a pragmatic rule-based layer (Pragmatic Web), which defines the rules for using the information resources and ontologies to support human agents in their decisions and react autonomously as automated agents</li>
+<li>Addresses real-world software engineering needs for a highly distributed, open, interoperable, efficient and scalable technical infrastructure</li>
+</ul>
+<p><br />In the following we ... TODO<br /><br /></p></td>
+</tr>
+
+<tr>
+	<td class="modifydate">
+		Last Updated on Wednesday, 08 December 2010 18:01	</td>
+</tr>
+</table>
+<span class="article_separator">&nbsp;</span>
+
+</body>
+
+<!-- Mirrored from ruleml.org/joomla/index.php?view=article&catid=5%3Arule-responder-for-virtual-organizations&id=7%3Arule-respondernfor-virtual-organizations&tmpl=component&print=1&layout=default&page=&option=com_content&Itemid=5 by HTTrack Website Copier/3.x [XR&CO'2010], Sat, 15 Dec 2012 13:36:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+</html>

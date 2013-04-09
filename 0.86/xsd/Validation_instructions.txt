@@ -1,0 +1,8 @@
+Validation Instructions for RuleML 0.86 XSDs
+--------------------------------------------
+Last modified: June 29, 2004
+
+
+To validate these XSDs, direct your browser to
+http://www.ruleml.org/0.86/exa/ and follow the
+instructions in Validation_instructions_xsd.txt.

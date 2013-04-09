@@ -1,0 +1,355 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            ECA-RuleML module part of RBSLA.
+			This is the XML Schema event algebra module for RBSLA.
+			File: event-algebra_module.xsd
+			Version: 0.2
+			Last Modification: 2006-10-01
+			
+			This schema declares the following RBSLA elements and attributes:
+                  
+                  * operator
+                  * interval
+                  * Sequence
+                  * Disjunction
+                  * Conjunction
+                  * Xor
+                  * Concurrent
+                  * Not
+                  * Any
+                  * Aperiodic
+                  * Periodic
+                  * Interval
+                  
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+<!--
+      *** operator ***
+
+      content model: 
+      (Sequence | Disjunction | Xor | Conjunction | Concurent | Not | Any | Aperiodic | Periodic | Cterm)
+-->
+	<xs:attributeGroup name="operator.attlist"/>
+	<xs:group name="operator.content">
+		<xs:choice>
+			<xs:element ref="Sequence"/>
+			<xs:element ref="Disjunction" />
+			<xs:element ref="Xor"/>
+			<xs:element ref="Conjunction"/>
+			<xs:element ref="Concurrent"/>
+			<xs:element ref="Not"/>
+			<xs:element ref="Any"/>
+			<xs:element ref="Aperiodic"/>
+			<xs:element ref="Periodic"/>
+			<xs:element ref="Cterm"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="operator.type">
+		<xs:group ref="operator.content"/>
+		<xs:attributeGroup ref="operator.attlist"/>
+	</xs:complexType>
+	<xs:element name="operator" type="operator.type"/>	
+
+<!--
+	  *** interval ***
+
+	  content model: ( Interval | Plex | Var )
+-->
+
+<xs:attributeGroup name="interval.attlist"/>
+	<xs:group name="interval.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Interval"/>
+				<xs:element ref="Plex"/>
+				<xs:element ref="Var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="interval.type">
+		<xs:group ref="interval.content"/>
+		<xs:attributeGroup ref="interval.attlist"/>
+	</xs:complexType>
+	<xs:element name="interval" type="interval.type"/>
+<!--
+      *** Sequence ***
+
+      content model: 
+      (oid?,  (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)*)
+-->
+	<xs:attributeGroup name="Sequence.attlist"/>
+	<xs:group name="Sequence.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Sequence.type">
+		<xs:group ref="Sequence.content"/>
+		<xs:attributeGroup ref="Sequence.attlist"/>
+	</xs:complexType>
+	<xs:element name="Sequence" type="Sequence.type"/>
+		
+<!--
+      *** Disjunction ***
+
+      content model: 
+      (oid?,  (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)*)
+-->
+	<xs:attributeGroup name="Disjunction.attlist"/>
+	<xs:group name="Disjunction.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"  minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Disjunction.type">
+		<xs:group ref="Disjunction.content"/>
+		<xs:attributeGroup ref="Disjunction.attlist"/>
+	</xs:complexType>
+	<xs:element name="Disjunction" type="Disjunction.type"/>
+	
+<!--
+      *** Conjunction ***
+
+      content model: 
+      (oid?,  (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)*)
+-->
+	<xs:attributeGroup name="Conjunction.attlist"/>
+	<xs:group name="Conjunction.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"  minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Conjunction.type">
+		<xs:group ref="Conjunction.content"/>
+		<xs:attributeGroup ref="Conjunction.attlist"/>
+	</xs:complexType>
+	<xs:element name="Conjunction" type="Conjunction.type"/>
+	
+<!--
+      *** Xor ***
+
+      content model: 
+      (oid?,  (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)*)
+-->
+	<xs:attributeGroup name="Xor.attlist"/>
+	<xs:group name="Xor.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"  minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Xor.type">
+		<xs:group ref="Xor.content"/>
+		<xs:attributeGroup ref="Xor.attlist"/>
+	</xs:complexType>
+	<xs:element name="Xor" type="Xor.type"/>
+	
+<!--
+      *** Concurrent ***
+
+      content model: 
+      (oid?,  (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)*)
+-->
+	<xs:attributeGroup name="Concurrent.attlist"/>
+	<xs:group name="Concurrent.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"  minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Concurrent.type">
+		<xs:group ref="Concurrent.content"/>
+		<xs:attributeGroup ref="Concurrent.attlist"/>
+	</xs:complexType>
+	<xs:element name="Concurrent" type="Concurrent.type"/>
+	
+<!--
+      *** Not ***
+
+      content model: 
+      (oid?,  event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic, interval | Interval | Plex | Var)
+-->
+	<xs:attributeGroup name="Not.attlist"/>
+	<xs:group name="Not.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"/>
+			<xs:choice>
+					<xs:element ref="interval"/>
+					<xs:element ref="Interval"/>
+					<xs:element ref="Plex"/>
+					<xs:element ref="Var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Not.type">
+		<xs:group ref="Not.content"/>
+		<xs:attributeGroup ref="Not.attlist"/>
+	</xs:complexType>
+	<xs:element name="Not" type="Not.type"/>
+
+<!--
+      *** Any ***
+
+      content model: 
+      (oid?,  Ind | Data | Var,  event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic, interval | Interval | Plex | Var)
+-->
+	<xs:attributeGroup name="Any.attlist"/>
+	<xs:group name="Any.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>			
+			<xs:choice>
+					<xs:element ref="Ind"/>
+					<xs:element ref="Data"/>
+					<xs:element ref="Var"/>
+			</xs:choice>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Any.type">
+		<xs:group ref="Any.content"/>
+		<xs:attributeGroup ref="Any.attlist"/>
+	</xs:complexType>
+	<xs:element name="Any" type="Any.type"/>
+
+
+<!--
+      *** Aperiodic***
+
+    content model: (oid?,  event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic, interval | Interval | Plex | Var)
+-->
+	<xs:attributeGroup name="Aperiodic.attlist"/>
+	<xs:group name="Aperiodic.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="and_sequence_or_xor_concurrent.content"/>
+			<xs:choice>
+					<xs:element ref="interval"/>
+					<xs:element ref="Interval"/>
+					<xs:element ref="Plex"/>
+					<xs:element ref="Var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Aperiodic.type">
+		<xs:group ref="Aperiodic.content"/>
+		<xs:attributeGroup ref="Aperiodic.attlist"/>
+	</xs:complexType>
+	<xs:element name="Aperiodic" type="Aperiodic.type"/>
+
+
+<!-- 
+	  *** Periodic ***
+
+	  content model: (oid?,  time | Ind | Var | Cterm , interval | Interval | Plex | Var)
+-->
+	<xs:attributeGroup name="Periodic.attlist"/>
+	<xs:group name="Periodic.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+					<xs:element ref="time"/>
+					<xs:element ref="Ind"/>
+					<xs:element ref="Var"/>
+					<xs:element ref="Cterm"/>
+			</xs:choice>
+			<xs:choice>
+					<xs:element ref="interval"/>
+					<xs:element ref="Interval"/>
+					<xs:element ref="Plex"/>
+					<xs:element ref="Var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Periodic.type">
+		<xs:group ref="Periodic.content"/>
+		<xs:attributeGroup ref="Periodic.attlist"/>
+	</xs:complexType>
+	<xs:element name="Periodic" type="Periodic.type"/>
+
+<!--
+  
+		and_sequence_or_xor_concurrent.content
+        
+        This group is a part of the contents of the elements  Conjunction, Sequence, Disjunction, Xor, Concurrent, Not, Any
+
+		content model: (event | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)
+-->	
+	<xs:group name="and_sequence_or_xor_concurrent.content">
+		<xs:choice>
+			<xs:element ref="event" />
+			<xs:element ref="Ind" />
+			<xs:element ref="Var" />
+			<xs:element ref="Cterm" />
+			<xs:element ref="operator" />
+			<xs:element ref="Sequence" />
+			<xs:element ref="Disjunction" />
+			<xs:element ref="Xor" />
+			<xs:element ref="Conjunction" />
+			<xs:element ref="Concurrent" />
+			<xs:element ref="Not" />
+			<xs:element ref="Any" />
+			<xs:element ref="Aperiodic" />
+			<xs:element ref="Periodic" />		
+		</xs:choice>
+	</xs:group>
+
+<!--
+	  *** Interval ***
+
+	  content model: ( oid?, event | time | Ind | Var | Cterm | operator |  Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic |  Periodic , event |  time | Ind | Var | Cterm | operator | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic |  Periodic)
+-->	
+
+<xs:attributeGroup name="Interval.attlist"/>
+	<xs:group name="Interval.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+		    <xs:group ref="interval_group.content"/>
+			<xs:group ref="interval_group.content"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Interval.type">
+		<xs:group ref="Interval.content"/>
+		<xs:attributeGroup ref="Interval.attlist"/>
+	</xs:complexType>
+	<xs:element name="Interval" type="Interval.type"/>
+
+<!--
+     *** interval_group.content ***
+
+	 content model:(event | time | Ind | Var | Cterm | operator |  Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic |  Periodic)
+-->
+	<xs:group name="interval_group.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="event"/>
+				<xs:element ref="time"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="operator"/>
+				<xs:element ref="Sequence"/>
+				<xs:element ref="Disjunction"/>
+				<xs:element ref="Xor"/>
+				<xs:element ref="Conjunction"/>
+				<xs:element ref="Concurrent"/>
+				<xs:element ref="Not"/>
+				<xs:element ref="Any"/>
+				<xs:element ref="Aperiodic"/>
+				<xs:element ref="Periodic"/>
+			</xs:choice>
+	 </xs:sequence>
+	</xs:group>
+</xs:schema>

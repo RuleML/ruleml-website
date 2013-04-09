@@ -1,0 +1,38 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+namespace inherit = inherit
+
+dc:title [ "RuleML Reification" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, reify, reification" ]
+dc:description [ "The expansion module for reification of RuleML objects." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Reify-any.Node.def
+# for modules
+
+# This module declares the following RuleML elements, attributes and patterns:
+#           * <Reify>
+
+## an extension point to allow alternate names and internationalization for reification
+Reify-node.choice |= Reify-any.Node.def
+Reify-any.Node.def =
+    
+    ## Supports reification (a kind of instantiation or quasi-quotation) as needed by SWSL. 
+    ## It allows any RuleML tag available within the current sublanguage as content, treating 
+    ## it as a term for performing reasoning on, e.g.
+    ## <Reify><Ind>John Doe</Ind></Reify>
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-Reify
+    element Reify { Reify-any.content }
+# This version of Reify is needed for conversion to XSD.
+Reify-any.content |= AnyThis?
+AnyThis =
+    element inherit:* {
+        attribute * { text }*,
+        (text & AnyThis*)
+    }
+Node.choice |= Reify-any.Node.def

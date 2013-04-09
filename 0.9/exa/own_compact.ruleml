@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/datalog.xsd">
+
+<!-- start XML comment ...
+
+Note: This is a compact (i.e. minimally-roled) version of this example.
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+Implies~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+     head *                    body *
+          *                         *
+        Atom~~~~~~~~~~~~~~~~~~     And~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 *     |     |           |                                   |
+             opr *     |     |           |                                   |
+                 *     |     |           |                                   |        
+                Rel   Var   Var        Atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     Atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     |      |       |              *     |     |
+                 .     .     .              opr *     |      |       |          opr *     |     |
+                 .     .     .                  *     |      |       |              *     |     |
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment -->
+
+<Assert mapClosure="universal">
+
+<Implies>
+    <!-- explicit 'And' -->
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+
+</Implies>
+
+<!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+<Implies>
+    <Atom>
+      <Rel>sell</Rel>
+      <Var>merchant</Var>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+    <Atom>
+      <Rel>buy</Rel>
+      <Var>person</Var>
+      <Var>merchant</Var>
+      <Var>object</Var>
+    </Atom>
+</Implies>
+ 
+ 
+<!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. -->
+ 
+
+  <Atom>
+    <Rel>sell</Rel>
+    <Ind>John</Ind>
+    <Ind>Mary</Ind>
+    <Ind>XMLBible</Ind>
+  </Atom>
+
+ 
+<!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). Some of the
+DTD's on the RuleML website handle URL's/URI's (UR's); see especially
+urc-datalog.dtd for inferencing with RDF-like facts -->
+ 
+  <Atom>
+    <Rel>keep</Rel>
+    <Ind>Mary</Ind>
+    <Ind>XMLBible</Ind>
+  </Atom>
+
+</Assert>
+
+</RuleML>

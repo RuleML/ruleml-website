@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Trigger Rule (EA Rule) Example -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+
+<!-- 
+Every second try to detect the event "controller_failure(IP,Role)" and 
+if detected do action "raiseTroubleTicket(controller_failure(IP,Role))". 
+
+ContractLog formalization of EA Rule in ISO Prolog / Prova syntax
+
+eca(	
+	every('1S') , % processing schedule for rule
+	detect(controller_failure(IP,Role)), % event
+	raiseTroubleTicket(controller_failure(IP,Role) % action
+) . 
+-->
+
+
+
+<Assert>
+
+<Rule style="active">
+
+	<!-- complex event consisting of two events -->
+
+	<on>
+		<Rule style="active">
+			<on>
+				<Atom>				
+					<Rel per="value">every</Rel>
+					<Ind>1S</Ind>
+				</Atom>
+			</on>
+			<do>			
+				<Atom> 
+					<Rel per="value">detect</Rel>
+					<Expr>
+					     <Fun per="value">controller_failure</Fun>
+					     <Var>IP</Var>
+					     <Var>Role</Var>
+					     <Var>Time</Var>
+					</Expr>
+				</Atom>
+			</do>
+		</Rule>
+	</on>
+
+	<do>
+		<Atom>
+			<Rel per="effect">raiseTroubleTicket</Rel>
+			<Expr>
+				<Fun per="value">controller_failure</Fun>
+				<Var>IP</Var>
+				<Var>Role</Var>	
+				<Var>Time</Var>                            
+			</Expr>	                
+		</Atom>
+	</do>
+
+</Rule>
+
+</Assert>
+</RuleML>

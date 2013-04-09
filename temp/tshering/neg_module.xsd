@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Atom -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for RuleML elements related to classical negation.
+			File: neg_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-14
+			
+			This module declares the following RuleML elements:
+			* False
+			* strong
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** False ***
+		A classical negation of a logical atom (i.e. classical or "strong" negation).
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-False
+
+		content model: ( oid?, (strong | Atom) )
+	-->
+	<xs:attributeGroup name="False.attlist"/>
+	<xs:group name="False.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>		
+			<xs:choice>
+				<xs:element ref="strong"/>		
+				<xs:group ref="strong.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="False.type">
+		<xs:group ref="False.content"/>
+		<xs:attributeGroup ref="False.attlist"/>
+	</xs:complexType>
+	<xs:element name="False" type="False.type"/>
+
+	
+	
+	<!--
+		*** strong ***
+		A role used for classical negation.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-strong
+
+		content model: ( Atom )
+	-->
+	<xs:attributeGroup name="strong.attlist"/>
+	<xs:group name="strong.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="strong.type">
+		<xs:group ref="strong.content"/>
+		<xs:attributeGroup ref="strong.attlist"/>
+	</xs:complexType>
+	<xs:element name="strong" type="strong.type"/>
+		
+</xs:schema>

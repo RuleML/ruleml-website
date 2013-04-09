@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a Datalog RuleML sublanguage
+			File: aux_datalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- there is no need to redefine, so simply include previous sublanguage's schema -->
+	<xs:include schemaLocation="aux_bindatalog.xsd"/>
+	
+</xs:schema>

@@ -1,0 +1,297 @@
+
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; SunOS 5.8 sun4u) [Netscape]">
+   <meta name="Author" content="Harold Boley, Stefan Decker, Michael Sintek">
+   <meta name="Description" content="ECAI 2000 Tutorial Proposal Knowledge Markup Techniques">
+   <meta name="Keywords" content="ECAI 2000, Tutorial, Proposal,Knowledge Markup">
+   <title>Rule Markup Techniques for the Semantic Web</title>
+<!-- Rule Markup Techniques -->
+<!-- Prepared by: Harold Boley   -->
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#551A8B" alink="#0000EE">
+
+<center>
+<h1>
+<i><font color="#000099"><a href="http://www.dagstuhl.de/DATA/Seminars/02/#02061">Dagstuhl
+Seminar 02061</a></font></i></h1></center>
+
+<center>
+<h1>
+<i><font color="#000099"><font size=+4>Rule Markup Techniques</font></font></i></h1></center>
+
+<center>
+<p><br><font size=+1>Harold Boley*, Benjamin Grosof**, Said Tabet***, Gerd
+Wagner****</font>
+<br><font color="#000000">*DFKI Kaiserslautern, Germany&nbsp;&nbsp; </font><font size=+1>**</font><font color="#000000">MIT
+Sloan School of Management, USA&nbsp;&nbsp; ***Nisus, USA&nbsp;&nbsp; ****Eindhoven
+University of Technology, The Netherlands</font></center>
+
+<p>
+<hr>
+<h2>
+<a NAME="technical-description"></a><b><font color="#AF0000">Host</font></b></h2>
+<font color="#000000">International Conference and Research Center for
+Computer Science</font>
+<br><font color="#000000"><a href="http://www.dagstuhl.de">Schloss Dagstuhl</a>
+(<a href="http://www.dagstuhl.de/ENG/DagInfo/Fotos/">Photo Gallery</a></font>)
+<br>D-66687 Wadern, Germany
+<p>
+<hr>
+<h2>
+<a NAME="technical-description"></a><font color="#AF0000">Date</font></h2>
+<font color="#000000">Sunday (afternoon), 3rd February 2002 - Friday, 8th February 2002</font>
+<p>
+<hr>
+<h2>
+<a NAME="technical-description"></a><font color="#AF0000">Program</font></h2>
+This is the final version of the <font color="#000099"><a href="http://www.ruleml.org/rmt/program">Program</a></font>, linking to most presentation slides.
+<p>
+<hr>
+<p><a NAME="technical-description"></a><b><font color="#AF0000">Motivation
+and Goals of the Seminar</font></b>
+<p><i>Rules</i> have classically been used in formal languages, compiler
+technology, databases, logic programming, knowledge representation, and
+OO modeling, with applications ranging from car diagnosis, to email filtering,
+to enterprise integration.
+<i>Rule markup</i> in the Web has become a hot
+topic since rules were identified as a
+<a href="http://www.w3.org/DesignIssues/Rules.html">Design
+Issue</a> of the Semantic Web. The <a href="http://www.w3.org/2001/sw/">Semantic
+Web</a> is a new W3C Activity trying<i> </i>to represent information in
+the World Wide Web such that it can be used by machines not just for display
+purposes, but for automation, integration, and reuse across applications.
+<p><i>Rule markup techniques</i> for the Semantic Web, however, have been
+less systematically studied than the corresponding vocabulary (taxonomy)
+markup. This
+<font color="#000000">Dagstuhl Seminar&nbsp;</font> tries
+to fill the gap by exploring rule systems (e.g., extended Horn logics)
+suitable for the Web, their (XML and RDF) syntax, semantics, tractability/efficiency,
+and transformation/compilation. Both derivation rules (which may be evaluated
+bottom-up as in deductive databases, top-down as in logic programming,
+or by tabled resolution as in XSB)&nbsp; and reaction rules (also called
+"active" or "event-condition-action" rules), as well as any combinations,
+will be considered.
+<p><i>Ontologies</i> for the Semantic Web can use rules to define <i>axioms</i>
+operating on a <i>taxonomy</i>, but also to compute the taxonomy from given
+concept definitions. Further purposes of rule markup include:
+<ul>
+<li>
+Providing a <i>rule interchange format</i> for exchanging rules between
+different tools/systems</li>
+
+<li>
+Marking up rule content in business documents (for example, discount rules
+can be included in an internal XML-based product catalog distributed to
+dealers)</li>
+
+<li>
+Providing a high-level specification language for active content (such&nbsp;
+as agents) in the Web</li>
+
+<li>
+Expressing an interaction protocol (i.e., the public part of an inter-organizational
+business process) as a set of reaction rules and marking it up for communication
+over the Web)</li>
+</ul>
+To accomodate the various user communities from knowledge-based systems,
+to intelligent agents, to e-commerce, possibilities for a modular <i>rule-language
+hierarchy</i> will be discussed. It should permit the mixing and matching
+of rules of appropriate expressive <i>power </i>as well as computational
+<i>efficiency</i>
+for classes of applications. This may be facilitated by a separation of
+concerns:
+<p><b>Semantics:</b> A classical hierarchy<i> </i>version can be bottomed
+on ground facts over individual constants; a Webized version could also
+permit URIs as arguments and names of (binary) relations, much like in
+RDF triples. On this basis, the classical Datalog, Horn-rule, and equational-logic
+layers could similarly be extended by URIs as relation, constructor, and
+function symbols. More advanced rule extensions could include suitable
+negations for the open world of the Web, feature or F-Logic terms for RDF's
+anonymous resources, labelings for prioritized business rules, and local
+rule packages for N3's contexts. The power-efficiency tradeoff should inform
+us whether the hierarchies, classical and Webized, can be topped by rules
+in full first-order or even restricted higher-order logic.
+<p><b>Syntax:</b> Classical and Webized rules from the hierarchy can be
+marked up in pure XML, RDF, or a combination of both, as reflected by the
+evolution of RuleML. It should be <font color="#000000">examined where
+current definition methods
+</font>(e.g., DTDs vs. XML Schemas)
+<font color="#000000">are
+sufficient for such
+</font>rule markup and <font color="#000000">where
+they</font> would need revisions/extensions. Also non-XML rule(-presentation)
+formats may be considered for (editors of) a future Web such as colored-ASCII
+versions of ISO Prolog, Relfun, KIF, Jess, F-Logic, and N3 or graphical
+notations inspired by XML's trees and RDF's directed labeled graphs.
+<p>This <font color="#000000">Dagstuhl Seminar</font> is thus expected
+to <font color="#000000">contribute to</font> some open issues of recent
+proposals such as Notation 3 (<a href="http://www.w3.org/2000/10/swap/Primer.html">N3</a>),
+<a href="http://daml.umbc.edu/proposaltasks.shtml#tasktwo">DAML-Rules</a>,
+and the Rule Markup Language (<a href="http://www.dfki.de/ruleml">RuleML</a>).
+Furthermore, by studying issues of combining rules and taxonomies via sorted
+logics, description logics, or frame systems, t<font color="#000000">he
+Seminar will also discuss the US-European proposal </font><a href="http://www.daml.org/2001/03/daml+oil-walkthru.html">DAML+OIL</a>.
+Two particular issues that will be addressed during this seminar are efficient
+implementation
+<font color="#000000">techniques (e.g., via </font>Java-based
+rule engines) and major exchange applications (<font color="#000000">e.g.,
+using e-business rules)</font>.
+<p>In sum, "Rule Markup Techniques" aims at bringing together the classical-
+and Web-rule communities to cross-fertilize between their foundations,
+methods, and applications. The long-term goal is a Web-based standard for
+rules that makes use of, and is also useful to, the classical rule perspective.<font color="#000000">
+Additional Seminar material will be available online from <a href="http://www.ruleml.org/rmt">http://www.ruleml.org/rmt</a>.
+Seminar participants are encouraged to suggest further steps in this international
+effort at any time.</font>
+<p>
+<hr>
+<h2>
+<font color="#AF0000">Email Suggestions</font></h2>
+
+<dl><b><font size=+1>Please send your suggestions before, during, and after
+the Seminar to the organizers by clicking <a href="mailto: G.Wagner@tm.tue.nl, bgrosof@MIT.EDU, boley@dfki.de, stabet@nisusinc.com">here</a></font></b>.</dl>
+
+<hr>
+<h2>
+<font color="#AF0000">Address Information</font></h2>
+
+<dl><b><font size=+1>Harold Boley</font></b>
+<br>DFKI GmbH
+<br>Erwin-Schr&ouml;dinger-Stra&szlig;e
+<br>D-67663 Kaiserslautern
+<br>Germany
+<br>Phone: +49-631-205-3459
+<br>Fax: +49-631-205-3210
+<br>Email: <a href="mailto: boley@dfki.de">boley@dfki.de</a>
+<br>Homepage: <a href="http://www.cs.unb.ca/~boley/">http://www.dfki.uni-kl.de/~boley</a>
+<p><b><font size=+1>Benjamin Grosof</font></b>
+<br>MIT Sloan School of Management
+<br>Room E53-317
+<br>50 Memorial Drive
+<br>Cambridge, MA 02142
+<br>USA
+<br>Phone: (+1 617) 253-8694
+<br>Fax: (+1 617)258-7579
+<br>Email: <a href="mailto: bgrosof@mit.edu">bgrosof@mit.edu</a>
+<br>Homepage: <a href="http://ebusiness.mit.edu/bgrosof/">http://ebusiness.mit.edu/bgrosof/</a>
+<p><b><font size=+1>Said Tabet</font></b>
+<br>Nisus, Inc.
+<br>180, Turnpike Road
+<br>Westboro, MA 01581
+<br>USA
+<br>Phone: +1 508 898 2288 extension 16
+<br>Fax: +1 508 898 9668
+<br>Email: <a href="mailto: stabet@nisusinc.com">stabet@nisusinc.com</a>
+<br>Homepage: <a href="http://home.comcast.net/~stabet/">http://home.comcast.net/~stabet/</a>
+<p><b><font size=+1>Gerd Wagner</font></b>
+<br>Faculty of Technology Management
+<br>Eindhoven University of Technology
+<br>P.O. Box 513
+<br>5600 MB Eindhoven
+<br>The Netherlands
+<br>Phone: (+31 40) 247 26 17
+<br>Fax: (+31 40) 247 26 12
+<br>Email: <a href="mailto: G.Wagner@tm.tue.nl">G.Wagner@tm.tue.nl</a>
+<br>Homepage: <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">http://tmitwww.tm.tue.nl/staff/gwagner/</a>
+<p>
+<hr></dl>
+<b><font color="#AF0000">Brief Resumes of the Organizers</font></b>
+<p><b><font size=+1>Harold Boley</font></b>
+<p>Dr. Harold Boley is a senior researcher at the German Research Center
+<br>for Artificial Intelligence (DFKI), where he acts as the W3C Advisory
+<br>Committee Representative and leads the EU project Clockwork on
+<br>Web-based knowledge management for collaborative engineering.&nbsp;
+He is
+<br>also a senior lecturer of computer science and mathematics at the
+<br>University of Kaiserslautern, where he conceived AI-oriented XML and
+<br>RDF courses.&nbsp; Dr. Boley's focus now is XML-based knowledge markup
+and
+<br>RDF-based Semantic Web techniques.&nbsp; He was a visiting researcher
+in
+<br>the Knowledge Modeling Group at Stanford University in 1999.&nbsp;
+Before
+<br>that, he led, and published on, several government and industrial
+<br>projects in knowledge representation, compilation, and evolution. He
+<br>received PhD and Habilitation degrees in computer science from the
+<br>Universities of Hamburg and Kaiserslautern, respectively.&nbsp; He
+<br>developed the Relational-Functional Markup Language (RFML) and,
+<br>together with Dr. Said Tabet, launched the Rule Markup Initiative
+<br>(RuleML).
+<p><b><font size=+1>Benjamin Grosof</font></b>
+<p>Dr. Benjamin Grosof is Assistant Professor in Information Technology
+at
+<br>the MIT Sloan School of Management.&nbsp; His research addresses e-commerce
+<br>and Web technology, combining agent communication, XML, and knowledge
+<br>representation for applications in contracting, negotiation, and
+<br>business policies.&nbsp; He co-leads the RuleML initiative, an emerging
+<br>industry standard for XML Rules.&nbsp; He is Principal Investigator
+<br>currently for a project in the DARPA Agent Markup Language (DAML)
+<br>initiative, designing knowledge-level techniques to realize the vision
+<br>of the Semantic Web.&nbsp; Previously, he was a senior research scientist
+<br>at IBM T.J. Watson Research Center.&nbsp; While at IBM, most recently
+he
+<br>founded and led a project on Business Rules for E-Commerce.&nbsp; This
+<br>produced IBM CommonRules (V2.1 currently on IBM alphaWorks), which
+<br>pioneered XML inter-operable business rules with conflict handling
+and
+<br>XML agent communication.&nbsp; He co-led its application piloting for
+<br>rule-based XML agent contracting in EECOMS, a $29Million NIST industry
+<br>consortium project on manufacturing supply chain management.&nbsp;
+He holds
+<br>a PhD from Stanford University in Computer Science, with specialty
+<br>Artificial Intelligence, and a BA from Harvard University in Applied
+<br>Mathematics, with specialty economics and management science.&nbsp;
+He is
+<br>author of over 30 refereed publications, two major software releases,
+<br>and one patent; and has served on numerous program committees,
+<br>including co-chairing the AAAI Conference Workshops on AI in
+<br>E-Commerce (1999) and Knowledge-Based E-Markets (2000).&nbsp; He will
+<br>be co-teaching a tutorial on Agent Communication in Knowledge Based
+<br>Electronic Markets at the IJCAI-2001 Conference.
+<p><b><font size=+1>Said Tabet</font></b>
+<p>Dr. Said Tabet is the Chief Scientist at Nisus Incorporated, USA,
+<br>leading the development of Knowledge Based Personalization products
+<br>for both the Wireless and the Wired Web. He also acts as the W3C
+<br>Advisory Committee Representative of Nisus. Said Tabet has extensive
+<br>experience in research and industry and academia working on Rule-Based
+<br>Systems and Artificial Intelligence. Prior to joining Nisus, he was
+a
+<br>Principal Knowledge Engineer at Brightware/MindBox, where he developed
+<br>and deployed several key Knowledge Based systems for decision support
+<br>in such verticals as Financial Services and Telecommunications using
+<br>ART*Enterprise and XML, Case Based Reasoning and distributed systems
+<br>technologies. He is currently focused on XML-Based Knowledge
+<br>Representation and Management, Semantic Web, AI for Mobile and
+<br>Wireless Internet. In 1998, he received recognition for outstanding
+<br>contribution to Inference/Brightware. He completed his Masters and
+PhD
+<br>from the University of Grenoble and conducted additional research at
+<br>Brandeis University. He is a member of the American Association for
+<br>Artificial Intelligence and serves as a Program Committee member on
+<br>various AI conferences and workshops (IJCAI, PRICAI). Together with
+<br>Dr. Harold Boley, he launched the Rule Markup Initiative (RuleML).
+<p><b><font size=+1>Gerd Wagner</font></b>
+<p>Dr. Gerd Wagner is an Assistant Professor at the Faculty of Technology
+<br>Management, Eindhoven University of Technology. He received an MSc
+<br>in mathematics and a PhD in philosophy from the Free University of
+Berlin,
+<br>and a German Habilitation degree in computer science from the University
+<br>of Leipzig. He was visiting researcher at the Institute de Recherche
+en
+<br>Informatique de Toulouse in 1994 and at Universidade Nova de Lisboa
+<br>in 1995. His reasearch interests are focused on the foundations of
+<br>information and knowledge systems and of multiagent systems.
+<br>Dr. Wagner has been the guest editor of a 1997 special issue of the
+<br>Journal of Applied Nonclassical Logic on "Handling Inconsistency in
+<br>Knowledge Systems", and the author of the book "Foundations of
+<br>Knowledge Systems with Applications to Databases and Agents"
+<br>(Kluwer, 1998). In 1999, he initiated and co-organized the first
+<br>International Workshop on Agent-Oriented Information Systems
+<br>(AOIS) which has then been established as an annual workshop series.
+<hr>
+</body>
+</html>

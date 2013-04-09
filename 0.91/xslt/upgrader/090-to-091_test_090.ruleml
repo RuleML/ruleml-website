@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/hornlogeq.xsd"
+>
+
+<oid>
+	<Ind>
+		This is a simple test file for testing 0.90 - 0.91 RuleML transformations.
+	</Ind>
+</oid>
+
+<Assert>
+  
+  <!--conversion of side to rhs and lhs and conversion of Nano to Expr-->
+  <Equal>
+      <Nano>
+        <Fun>fac</Fun>
+        <Data>0</Data>
+      </Nano>
+    <Data>1</Data>
+  </Equal>
+  
+   <Equal>
+    <oid>
+	   <Ind>
+	 	   some Equal description
+	   </Ind>
+    </oid>
+    <side>
+      <Nano>
+        <oid>
+			<Ind>some Nano description</Ind>
+		</oid>
+        <Fun>fac</Fun>
+        <Data>0</Data>
+      </Nano>
+    </side>
+    <side>
+      <Data>1</Data>
+    </side>    
+  </Equal>
+  
+  <!--conversion of Cterm to Expr-->
+  <Atom>
+      <op><Rel>friend</Rel></op>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+
+      <slot>
+        <Ind>yar</Ind>
+        <Cterm>
+         <oid>
+				<Ind>some Cterm description</Ind>
+		  </oid>
+          <Ctor>book</Ctor>
+          <Var>title</Var>
+          <Var>author</Var>
+          <Var>table of contents</Var>
+          <Var>chapters</Var>
+          <Cterm>
+			  <op>
+			  		<Ctor>book</Ctor>
+			  </op>			  
+			  <Var>title</Var>
+			  <Var>author</Var>
+			  <Var>table of contents</Var>
+			  <Var>chapters</Var>
+		  </Cterm>
+        </Cterm>
+      </slot>    
+  </Atom>
+
+  <!--conversion of @kind to @material-->
+  <Implies kind="fo">
+  <head>
+
+    <Atom>
+      <op><Rel>own</Rel></op>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+
+  </head>
+  <body>
+    <!-- explicit 'And' -->
+    <And>
+      <Atom>
+        <op><Rel>buy</Rel></op>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+
+      <Atom>
+        <op><Rel>keep</Rel></op>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+
+    </And>
+  </body>
+  </Implies>
+  
+  <Implies kind="lp">
+  <oid>
+	   <Ind>
+	 	   some Implies description
+	   </Ind>
+    </oid>
+  <head>
+
+    <Atom>
+      <op><Rel>own</Rel></op>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+
+  </head>
+  <body>
+    <!-- explicit 'And' -->
+    <And>
+      <Atom>
+        <op><Rel>buy</Rel></op>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+
+      <Atom>
+        <op><Rel>keep</Rel></op>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+
+    </And>
+  </body>
+  </Implies>
+
+
+</Assert>
+
+<!--conversion of Protect+Integrity to Entails-->
+<Protect>
+    <oid>
+	   <Ind>
+	 	   some Protect description
+	   </Ind>
+    </oid>
+    <Integrity>
+      <oid>
+	     <Ind>
+	 	     some Integrity description
+	     </Ind>
+      </oid>
+      <And>
+      
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        
+      </And>
+    </Integrity>
+        
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+    
+</Protect>
+
+<!--conversion of Protect+Integrity to Entails #2-->  
+<Protect>
+   <oid>
+     <Ind>
+	 	   some Protect description
+	   </Ind>
+   </oid>
+   <warden>
+    <Integrity>
+      <oid>
+	     <Ind>
+	 	     some Integrity description
+	     </Ind>
+      </oid>
+      <formula>        
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        
+      </formula>
+    </Integrity>
+   </warden>    
+   <Atom>
+     <Rel>own</Rel>
+     <Var>person</Var>
+     <Var>object</Var>
+   </Atom>
+    
+</Protect>
+
+</RuleML>

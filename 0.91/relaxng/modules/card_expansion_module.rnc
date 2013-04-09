@@ -1,0 +1,28 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML cardinality" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, cardinality" ]
+dc:description [ "The expansion module for the cardinality attribute." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= card.edge.def
+
+## an extension point for alternate spellings and internationalization of the cardinality attribute name.  
+cardinality-att.choice |= card.attrib.def
+
+## An attribute optionally specifying a <slot>'s cardinality. See http://www.ruleml.org/0.91/glossary/#gloss-card
+card.attrib.def =
+    
+    ## the cardinality of a slot.
+    attribute card { cardinality.value }
+cardinality.value |= xsd:nonNegativeInteger
+
+##
+card.edge.def = element card { cardinality.value }

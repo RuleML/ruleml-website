@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            Mode / Transactional / Use attribute module.
+			This is the XML Schema attributes module for Reaction RuleML.
+			File: attribute_module.xsd
+			Version: 0.2
+			Last Modification: 2007-07-20
+			
+			This module declares the following Reaction RuleML elements and attributes:
+                  
+                  * @mode (mode declaration)
+                  * @safety (transactional)
+                  * @per (usage)
+                  * @all (yes|no)
+             
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+
+	
+	<!--
+           *** @mode ***
+           A attribute for optionally specifing the intended input-output constellations of the predicate terms with the
+           following semantics:
+        
+           "+" The term is intended to be input
+           "-" The term is intended to be output
+           "?" The term is undefined (input or output)
+		   
+		   default="?"
+		   optional attribute
+-->
+	<xs:attributeGroup name="mode.attrib">
+		<xs:attribute name="mode" use="optional" default="?">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="+"/>
+					<xs:enumeration value="-"/>
+					<xs:enumeration value="?"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	
+	<!--
+	  *** @safety ***
+
+	     restriction: normal or transaction
+		 default: normal
+		 optional attribute
+	-->
+
+	<xs:attributeGroup name="safety.attrib">
+		<xs:attribute name="safety" use="optional" default="normal">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="normal"/>
+					<xs:enumeration value="transactional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @per ***
+		An attribute indicating whether a function or expression is interpreted.
+		
+	-->
+	<xs:attributeGroup name="per.attrib">
+		<xs:attribute name="per" use="optional" default="plain">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="plain"/>
+					<xs:enumeration value="value"/>
+					<xs:enumeration value="effect"/>
+					<xs:enumeration value="modal"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<!--
+		*** @all ***
+		An attribute indicating whether a function or expression is interpreted.
+		
+	-->
+	<xs:attributeGroup name="all.attrib">
+		<xs:attribute name="all" use="optional" default="no">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="yes"/>
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>	
+</xs:schema>

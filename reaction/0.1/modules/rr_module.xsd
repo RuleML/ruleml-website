@@ -1,0 +1,539 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+			Reaction Rules module part of Reaction RuleML.
+
+			This is the XML Schema RR module for Reaction RuleML.
+			File: rr_module.xsd
+			Version: 0.1
+			Last Modification: 2006-10-13
+
+			This schema declares the following Reaction RuleML elements and attributes:
+
+			  * Reaction
+			  * event
+			  * action
+			  * postcond
+			  * alternative			
+			  * @exec
+			  * @kind
+			  * @eval			  
+			  * Message
+			  * protocol
+			  * sender			 
+			  * content
+			  * @mode
+			  * @directive
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+
+<!--
+      *** Reaction ***
+      An Reaction element that provides the basic syntax for reaction rules.
+
+      content model: 
+      (	oid?,  
+	  	(event | Naf | Neg | Atom | Reaction | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+		(body | Naf | Neg | Atom | And | Or)?,  
+		(action | Atom | Assert | Retract | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+		(postcond  | Naf | Neg | Atom | And | Or)?,  
+		(alternative | Atom | Assert | Retract | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?)
+		
+	 However this is non-deterministic. Hence the redefined content model is:
+	 
+	( (event, ( ( body, (action)?, (postcond)?, (alternative)? ) |
+	 ( action, (postcond)?, (alternative)? ) )? )| ( body, action, (postcond)?, (alternative)? ) ( action, | (postcond)?, (alternative)? ) ) |
+	 (Naf | Neg | Atom | Assert | Retract | And | Or | Reaction | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)+
+	 
+	 Note: The validation of the role-skipped content model (second choice) interprets the required @kind attribute and uses the patterns defined in the attribute for the validation
+	
+      
+      Reaction has the following attributes:
+      @kind, @eval, @exec
+      
+-->
+
+	<xs:attributeGroup name="Reaction.attlist">
+		<xs:attributeGroup ref="exec.attrib"/>
+		<xs:attributeGroup ref="kind.attrib"/>
+		<xs:attributeGroup ref="eval.attrib"/>
+	</xs:attributeGroup>
+	
+
+	<xs:group name="Reaction.content">
+	
+			<xs:sequence>
+
+			<xs:element ref="oid" minOccurs="0"/>
+
+			<xs:choice>
+				<xs:sequence>
+				<!--
+					   event,
+					   (
+					     ( body, (action)?, (postcond)?, (alternative)? )
+					     |
+					     ( action, (postcond)?, (alternative)? )
+					   )?
+				-->
+					<xs:element ref="event"/>
+					<xs:choice minOccurs="0">
+						<xs:sequence>
+							<xs:element ref="body"/>
+							<xs:element ref="action" minOccurs="0"/>
+							<xs:element ref="postcond" minOccurs="0"/>
+							<xs:element ref="alternative" minOccurs="0"/>
+						</xs:sequence>
+						<xs:sequence>
+							<xs:element ref="action"/>
+							<xs:element ref="postcond" minOccurs="0"/>
+							<xs:element ref="alternative" minOccurs="0"/>
+						</xs:sequence>	
+					</xs:choice>
+				</xs:sequence>
+				<xs:sequence> <!-- (  body, action, (postcond)?, (alternative)? ) -->
+					<xs:element ref="body"/>
+					<xs:element ref="action"/>
+					<xs:element ref="postcond" minOccurs="0"/>
+					<xs:element ref="alternative" minOccurs="0"/>
+				</xs:sequence>
+				<xs:sequence> <!-- ( action, (postcond)?, (alternative)? ) -->
+					<xs:element ref="action"/>
+					<xs:element ref="postcond" minOccurs="0"/>
+					<xs:element ref="alternative" minOccurs="0"/>
+				</xs:sequence>
+				
+				<!-- Note: validation of this content model (without role tags)  needs the special Reaction RuleML validator to detect not valid XML specifications
+					 The validator is available at:
+				 -->
+				<xs:group ref="reaction_group.content" minOccurs="1" maxOccurs="5"/>
+				
+								
+			</xs:choice>
+		</xs:sequence>
+	
+		<!-- <xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:sequence>
+						<xs:element ref="event" minOccurs="0"/>
+						<xs:element ref="body" minOccurs="0"/>
+						<xs:element ref="action" minOccurs="0"/>
+						<xs:element ref="postcond" minOccurs="0"/>
+						<xs:element ref="alternative" minOccurs="0"/>
+				</xs:sequence>
+											
+											
+				<xs:group ref="reaction_group.content" minOccurs="1" maxOccurs="5"/>
+								 
+														
+			</xs:choice>		
+		</xs:sequence> -->
+		
+		
+	</xs:group>
+	
+	<xs:complexType name="Reaction.type">
+		<xs:group ref="Reaction.content"/>
+		<xs:attributeGroup ref="Reaction.attlist"/>
+	</xs:complexType>
+	<xs:element name="Reaction" type="Reaction.type"/>
+
+
+
+<xs:group name="event_group.content">
+			<xs:choice>
+				<xs:group ref="naf_neg.content" />
+				<xs:element ref="Atom"/>
+				<xs:element ref="Message"/>
+				<xs:element ref="Reaction"/>				
+				<xs:group ref="algebra_group.content" />
+			</xs:choice>		
+</xs:group>
+	
+
+
+<xs:group name="action_group.content">
+			<xs:choice>
+				<xs:element ref="Atom"/>				
+				<xs:group ref="update_primitives.content" />
+				<xs:element ref="Message"/>
+				<xs:group ref="algebra_group.content" />
+			</xs:choice>		
+</xs:group>
+
+<xs:group name="algebra_group.content">
+			<xs:choice>		
+				<xs:element ref="Sequence"/>
+				<xs:element ref="Disjunction"/>
+				<xs:element ref="Xor"/>
+				<xs:element ref="Conjunction"/>
+				<xs:element ref="Concurrent"/>
+				<xs:element ref="Not"/>
+				<xs:element ref="Any"/>
+				<xs:element ref="Aperiodic"/>
+				<xs:element ref="Periodic"/>
+			</xs:choice>		
+</xs:group>
+
+<xs:group name="reaction_group.content">
+			<xs:choice>
+				<xs:group ref="body.content" />
+				<xs:element ref="Message"/>						
+				<xs:group ref="algebra_group.content"/>
+			</xs:choice>													
+</xs:group>
+
+
+	
+<!--
+     *** event ***
+     
+     content model: ( Naf | Neg | Atom | Reaction | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic | Ind | Var | Expr)
+          
+-->
+	<xs:attributeGroup name="event.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="event.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:group ref="event_group.content" />
+				<!-- used in complex event definitions -->
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="event.type">
+		<xs:group ref="event.content"/>
+		<xs:attributeGroup ref="event.attlist"/>
+	</xs:complexType>
+	<xs:element name="event" type="event.type"/>
+	
+
+
+<!--
+     *** action ***
+     
+     content model:  ( Atom | Assert | Retract | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic | Ind | Var | Expr)
+-->
+	<xs:attributeGroup name="action.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="action.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:group ref="action_group.content" />
+				<!-- used in complex action definitions -->
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="action.type">
+		<xs:group ref="action.content"/>
+		<xs:attributeGroup ref="action.attlist"/>
+	</xs:complexType>
+	<xs:element name="action" type="action.type"/>
+	
+<!--
+     *** postcond ***
+     
+     content model: (Naf | Neg | Atom | And | Or)
+-->
+	<xs:attributeGroup name="postcond.attlist"/>
+	<xs:group name="postcond.content">
+		<xs:sequence>
+			<xs:group ref="body.content" />
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="postcond.type">
+		<xs:group ref="postcond.content"/>
+		<xs:attributeGroup ref="postcond.attlist"/>
+	</xs:complexType>
+	<xs:element name="postcond" type="postcond.type"/>
+	
+<!--
+     *** alternative ***
+     
+     content model: ( Atom | Assert | Retract | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | 
+                Periodic)
+-->
+	<xs:attributeGroup name="alternative.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="alternative.content">
+		<xs:sequence>
+			<xs:group ref="action_group.content" />			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="alternative.type">
+		<xs:group ref="alternative.content"/>
+		<xs:attributeGroup ref="alternative.attlist"/>
+	</xs:complexType>
+	<xs:element name="alternative" type="alternative.type"/>
+
+
+
+<!--
+    *** @exec ***
+
+     restriction: active | passive | reasoning
+	 default value: passive
+	 required attribute
+-->
+
+	<xs:attributeGroup name="exec.attrib">
+		<xs:attribute name="exec" use="required" default="passive">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="active"/>
+					<xs:enumeration value="passive"/>
+					<xs:enumeration value="reasoning"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+<!--
+    *** @kind ***
+
+     restriction: different patterns
+	 default: eca (ECA rule pattern)
+	 required attribute
+-->
+
+	<xs:attributeGroup name="kind.attrib">
+		<xs:attribute name="kind" use="required" default="eca">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">					
+					<xs:enumeration value="e"/>					
+					<xs:enumeration value="a"/>
+					
+					
+					<xs:enumeration value="ec"/>
+					<xs:enumeration value="eca"/>
+					<xs:enumeration value="ecap"/>
+					<xs:enumeration value="ecapa"/>
+					<xs:enumeration value="ecaa"/>
+					
+					<xs:enumeration value="ea"/>
+					<xs:enumeration value="eap"/>
+					<xs:enumeration value="eapa"/>
+					<xs:enumeration value="eaa"/>
+					
+					<xs:enumeration value="ca"/>
+					<xs:enumeration value="cap"/>
+					<xs:enumeration value="capa"/>
+					<xs:enumeration value="caa"/>
+					
+					<xs:enumeration value="ap"/>
+					<xs:enumeration value="apa"/>
+					<xs:enumeration value="aa"/>
+					
+					
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+<!--
+    *** @eval ***
+
+     restriction: strong or weak ; 
+	 default: strong
+	 optional attribute
+-->
+
+	<xs:attributeGroup name="eval.attrib">
+		<xs:attribute name="eval" use="optional" default="strong">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="strong"/>
+					<xs:enumeration value="weak"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+
+<!--
+      *** Message ***
+      A Message element that provides the syntax for inbound and outbound messages / notifications 
+
+      content model: 
+       ( (oid | Ind | Var | Expr), (protocol | Ind | Var | Expr), (sender | Ind | Var | Expr), (content | Atom | Naf | Neg | Rulebase | And | Or | Entails | Exists | Equal) )
+      
+      Message has the following attributes:
+      @mode, @directive
+      
+-->
+	<xs:attributeGroup name="Message.attlist">
+		<xs:attributeGroup ref="message-mode.attrib"/>		
+		<xs:attributeGroup ref="message-directive.attrib"/>		
+	</xs:attributeGroup>
+	<xs:group name="Message.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="oid"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>	
+			
+			<xs:choice>
+				<xs:element ref="protocol"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>	
+			
+			<xs:choice>
+				<xs:element ref="sender"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>	
+						
+
+			<xs:choice>
+				<xs:element ref="content"/>
+				<xs:group ref="formula-query.content"/>
+			</xs:choice>	
+			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Message.type">
+		<xs:group ref="Message.content"/>
+		<xs:attributeGroup ref="Message.attlist"/>
+	</xs:complexType>
+	<xs:element name="Message" type="Message.type"/>
+
+
+
+
+
+
+<!--
+     *** protocol ***
+     
+     content model: (Ind | Var | Expr )
+-->
+	<xs:attributeGroup name="protocol.attlist"/>
+	<xs:group name="protocol.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>				
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="protocol.type">
+		<xs:group ref="protocol.content"/>
+		<xs:attributeGroup ref="protocol.attlist"/>
+	</xs:complexType>
+	<xs:element name="protocol" type="protocol.type"/>
+
+
+
+
+
+<!--
+     *** sender ***
+     
+     content model: (Ind | Var | Expr )
+-->
+	<xs:attributeGroup name="sender.attlist"/>
+	<xs:group name="sender.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>				
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="sender.type">
+		<xs:group ref="sender.content"/>
+		<xs:attributeGroup ref="sender.attlist"/>
+	</xs:complexType>
+	<xs:element name="sender" type="sender.type"/>
+
+
+
+
+
+<!--
+     *** content ***
+     
+     content model: (Atom | Naf | Neg | Rulebase | And | Or | Entails | Exists | Equal)
+-->
+	<xs:attributeGroup name="content.attlist"/>
+	<xs:group name="content.content">
+		<xs:sequence>
+			<xs:group ref="formula-query.content"/>
+		</xs:sequence>	
+	</xs:group>
+	<xs:complexType name="content.type">
+		<xs:group ref="content.content"/>
+		<xs:attributeGroup ref="content.attlist"/>
+	</xs:complexType>
+	<xs:element name="content" type="content.type"/>
+
+<!--
+    *** @mode ***
+
+     restriction: inbound or outbound ; 
+	 default = inbound
+	 optional attribute
+-->
+
+	<xs:attributeGroup name="message-mode.attrib">
+		<xs:attribute name="mode" use="optional" default="inbound">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="inbound"/>
+					<xs:enumeration value="outbound"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+<!--
+    *** @directive ***
+
+     restriction: different performatives / directives, e.g. ACL:inform 
+	 required attribute
+-->
+
+	<xs:attributeGroup name="message-directive.attrib">
+			<xs:attribute name="directive" type="xs:string" use="required"/>
+	</xs:attributeGroup>
+	
+<!--
+    *** @arg ***
+
+     restriction: arg values
+	 optional attribute
+-->
+
+	<xs:attributeGroup name="arg.attrib">
+		<xs:attribute name="arg" type="xs:string" use="optional"/>
+	</xs:attributeGroup>	
+
+</xs:schema>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd" 
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: urcbindatagroundfact.xsd
+			Version: 0.88
+			Last Modification: 2005-02-24
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatagroundlog.xsd">
+		<!--
+			remove Implies and Equivalent so that top level And's content model is:
+			( oid?, (formula | Atom)* )			
+		-->
+		<xs:group name="formula-top-and.content">
+			<xs:choice>
+				<xs:element ref="Atom"/>
+			</xs:choice>
+		</xs:group>			
+
+	</xs:redefine>
+	
+</xs:schema>

@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+			Rules module part of Reaction RuleML. It defines the core 
+			Rule construct used as basis for all types of rules in Reaction RuleML
+
+			This is the XML Schema rule module for Reaction RuleML.
+			File: rule_module.xsd
+			Version: 0.2
+			Last Modification: 2007-07-01
+
+			This schema declares the following Reaction RuleML elements and attributes:
+
+			  * Rule
+			  * label
+			  * scope
+			  * quantification
+			  * on
+			  * if
+			  * then
+			  * do
+			  * after 			 			  
+			  * else
+			  * elseDo
+			  * elseAfter			  			
+			  * @style (execution style)			  
+			  * @evaluation	(evaluation semantics)		  
+
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+
+<!--
+      *** Rule ***
+      The Rule element that provides the basic syntax for rules
+      in Reaction RuleML.
+
+      content model: 
+      (	label?, scope?, quantification?, oid?, () ) 
+	  	
+		
+      Rule has the following attributes:
+      @evaluation, @style
+      
+-->
+
+	<xs:attributeGroup name="Rule.attlist">
+	   <xs:attributeGroup ref="style.attrib"/>
+	   <xs:attributeGroup ref="evaluation.attrib"/>
+	</xs:attributeGroup>
+	
+
+	<xs:group name="Rule.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="RuleCore.content"/>
+		</xs:sequence>
+	</xs:group>
+	
+	<xs:complexType name="Rule.type">
+		<xs:group ref="Rule.content"/>
+		<xs:attributeGroup ref="Rule.attlist"/>
+	</xs:complexType>
+	<xs:element name="Rule" type="Rule.type"/>
+
+
+	
+	<!--
+      *** Core rule content model ***
+	-->
+	
+	<xs:group name="RuleCore.content">
+		<xs:choice/>		
+	</xs:group>
+
+
+	
+<!--
+     *** on ***
+     
+     content model: ( Naf | Neg | Atom | Rule )
+          
+-->
+	<xs:attributeGroup name="on.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="on.content">
+		<xs:choice>
+			<xs:group ref="naf_neg.content" />
+			<xs:element ref="Atom"/>
+			<xs:element ref="Rule"/>								
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="on.type">
+		<xs:group ref="on.content"/>
+		<xs:attributeGroup ref="on.attlist"/>
+	</xs:complexType>
+	<xs:element name="on" type="on.type"/>
+
+	
+<!--
+     *** if ***
+     *** after ***
+     *** elseAfter ***
+     
+     content model: (  Atom | And | Or | Equal | Naf | Neg | Rule )
+          
+-->
+	<xs:attributeGroup name="if.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="if.content">
+		<xs:choice>
+			<xs:group ref="body.content" /> 
+			<xs:element ref="Rule"/>			
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="if.type">
+		<xs:group ref="if.content"/>
+		<xs:attributeGroup ref="if.attlist"/>
+	</xs:complexType>
+	<xs:element name="if" type="if.type"/>
+	<xs:element name="after" type="if.type"/>
+	<xs:element name="elseAfter" type="if.type"/>
+
+<!--
+     *** then ***
+     *** else ***
+     
+     content model: (  Atom  | Neg | Equal )
+          
+-->
+	<xs:attributeGroup name="then.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="then.content">
+		<xs:choice>
+			<xs:group ref="head.content" /> 
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="then.type">
+		<xs:group ref="then.content"/>
+		<xs:attributeGroup ref="then.attlist"/>
+	</xs:complexType>
+	<xs:element name="then" type="then.type"/>
+	<xs:element name="else" type="then.type"/>
+
+<!--
+     *** do ***
+     *** elseDo ***
+     
+     content model:  ( Atom | Assert | Retract | Update | Rule )*
+-->
+	<xs:attributeGroup name="do.attlist">
+		<xs:attributeGroup ref="arg.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="do.content">
+		<xs:choice>							
+			<xs:group ref="update_primitives.content" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="do.type">
+		<xs:group ref="do.content"/>
+		<xs:attributeGroup ref="do.attlist"/>
+	</xs:complexType>
+	<xs:element name="do" type="do.type"/>
+	<xs:element name="elseDo" type="do.type"/>
+
+<!--
+    *** @style ***
+
+     restriction: active | messaging | reasoning
+	 default value: reasoning
+	 required attribute
+-->
+
+	<xs:attributeGroup name="style.attrib">
+		<xs:attribute name="style" use="optional" default="reasoning" >
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="active"/>
+					<xs:enumeration value="messaging"/>
+					<xs:enumeration value="reasoning"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+<!--
+    *** @evaluation ***
+
+     restriction: strong or weak ; 
+	 default: strong
+	 optional attribute
+-->
+
+	<xs:attributeGroup name="evaluation.attrib">
+		<xs:attribute name="evaluation" use="optional" default="strong">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="strong"/>
+					<xs:enumeration value="weak"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+<!--
+      *** Update ***
+      Update action
+
+      content model: 
+       ( (oid | formula | Rulebase | Atom | Rule | Equivalent | Entails | Forall | Equal | Neg),
+		 (oid | formula | Rulebase | Atom | Rule | Equivalent | Entails | Forall | Equal | Neg)? )
+      
+      Update has the following attributes:
+      @safety, @all
+      
+-->
+	<xs:attributeGroup name="Update.attlist">
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:attributeGroup>
+	<xs:group name="Update.content">
+			<xs:choice>
+			  <xs:sequence>
+			 		<xs:element ref="oid"/>
+			 		<xs:choice>
+			 		    <xs:sequence>
+							<xs:group ref="formula-assert.content"/>					
+							<xs:element ref="oid" minOccurs="0"/>
+							<xs:group ref="formula-assert.content" minOccurs="0"/>
+						</xs:sequence>
+						<xs:sequence>	
+							<xs:element ref="oid"/>
+							<xs:group ref="formula-assert.content" minOccurs="0"/>
+						</xs:sequence>	
+					</xs:choice>	
+			  </xs:sequence>
+			  <xs:sequence>			 
+					<xs:group ref="formula-assert.content"/>
+					<xs:element ref="oid" minOccurs="0"/>
+					<xs:group ref="formula-assert.content" minOccurs="0"/>
+			  </xs:sequence>			
+			</xs:choice>  
+	</xs:group>
+	<xs:complexType name="Update.type">
+		<xs:group ref="Update.content"/>
+		<xs:attributeGroup ref="Update.attlist"/>
+	</xs:complexType>
+	<xs:element name="Update" type="Update.type"/>
+
+
+<xs:group name="update_primitives.content" >		
+			<xs:choice>
+			    <xs:element ref="Atom" />
+			    <xs:element ref="Rule"/>
+				<xs:element ref="Assert" />
+				<xs:element ref="Retract"/>
+				<xs:element ref="Update"/>
+			</xs:choice>					
+</xs:group>
+
+
+<!--
+    *** @arg ***
+
+     restriction: arg  argument values for the rule parts
+	 optional attribute
+-->
+
+	<xs:attributeGroup name="arg.attrib">
+		<xs:attribute name="arg" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+
+
+<!--
+  *** If Rule content model ***
+-->
+	
+	<xs:group name="IfRule.content">
+		<xs:sequence>
+		<!-- 
+		  (if, ...)
+		-->  			 
+			 <xs:element ref="if"/>
+			 <xs:choice>	
+				 <xs:group ref="DerivationRule.content"/>
+				 <xs:group ref="ProductionRule.content"/>
+			 </xs:choice>	
+		</xs:sequence>		
+	</xs:group>
+
+<!--
+  *** Derivation Rule content model ***
+-->
+	
+	<xs:group name="DerivationRule.content">
+		<xs:sequence/>		
+	</xs:group>
+	
+<!--
+   *** Production Rule content model ***
+-->
+	
+	<xs:group name="ProductionRule.content">
+		<xs:sequence/>	
+	</xs:group>	
+	
+<!--
+   *** Reaction Rule content model ***
+   (on, (if?, then?, do, after?,else?, elseDo?, elseAfter?)? )
+-->
+	<xs:group name="ReactionRule.content">
+		<xs:sequence>
+			<xs:element ref="on"/>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="if" minOccurs="0"/>
+				<xs:element ref="then" minOccurs="0"/>
+				<xs:element ref="do"/>
+			    <xs:element ref="after" minOccurs="0"/>
+				<xs:element ref="else" minOccurs="0"/>
+				<xs:element ref="elseDo" minOccurs="0"/>
+				<xs:element ref="elseAfter" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>	
+	</xs:group>	
+		
+<!--
+   *** Messaging Rule content model ***
+   (on)
+-->		
+	<xs:group name="MessagingRule.content">
+		<xs:sequence>
+			<xs:element ref="do"/>
+		</xs:sequence>
+	</xs:group>	
+</xs:schema>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            Update module part of ECA-RuleML.
+			This is the XML Schema update module for ECA-RuleML.
+			File: update_module.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			This schema declares the following ECA-RuleML elements and attributes:
+			
+			* Retract
+			* RetractAll
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!--
+	 *** Retract ***
+
+    content model: (oid?, ( Atom, Implies )* )
+-->
+	<xs:attributeGroup name="Retract.attlist"/>
+	<xs:group name="Retract.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="atom_implies_retract.content" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Retract.type">
+		<xs:group ref="Retract.content"/>
+		<xs:attributeGroup ref="Retract.attlist"/>
+	</xs:complexType>
+	<xs:element name="Retract" type="Retract.type"/>
+	
+<!--
+	 *** RetractAll ***
+
+    content model: (oid?, ( Atom, Implies )* )
+-->
+	<xs:attributeGroup name="RetractAll.attlist"/>
+	<xs:group name="RetractAll.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="atom_implies_retract.content" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="RetractAll.type">
+		<xs:group ref="RetractAll.content"/>
+		<xs:attributeGroup ref="RetractAll.attlist"/>
+	</xs:complexType>
+	<xs:element name="RetractAll" type="RetractAll.type"/>
+	<!--
+	 *** atom_implies_retract.content
+-->
+	<xs:group name="atom_implies_retract.content">
+		<xs:sequence>
+			<xs:element ref="Atom"/>
+			<xs:element ref="Implies"/>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

@@ -1,0 +1,253 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>DTD and XML Schema Specification of RuleML 0.85</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#EEEEEE">
+		<center>
+			<br>
+
+			<br>
+			<h1>Specification of RuleML 0.85<br>
+				<i>DTDs and XML Schemas Re-Modularized via Content Models</i>
+			</h1>
+			<h2>David Hirtle, <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://centria.di.fct.unl.pt/~cd/index.en.html">Carlos Damasio</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a>
+			</h2>
+			Version History, 2001-01-25: <a href="http://www.ruleml.org/indtd.html">Version 0.7</a>
+			
+			<br>
+			Version History, 2001-07-11: <a href="http://www.ruleml.org/indtd0.8.html">Version 0.8</a>
+			
+			<h3>Version History, 2003-12-09: <a href="http://www.ruleml.org/0.85/">Version 0.85</a>
+			</h3>
+			<h2>Latest version: <a href="http://www.ruleml.org/spec/">www.ruleml.org/spec</a>
+			</h2>
+			<h2>All DTDs: <a href="http://www.ruleml.org/dtd/0.85/">DTD Directory</a>
+			</h2>
+			<h2>All Schemas: <a href="http://www.ruleml.org/xsd/0.85/">XSD Directory</a>
+			</h2>
+			<h2>Some Examples: <a href="http://www.ruleml.org/exa/0.85/">Examples Directory</a>
+			</h2>
+		</center>
+		<br>
+		
+		<p>This is a revised DTD and preliminary XML Schema draft for RuleML. Each DTD and XSD in the evolving hierarchy corresponds to a specific RuleML sublanguage. The implementation uses a <a href="http://www.w3.org/TR/xhtml-modularization/">modularization approach similar to the one in XHTML</a> in order to offer appropriate flexibility and accomodate different implementations and approaches.</p>
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Changes">Changes</a></li>
+<li><a href="#Re-Modularization">Re-Modularization</a></li>
+<li><a href="#Content Model-Based Approach">Content Model-Based Approach</a></li>
+<li><a href="#XSD Representation">XSD Representation</a></li>
+<li><a href="#Future Work">Future Work</a></li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
+		
+		<p>Version 0.85 continues the shift from positional to object-centered rule representation which began in <a href="http://www.ruleml.org/indtd0.8.html#Changes">Version 0.8</a>, adding the following features:</p>
+		
+		<ul>
+			<li>and/or nesting</li>
+			<li>negation
+				<ul>
+					<li>classical/strong</li>
+					<li>as failure</li>
+				</ul>
+			</li>
+			<li>non-positional user-level roles (optional weights)</li>
+			<li>term typing</li>
+			<li>URI-grounded clauses</li>
+
+		</ul>
+		
+		<p>A full discussion of (most of) these additions can be found in the <a href="http://www.ruleml.org/indoo/">Object-Oriented RuleML</a> section. Further changes include <a href="#Re-Modularization">re-modularization</a> and a representation in <a href="#XSD Representation">XML Schema</a>. Also note that n-tuple (tup) has been renamed (com)plex to accomodate unordered complex structures, and that role-list (roli) is now simulated by complex structures containing nothing but metaroles (_slot). As always, the DTDs etc. of previous versions (<a href="http://www.ruleml.org/indtd.html">0.7</a>, <a href="http://www.ruleml.org/indtd0.8.html">0.8</a>) will remain untouched, and can be considered as languages by themselves.</p>
+		<p>A presentation summarizing this work, entitled <a href="ooruleml-remodularized_schematized.ppt">Object-Oriented RuleML: Re-Modularized and XML Schematized via Content Models</a> (<a href="ooruleml-remodularized_schematized.pdf">PDF</a>), is also available.</p>
+	<h2><a name="Changes">Changes</a></h2>
+		
+		<p>First, two long-planned changes have now been officially incorporated: and/or nesting in the body and two kinds of negation. Also, non-positional user-level roles have been incorporated without duplicating the number of existing sublanguages. Finally, handles for term typing and URI-grounded clauses have been established as a couple of preliminary XML attributes.</p>
+		<p>Also, a few tags have been renamed: '_r' became '_slot', 'n' has been expanded to 'name', and 'w' is now 'weight'. This deviation from the earlier OO RuleML is the result of an attempt to increase readability.</p>
+		<p>Some of the OO DTD changes (namely, user-level roles via the metarole '_slot' and role weights via the attribute 'weight') are 	<a href="http://www.ruleml.org/indoo/#The%20OO%20DTDs">detailed</a> in the <a href="http://www.ruleml.org/indoo/">OO RuleML</a> section, but specific implementations are often more complex in order to comply with the <a href="http://www.w3.org/TR/REC-xml#sec-element-content">XML 1.0 specification</a> which prohibits non-determinististic (i.e. ambiguous) content models.</p>
+		<p>
+<i>user level roles</i>:</p>
+		<p>
+<b><pre>
+&lt;!--
+intuitively, the content model is
+&quot;((_opr, (_slot)*, (ind | var | cterm | plex)*, (_slot)*) | ((_slot)*, (ind | var | cterm | plex)+, (_slot)*, _opr))&quot;
+but this is non-deterministic
+--&gt;
+&lt;!ELEMENT atom (
+                  ( _opr,
+                    (_slot)*, ( (ind | var | cterm | plex)+, (_slot)*)?
+                  ) 
+                |
+                  (
+                     (
+                        ((_slot)+, ( (ind | var | cterm | plex)+, (_slot)* )?)
+                      |
+                        ((ind | var | cterm | plex)+, (_slot)*)
+                     ),
+                     _opr
+                  )
+               )&gt;
+
+&lt;!--
+again, the content model is
+&quot;((_opc, (_slot)*, (ind | var | cterm | plex)*, (_slot)*) | ((_slot)*, (ind | var | cterm | plex)+, (_slot)*, _opc))&quot;
+but this is also ambiguous
+--&gt;
+&lt;!ELEMENT cterm (
+                   ( _opc,
+                     (_slot)*, ( (ind | var | cterm | plex)+, (_slot)*)?
+                   ) 
+                 |
+                   (
+                      (
+                         ((_slot)+, ( (ind | var | cterm | plex)+, (_slot)* )?)
+                       |
+                         ((ind | var | cterm | plex)+, (_slot)*)
+                      ),
+                      _opc
+                   )
+                )&gt;
+
+&lt;!ELEMENT plex (
+                (_slot)*, ( (ind | var | cterm | plex)+, (_slot)* )?
+              )&gt;
+
+&lt;!ELEMENT _slot (ind | var | cterm | plex)&gt;
+&lt;!ATTLIST _slot name CDATA #REQUIRED&gt;
+&lt;!ATTLIST _slot card CDATA #IMPLIED&gt;
+</pre></b>
+		</p>
+		
+		<p>
+<i>URI-grounding</i>:</p>
+		<p>
+<b><pre>&lt;!-- Note: 'href' is only an example attribute, easily replaced with e.g. 'wid' and 'widref' --&gt;
+&lt;!ATTLIST ind href CDATA #IMPLIED&gt;
+&lt;!ATTLIST rel href CDATA #IMPLIED&gt;
+&lt;!ATTLIST ctor href CDATA #IMPLIED&gt;
+</pre></b>
+		</p>
+
+		<p>
+<i>term typing</i>:</p>
+		<p>
+<b><pre>&lt;!ATTLIST ind type CDATA #IMPLIED&gt;
+&lt;!ATTLIST var type CDATA #IMPLIED&gt;
+&lt;!ATTLIST cterm type CDATA #IMPLIED&gt;
+</pre></b>
+		</p>
+			
+		<p>
+<i>weighted extension</i>:</p>
+		<p>
+<b><pre>&lt;!ATTLIST _slot weight CDATA #IMPLIED&gt;</pre></b>
+		</p>
+		<p>These Version 0.85 modifications can be seen in the <a href="http://www.ruleml.org/dtd/0.85">DTDs</a>, as well as in the <a href="http://www.ruleml.org/xsd/0.85">XML Schema representation</a>. Validation instructions are included in each directory.</p>
+	<h2><a name="Re-Modularization">Re-Modularization</a></h2>
+		
+		<p>The <a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">modularization used for Versions 0.7 and 0.8</a> has been inverted and modified slightly to be more intuitive. This <a href="Inheritance_diagram.gif">re-modularization</a> aims at simplicity (a single root with two distinct branches), consistency (inheritance in a single direction, for obvious super/subclass relationships) and efficiency (non-redundant implementation). Note that currently non-standalone files called mods are used in the <a href="http://www.ruleml.org/dtd/0.85">DTD implementation</a> for changes affecting multiple files, but mods are not currently used in the <a href="http://www.ruleml.org/xsd/0.85">XSD representation</a>.</p>
+	<h2><a name="Content Model-Based Approach">Content Model-Based Approach</a></h2>
+		
+		<p>DTDs have limited support for modularity, but it can be achieved in a roundabout way using macro-like parameter entities. In particular, the contents of an external file can be included using an externally-linked parameter entity. For example, the following includes the contents of <a href="http://www.ruleml.org/dtd/0.85/urcbindatalog.dtd">datalog.dtd</a>:</p>
+		
+		<p>
+<b><pre>
+&lt;!ENTITY % datalog_include SYSTEM &quot;datalog.dtd&quot;&gt;
+%datalog_include;
+</pre></b>
+		</p>
+		
+		<p>Simple inclusion is not enough, though: overriding is also necessary. Previously, this was managed using INCLUDE/IGNORE sections: the section that declared the element which had to be changed was simply IGNOREd, then the element was re-declared.</p>
+		
+		<p>In Version 0.85, this clumsy method of overriding is handled much more elegantly. Every element's content model is explicitly 	defined by a parameter entity. The metarole '_slot', for example, is declared as follows:</p>
+
+		<p>
+<b><pre>&lt;!ENTITY % _slot.content &quot;(ind)&quot;&gt; 
+&lt;!ELEMENT _slot %_slot.content;&gt;
+</pre></b>
+		</p>
+		<p>Since parameter entities can overwrite one another (even across files), this content model is easily replaced with another specified in a different DTD altogether, much like re-assigning a global variable in traditional programming languages. For example, the content model of the metarole '_slot' is just &quot;(ind)&quot; in <a href="http://www.ruleml.org/dtd/0.85/urcbindatagroundfact.dtd">urcbindatagroundfact.dtd</a> (as above), but is extended to permit a  variable (thus, becoming &quot;(ind | var)&quot;) in <a href="http://www.ruleml.org/dtd/0.85/urcbindatalog.dtd">urcbindatalog.dtd</a>:</p>
+		<p>
+<b><pre>&lt;!ENTITY % _slot.content &quot;(ind | var)&quot;&gt;</pre></b>
+		</p>
+		<p>(Note that this overriding entity must be defined before the inclusion of other files.)</p>
+		<p>A visual demonstration of this process can be found on slide 25 of the <a href="ooruleml-remodularized_schematized.ppt">Object-Oriented RuleML: Re-Modularized and XML Schematized via Content Models</a> presentation.</p>
+		<p>The content model-based approach to modularization also works for XML Schema, using groups (and attributeGroups) instead of parameter entities. For example,</p>
+		<p>
+<b><pre>&lt;!ENTITY % _slot.content &quot;(ind)&quot;&gt; 
+&lt;!ELEMENT _slot %_slot.content;&gt;
+</pre></b>
+		</p>
+		<p>becomes</p>
+		<p>
+<b><pre>&lt;xs:attributeGroup name=&quot;_slot.attlist&quot;/&gt;
+&lt;xs:group name=&quot;_slot.content&quot;&gt;
+   &lt;xs:sequence&gt;
+      &lt;xs:element ref=&quot;ind&quot;/&gt;
+   &lt;/xs:sequence&gt;
+&lt;/xs:group&gt;
+&lt;xs:complexType name=&quot;_slot.type&quot; mixed=&quot;true&quot;&gt;
+   &lt;xs:group ref=&quot;_slot.content&quot;/&gt;
+   &lt;xs:attributeGroup ref=&quot;_slot.attlist&quot;/&gt;
+&lt;/xs:complexType&gt;
+&lt;xs:element name=&quot;_slot&quot; type=&quot;_slot.type&quot;/&gt;
+</pre></b>
+		</p>
+		<p>There is no need for workarounds in XSD: <b><tt>&lt;redefine&gt;</tt></b> makes the specified changes and includes everything else.  For example,</p>
+		<p>
+<b><pre>&lt;!ENTITY % _slot.content &quot;(ind | var)&quot;&gt;
+
+&lt;!ENTITY % include SYSTEM &quot;urcbindatagroundlog.dtd&quot;&gt;
+%include;
+</pre></b>
+		</p>
+		<p>becomes</p>
+		<p>
+<b><pre>&lt;xs:redefine schemaLocation=&quot;urcbindatagroundlog.xsd&quot;&gt;
+   &lt;xs:group name=&quot;_slot.content&quot;&gt;
+      &lt;xs:choice&gt;
+         &lt;xs:group ref=&quot;_slot.content&quot;/&gt;
+         &lt;xs:element ref=&quot;var&quot;/&gt;
+      &lt;/xs:choice&gt;
+   &lt;/xs:group&gt;
+&lt;/xs:redefine&gt;
+</pre></b>
+		</p>
+	<h2><a name="XSD Representation">XSD Representation</a></h2>
+		
+		<p>An <a href="http://www.ruleml.org/xsd/0.85">XML Schema representation</a> of RuleML Version 0.85 has been created with a <a href="#Re-Modularization">modularization</a> and <a href="#Content Model-Based Approach">implementation approach</a> that is consistent with the <a href="http://www.ruleml.org/dtd/0.85">DTDs</a>.</p>
+	<h2><a name="Future Work">Future Work</a></h2>
+		
+		<ul>
+			<li>abstract syntax (prepared here by having parallel DTD/XSD specs)</li>
+			<li>possibly merge UR and non-UR sublanguages and omit certain ones</li>
+			<li>reaction rules, transformation rules, ... (see the <a href="http://www.ruleml.org/indesign.html">Design</a> section)</li>
+			<li>SCLP (Situated Corteous Logic Programs) (work by Benjamin Grosof, MIT)</li>
+			<li>guarded Horn Logic (suggestion of Wolfgang Nejdl, U Hannover)</li>
+		</ul>	
+	<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2004-01-28
+		
+		<br>
+		<br>
+		<br>
+		<a name="Practice-Preach"></a>
+		<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">	homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

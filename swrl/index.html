@@ -1,0 +1,245 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>SWRL RuleML</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style>
+</head>
+<body bgcolor="#EEEEEE">
+		<center>
+			<br>
+			<br>
+			<h1>SWRL RuleML<br><i>Accessing SWRL Properties as &quot;Foreign&quot; Atoms</i>
+</h1>
+			<h2>David Hirtle, <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://www.daml.org/people/mdean/">Mike Dean</a>
+</h2>
+	
+			<h2>Schemas: <a href="http://www.ruleml.org/swrl/xsd">XSD Directory</a>
+</h2>
+			<h2>Examples: <a href="http://www.ruleml.org/swrl/exa">Examples Directory</a>
+</h2>
+			<h2>2004-08-12: Version 0.6</h2>
+		</center>
+		<br>
+		
+		<p>A <a href="http://www.w3.org/Submission/SWRL/">proposal for a Semantic Web Rule Language (SWRL)</a> combining OWL and RuleML has been submitted to
+		the <a href="http://www.w3.org">W3C</a>.  This document discusses changes to RuleML which permit access to SWRL properties as &quot;foreign&quot; atoms.</p>  
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Overview">Overview</a></li>
+<li><a href="#Monolithic">Monolithic SWRL-Datalog</a></li>
+<li><a href="#Monolithic Example Validation">Monolithic Example Validation</a></li>
+<li><a href="#Modular">Modular SWRL-Datalog</a></li>
+</ul>
+<h2><a name="Overview">Overview</a></h2>
+	
+	 <p>SWRL is a Semantic Web Rule Language based on a combination of the OWL DL and OWL Lite sublanguages of the
+	 <a href="http://www.w3.org/2001/sw/WebOnt/">OWL Web Ontology Language</a> with the Unary/Binary Datalog RuleML sublanguages of the RuleML. It thus extends the set of OWL axioms to include Horn-like rules and enables Horn-like rules to be combined with an OWL knowledge base. For more information, consult the <a href="http://www.w3.org/Submission/SWRL/">actual SWRL proposal</a> to the <a href="http://www.w3.org">W3C</a>.
+	</p>
+	<p>RuleML is now extended to permit access to SWRL properties as so-called &quot;foreign&quot; atoms.  This is initially applied to the (Unary) Datalog sublanguage resulting	in a new sublanguage called SWRL-Datalog. Both a <a href="#Monolithic">monolithic</a> and a <a href="#Modular">modular</a> version have been implemented
+	(<a href="xsd/swrldatalog_monolith.xsd">swrldatalog_monolith.xsd</a> and <a href="xsd/modular/swrldatalog.xsd">swrldatag.xsd</a>, respectively).</p>
+<h2><a name="Monolithic">Monolithic SWRL-Datalog</a></h2>
+		
+			<p>The implementation of the <a href="xsd/swrldatalog_monolith.xsd">monolithic version of the SWRL-Datalog sublanguage</a> only differs from the regular Datalog in a few ways:</p>
+				
+				<ul>
+				<li>_head permits &quot;foreign&quot; atoms from swrl...
+<b><pre>(atom)</pre></b>
+<p>becomes</p>
+<b><pre>( atom | (swrlx:atom)* )</pre></b>
+				</li>
+				<li>_body also permits &quot;foreign&quot; swrl atoms...
+<b><pre>
+( atom | and | or )
+</pre></b>					
+<p>becomes</p>
+<b><pre>
+( atom | (swrlx:atom)* | and | or )
+</pre></b>
+				</li>				
+				<li>_rlabs now have optional inds and have a required &quot;href&quot; attribute</li>
+				<li>imp permits owlx:Annotation elements...
+<b><pre>(
+  (_rlab, ( (_head, _body) | (_body, _head)  )) | 
+  (_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+  (_body, ( (_rlab, _head) | (_head, _rlab?) ))
+)</pre></b>
+		<p>becomes</p>
+<b><pre>(
+  (_rlab, ( (_head, _body) | (Annotation*, _body, _head) )) | 
+  (_head, ( (_rlab, _body) | (_body, _rlab?) ))             | 
+  (Annotation*, _body, ( (_rlab, _head) | (_head, _rlab?) ))
+)</pre></b>							
+				</li>
+		</ul>
+	<h2><a name="Monolithic Example Validation">Monolithic Example Validation</a></h2>
+			
+			
+	<table border="1" cellpadding="5" bgcolor="#FFFFFF"><tr><td>
+<b><pre>
+Validating Monolithic SWRL Datalog XSD using Example 5.1-4 from proposal
+========================================================================
+
+1. Direct your browser to </pre></b><a href="http://www.w3.org/2001/03/webdata/xsv">http://www.w3.org/2001/03/webdata/xsv</a>
+<b><pre>(Validator for XML Schema REC 20010502 version).
+
+2. Enter the following URL of our example RuleML file (or any other) into the textfield
+preceded by &quot;Address(es)&quot;: http://www.ruleml.org/swrl/exa/example5.1-4.swrlx
+
+3. If desired, check the &quot;Show Warnings&quot; box.
+
+4. Click the &quot;Get Results&quot; button.
+
+Note: The validation may take a while, and may require a full
+refresh when re-validating to avoid caching.
+
+Also note: Depending on your browser, you may want to select a different
+output using the radio buttons just above the &quot;Get Results&quot; button.			
+				
+***
+
+You should get the following output (using the default):</pre></b>
+
+<h3>Schema validating with XSV 2.7-1 of 2004/04/01 13:40:50</h3>
+		<ul>
+			<li>
+<b>Target</b>: <tt>http://www.ruleml.org/swrl/exa/example5.1-4.swrlx</tt><br>   (Real name: http://www.ruleml.org/swrl/exa/example5.1-4.swrlx<br>    Length: 8877 bytes
+ <br>    Last Modified: Mon, 12 Jul 2004 15:22:49 GMT<br>    Server: Apache/1.3.27 (Unix)  (Red-Hat/Linux) mod_fastcgi/2.4.2 mod_ssl/2.8.12 OpenSSL/0.9.6b DAV/1.0.3 PHP/4.1.2 mod_perl/1.26)</li>
+			<li>
+<b>docElt</b>: <tt>{http://www.w3.org/2003/11/swrlx}Ontology</tt>
+</li>
+			<li>Validation was strict, starting with type <tt>[Anonymous]</tt>
+</li>
+			<li>
+<b>schemaLocs</b>: http://www.w3.org/2003/11/swrlx -&gt; http://www.ruleml.org/swrl/xsd/swrlx.xsd</li>
+			<li>The schema(s) used for schema-validation had
+  no errors</li>
+			<li>No schema-validity problems were found in the target
+ </li>
+		</ul>
+		<hr>
+		<h3>Schema resources involved</h3>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/swrlx.xsd</tt>
+ (source: <tt>schemaLoc</tt>) for
+   <tt>http://www.w3.org/2003/11/swrlx</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl.xsd</tt>
+ (source: <tt>import</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-lite-core.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/xml.xsd</tt>
+ (source: <tt>import</tt>) for
+   <tt>http://www.w3.org/XML/1998/namespace</tt>,
+    skipped, other docs already loaded for
+this namespace: </p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl-classElementGroup.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl-descriptionGroup.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl-restrictionGroup.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl-domainRangeGroup.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-lite-dataPropInverseFuncAttr.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/owl1-dl-objectPropInverseFuncAttr.xsd</tt>
+ (source: <tt>include</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.ruleml.org/swrl/xsd/swrldatalog_monolith.xsd</tt>
+ (source: <tt>import</tt>) for
+   <tt>http://www.w3.org/2003/11/ruleml</tt>,
+    succeeded</p>
+		<p>Attempt to load a schema document from
+<tt>http://www.daml.org/rules/proposal/swrlx.xsd</tt>
+ (source: <tt>import</tt>) for
+   <tt>http://www.w3.org/2003/11/swrlx</tt>,
+    skipped, other docs already loaded for
+this namespace: </p>
+		<p>Attempt to load a schema document from
+<tt>http://www.daml.org/rules/proposal/owlx/schema/owl1-dl.xsd</tt>
+ (source: <tt>import</tt>) for
+   <tt>http://www.w3.org/2003/05/owl-xml</tt>,
+    skipped, other docs already loaded for
+this namespace: http://www.ruleml.org/swrl/xsd/owl1-lite-core.xsd http://www.ruleml.org/swrl/xsd/owl1-dl-classElementGroup.xsd http://www.ruleml.org/swrl/xsd/owl1-dl-descriptionGroup.xsd http://www.ruleml.org/swrl/xsd/owl1-dl-restrictionGroup.xsd http://www.ruleml.org/swrl/xsd/owl1-dl-domainRangeGroup.xsd http://www.ruleml.org/swrl/xsd/owl1-lite-dataPropInverseFuncAttr.xsd http://www.ruleml.org/swrl/xsd/owl1-dl-objectPropInverseFuncAttr.xsd http://www.ruleml.org/swrl/xsd/owl1-dl.xsd</p>
+		<hr>
+</td></tr></table>
+		
+	<h2><a name="Modular">Modular SWRL-Datalog</a></h2>
+		
+		<p>The implementation of the <a href="xsd/modular/swrldatalog.xsd">modular version of the SWRL-Datalog
+		sublanguage</a> involves the same extensions as the <a href="#Monolithic">monolithic version</a> but
+		is fundamentally different.</p>
+ 
+       <p>Modular SWRL-Datalog uses the <a href="http://www.ruleml.org/modularization/#Model">new model</a>
+       emerging from the 
+       <a href="http://www.ruleml.org/modularization">evaluation of alternative modularizations of RuleML</a>.
+       Using the new model's UML-like representation, SWRL-Datalog looks as follows:</p>
+       <img src="swrldatalog_m12n_uml.png" alt="Model of the modularization of SWRL-Datalog">
+       <p>
+       Instead of defining all elements of RuleML itself (as is the case with the monolithic version),
+       <a href="xsd/modular/swrldatalog.xsd">swrldatalog.xsd</a>
+       uses aggregation to &quot;inherit&quot; everything from <a href="xsd/modular/datalog.xsd">datalog.xsd</a> making
+       modifications as necessary (using xs:redefine).  For example, atoms from SWRL are added to _head like so:
+		</p>
+		<p>
+<b><pre>
+&lt;xs:redefine schemaLocation=&quot;datalog.xsd&quot;&gt;
+  ...
+  &lt;!-- _head's content model becomes: ( ruleml:atom | (swrlx:atom)* ) --&gt;
+  &lt;xs:group name=&quot;_head.content&quot;&gt;
+    &lt;xs:choice&gt;
+      &lt;xs:group ref=&quot;ruleml:_head.content&quot;/&gt;
+      &lt;xs:group ref=&quot;swrlx:atom&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+    &lt;/xs:choice&gt;
+  &lt;/xs:group&gt;
+  ...
+&lt;xs:redefine&gt;</pre></b>
+		</p>
+	<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2004-08-12
+		
+		<br>
+		<br>
+		<br>
+		<a name="Practice-Preach"></a>
+		<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">	homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

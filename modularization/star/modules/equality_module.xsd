@@ -1,0 +1,108 @@
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Equation RuleML elements module.
+			This is the XML Schema equation module for RuleML.
+			File: equation_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following equation RuleML elements:
+			* _opf
+			* fun
+			* eq
+			* nano
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- _opf -->
+	<!-- content model is "(fun)" -->
+	<xs:attributeGroup name="_opf.attlist"/>
+	<xs:group name="_opf.content">
+		<xs:sequence>
+			<xs:element ref="fun"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_opf.type">
+		<xs:group ref="_opf.content"/>
+		<xs:attributeGroup ref="_opf.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opf" type="_opf.type"/>
+	
+	<!-- fun -->
+	<!-- content model is "(#PCDATA)" -->
+	<xs:attributeGroup name="fun.attlist"/>
+	<xs:group name="fun.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="fun.type" mixed="true">
+		<xs:group ref="fun.content"/>
+		<xs:attributeGroup ref="fun.attlist"/>
+	</xs:complexType>
+	<xs:element name="fun" type="fun.type"/>
+
+	<!-- eq -->
+	<!-- content model is: "((ind | var | cterm | nano), (ind | var | cterm | nano))" -->
+	<xs:attributeGroup name="eq.attlist"/>
+	<xs:group name="eq.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="ind"/>
+				<xs:element ref="var"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="nano"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:element ref="ind"/>
+				<xs:element ref="var"/>
+				<xs:element ref="cterm"/>
+				<xs:element ref="nano"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="eq.type">
+		<xs:group ref="eq.content"/>
+		<xs:attributeGroup ref="eq.attlist"/>
+	</xs:complexType>
+	<xs:element name="eq" type="eq.type"/>
+
+	<!-- nano -->
+	<!-- content model is: "((_opf, (ind | var | cterm)*) | ((ind | var | cterm)+, _opf))" -->
+	<xs:attributeGroup name="nano.attlist"/>
+	<xs:group name="nano.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_opf"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+					<xs:element ref="cterm"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+					<xs:element ref="cterm"/>
+				</xs:choice>
+				<xs:element ref="_opf"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="nano.type">
+		<xs:group ref="nano.content"/>
+		<xs:attributeGroup ref="nano.attlist"/>
+	</xs:complexType>
+	<xs:element name="nano" type="nano.type"/>
+	
+</xs:schema>

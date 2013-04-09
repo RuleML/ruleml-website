@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            KR temporal / event / action / transition / process logic part of Reaction RuleML
+
+			File: kr.xsd
+			Version: 0.1
+			Last Modification: 2006-10-10
+			
+			This schema declares the following Reaction RuleML elements and attributes:
+			
+			* redefines action by adding Initiates, Terminates
+			* redefines alternative by adding Initiates, Terminates
+			* redefines Reaction by adding Initiates, Terminates
+
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+    	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/modules/state_module.xsd" />
+
+		<xs:redefine schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd" >
+
+			<!-- 
+				  redefines the action role element adding state processing constructs
+				  note the new content model of action is: 
+					( Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Or | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic | Ind | Var | Expr)
+			-->
+					   
+					   <xs:group name="action.content">
+							<xs:choice>
+								<xs:group ref="action.content" />
+								<xs:group ref="state_processing.content" />						
+						   </xs:choice>
+					  </xs:group>		
+		
+		
+			
+			<!-- 
+				  redefines the alternative role element adding state processing constructs
+				  note the new content model of alternative is: 
+					( Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Or | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)
+			-->
+					   
+					   <xs:group name="alternative.content">
+							<xs:choice>
+								<xs:group ref="alternative.content" />
+								<xs:group ref="state_processing.content" />						
+						   </xs:choice>
+					  </xs:group>		
+		
+		
+		
+			<!-- 
+				  redefines the Reaction element adding state processing constructs
+				  note the new content model of Reaction is: 
+				        (	oid?,  
+							(event | Naf | Neg | Atom | Reaction | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+							(body | Naf | Neg | Atom | And | Or)?,  
+							(action | Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+							(postcond  | Naf | Neg | Atom | And | Or)?,  
+							(alternative | Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?)
+			-->					
+					<xs:group name="reaction_group.content">
+							<xs:choice>
+								<xs:group ref="reaction_group.content" />
+								<xs:group ref="state_processing.content" />						
+						   </xs:choice>
+					</xs:group>
+					
+
+
+
+		<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		
+		
+		<!-- 
+		        rr redefines body adding HoldsState 
+		
+		 	note the new content model of Implies:
+			( oid?, (head, body) | (body, head) | ( (Atom | Reaction | And | Or | Equal | Naf | Neg | Assert | Retract | HoldsState ), (Atom | Equal | Neg) ) )
+			
+			note the new content model of Reaction is: 
+	        (	oid?,  
+				(event | Naf | Neg | Atom | Reaction | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+				(body | Naf | Neg | Atom | And | Or | HoldsState)?,  
+				(action | Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?, 
+				(postcond  | Naf | Neg | Atom | And | Or | HoldsState)?,  
+				(alternative | Atom | Assert | Retract | Message | Initiates | Terminates | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic)?)
+		-->
+					
+				<xs:group name="body.content" >
+					<xs:choice>
+							<xs:group ref="body.content" />
+							<xs:element ref="HoldsState" />							
+					</xs:choice>	
+				</xs:group>
+							
+				
+		<!--
+			add HoldsState so that formula's content model (below And/Or) is:
+			(Atom | Naf | Neg | And | Or | Equal | Reaction | Assert | Retract | HoldsState)
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="HoldsState" />
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds HoldsState to And/Or so that their content models are:
+			( oid?, (formula | Atom | Naf | Neg | And | Or | Equal | Reaction | Assert | Retract | HoldsState)* )
+		-->
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->					   
+
+		<!--
+			add HoldsAt so that weak's content model is:
+			(Atom | Neg | HoldsState)
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="HoldsState"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds HoldsAt to Naf so that Naf's content model is:
+			(weak | Atom | Neg | HoldsState)
+		-->	
+
+			
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+		<!--
+			add HoldsState so that strong's content model is:
+			(Atom | Neg | HoldsState)
+		-->
+		<xs:group name="strong.content">
+			<xs:choice>
+				<xs:group ref="strong.content"/>
+				<xs:element ref="HoldsState"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly adds HoldsAt to Neg so that Neg's content model is:
+			(strong | Atom | Neg | HoldsState)
+		-->	
+
+
+			
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add HoldsState so that Query's content model is:
+	( oid?, (formula | Atom | Naf | Neg | Rulebase | And | Or | Entails | Exists | Equal | HoldsState)* )
+-->
+	<xs:group name="formula-query.content">
+		<xs:choice>
+			<xs:group ref="formula-query.content"/>
+			<xs:element ref="HoldsState" />
+		</xs:choice>
+	</xs:group>	
+
+
+
+
+
+ </xs:redefine>
+
+
+	
+		<xs:group name="state_processing.content">
+			<xs:choice>
+			   <xs:element ref="Initiates" />
+			   <xs:element ref="Terminates" />
+			</xs:choice>		
+		</xs:group>
+	
+</xs:schema>

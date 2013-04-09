@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Modules and dynamic OID-based updates -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/pr.xsd">
+
+<!-- ContractLog/Prova formalization of (ISO Prolog syntax)
+
+% add/import external modules
+	
+:-eval(add("./ContractLog/update.prova")).
+:-eval(add("./ContractLog/utils.prova")).
+:-eval(add("./ContractLog/datetime.prova")).
+:-eval(add("./ContractLog/math.prova")).
+:-eval(add("http://ibis.in.tum.de/research/projects/rbsla/ContractLog.prova")).
+
+% update two facts as a module with unique module id
+:-eval(add("module1","a(). b().")). % add two facts
+:-eval(remove("module1")). % remove module
+:-eval(remove("./ContractLog/datetime.prova")). % remove module
+
+% updates within a serial derivation rule with ordered previously bound variables
+change1(X,Y):- 
+	f1(Z), 
+	add("update1","r1(_0,_1,_2):-f1(_2). r2(_2,_1,_0):-f1(_2).",[X,Y,Z]).
+	
+% update within a serial derivation rule with unbound variables	
+change2(X,Y):-
+	add("update2","f1(1). r3(X,Y,Z):-f1(Z).").
+
+% remove within a serial derivation rule of a complete module
+change3(X,Y):-
+	remove("update2").
+	
+% remove within a serial derivation rule of all facts which match the pattern
+change4(Z):-
+	retractall(f1(Z)).
+	
+% update within a serial derivation rule the facts which matches the pattern
+change5(Z):-
+	update(f1(Z)).			
+ -->
+ 
+ 
+	<Assert>
+		<!-- import module from file system = module oid -->
+		<oid><Ind uri="./ContractLog/update.prova"/></oid> 
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/utils.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/datetime.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/math.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="http://ibis.in.tum.de/research/projects/rbsla/ContractLog.prova"/></oid>
+	</Assert> 	
+	
+	<Assert>
+		<oid><Ind>module1</Ind></oid> <!-- module oid -->
+		<Atom>
+			<Rel>a</Rel>
+		</Atom>	
+		<Atom>
+		    <Rel>b</Rel>
+		</Atom>
+	</Assert>
+	
+	<Retract>
+	    <oid><Ind uri="#module1"/></oid>
+	</Retract>
+
+
+	<Retract>
+	    <oid><Ind uri="#./ContractLog/datetime.prova"/></oid>
+	</Retract>
+	
+	
+	
+ <Assert>		
+	
+	<!-- serial derivation rule with updates -->
+	
+	<Rule>
+	  <if>
+	    <And>
+	      <Atom>
+	        <op><Rel>f1</Rel></op>
+	        <Var>Z</Var>
+	      </Atom>
+	      <Assert>
+	      	<oid><Ind>update1</Ind></oid>
+	      	<Rule>
+			    <if>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Var>Z</Var>
+			    	</Atom>
+			    </if>
+	      		<then>
+			      	<Atom>
+	    		    	<op><Rel>r1</Rel></op>
+	        			<Var>X</Var>
+	        			<Var>Y</Var>
+	        			<Var>Z</Var>
+			        </Atom>
+			    </then>     
+			</Rule>	
+		    <Rule>
+			    <if>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Var>Z</Var>
+			    	</Atom>
+			    </if>		    
+	      		<then>
+			      	<Atom>
+	    		    	<op><Rel>r2</Rel></op>
+	        			<Var>Z</Var>
+	        			<Var>X</Var>
+	        			<Var>Y</Var>
+			        </Atom>
+			    </then>     
+			</Rule>	
+		  </Assert>	
+	    </And>
+	  </if>
+	  <then>
+	    <Atom>
+	      <op><Rel>change1</Rel></op>
+	      <Var>X</Var>
+	      <Var>Y</Var>
+	    </Atom>
+	  </then>
+	</Rule>
+	
+	
+	<Rule>
+	  <if>
+	    <Assert>
+	      <oid><Ind>update2</Ind></oid>	
+	      <Atom>
+	        <op><Rel>f1</Rel></op>
+	        <Ind>1</Ind>
+	      </Atom>
+	    
+	      	
+	      <Rule>
+			    <if>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Ind>Z</Ind>
+			    	</Atom>
+			    </if>
+	      		<then>
+			      	<Atom>
+	    		    	<op><Rel>r3</Rel></op>
+	        			<Ind>X</Ind>
+	        			<Ind>Y</Ind>
+	        			<Ind>Z</Ind>
+			        </Atom>
+			    </then>     
+		   </Rule>	
+	     </Assert>	
+	  </if>
+	  <then>
+	    <Atom>
+	      <op><Rel>change2</Rel></op>
+	      <Var>X</Var>
+	      <Var>Y</Var>
+	    </Atom>
+	  </then>
+	</Rule>
+	
+	
+	<Rule>
+			  <if>
+			    <Retract>
+			      <oid><Ind uri="#update2"/></oid>
+			    </Retract>
+			  </if>
+			  <then>
+			    <Atom>
+			      <op><Rel>change3</Rel></op>
+			      <Var>X</Var>
+	      		  <Var>Y</Var>
+			    </Atom>
+			  </then>
+
+	</Rule>
+
+	<Rule>
+			  <if>
+			    <Retract all="yes">
+			      <Atom>
+			        <Rel>f1</Rel>
+			        <Var>Z</Var>
+			      </Atom>
+			    </Retract>
+			  </if>
+			  <then>
+			    <Atom>
+			      <op><Rel>change4</Rel></op>
+			      <Var>Z</Var>
+			    </Atom>
+			  </then>
+
+	</Rule>	
+
+
+	<Rule>
+			  <if>
+			    <Update>
+			      <Atom>
+			        <Rel>f1</Rel>
+			        <Var>Z</Var>
+			      </Atom>
+			    </Update>
+			  </if>
+			  <then>
+			    <Atom>
+			      <op><Rel>change5</Rel></op>
+			      <Var>Z</Var>
+			    </Atom>
+			  </then>
+
+	</Rule>		
+  </Assert>
+	
+</RuleML>

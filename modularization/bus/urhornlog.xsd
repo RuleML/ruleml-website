@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema Driver for a 'UR' Horn-Logic RuleML sublanguage
+			File: urhornlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- include the auxiliary schema -->	
+	<xs:include schemaLocation="aux_urhornlog.xsd"/>
+	
+	<!-- 	the atom module is redefined to permit cterms and plexs -->
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:group ref="atom.extend"/>
+					<xs:element ref="cterm"/>
+					<xs:element ref="plex"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>	
+	</xs:redefine>
+	
+</xs:schema>

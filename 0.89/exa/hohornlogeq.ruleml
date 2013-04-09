@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hohornlogeq.xsd">
+
+<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+
+<And mapClosure="universal">
+
+  <oid>
+	<Con wlab="asdf" type="type"/>
+    <!--<Hterm>
+      <op><Con>rule label</Con></op>
+      <slot><Con>label</Con><Con>an example fact</Con></slot>
+    </Hterm>-->
+  </oid>
+
+					<Hterm>
+						<Con wref="test">unequal</Con>
+      						<slot><Con>label</Con><Con>an example fact</Con></slot>
+						<resl><Var>test</Var></resl>
+					</Hterm>
+
+
+
+
+				<Equivalent>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+				</Equivalent>
+				
+				<Forall>
+					<Var>x</Var>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+
+				</Forall>
+
+<!--				<Exists>
+					<Var>x</Var>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+
+				</Exists>
+-->
+
+
+
+		<Implies>
+			<head>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+		
+			</head>
+			<body>
+				<And>
+				<Or>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+				<Hterm>
+					<Con>unequal</Con>
+					<Var>x</Var>
+					<Var>person</Var>
+				</Hterm>
+				</Or>
+				</And>
+
+			</body>
+		</Implies>
+
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+
+     <Equal>
+        <Nano>
+          <opf><Fun>some function</Fun></opf>
+          <Con>arg1</Con>
+          <Con>arg2</Con>
+          <Con>arg3</Con>
+        </Nano>
+        <Nano>
+          <opf><Fun>some other function</Fun></opf>
+          <Con>arg4</Con>
+          <Con>arg5</Con>
+          <Con>arg6</Con>
+        </Nano>
+      </Equal>
+
+<Forall>
+    <Var>d</Var>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+</Forall>
+
+<Equivalent>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>e</Var>
+    </Equal>
+</Equivalent>
+
+<!--
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+      <slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor>constructor</Ctor></opc>
+          <Plex>
+            <Var>z</Var>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+          </Plex>
+        </Cterm></slot>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind>constant h</Ind>
+            <Cterm>
+              <opc><Ctor>empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+
+
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <Skolem>constant b</Skolem>
+        <repo><Var>b</Var></repo>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <repo><Var>x</Var></repo>
+        <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+        <resl><Plex><slot><Skolem/><Ind>test</Ind></slot></Plex></resl>
+      </Atom>
+
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+        <Skolem>constant b</Skolem>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+      <resl><Var>b</Var></resl>
+    </Atom>
+-->
+</And>
+
+</Assert>

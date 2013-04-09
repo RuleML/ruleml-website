@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+Text:
+If John does not eat and it is not the case that somebody feeds him then John is hungry.
+
+Paraphrase:
+ if it is not the case that John eats   and it is not the case that somebody feeds John   then John is hungry   .
+
+DRS:
+[A]
+named(A, John)-1
+object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-1
+   []
+      NOT
+      [B]
+      predicate(B, unspecified, eat, A)-1
+      NOT
+      [C, D]
+      object(C, dom, unspecified, person, unspecified, unspecified, eq, unspecified)-1
+      predicate(D, unspecified, feed, C, A)-1
+   =>
+   [E, F]
+   property(E, hungry)-1
+   predicate(F, state, be, A, E)-1
+
+FOL:
+exists(A, (named(A, John)-1)? (object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-1)? (-exists(B, predicate(B, unspecified, eat, A)-1)?-exists(C, exists(D, (object(C, dom, unspecified, person, unspecified, unspecified, eq, unspecified)-1)?predicate(D, unspecified, feed, C, A)-1))=>exists(E, exists(F, (property(E, hungry)-1)?predicate(F, state, be, A, E)-1))))
+-->
+
+<RuleML xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/folog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ruleml.org/0.9/xsd">
+   <oid>
+      <Ind>Translated version of ACE text "If John does not eat
+         and it is not the case that somebody feeds him then
+         John is hungry."</Ind>
+   </oid>
+   <Assert>
+      <Exists>
+         <Var>A</Var>
+         <And>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>A</Var>
+               <Ind>'John'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>A</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Implies>
+               <And>
+                  <Neg>
+                     <Exists>
+                        <Var>B</Var>
+                        <And>
+                           <Atom>
+                              <Rel>predicate</Rel>
+                              <Var>B</Var>
+                              <Ind>unspecified</Ind>
+                              <Ind>eat</Ind>
+                              <Var>A</Var>
+                           </Atom>
+                        </And>
+                     </Exists>
+                  </Neg>
+                  <Neg>
+                     <Exists>
+                        <Var>C</Var>
+                        <Var>D</Var>
+                        <And>
+                           <Atom>
+                              <Rel>object</Rel>
+                              <Var>C</Var>
+                              <Ind>dom</Ind>
+                              <Ind>unspecified</Ind>
+                              <Ind>person</Ind>
+                              <Ind>unspecified</Ind>
+                              <Ind>unspecified</Ind>
+                              <Ind>eq</Ind>
+                              <Data>unspecified</Data>
+                           </Atom>
+                           <Atom>
+                              <Rel>predicate</Rel>
+                              <Var>D</Var>
+                              <Ind>unspecified</Ind>
+                              <Ind>feed</Ind>
+                              <Var>C</Var>
+                              <Var>A</Var>
+                           </Atom>
+                        </And>
+                     </Exists>
+                  </Neg>
+               </And>
+               <Exists>
+                  <Var>E</Var>
+                  <Var>F</Var>
+                  <And>
+                     <Atom>
+                        <Rel>property</Rel>
+                        <Var>E</Var>
+                        <Ind>hungry</Ind>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>F</Var>
+                        <Ind>state</Ind>
+                        <Ind>be</Ind>
+                        <Var>A</Var>
+                        <Var>E</Var>
+                     </Atom>
+                  </And>
+               </Exists>
+            </Implies>
+         </And>
+      </Exists>
+   </Assert>
+</RuleML>

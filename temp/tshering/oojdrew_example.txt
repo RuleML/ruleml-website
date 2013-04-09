@@ -1,0 +1,105 @@
+<Assert >
+
+<And mapClosure="universal">
+
+
+<Implies>
+<!--If there is a member of the human race then he/she is mortal-->
+	    <Atom>
+		<Rel>human</Rel>
+		<Var>X</Var>
+	</Atom>
+	<Atom>
+		<Rel>mortal</Rel>
+		<Var>X</Var>
+	</Atom>
+</Implies>
+
+
+<Implies>
+<!--Every honest student who doesnot procrastinate receives a good mark and passes his course easily-->
+   	   <And>  
+		<Atom>
+			<Rel>student</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Atom>
+			<Rel>honest</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Naf>
+			<Atom>
+				<Rel>procrastinate</Rel>
+				<Var>X</Var>
+			</Atom>
+		    </Naf>
+	  </And>
+	<Atom>
+		<Rel>passes</Rel>
+		<Var>X</Var>
+		<Var>course</Var>
+	</Atom>
+</Implies>
+
+<Implies>
+<!--Every honest student who doesnot procrastinate receives a good mark and passes his course easily-->
+      	   <And>  
+		<Atom>
+			<Rel>student</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Atom>
+			<Rel>honest</Rel>
+			<Var>X</Var>
+		</Atom>
+		<Naf>
+			<Atom>
+				<Rel>procrastinate</Rel>
+				<Var>X</Var>
+			</Atom>
+	    </Naf>
+	  </And>
+
+			<Atom>
+				<Rel>receives</Rel>
+				<Var>X</Var>
+				<Ind>good marks</Ind>
+			</Atom>				
+
+</Implies>
+
+
+<!-- The third rule is a fact that asserts that
+John is a student who gets good marks-->
+ 
+
+  <Atom>
+    <Rel>student</Rel>
+    <Ind>John</Ind>
+  </Atom>
+  
+  <!--John is honest-->
+  <Atom>
+    <Rel>honest</Rel>
+    <Ind>John</Ind>
+  </Atom>
+
+  <!--John doesnot procrastinate-->
+
+	<Atom>
+		<Rel>procrastinate</Rel>
+		<Ind>John</Ind>
+	</Atom>
+
+	
+<!--John is human-->  
+  <Atom>
+    <Rel>human</Rel>
+    <Ind>John</Ind>
+   </Atom>
+
+  
+
+</And>
+
+</Assert>

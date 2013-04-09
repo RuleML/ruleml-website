@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Con -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Atom RuleML elements module.
+			This is the XML Schema mutual exclusion module for RuleML.
+			File: mutex_module.xsd
+			Version: 0.89
+			Last Modification: 2005-04-22
+
+			See http://www.daml.org/services/swsl/report/swsl.shtml#swsl-rules-courteous for more details.
+			
+			This module declares the following RuleML elements:
+			* Mutex
+			* oppo
+			* mgiv
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Mutex ***
+		content model: ( (oppo, mgiv?) | (mgiv, oppo) )
+
+		A statement that it is a contradiction/inconsistency for a particular pair of
+		literals (known as the "opposers" and denoted by "oppo") to be inferred, given
+		another optional particular condition (known as the "given", marked up as "mgiv"). 
+	-->
+      <xs:attributeGroup name="Mutex.attlist"/>
+	<xs:group name="Mutex.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="oppo"/>
+				<xs:element ref="mgiv" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="mgiv"/>
+				<xs:element ref="oppo"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Mutex.type">
+		<xs:group ref="Mutex.content"/>
+		<xs:attributeGroup ref="Mutex.attlist"/>
+	</xs:complexType>
+	<xs:element name="Mutex" type="Mutex.type"/>
+
+	<!--
+		*** oppo ***
+		content model: ( And )
+
+		A pair of literals (the "opposers") in a mutex which lead to a
+		contradiction/inconsistency if inferred, given another optional
+		condition.
+	-->
+      <xs:attributeGroup name="oppo.attlist"/>
+	<xs:group name="oppo.content">
+		<xs:sequence>
+			<xs:element name="And" type="And-oppo.type"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="oppo.type">
+		<xs:group ref="oppo.content"/>
+		<xs:attributeGroup ref="oppo.attlist"/>
+	</xs:complexType>
+	<xs:element name="oppo" type="oppo.type"/>
+
+	<!--
+		*** mgiv ***
+		content model: ( Atom | And | Or )
+
+		An optional particular condition for mutual exclusion.
+	-->
+      <xs:attributeGroup name="mgiv.attlist"/>
+	<xs:group name="mgiv.content">
+		<xs:sequence>
+			<xs:group ref="body.content"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="mgiv.type">
+		<xs:group ref="mgiv.content"/>
+		<xs:attributeGroup ref="mgiv.attlist"/>
+	</xs:complexType>
+	<xs:element name="mgiv" type="mgiv.type"/>
+
+</xs:schema>

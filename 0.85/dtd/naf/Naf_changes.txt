@@ -1,0 +1,10 @@
+<!-- RuleML sublanguage XML DTD changes to include negation as failure (NAF) -->
+
+<!-- _body, and, & or's content models are extended to also permit naf -->
+<!ENTITY % _body.content "(atom | naf | and | or)">
+<!ENTITY % and.content "((atom | naf | or)*)">
+<!ENTITY % or.content "((atom | naf | and)*)">
+
+<!-- the naf element negates the specified atom (by default, i.e. negation as failure) -->
+<!ENTITY % naf.content "(atom)">
+<!ELEMENT naf %naf.content;>

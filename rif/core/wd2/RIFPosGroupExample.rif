@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+Test Example (Serializing a RIF-BLD group of groups annotated with metadata)
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY bks "http://example.com/books#">
+  <!ENTITY cpt "http://example.com/concepts#">
+  <!ENTITY curr "http://example.com/currencies#">
+  <!ENTITY ppl "http://example.com/people#">
+  <!ENTITY dc  "http://purl.org/dc/terms/">
+  <!ENTITY w3  "http://www.w3.org/">
+  <!ENTITY rif "http://www.w3.org/2007/rif#">
+  <!ENTITY op  "http://www.w3.org/2007/rif-builtin-predicate#">
+  <!ENTITY fn  "http://www.w3.org/2007/rif-builtin-function#">
+  <!ENTITY xs  "http://www.w3.org/2001/XMLSchema#">
+]>
+  
+<Group
+      xmlns="http://www.w3.org/2007/rif#"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <meta>
+      <Frame>
+        <object>
+          <Const type="rif:iri">http://sample.org</Const>
+        </object>
+        <slot>
+          <Const type="rif:iri">dc:publisher</Const>
+          <Const type="rif:iri">w3:W3C</Const>
+        </slot>
+        <slot>
+          <Const type="rif:iri">dc:date</Const>
+          <Const type="xs:date">2008-04-04</Const>
+        </slot>
+      </Frame>
+    </meta>
+    <sentence>
+     <Group>
+      <sentence>
+       <Forall>
+        <declare><Var>item</Var></declare>
+        <declare><Var>deliverydate</Var></declare>
+        <declare><Var>scheduledate</Var></declare>
+        <declare><Var>diffduration</Var></declare>
+        <declare><Var>diffdays</Var></declare>
+        <formula>
+         <Implies>
+           <if>
+             <And>
+               <formula>
+                 <Atom>
+                   <op><Const type="rif:iri">cpt:perishable</Const></op>
+                   <args><Var>item</Var></args>
+                 </Atom>
+               </formula>
+               <formula>
+                 <Atom>
+                   <op><Const type="rif:iri">cpt:delivered</Const></op>
+                   <args><Var>item</Var><Var>deliverydate</Var><Const type="rif:iri">ppl:John</Const></args>
+                 </Atom>
+               </formula>
+               <formula>
+                 <Atom>
+                   <op><Const type="rif:iri">cpt:scheduled</Const></op>
+                   <args><Var>item</Var><Var>scheduledate</Var></args>
+                 </Atom>
+               </formula>
+               <formula>
+                 <External>
+                   <content>
+                     <Atom>
+                       <op><Const type="rif:iri">fn:subtract-dateTimes-yielding-dayTimeDuration</Const></op>
+                       <args><Var>deliverydate</Var><Var>scheduledate</Var><Var>diffduration</Var></args>
+                     </Atom>
+                   </content>
+                 </External>
+               </formula>
+               <formula>
+                 <External>
+                   <content>
+                     <Atom>
+                       <op><Const type="rif:iri">fn:get-days-from-dayTimeDuration</Const></op>
+                       <args><Var>diffduration</Var><Var>diffdays</Var></args>
+                     </Atom>
+                   </content>
+                 </External>
+               </formula>
+               <formula>
+                 <External>
+                   <content>
+                     <Atom>
+                       <op><Const type="rif:iri">op:numeric-greater-than</Const></op>
+                       <args><Var>diffdays</Var><Const type="xs:long">10</Const></args>
+                     </Atom>
+                   </content>
+                 </External>
+               </formula>
+             </And>
+           </if>
+           <then>
+             <Atom>
+               <op><Const type="xs:long">reject</Const></op>
+               <args><Const type="rif:iri">ppl:John</Const><Var>item</Var></args>
+             </Atom>
+           </then>
+         </Implies>
+        </formula>
+       </Forall>
+      </sentence>
+     </Group>
+    </sentence>
+    <sentence>
+     <Group>
+      <sentence>
+       <Group>
+        <sentence>
+         <Forall>
+          <declare><Var>item</Var></declare>
+           <formula>
+            <Implies>
+             <if>
+              <Atom>
+               <op><Const type="rif:iri">cpt:unsolicited</Const></op>
+               <args><Var>item</Var></args>
+              </Atom>
+             </if>
+             <then>
+              <Atom>
+               <op><Const type="rif:iri">cpt:reject</Const></op>
+               <args><Const type="rif:iri">ppl:Fred</Const><Var>item</Var></args>
+              </Atom>
+             </then>
+            </Implies>
+           </formula>
+          </Forall>
+         </sentence>
+        </Group>
+       </sentence>
+      </Group>
+     </sentence>
+</Group>
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

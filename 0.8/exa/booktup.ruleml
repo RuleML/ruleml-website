@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.8/dtd/ruleml-hornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- non-ground-fact-like rule with 4-element tup as single argument -->
+
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>book</rel></_opr>
+      <tup>
+        <var>title</var>
+        <var>autor</var>
+        <var>toc</var>
+        <var>chapters</var>
+      </tup>
+    </atom>
+  </_head>
+</fact>
+
+
+</rulebase>

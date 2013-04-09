@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ECA Rule Example -->
+
+<RBSLA xmlns="http://www.ruleml.org/0.9/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd 
+http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.2/eca.xsd">
+
+
+<!-- ContractLog formalization of ECA Rule (ISO Prolog / Prova syntax)
+
+eca(	every('1S') ,
+	detect(controller_failure(IP,Role,'1S')),
+	respond(controller_failure(IP,Role,'1S')) ) . -->
+
+
+
+	<Assert>
+		<ECA>
+			<time>
+			       <Cterm>
+			                 <Ctor>every</Ctor>
+			                 <Ind>1S</Ind>
+			        </Cterm>
+			</time>
+			<event>
+			        <Cterm> 
+			                    <Ctor>detect</Ctor>
+			                    <Cterm>
+			                               <Ctor>controller_failure</Ctor>
+			                               <Var>IP</Var>
+			                               <Var>Role</Var>
+			                               <Ind>1S</Ind>
+			                     </Cterm>
+			        </Cterm>
+			  </event>
+			  <action>
+			            <Cterm>
+			                       <Ctor>respond</Ctor>
+			                       <Cterm>
+			                                 <Ctor>controller_failure</Ctor>
+			                                 <Var>IP</Var>
+			                                 <Var>Role</Var>
+			                                 <Ind>1S</Ind>
+			                  </Cterm>
+			         </Cterm>
+			</action>
+		</ECA>
+	</Assert>
+</RBSLA>

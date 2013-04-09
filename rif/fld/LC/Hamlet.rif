@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wiki/FLD#XML_for_the_RIF-FLD_Language)
+
+
+  Document(
+   Prefix(dc     http://http://purl.org/dc/terms/)
+   Prefix(ex     http://example.org/ontology#)
+   Prefix(hamlet http://www.shakespeare-literature.com/Hamlet/)
+
+  (* hamlet:assertions hamlet:assertions[dc:title->"Hamlet" dc:creator->"Shakespeare"] *)      
+   Group(
+      Exists ?X (And(?X # ex:RottenThing
+                     ex:partof(?X <http://www.denmark.dk>)))
+      Forall ?X (Or(hamlet:tobe(?X)  Naf hamlet:tobe(?X)))
+      Forall ?X (And(Exists ?B (And(ex:has(?X ?B) ?B # ex:business))
+                     Exists ?D (And(ex:has(?X ?D) ?D # ex:desire)))
+                   :- ?X # ex:man)
+     (* hamlet:facts *)
+     Group(
+         hamlet:Yorick # ex:poor
+         hamlet:Hamlet # ex:prince
+      )
+   )
+  )
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY dc     "http://purl.org/dc/terms/">
+  <!ENTITY ex     "http://example.org/ontology#">
+  <!ENTITY hamlet "http://www.shakespeare-literature.com/Hamlet/">
+  <!ENTITY rif    "http://www.w3.org/2007/rif#">
+  <!ENTITY xs     "http://www.w3.org/2001/XMLSchema#">
+]>
+
+<Document dialect="FOL"
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#">
+  <payload>
+   <Group>
+    <meta>
+      <Frame>
+        <object>
+          <Const type="&rif;iri">hamlet:assertions</Const>
+        </object>
+        <slot ordered="yes">
+          <Const type="&rif;iri">&dc;title</Const>
+          <Const type="&xs;string">Hamlet</Const>
+        </slot>
+        <slot ordered="yes">
+          <Const type="&rif;iri">&dc;creator</Const>
+          <Const type="&xs;string">Shakespeare</Const>
+        </slot>
+      </Frame>
+    </meta>
+    <sentence>
+     <Exists>
+       <declare><Var>X</Var></declare>
+       <formula>
+         <And>
+           <formula>
+             <Member>
+               <instance><Var>X</Var></instance>
+               <class><Const type="&rif;iri">ex:RottenThing</Const></class>
+             </Member>
+           </formula>
+           <formula>
+             <Atom>
+               <op><Const type="&rif;iri">ex:partof</Const></op>
+               <args ordered="yes">
+                 <Var>X</Var>
+                 <Const type="&rif;iri">http://www.denmark.dk</Const>
+               </args>
+             </Atom>
+           </formula>
+         </And>
+       </formula>
+     </Exists>
+    </sentence>
+    <sentence>
+     <Forall>
+       <declare><Var>X</Var></declare>
+       <formula>
+         <Or>
+           <formula>
+             <Atom>
+               <op><Const type="&rif;iri">hamlet:tobe</Const></op>
+               <args ordered="yes"><Var>X</Var></args>
+             </Atom>
+           </formula>
+           <formula>
+             <Naf>
+               <formula>
+                 <Atom>
+                   <op><Const type="&rif;iri">hamlet:tobe</Const></op>
+                   <args ordered="yes"><Var>X</Var></args>
+                 </Atom>
+               </formula>
+             </Naf>
+           </formula>
+         </Or>
+       </formula>
+     </Forall>
+    </sentence>
+    <sentence>
+     <Forall>
+       <declare><Var>X</Var></declare>
+       <formula>
+         <Implies>
+           <if>
+             <Member>
+               <instance><Var>X</Var></instance>
+               <class><Const type="&rif;iri">ex:man</Const></class>
+             </Member>
+           </if>
+           <then>
+             <And>
+               <formula>
+                 <Exists>
+                   <declare><Var>B</Var></declare>
+                   <formula>
+                    <And>
+                     <formula>
+                       <Atom>
+                         <op><Const type="&rif;iri">ex:has</Const></op>
+                         <args>
+                           <Var>X</Var>
+                           <Var>B</Var>
+                         </args>
+                       </Atom>
+                     </formula>
+                     <formula>
+                       <Member>
+                         <instance><Var>B</Var></instance>
+                         <class><Const type="&rif;iri">ex:business</Const></class>
+                       </Member>
+                     </formula>
+                   </And>
+                  </formula>
+                 </Exists>
+               </formula>
+               <formula>
+                 <Exists>
+                   <declare><Var>D</Var></declare>
+                   <formula>
+                    <And>
+                     <formula>
+                       <Atom>
+                         <op><Const type="&rif;iri">ex:has</Const></op>
+                         <args>
+                           <Var>X</Var>
+                           <Var>D</Var>
+                         </args>
+                       </Atom>
+                     </formula>
+                     <formula>
+                       <Member>
+                         <instance><Var>D</Var></instance>
+                         <class><Const type="&rif;iri">ex:desire</Const></class>
+                       </Member>
+                     </formula>
+                   </And>
+                  </formula>
+                 </Exists>
+               </formula>
+             </And>
+           </then>
+         </Implies>
+       </formula>
+     </Forall>
+   </sentence>
+   <sentence>
+     <Group>
+       <meta>
+         <Frame>
+           <object>
+             <Const type="&rif;iri">hamlet:facts</Const>
+           </object>
+         </Frame>
+       </meta>
+       <sentence>
+         <Member>
+           <instance><Const type="&rif;iri">hamlet:Yorick</Const></instance>
+           <class><Const type="&rif;iri">ex:poor</Const></class>
+         </Member>
+       </sentence>
+       <sentence>
+         <Member>
+           <instance><Const type="&rif;iri">hamlet:Hamlet</Const></instance>
+           <class><Const type="&rif;iri">ex:prince</Const></class>
+         </Member>
+       </sentence>
+     </Group>
+    </sentence>
+   </Group>
+  </payload>
+ </Document> 

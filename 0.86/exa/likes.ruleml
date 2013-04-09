@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<rulebase
+xmlns="http://www.ruleml.org/0.86/xsd"
+xsi:schemaLocation="http://www.ruleml.org/0.86/xsd http://www.ruleml.org/0.86/xsd/datalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+<!-- Clocksin/Mellish sample rule -->
+
+<imp>
+ <_head>
+  <atom>
+    <_opr><rel>likes</rel></_opr>
+    <ind>John</ind>
+    <var>x</var>
+  </atom>
+ </_head>
+ <_body>
+  <atom>
+    <_opr><rel>likes</rel></_opr>
+    <var>x</var>
+    <ind>wine</ind>
+  </atom>
+ </_body>
+</imp>
+
+<fact>
+ <_head>
+  <atom>
+    <_opr><rel>likes</rel></_opr>
+    <ind>Mary</ind>
+    <ind>wine</ind>
+  </atom>
+ </_head>
+</fact>
+
+</rulebase>

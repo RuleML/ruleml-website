@@ -1,0 +1,13 @@
+<!-- XML DTD for a Binary Datalog RuleML sublanguage, including negation as failure (NAF) -->
+<!-- File: nafbindatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- ignore the conditional block located in urcbindatagroundfact by changing the parameter entity to "IGNORE" -->
+<!-- this results in the removal of 'UR'-Centeredness (by omitting the href attributes), forming a separate branch in the -->
+<!-- RuleML sublanguages inheritance tree (see http://www.ruleml.org/dtd/0.85/inheritance_diagram.gif) -->
+<!ENTITY % href.attrib.module "IGNORE">
+
+<!-- this module inherits from the (NAF) 'UR'-Centered Binary Datalog RuleML sublanguage (nafurcbindatalog) -->
+<!ENTITY % nafurcbindatalog_include SYSTEM "nafurcbindatalog.dtd">
+%nafurcbindatalog_include;

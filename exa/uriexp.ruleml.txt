@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/ruleml-urequalog.dtd">
+
+
+<rulebase>
+
+
+<!-- a uri expander -->
+
+<if>
+  <eq>
+    <nano>
+      <fun>uriexp</fun>
+      <ind>daml</ind>
+    </nano>
+    <ur>http://www.daml.org/</ur>
+  </eq>
+  <and/>
+</if>
+
+<if>
+  <eq>
+    <nano>
+      <fun>uriexp</fun>
+      <ind>oil</ind>
+    </nano>
+    <ur>http://www.ontoknowledge.org/oil/</ur>
+  </eq>
+  <and/>
+</if>
+
+<if>
+  <eq>
+    <nano>
+      <fun>uriexp</fun>
+      <ind>w3c</ind>
+    </nano>
+    <ur>http://www.w3.org/</ur>
+  </eq>
+  <and/>
+</if>
+
+</rulebase>

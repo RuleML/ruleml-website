@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd" 
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR' Horn-Logic RuleML sublanguage
+			File: urhornlog.xsd
+			Version: 0.88
+			Last Modification: 2005-01-19
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- urhornlog includes the 'UR' module -->
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+	
+	<xs:redefine schemaLocation="hornlog.xsd">
+		<!--
+			wref is added to Rel's list of attributes
+		-->
+		<xs:attributeGroup name="Rel.attlist">
+			<xs:attributeGroup ref="Rel.attlist"/>
+			<xs:attributeGroup ref="wref.attrib"/>
+		</xs:attributeGroup>	
+
+		<!--
+			wref is added to Ind's list of attributes
+		-->
+		<xs:attributeGroup name="Ind-normal.attlist">
+			<xs:attributeGroup ref="Ind-normal.attlist"/>
+			<xs:attributeGroup ref="wref.attrib"/>
+		</xs:attributeGroup>
+		
+		<!--
+			wlab is added to Ind's list of attributes (only for Inds within oids)
+		-->
+		<xs:attributeGroup name="Ind-oid.attlist">
+			<xs:attributeGroup ref="Ind-oid.attlist"/>
+			<xs:attributeGroup ref="wlab.attrib"/>
+		</xs:attributeGroup>	
+
+		<!--
+			wref is added to Ctor's list of attributes
+		-->		
+		<xs:attributeGroup name="Ctor.attlist">
+			<xs:attributeGroup ref="Ctor.attlist"/>
+			<xs:attributeGroup ref="wref.attrib"/>
+		</xs:attributeGroup>		
+	</xs:redefine>
+	
+</xs:schema>

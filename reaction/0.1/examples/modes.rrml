@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Input / Output modes -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% rule example 1 with input / output modes in rule head
+	
+compute(In1, In2, Out) :-
+	bound(In1),
+	bound(In2),
+	free(Out),
+	math_add(In1,In2,Out).
+
+
+% rule example 2 with input / output modes in rule body
+
+average(A) :-
+	get1(Value1),
+	get2(Value2),
+	bound(Value1),
+	bound(Value2),
+	free(A),
+	avrg(Value1,Value2,A).
+
+ -->
+ 
+
+<Assert mapClosure="universal">
+
+			<Implies>
+			  <head>
+			    <Atom>
+			      <op><Rel>compute</Rel></op>
+			      <Var mode="+">In1</Var>
+			      <Var mode="+">In2</Var>
+			   	  <Var mode="-">Out</Var>
+			    </Atom>
+			  </head>
+			  <body>
+			    <And>
+			      <Atom>
+			        <op><Rel>math_add</Rel></op>
+			        <Var mode="?">In1</Var>
+			        <Var mode="?">In2</Var>
+			        <Var mode="?">Out</Var>
+			      </Atom>
+			    </And>  
+			  </body>
+			</Implies>
+
+
+			<Implies>
+			  <head>
+			    <Atom>
+			      <op><Rel>average</Rel></op>
+			      <Var>A</Var>
+			    </Atom>
+			  </head>
+			  <body>
+			    <And>
+			      <Atom>
+			        <op><Rel>get1</Rel></op>
+			        <Var mode="?">Value1</Var>
+			      </Atom>
+			      <Atom>
+			        <op><Rel>get2</Rel></op>
+			        <Var mode="?">Value2</Var>
+			      </Atom>			    
+			      <Atom>
+			        <op><Rel>avrg</Rel></op>
+			        <Var mode="+">Value1</Var>
+   			        <Var mode="+">Value2</Var>
+   			        <Var mode="-">A</Var>
+			      </Atom>  
+			    </And>  
+			  </body>
+			</Implies>
+
+	
+	
+</Assert>
+	
+</RuleML>

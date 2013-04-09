@@ -1,0 +1,375 @@
+<!--  RuleML V0.8 DTD, Monolithic version, 
+      for SCLP (i.e., Situated Courteous Logic Programs).
+      This is somewhat EXPERIMENTAL in status. -->
+
+<!-- Version date:  2003-04-22 .  From:  http://www.ruleml.org  -->
+
+<!--  Situated Courteous Logic Programs (SCLP) include expressively:   
+      prioritized conflict handling (Courteous feature), and 
+      procedural attachments for tests and actions (Situated feature).  
+
+      "Monolithic version" means without included modules for assembling
+      the DTD document itself.  
+
+      This SCLP DTD is a strict (expressive) extension of RuleML V0.8 Hornlog
+      with URI constants feature and object-oriented argument collection
+      feature ("hornlog+ur+roli").  
+
+      This SCLP DTD includes 
+      some features that are a bit more EXPERIMENTAL in status, 
+      as compared to the Datalog or Hornlog DTD's of RuleML V0.8.
+      However, earlier versions of SCLP RuleML have been 
+      implemented in SweetRules and SweetJess.   
+
+      This version of the DTD does contain, in a long appended comment,
+      some explanation of the basic expressive concepts and of the
+      element and attribute names. 
+      (Many of these names are terse/abbreviated for sake
+      of making instance rulebase documents be more concise). 
+
+      For more extensive design comments, including comparisons to Hornlog
+      and discussion of outstanding issues for revision or extension, 
+      see the corresponding abstract syntax document for SCLP.  
+
+      This version of SCLP DTD is "sclp-v14", 
+      revised from "sclp-v13" used in first versions of SweetRules 
+      and SweetJess.
+
+      It specifies SCLP (i.e., Situated Courteous Logic Programs),
+       with the URI constants feature ("ur"), and
+       with the object-oriented arguments collection feature ("roli's"),
+       and with the experimental feature of a query statement ("query")
+         element that is defined in some other versions of RuleML V0.8 Hornlog;
+       with also disjunction permitted in rule bodies, and 
+         conjunction permitted in rule heads (the "ltao" feature).   
+
+       Note SCLP permits literals to be classically negated, in the manner of
+       "extended" LP originated by Gelfond & Lifschitz.  This is a limited
+       sense of classical negation; it is actually expressively inessential.
+       Let "cneg" stand for classical negation. 
+       For every predicate P, " cneg P " is essentially treated as if it were
+       rewritten " P' ", where " P' " is a newly introduced predicate symbol.
+
+       Note that one aspect of Courteous LP not represented here in
+       the DTD is the syntactically reserved status of the "overrides"
+       predicate that specifies the prioritization (partial ordering) among
+       (default) rules.  This should probably be identified via use of the
+       RuleML namespace, e.g., an instance rulebase should use
+       "ruleml:overrides" and define the "ruleml:" namespace as the URI
+       "http://www.ruleml.org". 
+
+       Overall, the main substantial difference in this version from
+       SCLP dtd-v13 is that argument collections are supported, i.e., there
+       are roli's and explicit tuples (i.e., tup's)
+
+
+       Please send any comments to especially:
+           Benjamin Grosof  email: bgrosof@mit.edu  
+                            homepage:  http://ebusiness.mit.edu/bgrosof
+           Harold Boley  email:  Harold.Boley@nrc.ca
+
+  -->
+
+<!ELEMENT rulebase ( 
+   (_rbaselab, (imp | fact | query | mutex | sens | effe)*) 
+      | ((imp | fact | query | mutex | sens | effe)+, _rbaselab?) )>
+<!ATTLIST rulebase direction 
+          (forward | backward | bidirectional) 
+                             "bidirectional">
+<!-- URI-valued (CDATA) attributes optionally specify an XML Schema 
+       on 'rulebase' root -->
+<!ATTLIST rulebase xsi:noNamespaceSchemaLocation %URI; #IMPLIED>
+<!ATTLIST rulebase xmlns:xsi %URI; #IMPLIED>
+<!ENTITY % URI "CDATA">
+<!ELEMENT _rbaselab (ind | cterm)>
+<!ELEMENT imp ( (_head, ((_body,_rlab?) | (_rlab,_body?))? ) 
+                    | (_body, ((_head,_rlab?) | (_rlab,_head))) 
+                | (_rlab,((_head,_body?) | (_body,_head))) )>
+<!ELEMENT fact ( (_rlab,_head) | (_head,_rlab?) )>
+<!ELEMENT query ( (_rlab,_body) | (_body,_rlab?) )>
+<!ELEMENT _rlab (ind | cterm) >
+<!ELEMENT _head (cslit | atom | andh)>
+<!ELEMENT _body (fclit | atom | cslit | flit | andb | orb | and)>
+<!ELEMENT andb ((fclit | atom | cslit | flit | andb | orb)*)>
+<!ELEMENT and ((atom)*)>
+<!ELEMENT orb ((fclit | atom | cslit | flit | andb | orb)+)>
+<!ELEMENT andh ((cslit | atom | andh)+)>
+<!ELEMENT atom ((_opr, (ind | var | cterm)*) 
+                | ((ind | var | cterm)+, _opr))>
+<!ELEMENT fclit ((_opr, (ind | var | cterm)*) 
+                       | ((ind | var | cterm)+, _opr))>
+<!ATTLIST fclit cneg (%bool;) #IMPLIED>
+<!ATTLIST fclit fneg (%bool;) #IMPLIED>
+<!ENTITY % bool "yes|no">
+<!ELEMENT flit ((_opr, (ind | var | cterm)*) 
+                | ((ind | var | cterm)+, _opr))>
+<!ATTLIST flit fneg (%bool;) #IMPLIED>
+<!ELEMENT cslit ((_opr, (ind | var | cterm)*) 
+                  | ((ind | var | cterm)+, _opr))>
+<!ATTLIST cslit cneg (%bool;) #IMPLIED>
+<!ELEMENT _opr (rel)>
+<!ELEMENT rel  (#PCDATA)>
+<!ATTLIST rel href %URI; #IMPLIED>
+<!ELEMENT var  (#PCDATA)>
+<!ELEMENT ind  (#PCDATA)>
+<!ATTLIST ind href %URI; #IMPLIED>
+<!ELEMENT cterm ((_opc, (ind | var | cterm | tup | roli)*) 
+                    | ((ind | var | cterm | tup | roli)+, _opc))>
+<!ELEMENT _opc (ctor)>
+<!ELEMENT ctor (#PCDATA)>
+<!ATTLIST ctor href %URI; #IMPLIED>
+<!ELEMENT tup   ((ind | var | cterm | tup | roli)*)>
+<!ELEMENT roli ((_arv)*)>
+<!ELEMENT _arv ((arole, (ind | var | cterm | tup | roli)) 
+                   | ((ind | var | cterm | tup | roli), arole)) >
+<!ELEMENT arole (#PCDATA)>
+<!ATTLIST arole href %URI; #IMPLIED>
+
+
+<!-- syntax for courteous and situated follows --->
+
+<!ELEMENT mutex ((_oppo, _mgiv?) | (_mgiv, _oppo))>
+<!ELEMENT _oppo (ando)> 
+<!ELEMENT _mgiv (fclit | atom | flit | cslit | andb | and | orb)>
+<!ELEMENT ando (cslit, cslit)>
+
+<!ENTITY % bind "bound|free">
+<!ELEMENT sens ((_opr, ((_aproc, _modli?) | (_modli,_aproc))) 
+                | (_aproc, ((_opr,_modli?) | (_modli,_opr)))
+                | (_modli,((_aproc,_opr) | (_opr,_aproc))) )>
+<!ELEMENT effe ((_opr, _aproc) | (_aproc, _opr))>
+<!ELEMENT _aproc (jproc | uproc)>
+<!ELEMENT uproc (#PCDATA)>
+<!ATTLIST uproc href %URI; #IMPLIED>
+<!ELEMENT jproc ((clas, ((meth, path?) | (path, meth))) 
+                 | (meth, ((clas, path?) | (path, clas)))  
+                 | (path, ((meth, clas) | (clas, meth))))>
+<!ELEMENT path (#PCDATA)>
+<!ATTLIST path href %URI; #IMPLIED>
+<!ELEMENT clas (#PCDATA)>
+<!ATTLIST clas href %URI; #IMPLIED>
+<!ELEMENT meth (#PCDATA)>
+<!ATTLIST meth href %URI; #IMPLIED>
+<!ELEMENT _modli ((bmode | bmtup | bmroli)*)>
+<!ELEMENT bmtup ((bmode | bmtup | bmroli)*)>
+<!ELEMENT bmroli ((_arbm)*)>
+<!ELEMENT _arbm ((arole, (bmode | bmtup | bmroli)) 
+                    | ((bmode | bmtup | bmroli), arole) )>
+<!ELEMENT bmode EMPTY>
+<!ATTLIST bmode val (%bind;) "free">
+
+
+
+<!-- Explanation of Abbreviations:
+
+  rulebase = knowledge base of rules.  
+  direction = intended direction of inferencing.  
+  _rbaselab = rulebase label.  Name of a rulebase.
+  imp = implication rule.  
+          (Note it does not employ *material* implication cf. classical logic.)
+  fact:  Can be viewed logically as an implication rule that has an empty body.
+  _head = head of a rule.  A.k.a. the "consequent" or "then" part of the rule.
+  _body = body of a rule.  A.k.a. the "antecedent" or "if" part of the rule.  
+  _rlab = rule label.  Name of a rule. 
+
+  andb = AND'd (i.e., conjunctive) expression permitted in the body.  
+  and = AND'd (i.e., conjunctive) expression - a particular kind that is 
+          permitted in the body. The "and" of some body atoms.
+          Similar to andb, but simpler.  Included for down-compatibility /
+          back-compatibility, esp. with early versions of the Datalog and 
+          Hornlog sublanguages.
+
+  atom = logical atom.  An expression formed from a predicate applied to a 
+            collection of its (logical) arguments.  
+  _opr = relational operator expression.  (This is for sake of upward
+           expressive extensibility.)  
+  rel = relation.  A logical predicate. 
+  var = variable.  A logical variable.
+  ind = individual.  A logical individual.  
+           (Can be viewed logically as logical function whose arity is zero.)
+
+
+
+  "Lloyd-Topor And-Or" ("LTAO") feature syntax follows:
+
+       Lloyd-Topor transformations permit more expressive heads and
+       bodies in LP, by expressively reducing them (with tractable
+       computational effort) to the simpler, more basic LP expressive form
+       in which a head consists of a single literal and a body consists of
+       a conjunction of literals.  In particular, it is straightforward to
+       permit "OR" (disjunction) expressions in the body, and to permit
+       "AND" (conjunction) expressions in the head.  We call this the
+       "Lloyd-Topor And-Or" ("LTAO") feature.
+  
+  orb = OR'd (i.e., disjunctive) expression permitted in the body.  
+
+  Note that andb's and orb's can be nested.
+
+  andh = AND'd (i.e., conjunctive) expression permitted in the head.  
+
+
+
+  Negation-As-Failure (a.k.a. "Normal" or "Ordinary" LP) feature syntax 
+  follows:  
+
+  flit = negation-as-failure literal.  A literal with negation-as-failure 
+            sign (fneg).  
+  fneg = negation-as-failure sign.  The sign is either positive or negative.
+           Negative ("YES" value of attribute) means negated.  
+           Positive ("NO" value of attribute) means unnegated, 
+           i.e., the same as if the negation symbol does not appear. 
+  bool = boolean.  
+
+
+
+
+  "Extended" LP feature syntax follows:
+
+       Note SCLP permits literals to be classically negated, in the manner of
+       "extended" LP originated by Gelfond and Lifschitz.  This is a limited
+       sense of classical negation; it is actually expressively inessential.
+       Let "cneg" stand for classical negation. 
+       For every predicate P, " cneg P " is essentially treated as if it were
+       rewritten " P' ", where " P' " is a newly introduced predicate symbol.
+ 
+  cslit = classically signed literal, a.k.a. classical literal.  
+            A literal with classical-negation sign (cneg).
+  fclit = negation-as-failure classically signed literal.  A literal with both 
+            classical-negation sign (cneg) and negation-as-failure sign (fneg).
+  cneg = classical negation sign.  The sign is either positive or negative.
+           Negative ("YES" value of attribute) means negated.  
+           Positive ("NO" value of attribute) means unnegated, 
+           i.e., the same as if the negation symbol does not appear. 
+
+
+
+  URI constants feature syntax follows:  
+
+  add @href? as attribute to (logical-) constant names, e.g., rel, ind, etc..  
+        (In this version, permits a URI.)
+
+
+  Complex (constructor) terms feature syntax follows:
+
+  cterm = complex term.  A logical term of the form "f(...)" where f is a ctor.
+  _opc = constructor operator expression.  (Similar in spirit to _opr.)
+  ctor = constructor.  A logical function. 
+
+
+
+  Object-oriented argument collections feature syntax follows:
+
+  tup = tuple of arguments.  An ordered collection of arguments.  
+  roli = role'd list of arguments.  An unordered collection of arguments, 
+           with each member of the collecion being distinguished by an 
+           argument role name (arole).
+  _arv = argument role-value pair.  An argument (value) together with its
+           indicating argument role (arole).
+  arole = argument role.  (See roli and _arv above.)
+
+
+
+  "Query element" feature syntax follows:
+
+  query = stored query specification.  An EXPERIMENTAL feature.  
+              (If "query" element is indeed included in this version.)  
+
+  Note that in this DTD version, tup's and roli's can be nested.  This is an 
+    EXPERIMENTAL aspect of the object-oriented argument collections feature. 
+
+
+
+  Courteous feature syntax follows:  
+
+  In Courteous LP, rules are treated as defaults, and prioritized conflict
+  handling can be represented.  Priorities between rules are represented via
+  a binary predicate "overrides" which takes rule labels as arguments.
+  "overrides" is syntactically reserved, but is otherwise an ordinary 
+  predicate - it can appear in general-form rules and be reasoned about, thus
+  "overrides" facts can be inferred.  Higher priority rules defeat lower 
+  priority rules.  The prioritization ordering is a partial ordering.  
+  
+
+  mutex = mutual exclusion statement (a.k.a. "mutex").  
+
+            A mutex is a kind of integrity constraint,
+            used to specify the scope of conflict in Courteous logic programs.
+            It contains an opposer part and a given-condition part. 
+            The opposer part consists of two (classical) literals.
+            The given-condition part is similar to a rule body.  
+            The mutex specifies overall that it is a prohibited contradiction 
+            for the two literals to be concluded if the given-condition part 
+            is concluded (i.e., holds).  
+            The semantics of Courteous LP enforces consistency with respect to
+            this integrity constraint. 
+
+  _oppo = opposer part of mutex. (See mutex above.)
+  _mgiv = given part of mutex.  (See mutex above.)
+  ando = AND'd (i.e., conjuctive) expression permitted in the opposer part of
+            a mutex.  (See mutex above.)   
+
+
+
+  Situated feature syntax follow:
+
+  sens = sensor link statement.  
+
+            Sensing overall is the obtaining of facts from external attached 
+            procedures, during the testing of rules that contain particular
+            kinds of literals.  "External" here means external to the LP 
+            inferencing engine.   
+ 
+            A sensor link statement specifies an association of a predicate P
+            to an attached procedure A.  "A" is also known as a "sensor 
+            procedure".  Essentially, A can be viewed as a queryable 
+            virtual knowledge base of facts about P.    
+            Let R be a rule in which literal L appears in the body, where
+            L's predicate is P.  During (situated LP) inferencing, when L's
+            body is tested, A is invoked.   
+            A sensor link statement also specifies an optional binding 
+            restriction pattern:  i.e., for each of P's arguments, it can
+            restrict that argument to be bound (rather than a free variable
+            or cterm containing a free variable) when A is invoked 
+            (i.e., queried).
+
+  effe = effector link statement.  
+
+            Effecting overall is the performing of side-effectful actions,
+            via invoking external attached procedures, triggered by the
+            drawing of particular kinds of conclusions.  "External" here means
+            external to the LP inferencing engine.  
+
+            An effector link statement specifies an association of a predicate
+            P to an attached procedure A.  "A" is also known as an "effector
+            procedure".  Let literal L appear in the head of some rule(s),
+            where L's predicate is P.  During (situated LP) inferencing, 
+            suppose P(U) is concluded, where U is an instantiation
+            of L's argument terms.  Then A is invoked with instantiation U.
+            
+  Note in this version, the sensed or effected literal might not actually be 
+  permitted to be classically-negated (i.e., if no cneg is specified in 
+  the sens or effe statement).  However, such a restriction is 
+  expressively inessential.
+
+  _aproc = attached procedure.  (See sens and effe above.)
+  jproc = Java (attached) procedure.  
+
+            In the current EXPERIMENTAL design, a Java attached procedure 
+            is specified by its class, method, and (optional) path. 
+            
+  uproc = "universal" (attached) procedure.  I.e., a procedure specified via
+            some kind of stringname or URI. 
+
+            This is an EXPERIMENTAL design.  It is intended to support 
+            extensibility towards CGI's and Web services.   
+
+  _modli = binding mode list.  A binding restriction pattern for a sensor.
+             (See sens above.)
+  bmode = binding mode.  Indicates whether a particular argument is restricted
+            to be bound vs. permitted to be a free variable or contain a free
+            variable.  (See sens above.)
+  bval = binding value.  (See bmode above.)
+  bmtup = tuple (tup) of binding modes.
+  bmroli = role'd list (roli) of binding modes.
+
+  -->  

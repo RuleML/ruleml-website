@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Binary Datalog RuleML sublanguage
+			File: bindatalog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-11
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			make atoms binary so that Atom's content model is:
+			(
+				(oid)?, (op | Rel), (slot)*,
+				( (arg|Ind|Data|Skolem|Var|Reify), (arg|Ind|Data|Skolem|Var|Reify), (slot)* )?
+			)	     		
+		-->
+		<xs:group name="Atom-arg.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="arg"/>					
+					<xs:group ref="arg.content"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:group>		
+	</xs:redefine>
+	
+</xs:schema>

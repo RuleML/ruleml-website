@@ -1,0 +1,150 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>TRANSLATOR: TRANSlator from LAnguage TO Rules</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+       dt { font-weight: bold }
+       abbr, acronym { cursor:help }
+     </style>
+</head>
+<body bgcolor="#FFFFFF">
+		<center>
+			<br>
+			<br>
+			<h1>TRANSLATOR:<br/>A TRANSlator from LAnguage TO Rules</h1>
+			<h2>David Hirtle</h2>
+			<h3>Last updated:<br/>2006-10-21</h3>
+			<p>
+			<h2>Quick links:</h2>
+			<h2>
+			<a href="translator.jnlp">Demo</a>,
+			<a href="TRANSLATOR-CaSTA.pdf">Paper</a>,
+			<a href="TRANSLATOR-slides-CaSTA.pdf">Talk</a> <span style="color: red; font-size: 75%">[updated]</span>,
+			<a href="TRANSLATOR-thesis.pdf">Thesis</a>,
+			<a href="exa/">Examples</a>
+			</h2>
+		</center>
+		<br>
+		
+		<table width="85%" align="center" border="0"><tr><td>One explanation as to why the Semantic Web has not quite caught on yet is that the barrier to entry is too high. TRANSLATOR, a free tool available as a Java Web Start application, addresses this problem by allowing anyone, even non-experts, to write facts and rules in formal representation for use on the Semantic Web. This is accomplished by automatically translating natural language sentences written in Attempto Controlled English into the Rule Markup Language, using the Attempto Parsing Engine Web service as a backend. XML representation in RuleML has several advantages, not least of which is compatibility with existing Semantic Web standards.</td></tr></table>
+
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Demo">Demo</a></li>
+<li><a href="#Doc">Documentation</a></li>
+<li><a href="#Download">Download</a></li>
+<li><a href="#Help">Help</a></li>
+<li><a href="#Examples">Examples</a></li>
+</ul>
+
+<h2><a name="Demo">Demo</a></h2>
+
+		<p>TRANSLATOR is available as a Java Web Start application: <a href="translator.jnlp">TRANSLATOR demo</a>.</p>
+		
+		<p>Note: Because the application must use the local machine's internet connection to access
+		the Attempto Parsing Engine webservice, you'll get a warning (like) "The application's digital signature
+		is invalid".</p>
+
+<h2><a name="Doc">Documentation</a></h2>
+
+		<p>The slides from a talk delivered at the <a href="http://www.lib.unb.ca/casta2006/">Canadian Symposium on Text Analysis 2006</a> are available: <a href="TRANSLATOR-slides-CaSTA.pdf">PDF</a>, <a href="TRANSLATOR-slides-CaSTA.ppt">PPT</a>.
+
+		<p>A detailed description of TRANSLATOR, including the input (ACE), user interface, translation process, output (RuleML),
+		DRS-RuleML mapping, and future work, is available in the form of an honours thesis:
+		<a href="TRANSLATOR-thesis.pdf">TRANSLATOR thesis</a>.</p>
+		
+		<p>An updated and condensed version of the thesis (e.g. without appendices) is being published: <a href="TRANSLATOR-CaSTA.pdf">CaSTA paper</a>.</p>
+
+		<p>The components and dataflow involved in TRANSLATOR can be visualized as follows:</p>
+		<center><img src="translator-flow.png" alt="TRANSLATOR diagram" border="0"/></center>
+
+<h2><a name="Download">Download</a></h2>
+		<p>Current version: 1.4 (April 28, 2006)</p>
+		<p>Download: <a href="translator.jar">binary release</a> (*.class only) or
+		<a href="translator-source.zip">full source release</a> (*.java only)</p>
+		<p>Required libraries:
+		<ul>
+		<li><a href="xom.jar">XOM</a> (<a href="http://www.xom.nu">XOM website</a>)</li>
+		<li><a href="BareBonesBrowserLaunch.jar">Bare Bones Browser Launch</a> (<a href="http://www.centerkey.com/java/browser">BBBL website</a>)</li>
+		</ul>
+
+<h2><a name="Help">Help</a></h2>
+
+<p>(To be expanded.)</p>
+<p>To learn more about Attempto Controlled English (ACE), please consult the following resources:
+<ul>
+<li><a href="http://www.ifi.unizh.ch/attempto/tools/documentation/ace_nutshell.html">ACE in a Nutshell</a></li>
+<li><a href="http://www.ifi.unizh.ch/attempto/tools/documentation/ace_constructionrules.html">ACE Construction Rules</a></li>
+<li><a href="http://www.ifi.unizh.ch/attempto/tools/documentation/ace_interpretationrules.html">ACE Interpretation Rules</a></li>
+<li><a href="http://www.ifi.unizh.ch/attempto/tools/documentation/ace_styleguide.html">ACE Style Guide</a></li>
+</ul>
+There are also numerous <a href="http://www.ifi.unizh.ch/attempto/publications/">Attempto publications</a> that may be
+helpful.</p>
+
+<!--		
+
+<h2><a name="Validation">Validation</a></h2>
+	
+	<p>To ensure validation stability, the <a href="xsd/">0.9 XSDs</a> are
+	tested (using corresponding <a href="exa/">instance documents/examples</a>)
+	with a selection of the most reliable validators. A summary of these validation results follows:</p>
+	
+	<p>
+<a href="http://www.w3.org/2001/03/webdata/xsv">W3C XML Schema Validator (XSV)</a> <small>v 2.10-1</small><br>
+ 
+-->
+	 
+<h2><a name="Examples">Examples</a></h2>
+	
+	<p>Several example input and output pairs for TRANSLATOR have been prepared:</p>
+		<table border="1" width="80%" cellpadding="2">
+		<tr>
+			<th><i>Input</i></th><th><i>Output</i></th>
+		</tr>
+		<tr>
+			<td>If John does not eat and it is not the case that somebody feeds him then John is hungry.</td>
+			<td align="center"><a href="exa/hunger.ruleml">hunger.ruleml</a></td>
+		</tr>
+		<tr>
+			<td>John is hungry if John does not eat and it is not the case that somebody feeds him. (equivalent to above)</td>
+			<td align="center"><a href="exa/hunger2.ruleml">hunger2.ruleml</a></td>
+		</tr>
+		<tr>
+			<td>If a person X likes the wine then John likes X. Mary likes all wine. (from
+			<a href="http://www.ruleml.org/0.9/exa/likes.ruleml">likes.ruleml</a>)</td>
+			<td align="center"><a href="exa/likes-ACE.ruleml">likes-ACE.ruleml</a></td>
+		</tr>
+		<tr>
+			<td>If a person buys an object from a merchant and keeps it then the person owns the object. If a
+			merchant sells an object to a person then the person buys the object from the merchant. John sells
+			the book "XML Bible" to Mary. Mary keeps the book. (from
+			<a href="http://www.ruleml.org/0.9/exa/own.ruleml">own.ruleml</a>)</td>
+			<td align="center"><a href="exa/own-ACE.ruleml">own-ACE.ruleml</a></td>
+		</tr>
+		<tr>
+			<td>The discount is a:five-percent if the customer is a:premium and the product is regular.
+			The discount is a:seven-and-a-half-percent if the customer is a:premium and the product is a:luxury.
+			A customer is a:premium if the customer's a:previous-year n:spending is at least 5000 n:euro.
+			A n:Porsche is a:luxury. A n:Honda is regular. p:Peter-Miller's a:previous-year n:spending is at
+			least 5000 n:euro. (from
+			<a href="http://www.ruleml.org/0.9/exa/discount.ruleml">discount.ruleml</a>)</td>
+			<td align="center"><a href="exa/discount-ACE.ruleml">discount-ACE.ruleml</a></td>
+		</tr>
+		</table>
+		<p>(All output files are stored in the <a href="exa/">Examples</a> directory.)</p>
+		<p>The RuleML output by TRANSLATOR can be shown to be valid (according to
+		the XML Schema for the First-Order Logic) sublanguage of RuleML) by using W3C's
+		<a href="http://www.w3.org/2001/03/webdata/xsv">XML Schema Validator (XSV)</a>.
+		</p>
+
+
+		<br/>
+		<p>Site Contact:
+		<a href="http://www.cs.uwaterloo.ca/~dhirtle">David Hirtle</a></p>
+	</body>
+</html>

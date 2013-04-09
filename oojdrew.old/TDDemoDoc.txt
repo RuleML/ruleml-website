@@ -1,0 +1,32 @@
+When excuting the demo you will need to specify a class hierarchy in RDFS if you
+wish the use the type system. As the RDFS parser is still being worked on and is
+rather picky about what it will accept I've included a sample rdfs file that it
+will accept, classes in the RDFS file that are not a subclass of anything become
+a subclass of the root type OBJECT, which can be omitted when writing clauses 
+and queries, and is omitted by the printing routines.
+
+Once you have provided it with the type file, it will give you the regular 
+prompt (?->), here you can issue queries in the ASCII PR syntax, as well as 
+issue the following commands:
+
+#quit - quit the system
+
+#loadClausesR <filename> - load clauses from the file in OO RuleML XML syntax
+
+#loadClausesA <filename> - load clauses from the file in the ASCII PR syntax
+
+#printClauses - print all loaded clauses
+
+#askNext <true/false> - sets if the system should ask you between giving each 
+solution to a query (true), or should print all solutions (false) - the 
+default is false
+
+#printTree <true/false> - sets if the system should print out the solution 
+tree or just the final result - default is to print the solution tree
+
+Also, in the ASCII PR syntax, if a variable name, type name, role, or ind 
+contains any of the special characters used in the syntax 
+{( ) [ ] , ; : - ! . >}, or includes a space, it must be enclosed in " ".
+
+To specify types in the ascii syntax use  [value]:[typename], and roles are 
+represented as [rolename]->[value] and variables are prefixed by ? 

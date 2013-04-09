@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns:xsd="http://www.ruleml.org/0.91/xsd">
+  <xs:element name="RuleML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="xsd:Assert"/>
+          <xs:element ref="xsd:Retract"/>
+          <xs:element ref="xsd:Query"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Assert">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula"/>
+      </xs:sequence>
+      <xs:attribute name="mapMaterial" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapDirection" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="bidirectional"/>
+            <xs:enumeration value="forward"/>
+            <xs:enumeration value="backward"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapClosure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Retract">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula"/>
+      </xs:sequence>
+      <xs:attribute name="mapMaterial" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapDirection" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="bidirectional"/>
+            <xs:enumeration value="forward"/>
+            <xs:enumeration value="backward"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapClosure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Query">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_2"/>
+      </xs:sequence>
+      <xs:attribute name="closure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Atom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:element minOccurs="0" ref="xsd:degree"/>
+        <xs:group ref="xsd:op"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:arg"/>
+        <xs:element minOccurs="0" ref="xsd:repo"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:slot"/>
+        <xs:element minOccurs="0" ref="xsd:resl"/>
+      </xs:sequence>
+      <xs:attribute name="closure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Rel">
+    <xs:complexType mixed="true">
+      <xs:attribute name="uri" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="And">
+    <xs:sequence>
+      <xs:element name="And">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_3"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="Or">
+    <xs:sequence>
+      <xs:element name="Or">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_4"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="And_2">
+    <xs:sequence>
+      <xs:element name="And">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_3"/>
+          </xs:sequence>
+          <xs:attribute name="closure">
+            <xs:simpleType>
+              <xs:restriction base="xs:token">
+                <xs:enumeration value="universal"/>
+                <xs:enumeration value="existential"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="Or_2">
+    <xs:sequence>
+      <xs:element name="Or">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_4"/>
+          </xs:sequence>
+          <xs:attribute name="closure">
+            <xs:simpleType>
+              <xs:restriction base="xs:token">
+                <xs:enumeration value="universal"/>
+                <xs:enumeration value="existential"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="Implies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group ref="xsd:body"/>
+        <xs:group ref="xsd:head"/>
+      </xs:sequence>
+      <xs:attribute name="direction">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="bidirectional"/>
+            <xs:enumeration value="forward"/>
+            <xs:enumeration value="backward"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="material">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="closure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Forall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:element maxOccurs="unbounded" ref="xsd:declare"/>
+        <xs:group ref="xsd:formula_5"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:element maxOccurs="unbounded" ref="xsd:declare"/>
+        <xs:group ref="xsd:formula_6"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Expr">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group ref="xsd:op_2"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:arg"/>
+        <xs:element minOccurs="0" ref="xsd:repo"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:slot"/>
+        <xs:element minOccurs="0" ref="xsd:resl"/>
+      </xs:sequence>
+      <xs:attribute name="in" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Fun">
+    <xs:complexType mixed="true">
+      <xs:attribute name="in" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="uri" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Rulebase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:formula_7"/>
+      </xs:sequence>
+      <xs:attribute name="mapMaterial" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="yes"/>
+            <xs:enumeration value="no"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapDirection" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="bidirectional"/>
+            <xs:enumeration value="forward"/>
+            <xs:enumeration value="backward"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="mapClosure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Entails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:group ref="xsd:body_2"/>
+        <xs:group ref="xsd:head_2"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Equivalent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="xsd:oid"/>
+        <xs:element ref="xsd:torso"/>
+        <xs:element ref="xsd:torso"/>
+      </xs:sequence>
+      <xs:attribute name="closure">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="universal"/>
+            <xs:enumeration value="existential"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Skolem">
+    <xs:complexType mixed="true">
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Reify">
+    <xs:complexType>
+      <xs:group minOccurs="0" ref="xsd:_1"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Ind">
+    <xs:complexType mixed="true">
+      <xs:attribute name="uri" type="xs:anyURI"/>
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Var">
+    <xs:complexType mixed="true">
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="Plex">
+    <xs:sequence>
+      <xs:element name="Plex">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:arg"/>
+            <xs:element minOccurs="0" ref="xsd:repo"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:slot"/>
+            <xs:element minOccurs="0" ref="xsd:resl"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:element ref="xsd:Implies"/>
+            <xs:element ref="xsd:Equivalent"/>
+            <xs:element ref="xsd:Forall"/>
+            <xs:element ref="xsd:Entails"/>
+            <xs:element ref="xsd:Rulebase"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula_2">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:And_2"/>
+            <xs:group ref="xsd:Or_2"/>
+            <xs:element ref="xsd:Exists"/>
+            <xs:element ref="xsd:Entails"/>
+            <xs:element ref="xsd:Rulebase"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="op">
+    <xs:sequence>
+      <xs:element name="op">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="xsd:Rel"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula_3">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:And"/>
+            <xs:group ref="xsd:Or"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula_4">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:And"/>
+            <xs:group ref="xsd:Or"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="head">
+    <xs:sequence>
+      <xs:element name="head">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:Or"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="body">
+    <xs:sequence>
+      <xs:element name="body">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:And"/>
+            <xs:group ref="xsd:Or"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="xsd:Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="formula_5">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:element ref="xsd:Implies"/>
+            <xs:element ref="xsd:Equivalent"/>
+            <xs:element ref="xsd:Forall"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula_6">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:group ref="xsd:And"/>
+            <xs:group ref="xsd:Or"/>
+            <xs:element ref="xsd:Exists"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="op_2">
+    <xs:sequence>
+      <xs:element name="op">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="xsd:Fun"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="formula_7">
+    <xs:sequence>
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element ref="xsd:Atom"/>
+            <xs:element ref="xsd:Implies"/>
+            <xs:element ref="xsd:Equivalent"/>
+            <xs:element ref="xsd:Forall"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="head_2">
+    <xs:sequence>
+      <xs:element name="head">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="xsd:Rulebase"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="body_2">
+    <xs:sequence>
+      <xs:element name="body">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="xsd:Rulebase"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="degree">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="xsd:Data"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="torso">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="xsd:Atom"/>
+        <xs:group ref="xsd:Or"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="oid">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="xsd:Skolem"/>
+        <xs:element ref="xsd:Reify"/>
+        <xs:element ref="xsd:Ind"/>
+        <xs:element ref="xsd:Data"/>
+        <xs:element ref="xsd:Var"/>
+        <xs:element ref="xsd:Expr"/>
+        <xs:group ref="xsd:Plex"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="slot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="xsd:Ind"/>
+          <xs:element ref="xsd:Data"/>
+          <xs:element ref="xsd:Expr"/>
+          <xs:group ref="xsd:Plex"/>
+        </xs:choice>
+        <xs:choice>
+          <xs:element ref="xsd:Skolem"/>
+          <xs:element ref="xsd:Reify"/>
+          <xs:element ref="xsd:Ind"/>
+          <xs:element ref="xsd:Data"/>
+          <xs:element ref="xsd:Var"/>
+          <xs:element ref="xsd:Expr"/>
+          <xs:group ref="xsd:Plex"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="card" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="weight">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.0"/>
+            <xs:maxInclusive value="1.0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="arg">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="xsd:Skolem"/>
+        <xs:element ref="xsd:Reify"/>
+        <xs:element ref="xsd:Ind"/>
+        <xs:element ref="xsd:Data"/>
+        <xs:element ref="xsd:Var"/>
+        <xs:element ref="xsd:Expr"/>
+        <xs:group ref="xsd:Plex"/>
+      </xs:choice>
+      <xs:attribute name="index" use="required" type="xs:positiveInteger"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="resl">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="xsd:Var"/>
+        <xs:group ref="xsd:Plex_2"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="repo">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="xsd:Var"/>
+        <xs:group ref="xsd:Plex_3"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="_1">
+    <xs:sequence>
+      <xs:any namespace="##targetNamespace" processContents="strict"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="Data">
+    <xs:complexType mixed="true">
+      <xs:group minOccurs="0" maxOccurs="unbounded" ref="xsd:_2"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="Plex_2">
+    <xs:sequence>
+      <xs:element name="Plex">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:slot"/>
+            <xs:element minOccurs="0" ref="xsd:resl"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="Plex_3">
+    <xs:sequence>
+      <xs:element name="Plex">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="xsd:oid"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" ref="xsd:arg"/>
+            <xs:element minOccurs="0" ref="xsd:repo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="_2">
+    <xs:sequence>
+      <xs:any processContents="strict"/>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>

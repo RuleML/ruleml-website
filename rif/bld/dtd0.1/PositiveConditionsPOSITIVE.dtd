@@ -1,0 +1,22 @@
+<!ENTITY % TERM      "(Const | Var | Uniterm)">
+<!ENTITY % POSITIVE  "(Uniterm | Equal)">
+<!ENTITY % CONDITION "(And | Or | Exists | %POSITIVE;)">
+
+<!ELEMENT Exists ((declare+, formula) | (Var+, %CONDITION;))>
+<!--                                      stripe-skipping     -->
+
+<!ELEMENT declare (Var)>
+<!ELEMENT formula (%CONDITION;)>
+
+<!ELEMENT And ((%CONDITION;)*)>
+<!ELEMENT Or  ((%CONDITION;)*)>
+
+<!ELEMENT Uniterm (Const, (%TERM;)*)>
+
+<!ELEMENT Equal (%TERM;, %TERM;)>
+
+<!ELEMENT Const (#PCDATA)>
+<!ELEMENT Var   (#PCDATA)>
+
+<!ATTLIST Const sortal CDATA #IMPLIED>
+<!ATTLIST Var   sortal CDATA #IMPLIED>

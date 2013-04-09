@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+	<xs:attributeGroup name="RuleML.attlist"/>
+	<xs:group name="RuleML.content">
+		<xs:sequence>
+			<xs:element ref="Equal" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="RuleML.type">
+		<xs:group ref="RuleML.content"/>
+		<xs:attributeGroup ref="RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="RuleML" type="RuleML.type"/>
+
+	<xs:attributeGroup name="Equal.attlist"/>
+	<xs:group name="Equal.content">
+		<xs:choice>
+			<xs:sequence>
+				<!-- enforce constructor discipline -->
+				<xs:element ref="lhs"/>
+				<xs:element ref="rhs"/>
+			</xs:sequence>
+			<xs:sequence>
+				<!-- no roles, so be tolerant -->
+				<xs:choice>
+					<xs:element ref="Expr"/>
+					<!-- other terms omitted -->
+				</xs:choice>
+				<xs:choice>
+					<xs:element ref="Expr"/>
+					<!-- other terms omitted -->
+				</xs:choice>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Equal.type">
+		<xs:group ref="Equal.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equal" type="Equal.type"/>
+
+	<xs:attributeGroup name="lhs.attlist"/>
+	<xs:group name="lhs.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Expr" type="Expr-interpreted.type"/>
+				<!-- other terms omitted -->
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="lhs.type">
+		<xs:group ref="lhs.content"/>
+		<xs:attributeGroup ref="lhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="lhs" type="lhs.type"/>
+
+	<xs:attributeGroup name="rhs.attlist"/>
+	<xs:group name="rhs.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Expr" type="Expr-either.type"/>
+				<!-- other terms omitted -->
+			</xs:choice>			
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="rhs.type">
+		<xs:group ref="rhs.content"/>
+		<xs:attributeGroup ref="rhs.attlist"/>
+	</xs:complexType>
+	<xs:element name="rhs" type="rhs.type"/>
+	
+	<!-- context sensitive -->
+	<xs:attributeGroup name="Expr.attlist"/>
+	<xs:group name="Expr-uninterpreted.content">
+		<xs:sequence>
+			<xs:element name="Fun" type="Fun-uninterpreted.type"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Ind" type="xs:string"/>
+				<xs:element name="Expr" type="Expr-uninterpreted.type"/>				
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>	
+	<xs:group name="Expr-interpreted.content">
+		<xs:sequence>
+			<xs:element name="Fun" type="Fun-interpreted.type"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Ind" type="xs:string"/>
+				<xs:element name="Expr" type="Expr-uninterpreted.type"/>				
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Expr-either.content">
+		<xs:sequence>
+			<xs:element name="Fun" type="Fun-either.type"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Ind" type="xs:string"/>
+				<xs:element name="Expr" type="Expr-either.type"/>				
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Expr-uninterpreted.type">
+		<xs:group ref="Expr-uninterpreted.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="Expr-interpreted.type">
+		<xs:group ref="Expr-interpreted.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="Expr-either.type">
+		<xs:group ref="Expr-either.content"/>
+		<xs:attributeGroup ref="Expr.attlist"/>
+	</xs:complexType>
+	<xs:element name="Expr" type="Expr-either.type"/>
+	
+	<!-- context sensitive -->
+	<xs:attributeGroup name="Fun-uninterpreted.attlist">
+		<xs:attributeGroup ref="in-uninterpreted.attrib"/>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="Fun-interpreted.attlist">
+		<xs:attributeGroup ref="in-interpreted.attrib"/>
+	</xs:attributeGroup>	
+	<xs:attributeGroup name="Fun-either.attlist">
+		<xs:attributeGroup ref="in.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Fun.content">
+            <xs:sequence/>
+      </xs:group>
+	<xs:complexType name="Fun-uninterpreted.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-uninterpreted.attlist"/>
+	</xs:complexType>		
+	<xs:complexType name="Fun-interpreted.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-interpreted.attlist"/>
+	</xs:complexType>	
+	<xs:complexType name="Fun-either.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun-either.attlist"/>
+	</xs:complexType>
+	<xs:element name="Fun" type="Fun-either.type"/>
+	
+	<xs:attributeGroup name="in-uninterpreted.attrib">
+		<xs:attribute name="in" use="optional" default="no"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="in-interpreted.attrib">
+		<xs:attribute name="in" use="optional" default="yes"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="yes"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>		
+	<xs:attributeGroup name="in.attrib">
+		<xs:attribute name="in" use="optional" default="semi">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="semi"/>				
+					<xs:enumeration value="yes"/>
+					<xs:enumeration value="no"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>	
+	
+</xs:schema>

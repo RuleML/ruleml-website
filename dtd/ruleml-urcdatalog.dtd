@@ -1,0 +1,30 @@
+<!-- An XML DTD for a 'UR'-Centered Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % urcdatalog.module "INCLUDE">
+<!ENTITY % datalog.module "IGNORE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<![%urcdatalog.module;[
+
+<!-- atomic formulas are usable within conc's, prem's, 'and's, and 'or's -->
+<!-- atom element uses rel name followed by ur or var and by three kinds of arguments -->
+
+<!ELEMENT atom (rel, (ur | var), (ur | ind | var)*)>
+
+]]>

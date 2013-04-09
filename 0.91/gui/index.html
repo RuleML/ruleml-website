@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>RuleML 0.91 Relax NG Parameterized Schema</title>
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      var php_path = "/0.91/relaxng/schema_rnc.php";
+
+      function initializeForm (LanguageForm){
+        // One option must be checked for radio buttons  
+        if(!(
+          LanguageForm.backbone[0].checked*
+          LanguageForm.backbone[1].checked*
+          LanguageForm.backbone[2].checked*
+          LanguageForm.backbone[3].checked*
+          LanguageForm.backbone[4].checked*
+          LanguageForm.backbone[5].checked*
+          LanguageForm.backbone[6].checked
+          )){
+          // initialize to Full First-Order
+          LanguageForm.backbone[6].checked = true;  
+        }
+        if(!(
+          LanguageForm.deflt[0].checked*
+          LanguageForm.deflt[1].checked*
+          LanguageForm.deflt[2].checked
+          )){
+          // initialize to Optional
+          LanguageForm.deflt[2].checked = true;  
+        }
+        if(!(
+          LanguageForm.termseq[0].checked*
+          LanguageForm.termseq[1].checked*
+          LanguageForm.termseq[2].checked
+          )){
+          // initialize to Polyadic
+          LanguageForm.termseq[2].checked = true;  
+        }
+        if(!(
+          LanguageForm.lng[0].checked*
+          LanguageForm.lng[1].checked*
+          LanguageForm.lng[2].checked
+          )){
+          // initialize to English Abbreviated Names
+          LanguageForm.lng[0].checked = true;  
+        }
+      }
+      function checkAll(LanguageForm){
+        // Sequences are allowed if positional arguments,
+        // object identifiers, or slots are allowed
+        sequencesAllowed = !LanguageForm.termseq[0].checked||
+                       LanguageForm.terms0.checked||
+                       LanguageForm.terms1.checked;
+        // Terms are needed if sequences or equations are allowed
+        termsNeeded =  sequencesAllowed||
+                       LanguageForm.terms4.checked;
+        groundLogicAndUp = !(LanguageForm.backbone[0].checked||
+                             LanguageForm.backbone[1].checked);
+        datalogAndUp = !(LanguageForm.backbone[0].checked||
+                         LanguageForm.backbone[1].checked||
+                         LanguageForm.backbone[2].checked);
+        hornlogAndUp = !(LanguageForm.backbone[0].checked||
+                         LanguageForm.backbone[1].checked||
+                         LanguageForm.backbone[2].checked||
+                         LanguageForm.backbone[3].checked);
+        hornlogeqAndUp = hornlogAndUp *
+                         LanguageForm.terms4.checked;
+        // If rulebases are allowed, entailments are available
+        if(LanguageForm.propo1.checked){
+          LanguageForm.propo2.removeAttribute('disabled');
+        } else {
+          LanguageForm.propo2.checked = false;  
+          LanguageForm.propo2.disabled = "disabled";
+        }
+        // for Ground Logic and up, implication options are available
+        if(groundLogicAndUp){
+          LanguageForm.implies0.removeAttribute('disabled');
+        //  LanguageForm.implies1.removeAttribute('disabled');
+        //  LanguageForm.implies2.removeAttribute('disabled');
+        } else {
+          LanguageForm.implies0.checked = false;  
+        //  LanguageForm.implies1.checked = false;  
+        //  LanguageForm.implies2.checked = false;  
+          LanguageForm.implies0.disabled = "disabled";
+        //  LanguageForm.implies1.disabled = "disabled";
+        //  LanguageForm.implies2.disabled = "disabled";
+        }
+        // In RuleML 0.91, non-default values of scope implication attributes
+        // are allowed, even in fact languages with no implications
+        LanguageForm.implies1.removeAttribute('disabled');
+        LanguageForm.implies2.removeAttribute('disabled');
+        // If slots are allowed, slot options including
+        // cardinality and weight are available
+        if(LanguageForm.terms1.checked){
+          LanguageForm.terms2.removeAttribute('disabled');
+          LanguageForm.terms3.removeAttribute('disabled');
+        } else {
+          LanguageForm.terms2.checked = false;
+          LanguageForm.terms3.checked = false;
+          LanguageForm.terms2.disabled = "disabled";
+          LanguageForm.terms3.disabled = "disabled";
+        }
+        // If equations are allowed, the oriented equations option is available
+        if(LanguageForm.terms4.checked){
+          LanguageForm.terms5.removeAttribute('disabled');
+        } else {
+          LanguageForm.terms5.checked = false;  
+          LanguageForm.terms5.disabled = "disabled";
+        }
+        // If terms are needed, then term typing and 
+        // specialized terms are available
+        if (termsNeeded) {
+          LanguageForm.terms8.removeAttribute('disabled');
+          LanguageForm.terms9.removeAttribute('disabled');
+          LanguageForm.terms10.removeAttribute('disabled');
+          LanguageForm.terms11.removeAttribute('disabled');        
+        } else {
+          LanguageForm.terms8.checked = false;
+          LanguageForm.terms9.checked = false;
+          LanguageForm.terms10.checked = false;
+          LanguageForm.terms11.checked = false;        
+          LanguageForm.terms8.disabled = "disabled";
+          LanguageForm.terms9.disabled = "disabled";
+          LanguageForm.terms10.disabled = "disabled";
+          LanguageForm.terms11.disabled = "disabled";                
+        }
+        // If quantification is allowed and terms are needed
+        // then implicit closure is available.
+        //if( datalogAndUp && termsNeeded){
+        //  LanguageForm.quant0.removeAttribute('disabled');
+        //} else {
+        //  LanguageForm.quant0.checked = false;
+        //  LanguageForm.quant0.disabled = "disabled";
+        //}
+        // In RuleML 0.91, non-default values of scope closure attributes
+        // are allowed, even in ground languages with no quantifications
+        LanguageForm.quant0.removeAttribute('disabled');
+        // If quantification and slots are allowed,
+        // slotted rest variables are available 
+        if(datalogAndUp && LanguageForm.terms1.checked){
+          LanguageForm.quant1.removeAttribute('disabled');
+        } else {
+          LanguageForm.quant1.checked = false;
+          LanguageForm.quant1.disabled = "disabled";
+        }
+        // If quantification is allowed and
+        // term sequences are polyadic, then 
+        // positional rest variables are available
+        if(datalogAndUp && LanguageForm.termseq[2].checked){
+          LanguageForm.quant2.removeAttribute('disabled');  
+        } else {
+          LanguageForm.quant2.checked = false;  
+          LanguageForm.quant2.disabled = "disabled";
+        }
+        // If expressions and sequences are allowed, then
+        // generalized lists are available.
+        if( hornlogAndUp && sequencesAllowed ){
+          LanguageForm.expr0.removeAttribute('disabled');
+        } else {
+          LanguageForm.expr0.checked = false;
+          LanguageForm.expr0.disabled = "disabled";
+        }
+        // If expressions and equations are allowed, then
+        // set-valued expressions are available.
+        if( hornlogeqAndUp ){
+          LanguageForm.expr1.removeAttribute('disabled');
+        } else {
+          LanguageForm.expr1.checked = false;
+          LanguageForm.expr1.disabled = "disabled";
+        }
+        // If expressions and equations are allowed, 
+        // then interpreted expressions are available
+        if(hornlogAndUp && LanguageForm.terms4.checked){
+          LanguageForm.expr2.removeAttribute('disabled');
+        } else {
+          LanguageForm.expr2.checked = false;  
+          LanguageForm.expr2.disabled = "disabled";
+        }
+        document.getElementById('schema_link').innerHTML = "";
+        document.getElementById('schema_link').href = "";
+      	document.getElementById('schema_text').innerHTML = "";
+      }
+      function constructParams(LanguageForm){
+        // various obscure encoding formulas
+        var params = "?";
+        //
+        var bb = 0;
+        for (i = 0; i <= 6; i = i + 1) {
+          if(LanguageForm.backbone[i].checked){
+            bb = Math.pow(2, i) - 1;
+          }
+        }
+        params = params+"backbone=x"+bb.toString(16);
+        //
+        var df = 0;
+        if(LanguageForm.deflt[0].checked){
+          df = 5;
+        }
+        if(LanguageForm.deflt[1].checked){
+          if(LanguageForm.backbone[6].checked){
+            df = 2;
+          }
+          else {
+            df = 6;
+          }
+        }
+        if(LanguageForm.deflt[2].checked){
+          df = 7;
+        }
+        params = params+"&default=x"+df.toString(16);
+        //
+        var ts = 0; 
+        for (i = 0; i <= 2; i = i + 1) {
+          if(LanguageForm.termseq[i].checked){
+            ts = (-1)*i + 3*i*(i + 1)/2;
+          }
+        }
+        params = params+"&termseq=x"+ts.toString(16);
+        //
+        var lng = 0;
+        for (i = 0; i <= 1; i = i + 1) {
+          if(LanguageForm.lng[i].checked){
+            lng = lng + Math.pow(2, i);
+          }
+        }
+        params = params+"&lng=x"+lng.toString(16);
+        //
+        var propo = 0;
+        for (i = 0; i <= 5; i = i + 1) {
+          if(eval("LanguageForm.propo" + i + ".checked")){
+            propo = propo + Math.pow(2, i);
+          }
+        }
+        params = params+"&propo=x"+propo.toString(16);
+        //
+        var implies = 0;
+        for (i = 0; i <= 2; i = i + 1) {
+          if(eval("LanguageForm.implies" + i + ".checked")){
+            implies = implies + Math.pow(2, i);
+          }
+        }
+        params = params+"&implies=x"+implies.toString(16);
+        //
+        var terms = 0;
+        for (i = 0; i <= 5; i = i + 1) {
+          if(eval("LanguageForm.terms" + i + ".checked")){
+            terms = terms + Math.pow(2, i);
+          }
+        }
+        for (i = 8; i <= 11; i = i + 1) {
+          if(eval("LanguageForm.terms" + i + ".checked")){
+            terms = terms + Math.pow(2, i);
+          }
+        }
+        params = params+"&terms=x"+terms.toString(16);
+        //
+        var quant = 0;
+        for (i = 0; i <= 2; i = i + 1) {
+          if(eval("LanguageForm.quant" + i + ".checked")){
+            quant = quant + Math.pow(2, i);
+          }
+        }
+        params = params+"&quant=x"+quant.toString(16);
+        //
+        if (!(hornlogAndUp )){
+          var expr = 0
+        }
+        else {
+          var expr = 1;
+          for (i = 0; i <= 2; i = i + 1) {
+            if(eval("LanguageForm.expr" + i + ".checked")){
+              expr = expr + Math.pow(2, i+1);
+            }
+            if ((i == 1) && ((df == 2)||(df == 6))) {
+              expr = expr -1;
+            }
+          }
+        }
+        params = params+"&expr=x"+expr.toString(16);
+        //
+        var serial = 0;
+        for (i = 0; i <= 3; i = i + 1) {
+          if(eval("LanguageForm.serial" + i + ".checked")){
+            serial = serial + Math.pow(2, i);
+          }
+        }
+        params = params+"&serial=x"+serial.toString(16);
+        return params;
+      }
+      
+      function refreshSchema(LanguageForm){
+        //clean up the form
+        //checkAll(LanguageForm);
+      	var oRequest = new XMLHttpRequest();
+      	var params = constructParams(LanguageForm);
+        var sURL  = "http://" +
+                    self.location.hostname + php_path +
+                    params;
+        oRequest.open("GET",sURL,false);
+        oRequest.setRequestHeader("User-Agent",navigator.userAgent);
+        oRequest.send(null);
+        if (!(oRequest.status==200)) {
+          alert("Error executing XMLHttpRequest call!");
+        }
+        var schema_text = oRequest.responseText;
+      	document.getElementById('schema_text').innerHTML = schema_text;
+        document.getElementById('schema_link').innerHTML = sURL;
+        document.getElementById('schema_link').href = sURL;
+      }
+      /* ]]> */
+    </script>
+  </head>
+  <body>
+    <h1>Selection Form</h1>
+    <div>
+      <h2>Instructions</h2>
+      Make a selection from the form below, then click "Refresh Schema" to update the Schema URL. 
+      The main module is also displayed below the form.
+      To reset the form to the default (supremum) values, click "Reset Form".
+      <br /><br />
+    </div>
+    <form action="index.php" method="post">
+      <div>
+        <input type="button" value="Reset Form" 
+          onclick="window.location.reload()" />
+        <input type="button" value="Refresh Schema" 
+          onclick="refreshSchema(this.form)" />
+        <br /><br />
+      </div>
+      <div>
+        Schema URL = <a id="schema_link" href=""></a>
+        <br /><br />
+      </div>
+      <div style="">
+        <table>
+        <tr style="vertical-align:top">
+            <td style="padding:8px">
+              Expressivity <br/> 
+              "Backbone" <br/>
+              (Check One)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="radio" name="backbone"  
+                        onclick="checkAll(this.form)"/> 
+                  Atomic Formulas    
+                  </li>
+                  <li><input type="radio" name="backbone"  
+                        onclick="checkAll(this.form)"/> 
+                  Ground Fact    
+                  </li>
+                  <li>
+                      <input type="radio" name="backbone" 
+                          onclick="checkAll(this.form)"/>
+                  Ground Logic
+                  </li>
+                  <li>
+                      <input type="radio" name="backbone"
+                          onclick="checkAll(this.form)"/>
+                  Datalog
+                  </li>
+                  <li>
+                      <input type="radio" name="backbone" 
+                          onclick="checkAll(this.form)"/>
+                  Horn Logic
+                  </li>
+                  <li>
+                      <input type="radio" name="backbone"
+                          onclick="checkAll(this.form)"/>
+                  Disjunctive Logic
+                  </li>
+                  <li>
+                      <input type="radio" name="backbone"
+                          onclick="checkAll(this.form)" />
+                  Full First-Order Logic
+                  </li>  
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Treatment of Attributes<br/>
+              With Default Values <br/>
+              (Check One)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li>
+                      <input type="radio" name="deflt" 
+                          onclick="checkAll(this.form)"/>
+                    Required to be Absent
+                  </li>
+                  <li><input type="radio" name="deflt"  
+                      onclick="checkAll(this.form)"/> 
+                    Required to be Present   
+                  </li>
+                  <li>
+                      <input type="radio" name="deflt" 
+                          onclick="checkAll(this.form)"/>
+                    Optional
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Term Sequences: <br/>
+              Number of Terms <br/>
+              (Check One)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="radio" name="termseq" 
+                        onclick="checkAll(this.form)"/> 
+                    None   
+                  </li>
+                  <li>
+                      <input type="radio" name="termseq" 
+                            onclick="checkAll(this.form)"/>
+                    Binary (Zero or Two)
+                  </li>
+                  <li>
+                      <input type="radio" name="termseq" 
+                          onclick="checkAll(this.form)"/>
+                    Polyadic (Zero or More)
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Language <br/>
+              (Check One)<br/><br/>
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="radio" 
+                        name="lng" 
+                        onclick="checkAll(this.form)"/> 
+                    English Abbreviated Names   
+                  </li>
+                  <li>
+                      <input type="radio" name="lng" 
+                          onclick="checkAll(this.form)"/>
+                    English Long Names
+                  </li>
+                  <li>
+                      <input type="radio" name="lng" disabled = "disabled" 
+                          onclick="checkAll(this.form)"/>
+                    French Long Names
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Serialization<br/>
+              Options <br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="serial0" 
+                        onclick="checkAll(this.form)" checked="checked"/> 
+                    Unordered Groups
+                  </li>
+                  <li>
+                      <input type="checkbox" name="serial1" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Stripe-Skipping
+                  </li>
+                  <li>
+                      <input type="checkbox" name="serial2" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Explicit Datatyping
+                  </li>
+                  <li>
+                      <input type="checkbox" name="serial3" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Schema Location Attribute
+                  </li>
+                </ol>
+            </td>
+
+        </tr>
+        <tr style="vertical-align:top">
+            <td style="padding:8px">
+              Propositional <br/>
+              Options<br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="propo0" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    URIs   
+                  </li>
+                  <li><input type="checkbox" name="propo1" 
+                    onclick="checkAll(this.form)" checked="checked" /> 
+                    Rulebases   
+                  </li>
+                  <li style="margin-left:16px">
+                    <input type="checkbox" name="propo2" 
+                      onclick="checkAll(this.form)" checked="checked"/> 
+                    Entailments   
+                  </li>
+                  <li><input type="checkbox" name="propo3" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Degree of Uncertainty   
+                  </li>
+                  <li><input type="checkbox" name="propo4" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Strong Negation  
+                  </li>
+                  <li><input type="checkbox" name="propo5" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Weak Negation <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Negation as Failure)   
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Implication <br/>
+              Options <br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="implies0" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Equivalences   
+                  </li>
+                  <li>
+                      <input type="checkbox" name="implies1" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Inference Direction
+                  </li>
+                  <li>
+                      <input type="checkbox" name="implies2" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Non-Material
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Term <br/>
+              Options <br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="terms0" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Object Identifiers  
+                  </li>
+                  <li>
+                    <input type="checkbox" name="terms1" 
+                      onclick="checkAll(this.form)" checked="checked"/> 
+                    Slots
+                  </li>  
+                  <li style="margin-left:16px">
+                    <input type="checkbox" name="terms2" 
+                      onclick="checkAll(this.form)" checked="checked"/> 
+                    Slot Cardinality   
+                  </li>
+                  <li style="margin-left:16px">
+                    <input type="checkbox" name="terms3" 
+                      onclick="checkAll(this.form)" checked="checked"/> 
+                    Slot Weight   
+                  </li>
+                  <li><input type="checkbox" name="terms4" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Equations   
+                  </li>
+                  <li style="margin-left:16px">
+                    <input type="checkbox" name="terms5" 
+                      onclick="checkAll(this.form)" checked="checked"/> 
+                    Oriented Equations  
+                  </li>
+                  <li><input type="checkbox" name="terms8" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Term Typing   
+                  </li>
+                  <li><input type="checkbox" name="terms9" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Data Terms 
+                  </li>
+                  <li><input type="checkbox" name="terms10" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Skolem Constants   
+                  </li>
+                  <li><input type="checkbox" name="terms11" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Reified Terms   
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Quantification<br/>
+              Options <br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="quant0" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Implicit Closure
+                  </li>
+                  <li>
+                      <input type="checkbox" name="quant1" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Slotted Rest Variables
+                  </li>
+                  <li>
+                      <input type="checkbox" name="quant2" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Positional Rest Variables
+                  </li>
+                </ol>
+            </td>
+            <td style="padding:8px">
+              Expression<br/>
+              Options <br/>
+              (Check Zero or More)
+                <ol style="list-style-type:none;padding: 0px; margin: 0px;" >
+                  <li><input type="checkbox" name="expr0" 
+                    onclick="checkAll(this.form)" checked="checked"/> 
+                    Generalized Lists
+                  </li>
+                  <li>
+                      <input type="checkbox" name="expr1" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Set-valued Expressions
+                  </li>
+                  <li>
+                      <input type="checkbox" name="expr2" 
+                        onclick="checkAll(this.form)" checked="checked"/>
+                    Interpreted Expressions
+                  </li>
+                </ol>
+            </td>
+        </tr>
+      </table>
+      </div>
+      <h1>Usage</h1>
+      The Schema URL may be used directly for online validation - copy and paste as required by the validator. 
+      For a demonstration of validation using the online service Validator.nu, 
+      see <a href="http://wiki.ruleml.org/index.php/Relax_NG#How_to_Validate_with_the_RuleML_Parameterized_Relax_NG_Schema" 
+        >How to Validate with the RuleML Parameterized Relax NG Schema</a>. 
+      Some scripts and processing instructions may require that the character "&amp;" be replaced by "&amp;amp;".
+      Clicking on the Schema URL downloads a copy of the schema driver into a file named "custom_driver.rnc".
+      To use the schema driver locally (offline), a local copy of the modules directory is also necessary - this may be downloaded as a zip archive from the 
+      <a href="http://ruleml.org/0.91/relaxng/">RuleML 0.91 Relax NG Directory</a>. 
+      
+      <h1>Main Module</h1>
+      <pre id="schema_text" />
+      <script type="text/javascript">
+        /* <![CDATA[ */
+        initializeForm(document.forms[0]);
+        checkAll(document.forms[0]);
+        refreshSchema(document.forms[0]);
+        /* ]]> */
+      </script>
+    </form>
+  </body>
+</html>

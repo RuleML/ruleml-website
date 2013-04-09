@@ -1,0 +1,662 @@
+<?xml version="1.0"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/temp/reaction/reaction.xsd"
+>
+
+<!-- 
+	This file contains many (meaningless) examples to test the unambiguous (and @kind-free) reaction.xsd.
+	
+	It first has the following event-initial Reaction rule test cases:
+		event, body
+		event, body, action
+		event, body, action, postcondition
+		event, body, action, postcondition, alternative
+		event, body, action, alternative
+		event, action
+		event, action, postcondition
+		event, action, postcondition, alternative
+		event, action, alternative
+		
+	Then it has body-initial test cases:
+		body, action
+		body, action, postcondition
+		body, action, postcondition, alternative
+		body, action, alternative
+
+	Finally, it has action-initial test cases:
+		action
+		action, postcondition
+		action, postcondition, alternative
+		action, alternative
+		
+	Later, we'll try it with more meaningful examples.
+	
+-->
+
+<!--
+
+	Role skipping is difficult for reaction rules, since, e.g.,
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	could be (event, body) or (event, action) or (body, action) or (action, postcondition) or (action, alternative)...
+	
+	Like <Implies>, however, we could have conventions for this compact syntax. The following would probably be the most
+	intuitive:
+
+	Unary:
+	<Reaction>
+		<Atom>...</Atom>
+	</Reaction>
+	== A ==>
+	<Reaction>
+		<action><Atom>...</Atom></action>
+	</Reaction>
+	
+	Binary:
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	== CA ==>
+	<Reaction>
+		<body><Atom>...</Atom></body>
+		<action><Atom>...</Atom></action>
+	</Reaction>
+	
+	Ternary:
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	== ECA ==>
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<body><Atom>...</Atom></body>
+		<action><Atom>...</Atom></action>
+	</Reaction>
+	
+	Quaternary:
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	== ECAP ==>
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<body><Atom>...</Atom></body>
+		<action><Atom>...</Atom></action>
+		<postcondition><Atom>...</Atom></postcondition>
+	</Reaction>
+	
+	Quinary:
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	== ECAPA ==>
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<body><Atom>...</Atom></body>
+		<action><Atom>...</Atom></action>
+		<postcondition><Atom>...</Atom></postcondition>
+		<alternative><Atom>...</Atom></alternative>
+	</Reaction>
+	
+	With such conventions (which hold even if children are not Atoms, of course), the user could still
+	"override the defaults" by specifying the role tags, e.g.:
+	
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<action><Atom>...</Atom></action>
+	</Reaction>
+	or
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<action><Atom>...</Atom></action>
+		<postcondition><Atom>...</Atom></postcondition>
+	</Reaction>
+	
+	This is analogous to how the user must include role tags to specify a Prolog-style implication rule, e.g.:
+	<Implies>
+		<head><Atom>...</Atom></head>
+		<body><Atom>...</Atom></body>
+	</Implies>
+	since, by default, the first child is assumed to be the body.
+	
+-->
+
+<Assert>
+
+	<!-- start role-skipped test cases -->
+
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	
+	<!-- above is by convention ECA, but we can still override to have, e.g EAP... -->
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<action><Atom>...</Atom></action>
+		<postcondition><Atom>...</Atom></postcondition>
+	</Reaction>
+	
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+
+	<!-- above is by convention ECAP, but we can still override to have, e.g. ECAA... -->
+	<Reaction>
+		<event><Atom>...</Atom></event>
+		<body><Atom>...</Atom></body>
+		<action><Atom>...</Atom></action>
+		<alternative><Atom>...</Atom></alternative>
+	</Reaction>
+	
+	<!-- this is always ECAPA... no other possibility for 5 children -->
+	<Reaction>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+		<Atom>...</Atom>
+	</Reaction>
+	
+	<!-- end role-skipped test cases -->
+	
+	
+	
+	
+	
+
+
+	<!-- start event-initial test cases -->
+		
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom>...</Atom>
+		</body>
+	</Reaction>
+	
+<!--
+	Rule 1 from
+    http://ibis.in.tum.de/research/ReactionRuleML/0.1/docs/Reaction-RuleML-Talk-2006-10-19.pdf
+-->
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom>...</Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+	</Reaction>
+	
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom>...</Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<postcondition>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</postcondition>
+	</Reaction>
+	
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom>...</Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<postcondition>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</postcondition>
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom>...</Atom>
+		</body>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+	</Reaction>
+
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<postcondition>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</postcondition>
+	</Reaction>
+	
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<postcondition>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</postcondition>
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+
+	<Reaction>
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction>
+				<event>
+					<Atom>...</Atom>
+				</event>
+				<action>
+					<Atom>...</Atom>
+				</action>
+			</Reaction>
+		</event>
+		<action>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</action>
+		<alternative>
+			<!-- Boolean-valued procedural attachment -->
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+
+	<!-- end event-initial test cases -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- start condition-initial test cases -->
+	
+<!--
+	Forward-directed Production Rule:
+	 occurs(heartbeat(Service),T) ? assert ( alive(Service,T) )
+
+	ECA-LP/Prova Syntax (related to ISO Prolog notation)
+	eca(
+		occurs(heartbeat(Service),T),   % condition
+		add("availability values","alive(_0,_1).", [Service, T]) % action 
+	). 
+ -->
+	<Reaction>
+		<body>
+			<Atom>
+			 ...
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+	</Reaction>
+	
+	<Reaction>
+		<body>
+			<Atom>
+			 ...
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<postcondition>
+			<Atom>...</Atom>
+		</postcondition>
+	</Reaction>
+	
+	<Reaction>
+		<body>
+			<Atom>
+			 ...
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<postcondition>
+			<Atom>...</Atom>
+		</postcondition>
+		<alternative>
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<Reaction>
+		<body>
+			<Atom>
+			 ...
+			</Atom>
+		</body>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<alternative>
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<!-- end condition-initial test cases -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- start condition-initial test cases -->
+	
+	<Reaction>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+	</Reaction>
+	
+	<Reaction>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<postcondition>
+			<Atom>...</Atom>
+		</postcondition>
+		<alternative>
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<Reaction>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<postcondition>
+			<Atom>...</Atom>
+		</postcondition>
+	</Reaction>
+	
+	<Reaction>
+	    <action>
+	         <Assert>
+				 <Atom>
+				 ...
+				 </Atom>            
+	         </Assert>
+	    </action>
+		<alternative>
+			<Atom>...</Atom>
+		</alternative>
+	</Reaction>
+	
+	<!-- end action-initial test cases -->
+	
+	
+	
+	
+	
+	
+	<!-- from Harold Oct 7, 2006 -->
+	
+<!--  Reaction Rule ("Event", "Condition", and "Action"):
+     If premium event and regular derivable then update discount of
+customer -->
+
+
+<!--  Positional, without OIDs
+
+premium(Custnum)
+ &
+regular(Prodnum)
+ ==>
+discount(Custnum,Prodnum,5.0 percent)
+
+
+
+<Reaction>
+ <event>
+   <Receive> 
+     <Atom>
+       <Rel>premium</Rel>
+       <Var>custnum</Var>
+     </Atom>
+   </Receive>
+ </event>
+ <body>
+   <Atom>
+     <Rel>regular</Rel>
+     <Var>prodnum</Var>
+   </Atom>
+ </body>
+ <action>
+   <Update> <
+     <Atom>
+       <Rel>discount</Rel>
+       <Var>custnum</Var>
+       <Var>prodnum</Var>
+       <Ind>5.0 percent</Ind>
+     </Atom>
+   </Update>
+ </action>
+</Reaction>
+
+-->
+
+<!-- Slotted, with OIDs
+
+customer(Custnum ^ status -> premium)
+ &
+product(Prodnum ^ category -> regular)
+ ==>
+customer(Custnum ^ discount(Prodnum) -> 5.0 percent)
+
+
+<Reaction>
+ <event>
+   <Receive> 
+     <Atom>
+       <Rel>customer</Rel>
+       <oid><Var>custnum</Var></oid>
+       <slot>
+         <Ind>status<Ind>
+         <Ind>premium</Ind>
+       </slot>
+     </Atom>
+   </Receive>
+ </event>
+ <body>
+   <Atom>
+     <Rel>product</Rel>
+     <oid><Var>prodnum</Var></oid>
+     <slot>
+       <Ind>category<Ind>
+       <Ind>regular</Ind>
+     </slot>
+   </Atom>
+ </body>
+ <action>
+   <Update> 
+     <Atom>
+       <Rel>customer</Rel>
+       <oid><Var>custnum</Var></oid>
+       <slot>
+         <Expr>
+           <Fun>discount</Fun>
+           <Var>prodnum</Var>
+         </Expr>
+         <Ind>5.0 percent</Ind>
+       </slot>
+     </Atom>
+   </Update>
+ </action>
+</Reaction>
+-->
+	
+</Assert>
+
+</RuleML>

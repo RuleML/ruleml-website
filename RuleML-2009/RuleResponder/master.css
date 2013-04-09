@@ -1,0 +1,311 @@
+/*layout*/
+
+body {
+    background: #213449;
+    color: #404040;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font:76% Verdana,Tahoma,Arial,sans-serif;
+    line-height:1.3em;
+}
+
+#page {
+    position: relative;
+    top: 10px;
+    bottom: 10px;
+    background-image: url('./shadow.jpg');
+    background-position: center;
+    background-repeat: repeat-y;
+}
+
+#wrapper {
+    margin: 0px;
+    padding: 5px 0px;
+    position: relative;
+    text-align: left;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header {
+    margin: 0px;
+    padding: 0px;
+    background: white;
+}
+
+#inner_wrapper {
+    margin: 0px;
+    padding: 0px;
+    background: white;
+}
+
+#inner_inner_wrapper {
+    margin: 0px;
+    padding: 0px;
+    float: left;
+    width: 600px;
+}
+
+#content {
+    text-align: left;
+/*    text-align: justify;*/
+    float: right;
+    width: 390px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#navigation {
+    position: absolute;
+    float: left;
+    width: 180px;
+    padding-left: 10px;
+}
+
+#sponsor {
+    float: right;
+    width: 194px;
+    border-left: 1px dotted #ccc;
+    padding-right: 5px;
+    text-align: center;
+}
+
+#footer {
+    position: relative;
+    clear: both;
+    background: gray;
+    color: #000066;
+    min-height: 20px;
+    text-align: right;
+    font: 60% Verdana,Tahoma,Arial,sans-serif;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+/*header*/
+#logo {
+    font: 100% Verdana, Geneva, Helvetica, Arial, sans-serif;
+    height:60px;
+    font-weight: bold;
+    font-size:3.6em;
+    color:#000066;
+    letter-spacing:-3px;
+    line-height:60px;
+    background: url('./RuleMLlogo2005.jpg') no-repeat right white;
+    padding-left: 10px;
+}
+
+.fade
+{
+    color:#c8c8c8;
+}
+
+#slogan
+{
+    margin: 0px 0px 6px 20px;
+    font-size:1.5em;
+    color:#808080;
+    line-height:1.2em;
+    letter-spacing:-1px;
+    font-weight:700;
+}
+
+#subslogan
+{
+    margin: 0px 0px 4px 20px;
+    font-size:1.2em;
+    color:#000066;
+    font-weight:700;
+}
+
+#banner {
+    position: relative;
+    height: 281px;
+    background-image: url('./LasVegasSign_transp.jpg');
+    background-position: bottom;
+}
+
+
+#headerimagecopyright
+{
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	text-align: right;
+}
+
+#headerimagecopyright a
+{
+	font-weight:normal;
+	font-size:0.8em;
+	color:#808080;
+	margin: 0px 0px 0px 2px;
+}
+
+#headerimagecopyright a:hover
+{
+	text-decoration:none;
+	background-color: transparent;
+	color:#808080;
+}
+
+#headerimagecopyright img
+{
+	margin:1px 0px -2px 0px;
+}
+
+/*Partner logos page*/
+
+.partners {
+    list-style-type: none;
+}
+
+.partners li {
+    float: left;
+    width: 180px;
+}
+
+.partners img {
+    display: block;
+    margin-bottom: 20px;
+}
+
+
+/*general*/
+h1 {
+    text-align: left;
+    border-bottom:4px solid #dadada;
+}
+
+
+h2 {    
+    clear: both;
+    border-bottom: 2px solid #dadada;
+    font: 110% Verdana, Geneva, Helvetica, Arial, sans-serif;
+}
+
+h3 {
+    border-bottom: 2px solid #dadada;
+    font: 100% Verdana, Geneva, Helvetica, Arial, sans-serif;
+}
+a
+{
+	text-decoration:none;
+	color:#000066;
+	font-weight:700;
+}
+
+a:hover
+{
+	text-decoration:none;
+	background-color: #123456;
+	color: white;
+}
+
+a img
+{
+	border:0;
+}
+
+p
+{
+	margin:0px 0px 18px 10px;
+}
+
+ul, ol, dl
+{
+	margin:2px 0px 5px 5px;
+/*  font-size:0.9em;*/
+}
+
+ul ul, ol ol
+{
+	margin:4px 0px 4px 5px;
+}
+
+.center {
+    text-align: center;
+}
+/*navigation*/
+
+#navigation h1 {
+    font: 120% Verdana, Geneva, Helvetica, Arial, sans-serif;
+}
+
+#navigation ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    width: 184px;
+    font-size:0.9em;
+}
+
+/*sponsor*/
+
+#sponsor h1 {
+    font: 120% Verdana, Geneva, Helvetica, Arial, sans-serif;
+    margin-left: 5px;
+}
+
+#sponsor a:hover
+{
+	text-decoration:none;
+	background-color: transparent;
+	color: white;
+}
+
+#sponsor img {
+    margin-bottom: 10px;
+}
+
+dl 
+{
+    margin: 2px 0px 0px 5px;
+    text-align: right;
+}
+dl dd
+{
+    margin: 4px 0px 0px 0px;
+    color: #000066;
+    font-weight: 600;
+}
+
+dl dt a
+{
+    font-size:0.9em;
+    color:#000066;
+}
+
+#news a:hover
+{
+    text-decoration: none;
+    color: #000066;
+    background-color: white;
+}
+
+/*content*/
+
+#content h1 {
+    font: 120% Verdana, Geneva, Helvetica, Arial, sans-serif;  
+    font-weight: 500;
+}
+
+/*registration*/
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid #000066;
+}
+
+.odd {
+    background-color: #7E96AE;
+}
+
+.even {
+    background-color: #C0CAD7;
+} 

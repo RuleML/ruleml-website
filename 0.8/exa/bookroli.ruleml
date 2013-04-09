@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.8/dtd/ruleml-hornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- non-ground-fact-like rule with 4-element roli as single argument -->
+
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>book</rel></_opr>
+      <roli>
+        <_arv> <arole>frontmatter1</arole> <var>title</var> </_arv>
+        <_arv> <arole>frontmatter2</arole> <var>autor</var> </_arv>
+        <_arv> <arole>frontmatter3</arole> <var>toc</var> </_arv>
+        <_arv> <arole>mainmatter</arole> <var>chapters</var> </_arv>
+      </roli>
+    </atom>
+  </_head>
+</fact>
+
+
+</rulebase>

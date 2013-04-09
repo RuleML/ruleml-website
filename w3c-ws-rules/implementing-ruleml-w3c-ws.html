@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Implementing RuleML Using Schemas, Translators, and a Bidirectional Interpreter</title><style type="text/css">
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+</style><link rel="stylesheet" type="text/css" href="http://www.w3.org/StyleSheets/TR/base.css" /></head><body><div class="head">
+
+<!--
+<p><a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></p>
+-->
+
+<h1><a name="title" id="title"></a>Implementing RuleML Using Schemas, Translators, and Bidirectional Interpreters</h1>
+<h2><a name="w3c-doctype" id="w3c-doctype"></a>W3C Workshop on Rule Languages 
+for Interoperability Position Paper: 27-28 April 2005</h2><dl><dt>This version:</dt><dd><a href="http://www.ruleml.org/w3c-ws-rules/implementing-ruleml-w3c-ws.html">http://www.ruleml.org/w3c-ws-rules/implementing-ruleml-w3c-ws.html</a></dd><dt>Authors:</dt><dd>Marcel Ball<sup>1</sup>, Harold Boley<sup>2</sup>, David Hirtle<sup>1</sup>, Jing Mei<sup>3</sup>, Bruce Spencer<sup>2</sup></dd><dd>
+  <sup>1</sup>UNB, <sup>2</sup>NRC, <sup>3</sup>PKU</dd></dl><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2005 Retained by the Authors
+
+<!--
+<a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>Â®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>, <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-software">software licensing</a> rules apply.
+-->
+
+
+</p></div><hr /><div>
+<h2><a name="abstract" id="abstract"></a>Abstract</h2><p>This paper presents the open source implementation of RuleML using XML Schema definitions, translators, and bidirectional interpreters written in Java.</p></div>
+
+<div>
+<h2><a name="status" id="status"></a>Status of this Document</h2><p>This document is a position paper as <a href="http://www.w3.org/2004/12/rules-ws/cfp#Position">required
+      for participation</a> to the <a href="http://www.w3.org/2004/12/rules-ws/cfp">W3C Workshop on
+      Rule Languages for Interoperability</a>.</p><p>It represents the opinion of its authors.</p></div><div class="toc">
+<h2><a name="contents" id="contents"></a>Table of Contents</h2><p class="toc">
+1 <a  href="#intro">Introduction</a><br />
+2 <a href="#family">Modular Schemas for a Family of RuleML Sublanguages</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;2.1 <a href="#modularization">Schema Modularization</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;2.2 <a href="#benchmark">Benchmark for XML Schema Tools</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;2.3 <a href="#datalog">RDF Rules as Anchored, Slotted Datalog with Blank Nodes</a><br />
+3 <a href="#trans">Translators</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;3.1 <a href="#normalizer">Normalizer</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;3.2 <a href="#posl">POSL Parser and Generator</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;3.3 <a href="#owl-swrl">OWL and SWRL Translator</a><br />
+4 <a href="#interpreters">Bidirectional Interpreters in Java</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;4.1 <a href="#principles">jDREW Principles</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;4.2 <a href="#slots">OO jDREW Slots</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;4.3 <a href="#types">OO jDREW Types</a><br />
+&#xa0;&#xa0;&#xa0;&#xa0;4.4 <a href="#extensions">OO jDREW Extensions</a><br />
+5 <a href="#usecases">Use Cases</a><br />
+6 <a href="#conc">Conclusions</a><br />
+7 <a href="#ref">References</a><br />
+</p></div><hr /><div class="body"><div class="div1">
+
+<h2><a name="intro" id="intro"></a>1 Introduction</h2>
+
+<p> The syntax of RuleML derivation rules has been defined by XML Schema definitions.
+The model-theoretic semantics of several RuleML sublanguages (including Datalog, Hornlog, and Folog)
+is defined in the classical way; for sublanguages with negation-as-failure, stable models have been proposed.
+The operational semantics of all RuleML sublanguages need ultimately be defined by a combination
+of translators and an interpreter or compiler.
+We have implemented the operational semantics of Derivation RuleML using XSLT translators and a bidirectional interpreter (the OO jDREW rule engine)
+written in Java. This reference implementation is available open source via the <a href="http://www.ruleml.org">RuleML</a> and <a href="http://www.jdrew.org/">jDREW</a> websites.
+</p>
+
+</div>
+
+<div class="div1">
+
+<h2><a name="family" id="family"></a>2 Modular Schemas for a Family of RuleML Sublanguages</h2>
+<p>The top-level of the current <a href="http://www.ruleml.org/design/RuleML_Lattice.JPG">family of RuleML sublanguages</a> shows the major distinction between <em>Derivation Rules</em>, including Hornlog above Datalog, and <em>Action Rules</em>, including Production Rules.
+We focus here on various expressive classes of Derivation Rules and their XML Schema Definitions (XSDs).  The most recent (public) schema specification of RuleML is always available at <a href="http://www.ruleml.org/spec">http://www.ruleml.org/spec</a>.</p>
+</div>
+
+<div class="div2">
+
+
+<h3><a name="modularization" id="modularization"></a>2.1 Schema Modularization</h3>
+
+<p>
+Following a general software engineering principle for maintenance, we employ
+<em>modular</em> XSDs, as <a href="http://www.w3.org/TR/xhtml-modularization/">pioneered by XHTML</a>, using a <a href="http://www.ruleml.org/0.88/#Content%20Model-Based%20Approach">content model-based approach</a> to take advantage of inheritance between schemas.
+Each expressive class syntactically distinguishable via an XSD (such as Datalog vs. Hornlog)
+can thus be addressed by the URI of its XSD.
+This permits receivers of a rulebase to validate if it conforms to the specified expressive class,
+before applying any class-specific tools (such as a Datalog vs. Hornlog interpreter).
+Moreover, a syntactic class is associated with a semantic class (such as Datalog vs. Hornlog with a function-free vs. function-containing Herbrand model).
+</p>
+<p>
+A <a href="http://www.ruleml.org/modularization/ruleml_m12n_089_uml.png">UML diagram</a> of RuleML's modular Derivation Rule Schemas shows the most-expressive class (i.e. RuleML sublanguage) at the top, with generality decreasing in top-down order as consistent with object-oriented modelling conventions.  Elementary modules, represented by ovals, act as "behind the scenes" constituents of the actual sublanguages, represented as rectangles.  The relationships between these elements of the model are either aggregation, e.g. "Datalog is <i>part of</i> Hornlog" and "cterm is <i>part of</i> Hornlog", as indicated by UML's diamond-headed arrows, or generalization, e.g. "Bindatalog <i>is a</i> Datalog", as indicated by regular-headed arrows.
+</p>
+<p>
+From an implementation perspective, the ovals are non-standalone modules containing only element and/or attribute definitions and are not intended to be used directly for validation.  They may, however, be used to create new document types by others wishing to "borrow" certain elements of RuleML much like XHTML.  The rectangles, on the other hand, are schema drivers composed in whole or in part of these modules or derived entirely from other schema drivers. The association lines in this diagram reveal all schema dependencies. In XML Schema, for instance, connected rectangles are joined using &lt;redefine&gt;, whereas ovals are (mostly) connected to rectangles using &lt;include&gt;. Elementary modules are normally included "as is", but sublanguages connected with &lt;redefine&gt; either extend or restrict one another.
+</p>
+</div>
+
+
+<div class="div2">
+<h3><a name="benchmark" id="benchmark"></a>2.2 Benchmark for XML Schema Tools</h3>
+<p>
+Specifying RuleML with XML Schema has proven to be problematic since the <a href="http://www.ruleml.org/inxsd0.8.html#Issues">first attempt</a>.  After some issues were resolved, the transition from DTD to XSD was finally made but an attempt to re-modularize the sublanguage hierarchy revealed an <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2004May/0001.html">expressiveness gap</a> in XML Schema with respect to using &lt;redefine&gt;.  Since then, there have been a number of RuleML-related exchanges on the W3C XML Schema developers list (<a href="http://lists.w3.org/Archives/Public/xmlschema-dev/">xmlschema-dev@w3.org</a>), especially regarding existing tools and their support for modular XSDs.</p>
+
+<p>The complexity of the XML Schema specification has made full implementation difficult for developers.  In fact, Michael Kay has <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2004Jul/0029.html">stated on the xmlschema-dev list</a> that he suspects no existing tool perfectly adheres to the specification.  Testing and development of the latest versions of the RuleML schema specification have demonstrated that it serves as a benchmark for existing tools' support for modular XSDs.  For example, the RuleML schemas have helped identify issues with the W3C's <a href="http://www.w3.org/2001/03/webdata/xsv">XML Schema Validator (XSV)</a> (e.g. <a href="http://lists.w3.org/Archives/Public/xmlschema-dev/2005Feb/0041.html">redefinition</a>), Altova's <a href="http://www.altova.com/products_ide.html">XML Spy</a> (e.g. <a href="http://www.ruleml.org/0.87/#Validation">self-references</a>), and others.  A <a href="http://www.ruleml.org/0.88/#Validation">validation summary</a> of each version of the RuleML schema specification is maintained to ensure validity of the XSDs.
+</p>
+</div>
+
+<div class="div2">
+<h3><a name="datalog" id="datalog"></a>2.3 RDF Rules as Anchored, Slotted Datalog with Blank Nodes</h3>
+<p>As an important sublanguage example, the definition of RDF Rules can be introduced in the following steps:</p>
+<ul><li><p>
+Datalog is a language corresponding to relational databases (ground facts without complex domains or "constructors") augmented by views (possibly recursive rules).
+</p></li>
+<li><p>
+Slots permit non-positional arguments.  RuleML's user-level metarole 'slot' takes a name-filler pair, accommodating RDF properties.
+</p></li>
+<li><p>Anchors provide object identity via webizing through URIs.  Such "URI grounding" is available in RuleML via dual attributes 'wlab' and 'wref', corresponding to RDF's 'about' and 'resource'.
+</p></li>
+<li><p>Blank Nodes are local aliases for existing individuals without need for global names.
+In RuleML, the F-logic/Flora-2 Skolem-constant approach <a href="#anonres">[Anon Res]</a> is used
+to notate, generate, and refer to Blank Nodes.</p></li>
+</ul>
+
+<p>Illustrating an RDF-like Business Rule 1:</p>
+<div class="exampleInner">
+<pre>&lt;Implies&gt; 
+  &lt;body&gt; 
+    &lt;And&gt; 
+      &lt;Atom&gt; 
+        &lt;oid&gt;&lt;Var&gt;x&lt;/Var&gt;&lt;/oid&gt;
+        &lt;Rel&gt;product&lt;/Rel&gt;
+        &lt;slot&gt;&lt;Ind wref=":price"/&gt;&lt;Var&gt;y&lt;/Var&gt;&lt;/slot&gt; 
+        &lt;slot&gt;&lt;Ind wref=":weight"/&gt;&lt;Var&gt;z&lt;/Var&gt;&lt;/slot&gt; 
+      &lt;/Atom&gt; 
+      &lt;Atom&gt; 
+        &lt;Rel wref="swrlb:greaterThan"/&gt; 
+        &lt;Var&gt;y&lt;/Var&gt; 
+        &lt;Data&gt;200&lt;/Data&gt; 
+      &lt;/Atom&gt;
+      &lt;Atom&gt; 
+        &lt;Rel wref="swrlb:lessThan"/&gt; 
+        &lt;Var&gt;z&lt;/Var&gt; 
+        &lt;Data&gt;50&lt;/Data&gt; 
+      &lt;/Atom&gt; 
+    &lt;/And&gt; 
+  &lt;/body&gt;
+  &lt;head&gt; 
+    &lt;Atom&gt; 
+      &lt;oid&gt;&lt;Var&gt;x&lt;/Var&gt;&lt;/oid&gt;
+      &lt;Rel&gt;product&lt;/Rel&gt;
+      &lt;slot&gt;&lt;Ind wref=":shipping"/&gt;&lt;Data&gt;0&lt;/Data&gt;&lt;/slot&gt; 
+    &lt;/Atom&gt;
+  &lt;/head&gt; 
+&lt;/Implies&gt;</pre>
+</div>
+
+</div>
+
+<h2><a name="trans" id="trans"></a>3 Translators</h2>
+
+
+<p>RuleML-to-RuleML translators are used for preprocessing rulebases such as via 
+normalizers as shown in subsection 3.1. Since RuleML is enabling rule-system 
+interoperation, (XSLT, ...) <a href="http://www.ruleml.org/#Translators">
+translators</a> between rulebases in RuleML and other languages are key as 
+exemplified in subsections 3.2 and 3.3.</p>
+
+
+<h3><a name="normalizer" id="normalizer"></a>3.1 Normalizer</h3>
+<p>RuleML uses an alternating type/role "striped syntax" similar to RDF in conjunction with "reconstructable role tags" in the spirit of Sandro Hawke's <a href="http://esw.w3.org/topic/StripeSkipping">StripeSkipping</a>.  This allows both a user-friendly, type-only compact form as well as a fully-roled expanded form, or any combination thereof.  The latter expanded form is considered the "normal form" because of its compatibility with RDF.</p>
+<p>An <a href="http://www.ruleml.org/0.88/xslt/normalizer/088_normalizer.xslt">XSLT stylesheet is available</a> for normalizing the syntax used in a given RuleML document, reconstructing all skipped role tags to be in the fully-expanded, normal form. For example, the <a href="http://www.ruleml.org/0.88/xslt/normalizer/own_compact.ruleml">compact version</a> of a fact asserting that John sells XMLBible to Mary,</p>
+
+<div class="exampleInner">
+<pre>
+&lt;Atom&gt;
+  &lt;Rel&gt;sell&lt;/Rel&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;Ind&gt;Mary&lt;/Ind&gt;
+  &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+&lt;/Atom&gt;
+</pre>
+</div>
+<p>is expanded to the <a href="http://www.ruleml.org/0.88/xslt/normalizer/own_compact-normalized-pretty.ruleml">normalized form</a>:</p>
+<div class="exampleInner">
+<pre>
+  &lt;Atom&gt;
+    &lt;opr&gt;
+      &lt;Rel&gt;sell&lt;/Rel&gt;
+    &lt;/opr&gt;
+    &lt;arg index="1"&gt;
+      &lt;Ind&gt;John&lt;/Ind&gt;
+    &lt;/arg&gt;
+    &lt;arg index="2"&gt;
+      &lt;Ind&gt;Mary&lt;/Ind&gt;
+    &lt;/arg&gt;
+    &lt;arg index="3"&gt;
+      &lt;Ind&gt;XMLBible&lt;/Ind&gt;
+    &lt;/arg&gt;
+  &lt;/Atom&gt;
+</pre>
+</div>
+<p>Additional information and examples are available from the <a href="http://www.ruleml.org/0.88/#XSLT-Based%20Normalizer">Normalizer section</a> of the RuleML schema specification.</p>
+
+<h3><a name="posl" id="posl"></a>3.2 POSL Parser and Generator</h3>
+
+<p>As the RuleML format can be verbose and not always convenient for end users
+to manually edit, a <a href="http://www.ruleml.org:8080/converters/">set of converters</a> between the 
+POSL syntax and RuleML were created. These converter servlets use the parsing and output routines 
+from the OO jDREW library to parse a knowledge base in one format (either RuleML or POSL) and generate 
+output containing an equivalent knowledge base in the other format, normalizing the order of slots as needed.</p>
+
+
+
+<h3><a name="owl-swrl" id="owl-swrl"></a>3.3 OWL and SWRL Translator</h3>
+
+
+<p>The
+<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/ORDBase.pdf">
+ORDBase architecture</a> contains
+<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans">OWLTrans</a> 
+to express the OWL semantics via entailment rules, either targeting a concrete 
+system such as Jess (<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/OWL2Jess.xsl">OWL2Jess</a>) 
+or a general language such as FOL RuleML (<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/OWL2RuleML.xsl">OWL2RuleML</a>). With the
+<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/OWL2RuleML.xsl">
+OWL2RuleML</a> stylesheet, an OWL-Full ontology can be transformed into a 
+collection of RuleML ground facts. On top of this, an FOL RuleML 
+rulebase was produced as the target language for a transformational 
+implementation of the OWL semantics, which can be easily extended by 
+user-defined 
+rules. Alternatively, SWRL rules may be edited with Prot&eacute;g&eacute;'s
+<a href="http://protege.stanford.edu/plugins/owl/swrl/">SWRL Editor</a>, and 
+transformed to RuleML rules using the
+<a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/swrlengine/SWRL2RuleML.xsl">
+SWRL2RuleML</a> stylesheet.</p>
+
+
+<h2><a name="interpreters" id="interpreters"></a>4 Bidirectional Interpreters in Java</h2>
+
+<p>As part of the implementation of RuleML, a set of bidirectional interpreters, written in Java to 
+allow portability between platforms, were created. The <a href="http://www.jdrew.org/oojdrew/">OO 
+jDREW</a> reasoning engine contains two modes: a Bottom-Up (forward chaining of rules) version,
+and a goal driven top-down (backward chaining of rules) version which works in a fashion similar
+to most Prolog systems. Demo applications (using Java Web Start) are available at 
+<a href="http://www.jdrew.org/oojdrew/demo">http://www.jdrew.org/oojdrew/demo</a>, and the source
+will be made available under an open source license in the near future. Some details about the
+features available in OO jDREW are detailed below.</p>
+
+<h3><a name="principles" id="principles"></a>4.1 jDREW Principles</h3>
+
+<p>The task of developing reference implementations for RuleML, which is an evolving
+standard, is made easier by using a tool-box approach, which is one of the design
+issues for <a href="http://www.jDREW.org">jDREW</a>: the flexibility to quickly cope
+with changes to the syntax and required operations to implement the various
+semantics. There are utilities in the jDREW toolbox for various tasks: reading files
+of RuleML statements into the internal clause data structure, storing and manipulating
+clauses, unification of clauses according to the positions of the selected literals, a
+basic resolution engine, clause to clause subsumption and clause to clause list
+subsumption, choice point managers, priority queues for various reasoning tasks, and
+readable top-level procedures.
+</p>
+
+<p>Much of the flow of control is oriented around <strong>iterators</strong>, objects that maintain
+the state of a partially completed computation.  Thus you pay as you go when you want
+the engine to perform the next step. The advantages of this architecture are its
+consistency and efficiency. There is a common interface for many different reasoning
+tasks, and there are few additional data structures introduced for storing
+intermediate results, other than those required by the abstract reasoning
+procedure. For instance, asking for the next solution in a top-down machine will
+cause the choicepoint iterator to initiate a request for the most recent choice to be
+undone, which will produce requests to other iterators.  Likewise, in the bottom-up
+system, solutions are generated one-at-a-time, so asking for the next solution may
+cause the following steps: An iterator will be asked to select the next clause in the
+so-called <strong>new results list</strong> that matches eligibility requirements (like not being
+already subsumed).  That selected clause will be resolved against the so-called <strong>given
+list</strong>, a list of other clauses. The given list is also generated by an iterator, so
+the new clause is resolved against some member generated by the iterator.  The
+resolution result, if it meets eligibility requirements, will be returned. A
+subsequent call for a new result will cause the next item to be generated from the
+given list and then to be resolved against the same selected clause. Note that we did
+not need to resolve the selected clause against everything in the given list and
+store all these results, some of which may not have been needed.  It is cheaper to
+save the state of partial computations than to compute and then store these
+unnecessary results.
+</p>
+
+
+<h3><a name="slots" id="slots"></a>4.2 OO jDREW Slots</h3>
+
+
+<p>During the creation of the 
+internal structures, the OO jDREW terms representing atoms and complex terms are normalized, 
+producing the following order for the parameters: oid (object identifier), 
+positional parameters (in their original order), the positional rest term, slotted parameters 
+(in the encounter order), and finally the slotted rest term. Since the ordering of slots within RuleML 
+atoms and complex terms does not carry information, any order can be imposed. In OO jDREW,
+the slots are ordered based upon the sequence in which they are initially 
+encountered. </p>
+
+<p>By using such a normalized form we are able to implement an efficient unification algorithm that is 
+O(m + n) 
+(where m and n are the numbers of parameters), instead of O(m * n). In our 
+algorithm we scan the two lists of parameters -- matching up roles (and positions in the case of positional parameters) 
+-- and unify those parameters. If a role
+is present in one term but not in the other then the unmatched role is added to a list of rest terms 
+in case the other has an
+appropriate rest term (otherwise unification fails). Such a collection of rest terms 
+is used to dynamically generate a Plex (RuleML's 
+closest equivalent to a list) to be assigned to the corresponding rest parameter.</p>
+
+
+<h3><a name="types" id="types"></a>4.3 OO jDREW Types</h3>
+
+
+<p>OO jDREW includes an order-sorted type system as a core component. This type system allows the user to 
+specify a partial order
+for a set of classes in RDFS via their (multiple) superclasses, allowing for the reuse of  lightweight taxonomies 
+of the Semantic Web. Currently, the system
+only models the taxonomic relationships between the classes, and cannot model 
+properties with their domain and range restrictions. For example, the current 
+system can model that &#39;Car&#39; is a &#39;Motor Vehicle&#39;, but cannot model that a car 
+must have a make, model, year, etc.</p>
+
+<p>By building an order-sorted type system into OO jDREW we are able to restrict 
+the search space to only those clauses that have the appropriate types specified 
+for their parameters, leading to a faster and more robust system than one where 
+types are reduced to unary predicate calls in the body.</p>
+
+<p>Extensions to the type system are being considered that would expand its modeling ability. 
+In particular, the user could define a signature using RDFS properties to 
+specify that certain slots must be present for a typing to be valid. We would 
+then be able to prescribe that &#39;Car&#39; has slots for at least make, model, year, which is not possible 
+in the current system.</p>
+
+
+<h3><a name="extensions" id="extensions"></a>4.4 OO jDREW Extensions</h3>
+
+
+<p>Negation-as-failure (Naf) has first been implemented in OO jDREW TD, and 
+recently introduced into OO jDREW BU for stratified programs. In bottom-up mode, 
+Naf attempts to look up its argument atom via a unifying fact (when no other 
+rule is applicable). If this look-up succeeds, hence the Naf fails, then this 
+rule will be deleted from the given list, else 
+the rule will be partially evaluated into one without Naf.</p>
+
+
+<p>Equivalence classes have been implemented in OO jDREW BU for the sublanguage 
+<code>datalogeq</code> (Datalog with Equality). For equality clauses, a newly-built data structure called EqualTable is used to map 
+all 
+individuals to one equivalence class. For each 
+equivalence class, we append a fresh symbol to the original OO jDREW SymbolTable, and all 
+equivalent  
+individuals are redirected to this new symbol. That is, the process of 
+unification and resolution will deal with this new symbol, representing the 
+equivalence class as a whole. As a result, the axioms of equality are satisfied.</p>
+
+
+<p>Illustrating Naf and Equal with a Datalog-like Business Rule 2:</p>
+
+
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-width: 0; height: 389; bordercolor: #111111" width="990" id="AutoNumber1" >
+    <tr>
+      <td width="3" height="389" style="border-style:none; border-width:medium; ">
+
+
+<div class="exampleInner">
+<pre>&nbsp;</pre>
+<pre>&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;discount&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Var&gt;product&lt;/Var&gt;
+      &lt;Ind&gt;5.0 percent&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;premium&lt;/Rel&gt;
+	&lt;Var&gt;customer&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+	&lt;Rel&gt;onsale&lt;/Rel&gt;
+	&lt;Var&gt;product&lt;/Var&gt;
+      &lt;/Atom&gt; 
+      &lt;Naf&gt;
+	&lt;Atom&gt;
+	  &lt;Rel&gt;special&lt;/Rel&gt;
+	  &lt;Var&gt;product&lt;/Var&gt;
+	&lt;/Atom&gt;
+      &lt;/Naf&gt;
+    &lt;/And&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;</pre>
+<pre>&nbsp;</pre>
+</div>
+
+
+      </td>
+      <td width="239" height="389" style="border-style:none; border-width:medium; ">
+
+
+&nbsp;</td>
+      <td width="309" height="389" style="border-style:none; border-width:medium; ">
+
+
+<div class="exampleInner">
+<pre>&lt;Equal&gt;
+  &lt;Ind&gt;fatherOFtom&lt;/Ind&gt;
+  &lt;Ind&gt;bob&lt;/Ind&gt;
+&lt;/Equal&gt; 
+&lt;Equal&gt;
+  &lt;Ind&gt;fatherOFtom&lt;/Ind&gt;
+  &lt;Ind&gt;uncleOFmary&lt;/Ind&gt;
+&lt;/Equal&gt; 
+&lt;Atom&gt;
+  &lt;Rel&gt;premium&lt;/Rel&gt;
+  &lt;Ind&gt;bob&lt;/Ind&gt;
+&lt;/Atom&gt;
+&lt;Atom&gt;
+  &lt;Rel&gt;onsale&lt;/Rel&gt;
+  &lt;Ind&gt;clothes&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+<pre>&lt;Atom&gt;
+  &lt;Rel&gt;special&lt;/Rel&gt;
+  &lt;Ind&gt;clothes&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+<pre>&nbsp;</pre>
+<pre>1: premium(&quot;uncleOFmary&quot;).
+1: premium(&quot;fatherOFtom&quot;).
+1: premium(&quot;bob&quot;).
+2: equal(&quot;uncleOFmary&quot;,uncleOFmary).
+2: equal(&quot;fatherOFtom&quot;,uncleOFmary).
+2: equal(&quot;bob&quot;,uncleOFmary).
+2: equal(fatherOFtom,bob).</pre>
+<pre>3: onsale(clothes).</pre>
+<pre>4: special(clothes).</pre>
+</div>
+
+
+      </td>
+      <td width="4" height="389" style="border-style:none; border-width:medium; ">
+
+
+&nbsp;</td>
+      <td width="429" height="389" style="border-style:none; border-width:medium; ">
+
+
+<div class="exampleInner">
+<pre>&nbsp;</pre>
+<pre>&lt;Equal&gt;
+  &lt;Ind&gt;fatherOFtom&lt;/Ind&gt;
+  &lt;Ind&gt;bob&lt;/Ind&gt;
+&lt;/Equal&gt; 
+&lt;Equal&gt;
+  &lt;Ind&gt;fatherOFtom&lt;/Ind&gt;
+  &lt;Ind&gt;uncleOFmary&lt;/Ind&gt;
+&lt;/Equal&gt; 
+&lt;Atom&gt;
+  &lt;Rel&gt;premium&lt;/Rel&gt;
+  &lt;Ind&gt;bob&lt;/Ind&gt;
+&lt;/Atom&gt;
+&lt;Atom&gt;
+  &lt;Rel&gt;onsale&lt;/Rel&gt;
+  &lt;Ind&gt;clothes&lt;/Ind&gt;
+&lt;/Atom&gt;</pre>
+<pre>&nbsp;</pre>
+<pre>1: discount(&quot;uncleOFmary&quot;, clothes, &quot;5.0 percent&quot;).
+1: discount(&quot;fatherOFtom&quot;, clothes, &quot;5.0 percent&quot;).
+1: discount(&quot;bob&quot;, clothes, &quot;5.0 percent&quot;).
+2: onsale(clothes).
+3: premium(&quot;uncleOFmary&quot;).
+3: premium(&quot;fatherOFtom&quot;).
+3: premium(&quot;bob&quot;).
+4: equal(&quot;uncleOFmary&quot;,uncleOFmary).
+4: equal(&quot;fatherOFtom&quot;,uncleOFmary).
+4: equal(&quot;bob&quot;,uncleOFmary).
+4: equal(fatherOFtom,bob).</pre>
+<pre>&nbsp;</pre>
+</div>
+
+
+      </td>
+    </tr>
+  </table>
+
+
+<h2><a name="usecases" id="usecases"></a>5 Use Cases</h2>
+
+
+<p>The primary use case of RuleML and OO jDREW has been the <a href="http://www.ruleml.org/usecases/nbbizkb/">New 
+Brunswick Business Knowledge Base (NBBizKB)</a>. The goal of the NBBizKB project was to extract business information
+from various sources, including the Yahoo! business and New Brunswick Biznet databases, integrate 
+the sources and validate the results using a set of declarative rules.</p>
+
+<p>Once the knowledge was extracted from our sources and converted to a RuleML knowledge base, a set of rules to 
+integrate and validate the knowledge were written. These handcrafted rules fall into three categories: the first
+set is used to map the NAICS sector codes used in the Biznet database to the Yahoo categories; once these sector-category
+mappings were created, a second set of rules were used to map the Biznet facts and Yahoo facts into one
+set of facts with a common format; finally, a set of rules were used to check for possible inconsistencies in the data.</p>
+
+<p>A second use case of RuleML and OO jDREW is the <a href="http://racofi.elg.ca">RACOFI Music</a> project. This project
+used OO jDREW and RuleML as part of a recommendation system for music albums, in conjunction with collaborative filtering. 
+On the RACOFI Music site, users have the ability fill in a search form, and based upon their search parameters and the results 
+from the collaborative filtering algorithm, a knowledge base is generated. This generated knowledge base is then processed
+by the OO jDREW reasoning engine and used to create a list of recommendations.</p>
+
+<h2><a name="conc" id="conc"></a>6 Conclusions</h2>
+
+<p>RuleML has an open source implementation which is maintained as the standard evolves.  The syntax of the family of sublanguages
+is defined by modular XML Schema definitions which serve as a benchmark for existing tools' support for modularity.  For normalization
+and interoperability with other standards, translators have also been realized, primarily via XSLT.  Finally, the operational semantics of RuleML
+are implemented by a set of bidirectional interpreters (OO jDREW) written in Java for cross-platform compatibility.</p>
+
+<div class="div1">
+<h2><a name="ref" id="ref"></a>7 References</h2><dl>
+
+<dt class="label"><a name="anonres" id="anonres"></a>Anon Res</dt><dd><cite>Reasoning about Anonymous Resources and Meta Statements on the Semantic Web</cite>, G. Yang and M. Kifer, In Journal on Data Semantics, Volume 1, Pages 69-97, 2003.</dd>
+
+<dt class="label"><a name="jdrew" id="jdrew"></a>jDREW</dt><dd><a href="http://www.iit.nrc.gc.ca/iit-publications-iti/docs/NRC-45845.pdf"><cite>The Design of j-DREW: A Deductive Reasoning Engine for the Web</cite></a>, B. Spencer, In Proceedings of the  First CologNET Workshop on Component-Based Software Development and Implementation Technology for Computational Logic Systems. CBD ITCLS 2002, Madrid, Spain. September 20, 2002. pp. 155-166.</dd>
+
+<dt class="label"><a name="ooruleml" id="ooruleml"></a>OO RuleML</dt><dd><a href="http://www.cs.unb.ca/~boley/ruleml/ruleml-rgs.pdf"><cite>Object-Oriented RuleML: User-Level Roles, URI Grounded Clauses, and Order-Sorted Terms</cite></a>, H. Boley, In Proc. Rules and Rule Markup Languages for the Semantic Web (RuleML-2003). Sanibel Island, Florida, LNCS 2876, Springer-Verlag, October 2003.</dd>
+
+
+
+</dl></div></div></body></html>

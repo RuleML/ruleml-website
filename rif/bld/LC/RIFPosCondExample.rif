@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wg/wiki/Core/Positive_Conditions)
+
+Example 2 (A RIF condition and its XML serialization):
+  We use the prefix bks as an abbreviation for http://example.com/books#
+  and curr for http://example.com/currencies#
+
+a. RIF condition
+
+  And ( Exists ?Buyer ( purchase^^rif:local ( ?Buyer
+                                              ?Seller
+                                              book^^rif:local ( ?Author bks:LeRif^^rif:iri )
+                                              curr:USD^^rif:iri ( 49^^xs:integer ) )
+        ?Seller=?Author )
+
+b. XML serialization:
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY bks "http://example.com/books#">
+  <!ENTITY cpt "http://example.com/concepts#">
+  <!ENTITY curr "http://example.com/currencies#">
+  <!ENTITY ppl "http://example.com/people#">
+  <!ENTITY dc  "http://purl.org/dc/terms/">
+  <!ENTITY w3  "http://www.w3.org/">
+  <!ENTITY rif "http://www.w3.org/2007/rif#">
+  <!ENTITY op  "http://www.w3.org/2007/rif-builtin-predicate#">
+  <!ENTITY fn  "http://www.w3.org/2007/rif-builtin-function#">
+  <!ENTITY xs  "http://www.w3.org/2001/XMLSchema#">
+]>
+
+  <And
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+     <formula>
+       <Exists>
+         <declare><Var>Buyer</Var></declare>
+         <formula>
+           <Atom>
+             <op><Const type="&rif;iri">&cpt;purchase</Const></op>
+             <args ordered="yes">
+               <Var>Buyer</Var>
+               <Var>Seller</Var>
+               <Expr>
+                 <op><Const type="&rif;iri">&cpt;book</Const></op>
+                 <args ordered="yes">
+                   <Var>Author</Var>
+                   <Const type="&rif;iri">&bks;LeRif</Const>
+                 </args>
+               </Expr>
+               <Expr>
+                 <op><Const type="&rif;iri">&curr;USD</Const></op>
+                 <args ordered="yes"><Const type="&xs;integer">49</Const></args>
+               </Expr>
+             </args>
+           </Atom>
+         </formula>
+       </Exists>
+     </formula>
+     <formula>
+       <Equal>
+         <left><Var>Seller</Var></left>
+         <right><Var>Author</Var></right>
+       </Equal>
+     </formula>
+   </And>

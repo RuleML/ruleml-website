@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Horn-Logic RuleML sublanguage
+			File: hornlog.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- hornlog includes the 'cterm' module -->
+	<xs:include schemaLocation="modules/cterm_module.xsd"/>
+
+	<!-- note the addition of c(omplex )terms and Plexs from the cterm module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+		<!--
+			add Cterms to rulebase labels so that their content model is:
+			(Ind | Cterm)
+		-->
+		<xs:group name="rbaselab.content">
+			<xs:choice>
+				<xs:group ref="rbaselab.content"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Cterms to rule labels so that their content model is:
+			(Ind | Cterm)
+		-->
+		<xs:group name="rlab.content">
+			<xs:choice>
+				<xs:group ref="rlab.content"/>
+				<xs:element ref="Cterm"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add Cterms and Plexs so that Atom's content model is:
+			(
+        	            ( (opr | Rel), (role | Slot)*, (arg | Ind | Var | Cterm | Plex)*, (role | Slot)* ) |
+                	    ( (role | Slot)*, (arg | Ind | Var | Cterm | Plex)+, (role | Slot)*, opr )
+	                )
+		-->
+		<xs:group name="Atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:group ref="Atom.extend"/>
+					<xs:element ref="Cterm"/>
+					<xs:element ref="Plex"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>	
+
+		<!--
+			add Cterms and Plexs so that arg's content model is:
+			(Ind | Var | Cterm | Plex)
+		-->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Plex"/>
+			</xs:choice>
+		</xs:group>
+		
+		<!--
+			add Cterms and Plexs so that Slot's content model is:
+			(
+			    (name, filler) | (filler, name) |
+                	    
+	                    ( (Ind | Var | Cterm | Plex), (Ind | Var | Cterm | Plex) )
+			)
+		-->
+		<xs:group name="Slot.extend">
+			<xs:choice>
+				<xs:group ref="Slot.extend"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Plex"/>				
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Cterms and Plexs so that name's content model is:
+			( Ind | Var | Cterm | Plex)
+		-->
+		<xs:group name="name.content">
+			<xs:choice>
+				<xs:group ref="name.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Plex"/>
+			</xs:choice>
+		</xs:group>
+			
+		<!--
+			add Cterms and Plexs so that filler's content model is:
+			( Ind | Var | Cterm | Plex)
+		-->
+		<xs:group name="filler.content">
+			<xs:choice>
+				<xs:group ref="filler.content"/>
+				<xs:element ref="Cterm"/>
+				<xs:element ref="Plex"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+
+
+</xs:schema>

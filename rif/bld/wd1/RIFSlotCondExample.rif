@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(From http://www.w3.org/2005/rules/wg/wiki/Core/Slotted_Conditions)
+
+Example 4 (A RIF condition and its XML serialization):
+   We use the prefix bks to abbreviate http://example.com/books#,
+   the prefix auth for http://example.com/authors#, and
+   curr for http://example.com/currencies#,
+
+a. RIF condition:
+
+  And ( Exists ?Buyer ?P ( ?P # purchase^^rif:local [
+                                      buyer^^rif:local -> ?Buyer
+                                      seller^^rif:local -> ?Seller
+                                      item^^rif:local -> book^^rif:local ( author^^rif:local -> ?Author
+                                                                           title^^rif:local -> bks:LeRif^^rif:iri )
+                                      price^^rif:local -> 49^^xs:integer
+                                      currency^^rif:local -> curr:USD^^rif:iri ] )
+        ?Seller=?Author )
+
+b. XML serialization:
+
+-->
+
+  <And
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <formula>
+      <Exists>
+        <declare><Var>Buyer</Var></declare>
+        <declare><Var>P</Var></declare>
+        <formula>
+          <Frame>
+            <object>
+              <Member>
+                <lower><Var>P</Var></lower>
+                <upper><Const type="rif:local">purchase</Const></upper>
+              </Member>
+            </object>
+            <slot><Const type="rif:local">buyer</Const><Var>Buyer</Var></slot>
+            <slot><Const type="rif:local">seller</Const><Var>Seller</Var></slot>
+            <slot>
+              <Const type="rif:local">item</Const>
+              <Uniterm>
+                <op><Const type="rif:local">book</Const></op>
+                <slot><Const type="rif:local">author</Const><Var>Author</Var></slot>
+                <slot><Const type="rif:local">title</Const><Const type="rif:iri">bks:LeRif</Const></slot>
+              </Uniterm>
+            </slot>
+            <slot><Const type="rif:local">price</Const><Const type="xs:integer">49</Const></slot>
+            <slot><Const type="rif:local">currency</Const><Const type="rif:iri">curr:USD</Const></slot>
+          </Frame>
+        </formula>
+      </Exists>
+    </formula>
+    <formula>
+      <Equal>
+        <side><Var>Seller</Var></side>
+        <side><Var>Author</Var></side>
+      </Equal>
+    </formula>
+  </And>

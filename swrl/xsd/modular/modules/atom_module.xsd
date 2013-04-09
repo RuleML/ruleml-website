@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+xmlns="http://www.w3.org/2003/11/ruleml"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Atom RuleML elements module.
+			This is the XML Schema atom elements module for RuleML.
+			File: atom_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+			
+			This module declares the following RuleML elements:
+			* atom
+			* _opr
+			* rel
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** atom ***
+		content model:
+		( (_opr, (_slot)*, (ind | var)*, (_slot)*) | ((_slot)*, (ind | var)+, (_slot)*, _opr) )
+		
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+
+                        (
+                            ( _opr,
+                              (_slot)*, 
+                              ( (ind | var)+, (_slot)*)?
+                            ) 
+                          |
+                            (
+                               (
+                                  ( (_slot)+, 
+                                    ( (ind | var)+, (_slot)* )?
+                                  )
+                                |
+                                  ((ind | var)+, (_slot)*)
+                               ),
+                               _opr
+                            )
+                         )
+
+		A logical atom, i.e. an expression formed from a predicate applied to a collection of its
+		(logical) arguments.
+
+		An atomic formula is usable within '_head','_body', or 'and'. Atom elements use an '_opr' role
+		followed by a sequence of zero or more arguments, or equivalently, with '_opr' at the end.
+		The arguments may be individuals or variables (or, in hornlog, complex terms or plexs).
+		Optional user-defined metaroles ('_slot') are also permitted before and/or after the individuals.
+	-->
+	<xs:group name="atom.extend">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="ind"/>
+				<xs:element ref="var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:attributeGroup name="atom.attlist"/>
+	<xs:group name="atom.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_opr"/>
+				<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:sequence minOccurs="0">
+					<xs:group ref="atom.extend"/>
+					<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="_slot" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:sequence minOccurs="0">
+							<xs:group ref="atom.extend"/>
+							<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:group ref="atom.extend"/>
+						<xs:element ref="_slot" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="_opr"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="atom.type">
+		<xs:group ref="atom.content"/>
+		<xs:attributeGroup ref="atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="atom" type="atom.type"/>
+
+	<!--
+		*** _opr ***
+		content model: (rel)
+
+		A relational operator expression.
+
+		'_opr' is usable within atoms. It uses a rel(ation) symbol.
+	-->
+	<xs:attributeGroup name="_opr.attlist"/>
+	<xs:group name="_opr.content">
+		<xs:sequence>
+			<xs:element ref="rel"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="_opr.type">
+		<xs:group ref="_opr.content"/>
+		<xs:attributeGroup ref="_opr.attlist"/>
+	</xs:complexType>
+	<xs:element name="_opr" type="_opr.type"/>
+
+	<!--
+		*** rel ***
+		content model: (#PCDATA)
+
+		A relation, i.e. a logical predicate.
+	-->
+	<xs:attributeGroup name="rel.attlist"/>
+	<xs:group name="rel.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="rel.type" mixed="true">
+		<xs:group ref="rel.content"/>
+		<xs:attributeGroup ref="rel.attlist"/>
+	</xs:complexType>
+	<xs:element name="rel" type="rel.type"/>
+	
+</xs:schema>

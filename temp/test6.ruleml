@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/temp/cs-attributes-6.xsd"
+>
+
+<Assert>
+
+	<Implies>
+		<DoubleEqual>
+			<Expr>
+				<Fun in="yes">age</Fun> 
+				<Expr>
+					<Fun in="yes">first-born</Fun> 
+					<Ind>John</Ind>
+					<Ind>Mary</Ind>
+				</Expr>
+			</Expr>
+			<Expr>
+				<Fun in="no">subtract</Fun>
+				<Expr>
+					<Fun in="no">this-year</Fun> 
+				</Expr>
+				<Ind>1993</Ind>
+			</Expr>
+		</DoubleEqual>
+		<Equal>
+			<lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> <!-- must be yes -->
+					<Expr>
+						<Fun in="yes">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			</lhs>
+			<rhs>
+				<Expr>
+					<Fun in="no">a</Fun>
+					<Ind>1</Ind>
+				</Expr>
+			</rhs>
+		</Equal>
+	</Implies>
+	
+	
+	<Equivalent>
+	<!-- testing  -->
+		<DoubleEqual>
+			<lhs>
+			<Expr>
+				<Fun in="yes">own</Fun>
+				<Ind>John</Ind>
+				<Ind>XMLBible</Ind>
+			</Expr>
+			</lhs>
+			<rhs>
+			<Expr>
+				<Fun in="no">belongs</Fun>
+				<Ind>XMLBible</Ind>
+				<Ind>John</Ind>
+			</Expr>
+			</rhs>
+		</DoubleEqual>
+		<DoubleEqual>
+			<lhs>
+			<Expr>
+				<Fun in="no">belongs</Fun>
+				<Ind>XMLBible</Ind>
+				<Ind>John</Ind>
+			</Expr>
+			</lhs>
+			<rhs>
+			<Expr>
+				<Fun in="no">own</Fun>
+				<Ind>John</Ind>
+				<Ind>XMLBible</Ind>
+			</Expr>
+			</rhs>
+		</DoubleEqual>
+	</Equivalent>
+
+	<!--
+	<Equal>
+			<Expr>
+				<Fun in="yes">age</Fun> 
+				<Expr>
+					<Fun in="no">first-born</Fun> 
+					<Ind>John</Ind>
+					<Ind>Mary</Ind>
+				</Expr>
+			</Expr>
+			<Expr>
+				<Fun in="no">subtract</Fun>
+				<Expr>
+					<Fun in="yes">this-year</Fun> 
+				</Expr>
+				<Ind>1993</Ind>
+			</Expr>
+	</Equal>
+-->
+	<!--
+	<Implies>
+		<body>
+			<Equal>
+			  <lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> 
+					<Expr>
+						<Fun in="no">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			  </lhs>
+			  <rhs>
+				<Expr>
+					<Fun in="no">subtract</Fun>
+					<Expr>
+						<Fun in="yes">this-year</Fun> 
+					</Expr>
+					<Ind>1993</Ind>
+				</Expr>
+			  </rhs>
+			</Equal>
+		</body>
+		<head>
+			<Equal>
+			  <lhs>
+				<Expr>
+					<Fun in="yes">age</Fun> 
+					<Expr>
+						<Fun in="no">first-born</Fun> 
+						<Ind>John</Ind>
+						<Ind>Mary</Ind>
+					</Expr>
+				</Expr>
+			  </lhs>
+			  <rhs>
+				<Expr>
+					<Fun in="yes">subtract</Fun>
+					<Expr>
+						<Fun in="yes">this-year</Fun> 
+					</Expr>
+					<Ind>1993</Ind>
+				</Expr>
+			  </rhs>
+			</Equal>		
+		</head>	
+	</Implies>
+-->
+</Assert>
+
+</RuleML>

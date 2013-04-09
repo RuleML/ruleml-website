@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.81/ruleml-hornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- non-ground-fact-like rule with 4-element roli as single argument -->
+
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>book</rel></_opr>
+      <roli>
+        <_arole arn="frontmatter1"><var>title</var></_arole>
+        <_arole arn="frontmatter2"><var>autor</var></_arole>
+        <_arole arn="frontmatter3"><var>toc</var></_arole>
+        <_arole arn="mainmatter"><var>chapters</var></_arole>
+      </roli>
+    </atom>
+  </_head>
+</fact>
+
+
+</rulebase>

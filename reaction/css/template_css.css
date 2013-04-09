@@ -1,0 +1,173 @@
+/**	
+*	Mambo Open Source Version 4.0
+*	Dynamic portal server and Content managment engine
+*	22-10-2002
+*
+*	Copyright (C) 2000 - 2002 Miro International Pty. Limited
+*	Distributed under the terms of the GNU General Public License
+*	This software may be used without warranty provided these statements are left 
+*	intact and a "Powered By Mambo" appears at the bottom of each HTML page.
+*	This code is Available at http://sourceforge.net/projects/mambo
+*
+*	Site Name: Mambo Open Source Version 4.0
+*	File Name: ie5.css
+*	Developers: Danny Younes - danny@miro.com.au
+*				Nicole Anderson - nicole@miro.com.au
+*				Robert Castley - robert@castley.com
+*	Date: 22/10/2002
+* 	Version #: 4.0
+*	Comments:
+**/
+
+a {
+	font-size: 11px
+	font-family:  Verdana, Arial, Helvetica, sans-serif;
+	color: #808080;
+	text-decoration: none }
+
+a:hover {
+	color: #ff6600;
+	text-decoration: none }
+
+a:active {
+	text-decoration:underline;
+	color: #000066 }
+
+.menulink {
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #5687AF;
+	text-decoration: none; }
+	
+.componentHeading {
+	font: bold 11px Verdana, Arial, Helvetica, sans-serif;
+	color: #333333;
+	text-align: left }
+
+.button {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 10px;
+	color: #000000;
+	border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px} 
+
+.articlehead{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+ 	color: #333333 }
+
+.inputbox {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666666;
+	background: #FFFFFF;
+	border: 1px solid; }
+		
+.bold {
+	font: bold 11px Verdana, Arial, Helvetica, sans-serif;
+	color: #666666; }
+	
+.smalldark {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 10px; 
+	color: #000000; 
+	font-weight: normal }
+
+.small {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #ff6600;
+	text-decoration: none; 
+	font-weight: medium }
+
+td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #333333 }
+	
+.poll {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #666666;
+	line-height: 14px }
+
+.articleheadWhite{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF }
+
+.whitetext {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 11px; 
+	color: #ffffff }
+
+h1 {
+	font: bold 18px Arial, Helvetica, sans-serif; 
+	color: #999999 }
+
+	
+/* Begin new additions/changes
+	11-26-2002 */
+BODY{
+	background-color : White;
+	color : Black;
+}
+
+HR {
+	background: #c0c0c0;
+	height:2px;
+    width:170px;
+	border: 1px inset;
+}
+
+.newsarticle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;  /* Up from 10px */
+	color: #333333;
+	text-align: left }
+
+.sectiontableheader{
+	background-color : #999999;
+	color : #FFFFFF;
+	font-weight : bold;
+}
+
+.sectiontableentry1{
+	background-color : #FFFFFF;
+}
+
+.sectiontableentry2{
+	background-color : #EBEBEB;
+}
+
+.popupwindow{
+	background-color : #FFFFFF;
+}
+
+.newspane{
+	background-color : White;
+}
+
+.newspaneopen{
+	border : 1px ridge #DCDCDC;
+}
+
+table.moduletable {
+	margin: 0px 0px 0px 0px;
+	width: 95%;
+	border-left: solid 0px #000000;
+	border-right: solid 0px #000000;
+	border-top: solid 0px #000000;
+	border-bottom: solid 0px #000000;
+	}
+
+table.moduletable th {
+  font-size        : 11px;
+  font-weight      : bold;
+  text-align: left
+}

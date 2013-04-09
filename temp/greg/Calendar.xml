@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="simple.xsl" ?>
+
+<Calendar
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.tsheringML.com http://www.ruleml.org/temp/tshering/calendar.xsd"
+>
+<!-- xmlns="http://www.tsheringML.com"  -->
+
+ <Conference kind = "summer">
+    <Date>2006-08-06</Date>
+    <Time>2:30:00</Time>
+    <Location>NRC unb`campus,Fredericton,Canada</Location>
+    <Presenters>
+		<person>Tshering Dema</person>
+		<person>Jie Li</person>
+		<person>David Hirtle</person>
+    </Presenters>
+ </Conference>
+
+  <Break kind = "cake">
+	<Date>2006-08-06</Date>
+	<Time>4:00:00</Time>
+	<Location>Room #025,NRC unb`campus</Location>
+    <Attendees>
+		<name>Tshering Dema</name>
+		<name>Jie Li</name>
+		<name>David Hirtle</name>
+    </Attendees>
+  </Break>
+  
+  <Conference kind = "Winter">
+    <Date>2006-08-16</Date>
+    <Time>1:30:00</Time>
+    <Location>NRC Moncton,Fredericton,Canada</Location>
+    <Presenters>
+		<person>Natalie Webber</person>
+		<person>Gerhard`Dueck</person>
+		<person>Pochec</person>
+		<person>Patricia Evans</person>
+    </Presenters>
+  </Conference>
+  
+  <Break kind = "cookie">
+	<Date>2007-03-11</Date>
+	<Time>16:00:00</Time>
+	<Location>Room #0225,NRC unb`campus</Location>
+    <Attendees>
+		<name>Sonam Wangmo</name>
+		<name>Greg Sherman</name>
+		<name>Dradul Wangchuk</name>
+		<name>Mani Pelmo</name>
+    </Attendees>
+  </Break>
+  
+  <Break kind = "cake">
+	<Date>2007-05-17</Date>
+	<Time>12:00:00</Time>
+	<Location>Graduate House,unb campus</Location>
+    <Attendees>
+		<name>Christine </name>
+		<name>Ben Sherman</name>
+		<name>Pema Wangchuk</name>
+	</Attendees>
+  </Break>
+</Calendar>
+ 
+ 

@@ -1,0 +1,72 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Strong Negation Formulas" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, negation, strong, formula" ]
+dc:description [ "The expansion module for strong negation formulas." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Neg.Node.def | strong.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <Neg>
+#            * <strong>
+# This module also declares the following RuleML choice patterns:
+#            * Negation-node.choice
+#            * NegFormula.choice
+
+## an extension point for alternate spellings and internationalization of the strong negation tag name.  
+Negation-node.choice |= Neg.Node.def
+Neg.Node.def =
+    
+    ## A classical negation of a logical atom (<Atom>) (i.e. classical or "strong" negation). 
+    ## The negated atom may be optionally surrounded by a <strong> role.
+    ##        See http://www.ruleml.org/0.91/glossary/#gloss-Neg
+    element Neg { (Neg-datt.choice & reNeg.attlist), Neg.header, Neg.main }
+# The attribute list of the strong negation element will accept a scoped closure attribute at full first-order logic.
+reNeg.attlist &= mapClosure-att-fo.choice?
+
+## Negation formulas accept the header pattern of general formulas.
+Neg.header &= CompoundFormula.header?
+# For the declaration of the compound formula header, see the con/disjunction module (andor_module).
+
+## Negation formulas contain a single role.
+Neg.main |= strong-edge.choice
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the strong tag name in strong negations. 
+strong-edge.choice |= strong.edge.def
+strong.edge.def =
+    
+    ## A role used for logical negation (<Neg>).
+    ##        See http://www.ruleml.org/1.0/glossary/#gloss-strong
+    element strong { strong.content }
+
+## The negation role contains a single formula. 
+strong.content |= NegFormula.choice
+
+## formulas allowed to belong to strong negation formulas include atomic formulas. 
+NegFormula.choice |=
+    SimpleFormula-node.choice
+    | And-fo-node.choice
+    | Or-fo-node.choice
+    | Negation-fo-node.choice
+    | NegationAsFailure-node.notallowed
+    | Implication-fo-node.choice
+    | Forall-fo-node.choice
+    | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+Node.choice |= Neg.Node.def
+edge.choice |= strong.edge.def
+# 
+
+
+

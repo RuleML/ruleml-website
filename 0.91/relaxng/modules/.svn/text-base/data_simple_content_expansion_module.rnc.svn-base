@@ -1,0 +1,51 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Data Element" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, Data, Simple Content" ]
+dc:description [
+  "The expansion module for the simple-type Data element, a Type (Object) for literal constants."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Data_simple.Node.def
+Node.choice |= Data_simple.Node.def
+# This module declares the following RuleML elements, attributes and patterns:
+#            * <Data>
+
+## an extension point for alternate spellings and internationalization of the data tag name.  
+Data_simple-node.choice |= Data_simple.Node.def
+
+## A fixed argument like RDF literals. It may be optionally associated with an XML Schema built-in datatype using the xsi:type attribute.
+## See http://www.ruleml.org/0.91/glossary/#gloss-Data
+## Data representing a complex datatype that includes xml elements can be represented by escaping for example <element/> becomes &lt;element/&gt;
+Data_simple.Node.def =
+  
+  ## <Data>: literal constant optionally typed with @xsi:type. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Data
+  element Data { anySimpleTypeForElements.datatype.choice }
+
+## an extension point for explicit datatyping
+anySimpleTypeForElements.datatype.choice |=
+  xsd:duration
+  | xsd:dateTime
+  | xsd:time
+  | xsd:date
+  | xsd:gYearMonth
+  | xsd:gYear
+  | xsd:gMonthDay
+  | xsd:gDay
+  | xsd:gMonth
+  | xsd:boolean
+  | xsd:base64Binary
+  | xsd:hexBinary
+  | xsd:float
+  | xsd:decimal
+  | xsd:double
+  | xsd:anyURI
+  | xsd:QName
+  | xsd:NOTATION
+  | xsd:string

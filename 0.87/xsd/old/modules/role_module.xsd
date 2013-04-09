@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd"
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Role RuleML elements module.
+			This is the XML Schema role elements module for RuleML.
+			File: role_module.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+			
+			This module declares the following RuleML element and attributes:
+			* role
+			* name
+			* filler
+			* Slot
+			* @card
+			* @weight
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** role ***
+		content model: ( Slot )
+
+		This is a metarole which is usually left implicit.  It must contain a Slot.
+	-->
+	<xs:attributeGroup name="role.attlist"/>
+	<xs:group name="role.content">
+		<xs:sequence>
+			<xs:element ref="Slot"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="role.type">
+		<xs:group ref="role.content"/>
+		<xs:attributeGroup ref="role.attlist"/>
+	</xs:complexType>
+	<xs:element name="role" type="role.type"/>
+	
+	<!--
+		*** name ***
+		content model: ( Ind | Var )
+
+		This is a metarole for the name of a Slot.  It is usually left implicit, relying on the positional
+		information that a Slot's first child represents its name.  A name may be either an Ind or
+		a Var (or, in hornlog, a Cterm).
+	-->
+	<xs:attributeGroup name="name.attlist"/>
+	<xs:group name="name.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Var"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="name.type">
+		<xs:group ref="name.content"/>
+		<xs:attributeGroup ref="name.attlist"/>
+	</xs:complexType>
+	<xs:element name="name" type="name.type"/>
+	
+	<!--
+		*** filler ***
+		content model: ( Ind | Var )
+
+		This is a metarole for the filler of a Slot.  It is usually left implicit, relying on the positional
+		information that a Slot's second child represents its content.  A filler may contain either an Ind or
+		a Var (or, in hornlog, a Cterm).
+	-->
+	<xs:attributeGroup name="filler.attlist"/>
+	<xs:group name="filler.content">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Var"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="filler.type">
+		<xs:group ref="filler.content"/>
+		<xs:attributeGroup ref="filler.attlist"/>
+	</xs:complexType>
+	<xs:element name="filler" type="filler.type"/>
+	
+	<!--
+		*** Slot ***
+		content model:
+		(
+		    (name, filler) | (filler, name) |
+                    
+                    ( (Ind | Var), (Ind | Var) )		
+		)
+
+		User-defined slots.
+
+		'Slot' consists of a name, either given in the first position or non-positionally using the
+		'name' element, and a filler, also supplied either positionally as the second child or 
+		non-positionally in a 'filler' element.  Both the name and the filler are an individual constant
+		or a variable (or, in hornlog, a complex term).
+
+		Optional attributes are 'card',	specifying the role's cardinality, and 'weight', specifying the
+		role's relative weight.
+	-->
+	<xs:group name="Slot.extend">
+		<xs:choice>
+			<xs:element ref="Ind"/>
+			<xs:element ref="Var"/>	
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="Slot.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Slot.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="name"/>
+				<xs:element ref="filler"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="filler"/>
+				<xs:element ref="name"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="Slot.extend" minOccurs="2" maxOccurs="2"/>
+			</xs:sequence>		
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Slot.type">
+		<xs:group ref="Slot.content"/>
+		<xs:attributeGroup ref="Slot.attlist"/>
+	</xs:complexType>
+	<xs:element name="Slot" type="Slot.type"/>
+
+	<!--
+		*** @card ***
+		
+		Optionally specifies the metarole's cardinality.
+	-->
+	<xs:attributeGroup name="card.attrib">
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @weight ***
+		
+		Optionally specifies the metarole's relative weight.
+	-->
+	<xs:attributeGroup name="weight.attrib">
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+  <namespace ns="http://www.ruleml.org/0.91/xsd">
+    <validate
+      schema="http://ruleml.org/0.91/relaxng/schema_rnc.php?backbone=x3f&amp;default=x7&amp;termseq=x7&amp;lng=x1&amp;propo=x3f&amp;implies=x7&amp;terms=xf3f&amp;quant=x7&amp;expr=xf&amp;serial=xf"
+      schemaType="application/relax-ng-compact-syntax"/>
+
+  </namespace>
+  <anyNamespace>
+    <reject/>
+  </anyNamespace>
+</rules>

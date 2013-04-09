@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Slots</title>
+    <script>
+      var nextpage="RuleMLPrimer-p16-2012-08-09.html";
+            var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p15-slide">
+      <h1>RuleML Slots</h1>
+      <pre class="example_code topspace">
+<span class="elem">&lt;Atom&gt;</span>
+  <span class="elem">&lt;oid&gt;&lt;Ind&gt;</span><code>Peter Miller</code><span class="elem">&lt;/Ind&gt;&lt;/oid&gt;</span>
+  <span class="elem">&lt;Rel&gt;</span><code>is a Customer</code><span class="elem">&lt;/Rel&gt;</span>
+  <span class="elem">&lt;slot&gt;</span>
+    <span class="elem">&lt;Ind&gt;</span><code>who has a Status of</code><span class="elem">&lt;/Ind&gt;</span>
+    <span class="elem">&lt;Ind&gt;</span><code>premium</code><span class="elem">&lt;/Ind&gt;</span>
+  <span class="elem">&lt;/slot&gt;</span>
+  <span class="elem">&lt;resl&gt;</span>
+    <span class="elem">&lt;Var&gt;</span><code>x</code><span class="elem">&lt;/Var&gt;</span>
+  <span class="elem">&lt;/resl&gt;</span>
+<span class="elem">&lt;/Atom&gt;</span>
+      </pre>
+      
+    </section>
+    <section id="section-p15-prose">
+      <h3>RuleML Slots - Notes</h3>
+            
+      <p><span class="elem-inline">&lt;/slot&gt;</span>: A user-defined slot consisting of a name (first position) and a filler (second position).</p>
+      <p><span class="elem-inline">&lt;resl&gt;</span>: A slotted rest variable used in &lt;Atom>s, &lt;Expr>s and &lt;Plex>s. Note that &lt;Plex>s are generated, so &lt;resl>s are only available above the Datalog sublanguage. </p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p14c-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p16-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Typed terms / typed logic -->
+
+<RuleML xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:rbsla="http://ibis.in.tum.de/research/projects/rbsla/ontology/test.owl"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% rule example 1 with Java type system
+	
+discount(rbsla.test.Customer.C, rbsla.test.Product.P, rbsla.test.Percentage.D) :-
+	premium(rbsla.test.Customer.C),
+	regular(rbsla.test.Product.P),
+	rbsla.test.Percentage.D = rbsla.test.Percentage(5.0).
+
+
+% rule example 2 with Semantic Web type system denoted by namespace prefix
+
+import("http://ibis.in.tum.de/research/projects/rbsla/ontology/test.owl").
+discount(C:rbsla_Customer, P:rbsla_Product, rbsla_Percentage:5.0) :-
+	premium(C:rbsla_Customer),
+	regular(P:rbsla_Product).
+
+ -->
+ 
+
+<Assert mapClosure="universal">
+
+			<Implies>
+			  <head>
+			    <Atom>
+			      <op><Rel>discount</Rel></op>
+			      <Var type="rbsla.test.Customer">C</Var>
+			      <Var type="rbsla.test.Product">P</Var>
+			   	  <Var type="rbsla.test.Percentage">D</Var>
+			    </Atom>
+			  </head>
+			  <body>
+			    <And>
+			      <Atom>
+			        <op><Rel>premium</Rel></op>
+			        <Var type="rbsla.test.Customer">C</Var>
+			      </Atom>
+			      <Atom>
+			        <op><Rel>regular</Rel></op>
+			        <Var type="rbsla.test.Product">P</Var>
+			      </Atom>
+			      <Equal>
+			      	<Var type="rbsla.test.Percentage">D</Var>
+			      	<Expr>
+			      		<oid><Ind uri="rbsla.test"/></oid>
+			      		<Fun in="yes" lang="java">Percentage</Fun>			      		
+			      		<Ind>5.0</Ind>
+			      	</Expr>
+			      </Equal>	
+			    </And>
+			  </body>
+			</Implies>
+
+
+			<Implies>
+			  <head>
+			    <Atom>
+			      <op><Rel>discount</Rel></op>
+			      <Var type="rbsla:Customer">C</Var>
+			      <Var type="rbsla:Product">P</Var>
+			   	  <Ind type="rbsla:Percentage">5.0</Ind>
+			    </Atom>
+			  </head>
+			  <body>
+			    <And>
+			      <Atom>
+			        <op><Rel>premium</Rel></op>
+			        <Var type="rbsla:Customer">C</Var>
+			      </Atom>
+			      <Atom>
+			        <op><Rel>regular</Rel></op>
+			        <Var type="rbsla:Product">P</Var>
+			      </Atom>
+			    </And>
+			  </body>
+			</Implies>
+
+	
+	
+	</Assert>
+	
+</RuleML>

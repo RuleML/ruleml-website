@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+Text:
+If a person X likes the wine then John likes X. Mary likes all wine.
+
+Paraphrase:
+ if   a  person C  likes   a  wine E    then John likes   the  person C    . if there is some  wine G  then Mary likes   the  wine G    .
+
+DRS:
+[A, B]
+named(A, John)-1
+object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-1
+named(B, Mary)-2
+object(B, atomic, named_entity, person, cardinality, count_unit, eq, 1)-2
+   [C, D, E]
+   object(C, atomic, person, person, cardinality, count_unit, eq, 1)-1
+   predicate(D, unspecified, like, C, E)-1
+   object(E, atomic, wine, object, cardinality, count_unit, eq, 1)-1
+   =>
+   [F]
+   predicate(F, unspecified, like, A, C)-1
+   [G]
+   object(G, mass, wine, object, unspecified, unspecified, eq, unspecified)-2
+   =>
+   [H]
+   predicate(H, unspecified, like, B, G)-2
+
+FOL:
+exists(A, exists(B, (named(A, John)-1)? (object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-1)? (named(B, Mary)-2)? (object(B, atomic, named_entity, person, cardinality, count_unit, eq, 1)-2)?forall(C, forall(D, forall(E, (object(C, atomic, person, person, cardinality, count_unit, eq, 1)-1)? (predicate(D, unspecified, like, C, E)-1)?object(E, atomic, wine, object, cardinality, count_unit, eq, 1)-1=>exists(F, predicate(F, unspecified, like, A, C)-1))))?forall(G, object(G, mass, wine, object, unspecified, unspecified, eq, unspecified)-2=>exists(H, predicate(H, unspecified, like, B, G)-2))))
+-->
+
+<RuleML xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/folog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ruleml.org/0.9/xsd">
+   <oid>
+      <Ind>Translated version of ACE text "If a person X likes
+         the wine then John likes X. Mary likes all wine."</Ind>
+   </oid>
+   <Assert>
+      <Exists>
+         <Var>A</Var>
+         <Var>B</Var>
+         <And>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>A</Var>
+               <Ind>'John'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>A</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>B</Var>
+               <Ind>'Mary'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>B</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Forall>
+               <Var>C</Var>
+               <Var>D</Var>
+               <Var>E</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>C</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>person</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>D</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>like</Ind>
+                        <Var>C</Var>
+                        <Var>E</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>E</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>wine</Ind>
+                        <Ind>object</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>F</Var>
+                     <And>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>F</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>like</Ind>
+                           <Var>A</Var>
+                           <Var>C</Var>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Forall>
+               <Var>G</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>G</Var>
+                        <Ind>mass</Ind>
+                        <Ind>wine</Ind>
+                        <Ind>object</Ind>
+                        <Ind>unspecified</Ind>
+                        <Ind>unspecified</Ind>
+                        <Ind>eq</Ind>
+                        <Data>unspecified</Data>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>H</Var>
+                     <And>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>H</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>like</Ind>
+                           <Var>B</Var>
+                           <Var>G</Var>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+         </And>
+      </Exists>
+   </Assert>
+</RuleML>

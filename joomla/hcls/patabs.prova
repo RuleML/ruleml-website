@@ -1,0 +1,123 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% The Rule-based Service for the 
+% EMBL-EBI Patent Abstract Database
+%
+% http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-page+query+-id+3BCib1WGHAl
+%
+% Currently the queries to PATABS are written in the native
+% PATABS query syntax, but it is straightforward to
+% add further transformation rules, which translate from a
+% common platform-independent query language such as 
+% XQuery, SQL, SPARQL into the platform-specific query language
+% of the service (following the idea of web service and RPC 
+% calls wrapped in SOAP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% import of additional ContractLog libraries (modules)
+:-eval(consult('ContractLog/utils.prova')).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Meta-data facts about services
+% TODO outsource this data to a Semantic Web description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+service(patabs,"http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-page+query+-id+3BCib1WGHAl",xml).
+
+% public function interfaces of this rule service
+% describes the function signatures and types (untyped variables are also supported)
+% and the mode declarations and gives a narrative description for human
+% consumption
+interface(performative(Performative), performative("?"), "pragmatic performatives of this agent/service").
+interface(service(ServiceName,ServiceURL,ServiceOutputFormat),service("?","?","?"), "service description including the supported output formats").
+interface(interface(Signature,ModeDeclaration,Description),service("?","?","?"), "interface description of the public rule functions of this rule service").
+interface(retrieveData(Result, Service, Format, Query), retrieveDate("-","+","+","+"), "submits a Query to the PATABS service and returns the Result data in the selected Format").
+	
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% general rule for receiving query messages
+% the rules first tries to understand the pragmatic context
+% and then tries to answer the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rcvMsg(XID,esb ,From, Performative, [X|Args]) :-
+    understandPerformative(XID, From, Performative, [X|Args]),
+    answerQuery(XID, From, Performative, [X|Args]).
+rcvMsg(XID,esb ,From, Performative, [X|Args]):-
+	sendMsg(XID,esb,From,no_further_answers,[X|Args]).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for processing the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	
+% simple taxonomy of performatives for queries
+% query = request	
+performative(request):-performative(query).
+performative(query).
+	
+understandPerformative(XID, From, Performative, PayLoad) :-
+	performative(Performative).
+understandPerformative(XID, From, Performative, PayLoad) :-
+	not(performative(Performative)),
+	sendMsg(XID,esb,From,answer, notUnderstood(Performative)),
+	fail().	
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for answering the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	
+% answers query
+answerQuery(XID, From, Performative, [X|Args]):-
+	derive([X|Args]),
+	sendMsg(XID,esb,From, answer, [X|Args]),
+	!.
+answerQuery(XID, From, Performative, [X|Args]):-	
+	sendMsg(XID,esb,From,answer, notUnderstood([X|Args])),
+	fail().		
+
+
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Internal rule base of the PATABS Rule Service
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Submits a Query to a PATABS Service
+% and returns the Result data in the selected
+% Format
+%
+% modes signature: retrieveDate(-, +,+,+)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+retrieveData(Result, Service, Format, Query):-
+   bound(Service),
+   bound(Query),
+   bound(Format),
+   buildServiceURL(URL,Service, Format, Query),
+   InputStream = URL.openStream(),
+   OutStream = java.io.ByteArrayOutputStream(),
+   copy_stream(InputStream,OutStream),
+   byte_stream(Result,"UTF-8",OutStream).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Submits a Query to a PATABS Service
+% and returns the Result as a StreamReader
+%
+% modes signature: retrieveReader(-, +,+,+)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+retrieveReader(Reader, Service, Format, Query):-
+   bound(Service),
+   bound(Query),
+   bound(Format),
+   buildServiceURL(URL,Service, Format, Query),
+   InputStream = URL.openStream(),
+   Reader=java.io.InputStreamReader(InputStream). 
+
+

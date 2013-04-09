@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mule-configuration PUBLIC "-//MuleSource //DTD mule-configuration XML V1.0//EN"
+                                "http://mule.mulesource.org/dtds/mule-configuration.dtd">
+
+<mule-configuration id="Rule_Responder_Use_Cases" version="1.0">
+
+
+<description>
+	Mule configuration for all Rule Responder use cases		 
+</description>
+    
+<environment-properties>
+	<property name="MULE_IMPLEMENTATION" value="ws.prova.mule.impl.ProvaUMOImpl"/>
+	<property name="TOMCAT" value="http://10.1.23.37:8080/"/>
+	<property name="MULE_PORT" value="8888"/>
+
+<!-- Please note, these names should correspond exactly with those in your OWL-Lite ontology -->
+<!-- Similarly, the topic must also match as you see it in your Prova OA KB -->
+	
+<!-- WellnessRules2 -->
+	<property name="WellnessRules2OAName" value="WellnessRules2"/>
+	<property name="WellnessRules2TopicName" value="wellnessRules2"/>
+	<property name="WellnessRules2_PORT" value="9994"/>
+	<property name="WellnessRules2_Prova" value="/use_caseWellnessRules2/Wellness-Rules2/WellnessRules2-Responder.prova"/>
+	<property name="WellnessRules2Topic1" value="Running"/>
+<!-- WellnessRules -->
+	<property name="WellnessRulesOAName" value="WellnessRules"/>
+	<property name="WellnessRules_PORT" value="9995"/>
+	<property name="WellnessRules_Prova" value="/use_caseWellnessRules/Wellness-Rules/WellnessRules-Responder.prova"/>
+	<property name="WellnessRulesTopicName" value="wellnessRules"/>
+	<property name="WellnessRulesTopic1" value="Walking"/>
+	<property name="WellnessRulesTopic2" value="Running"/>
+	<property name="WellnessRulesTopic3" value="Skating"/>
+	<property name="WellnessRulesTopic4" value="Swimming"/>
+	<property name="WellnessRulesTopic5" value="Yoga"/>
+	<property name="WellnessRulesTopic6" value="Hiking"/>
+	<property name="WellnessRulesTopic7" value="Baseball"/>
+<!-- RuleML-2009 -->
+	<property name="RuleML2009OAName" value="RuleML2009"/>
+	<property name="RuleML2009_PORT" value="9996"/>
+	<property name="RuleML2009_Prova" value="/use_caseRuleML2009/RuleML-2009_Organization/RuleML-2009-Responder.prova"/>
+	<property name="RuleML2009TopicName" value="ruleml2009"/>
+	<property name="RuleML2009Topic1" value="PublicityChair"/>
+	<property name="RuleML2009Topic2" value="GeneralChair"/>
+	<property name="RuleML2009Topic3" value="ProgramChair"/>
+	<property name="RuleML2009Topic4" value="LiaisonChair"/>
+<!-- RuleML-2008 -->
+	<property name="RuleML2008OAName" value="RuleML2008"/>
+	<property name="RuleML2008_PORT" value="9997"/>
+	<property name="RuleML2008_Prova" value="/use_caseRuleML2008/RuleML-2008_Organization/RuleML-2008-Responder.prova"/>
+	<property name="RuleML2008TopicName" value="ruleml2008"/>
+	<property name="RuleML2008Topic1" value="GeneralChair"/>
+	<property name="RuleML2008Topic2" value="ProgramChair"/>
+	<property name="RuleML2008Topic3" value="LiaisonChair"/>
+	<property name="RuleML2008Topic4" value="PublicityChair"/>
+	<property name="RuleML2008Topic5" value="PanelChair"/>
+	<property name="RuleML2008Topic6" value="WebChair"/>
+	<property name="RuleML2008Topic7" value="ChallengeChair"/>
+<!-- RuleML-2009 -->
+	<property name="RuleML2007OAName" value="RuleML2007"/>
+	<property name="RuleML2007TopicName" value="ruleml2007"/>
+	
+</environment-properties>
+
+<mule-environment-properties synchronous="true"/>
+	<connector name="jmsConnector"
+		className="org.mule.providers.jms.JmsConnector">
+		<properties>
+			<property name="connectionFactoryJndiName"
+				value="ConnectionFactory" />
+			<property name="jndiInitialFactory"
+				value="org.activemq.jndi.ActiveMQInitialContextFactory" />
+			<property name="specification" value="1.1" />
+			<map name="connectionFactoryProperties">
+				<property name="useEmbeddedBroker" value="true" />
+			</map>
+		</properties>
+	</connector>
+
+
+	<endpoint-identifiers>	
+
+	    <!-- endpoints of the rule responder bridge (main entry point)-->
+	    
+		<endpoint-identifier name="RuleResponder" value="jms://topic:ruleResponder" />
+		
+		<!-- service endpoints of the RuleML-2007 use case -->
+		
+		<endpoint-identifier name="${RuleML2007OAName}" value="jms://topic:${RuleML2007TopicName}" />
+		<endpoint-identifier name="${RuleML2007TopicName}_ProgramCoChair1" value="jms://topic:programChair1" />
+		<endpoint-identifier name="${RuleML2007TopicName}_PublicityChair" value="${TOMCAT}/Responder6/" />
+		<endpoint-identifier name="${RuleML2007TopicName}_ChallengeCoChair1" value="${TOMCAT}/Responder/" />
+
+		<!-- service endpoints of the RuleML-2008 use case -->
+
+		<endpoint-identifier name="${RuleML2008OAName}" value="jms://topic:${RuleML2008TopicName}" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic1}" value="jms://topic:${RuleML2008OAName}${RuleML2008Topic1}" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic2}" value="jms://topic:${RuleML2008OAName}${RuleML2008Topic2}" />
+		
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic3}" value="${TOMCAT}/${RuleML2008OAName}${RuleML2008Topic3}/" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic4}" value="${TOMCAT}/${RuleML2008OAName}${RuleML2008Topic4}/" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic5}" value="${TOMCAT}/${RuleML2008OAName}${RuleML2008Topic5}/" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic6}" value="${TOMCAT}/${RuleML2008OAName}${RuleML2008Topic6}/" />
+		<endpoint-identifier name="${RuleML2008TopicName}_${RuleML2008Topic7}" value="${TOMCAT}/${RuleML2008OAName}${RuleML2008Topic7}/" />
+		
+		<!-- service endpoints of the RuleML-2009 use case -->
+		
+		<endpoint-identifier name="${RuleML2009OAName}" value="jms://topic:${RuleML2009TopicName}" />
+		<endpoint-identifier name="${RuleML2009TopicName}_${RuleML2009Topic1}" value="${TOMCAT}/${RuleML2009OAName}${RuleML2009Topic1}/" />
+		<endpoint-identifier name="${RuleML2009TopicName}_${RuleML2009Topic2}" value="${TOMCAT}/${RuleML2009OAName}${RuleML2009Topic2}/" />
+		<endpoint-identifier name="${RuleML2009TopicName}_${RuleML2009Topic3}" value="${TOMCAT}/${RuleML2009OAName}${RuleML2009Topic3}/" />
+		<endpoint-identifier name="${RuleML2009TopicName}_${RuleML2009Topic4}" value="${TOMCAT}/${RuleML2009OAName}${RuleML2009Topic4}/" />
+
+        <!-- service endpoints of the WR use case -->
+        
+        <endpoint-identifier name="${WellnessRulesOAName}" value="jms://topic:${WellnessRulesTopicName}" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic1}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic1}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic2}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic2}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic3}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic3}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic4}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic4}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic5}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic5}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic6}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic6}/" />
+        <endpoint-identifier name="${WellnessRulesTopicName}_${WellnessRulesTopic7}" value="${TOMCAT}/${WellnessRulesOAName}${WellnessRulesTopic7}/" />
+        
+        <!-- service endpoints of the WR 2.0 use case -->
+        
+        <endpoint-identifier name="${WellnessRules2OAName}" value="jms://topic:${WellnessRules2TopicName}" />
+        <endpoint-identifier name="${WellnessRules2TopicName}_${WellnessRules2Topic1}" value="${TOMCAT}/${WellnessRules2OAName}${WellnessRules2Topic1}/" />
+        
+	</endpoint-identifiers>
+    
+	<model name="mule-api-client">
+	    
+	    <!-- the main rule repsonder endpoint descriptor -->
+	    
+		<mule-descriptor name="RuleResponder"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:ruleResponder"/>
+				<endpoint name="httpEndpoint" address="http://localhost:${MULE_PORT}">
+                    <!-- filter out the favicon request -->
+                    <filter className="org.mule.routing.filters.logic.NotFilter">
+                        <filter pattern="/favicon.ico" className="org.mule.providers.http.filters.HttpRequestWildcardFilter"/>
+                    </filter>
+                    <properties>
+                        <property name="Content-Type" value="text/plain"/>
+                    </properties>
+                </endpoint>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/rule_responder_bridge/RuleResponderBridge.prova" />
+			</properties>
+		</mule-descriptor>	
+
+	    <!-- descriptors of the query-answer use case 1.1 and 1.2 -->
+
+		<mule-descriptor name="Organization1"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:organization1"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_case1/personalAgent.prova" />
+			</properties>
+		</mule-descriptor>		
+
+		<mule-descriptor name="Organization2"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:organization2"/>		
+				<endpoint name="httpEndpoint2" address="http://localhost:8889">                                 
+                </endpoint>									
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_case1/organization.prova" />
+			</properties>
+		</mule-descriptor>	
+	
+	
+	    <!-- descriptors of the HCLS rule responder agents for the HCLS use case -->
+	    
+		<mule-descriptor name="HCLS"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:hcls"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseHCLS/hcls_responder.prova" />
+			</properties>
+		</mule-descriptor>	    	    
+	    
+		<mule-descriptor name="goPubMed"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:goPubMed"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseHCLS/goPubMed.prova" />
+			</properties>
+		</mule-descriptor>
+
+		<mule-descriptor name="w3cHCLS"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:w3cHCLS"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseHCLS/w3cHCLS.prova" />
+			</properties>
+		</mule-descriptor>
+		
+		<mule-descriptor name="patabs"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:patabs"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseHCLS/patabs.prova" />
+			</properties>
+		</mule-descriptor>
+		
+		<mule-descriptor name="uniprot"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:uniprot"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseHCLS/uniprot.prova" />
+			</properties>
+		</mule-descriptor>			
+						
+			    
+	<!-- descriptors of the RuleML-2007 rule responder agents for the RuleML-2007 use case -->
+
+		<mule-descriptor name="RuleML-2007"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:ruleml2007"/>		
+				<endpoint name="httpEndpoint1" address="http://localhost:9999">                                 
+                </endpoint>									
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseRuleML-2007/RuleML-2007_Organization/RuleML-2007-Responder.prova" />
+			</properties>
+		</mule-descriptor>
+
+		<mule-descriptor name="ruleml2007_ProgramCoChair1"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:programChair1"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseRuleML-2007/RuleML-2007_ProgramChair1/programChair1.prova" />
+			</properties>
+		</mule-descriptor>
+	
+    <!-- descriptors of the RuleML-2008 rule responder agents for the RuleML-2008 use case -->
+
+		<mule-descriptor name="${RuleML2008OAName}"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:${RuleML2008TopicName}"/>		
+				<endpoint name="httpEndpoint2008" address="http://localhost:${RuleML2008_PORT}">                 
+                </endpoint>									
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="${RuleML2008_Prova}" />
+			</properties>
+		</mule-descriptor>
+
+		<mule-descriptor name="ruleml2008_ProgramChair"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:ProgramChair2008"/>
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="/use_caseRuleML2008/RuleML-2008_ProgramChair1/programChair1.prova" />
+			</properties>
+		</mule-descriptor>
+		
+	<!-- descriptors of the RuleML-2009 rule responder agents for the RuleML-2009 use case -->
+		
+		<mule-descriptor name="${RuleML2009OAName}"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:${RuleML2009TopicName}"/>		
+				<endpoint name="httpEndpoint2009" address="http://localhost:${RuleML2009_PORT}">                 
+                </endpoint>									
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="${RuleML2009_Prova}" />
+			</properties>
+		</mule-descriptor>		
+		
+	<!-- descriptors of the WellnessRules rule responder agents for the WellnessRules use case -->
+		
+		<mule-descriptor name="${WellnessRulesOAName}"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:${WellnessRulesTopicName}"/>		
+				<endpoint name="httpEndpointWR" address="http://localhost:${WellnessRules_PORT}">                 
+                </endpoint>									
+			</inbound-router>
+			<properties>
+				<property name="rulebase" value="${WellnessRules_Prova}" />
+			</properties>
+		</mule-descriptor>	
+		
+		<mule-descriptor name="${WellnessRules2OAName}"
+			implementation="${MULE_IMPLEMENTATION}" singleton="true">
+			<inbound-router>
+				<endpoint address="jms://topic:${WellnessRules2TopicName}"/>		
+				<endpoint name="httpEndpointWR2" address="http://localhost:${WellnessRules2_PORT}">                 
+                </endpoint>									
+			</inbound-router> 
+			<properties>
+				<property name="rulebase" value="${WellnessRules2_Prova}" />
+			</properties>
+		</mule-descriptor>
+	</model>
+	
+</mule-configuration>

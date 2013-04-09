@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd" 
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including negation as failure (NAF)
+			File: nafdatalog.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafdatalog includes the 'negation' module -->
+	<xs:include schemaLocation="modules/negation_module.xsd"/>
+	
+	<!-- note the addition of 'naf' (negation as failure) from the negation module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+			add 'naf' so that _body's content model is:
+			(atom | and | or | naf)
+		-->
+		<xs:group name="_body.content">
+			<xs:choice>
+				<xs:group ref="_body.content"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			add 'naf' so that and's content model is:
+			((atom | or | naf)*)
+		-->
+		<xs:group name="and.content">
+			<xs:choice>
+				<xs:group ref="and.content"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>	
+
+		<!--
+			add 'naf' so that or's content model is:
+			((atom | and | naf)*)
+		-->		
+		<xs:group name="or.content">
+			<xs:choice>
+				<xs:group ref="or.content"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>			
+	</xs:redefine>
+	
+</xs:schema>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/nafnegdatalog.xsd">
+
+<!-- a trivial example rulebase for testing the Datalog RuleML sublanguage, with both strong and weak negation -->
+
+<And innerclose="universal">
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+   <Naf>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+    </Atom>
+   </Naf>
+  </body>
+</Implies>
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+   <Or>
+     <Naf>
+      <Neg>
+       <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+       </Atom>
+      </Neg>
+     </Naf>
+    <Neg>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+     </Atom>
+    </Neg>
+      <Neg>
+       <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+       </Atom>
+      </Neg>
+     <Neg>
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+     </Neg>
+   </Or>
+  </body>
+</Implies>
+
+</And>
+
+</Assert>

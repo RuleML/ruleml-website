@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema Driver for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: urcbindatagroundlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- include the auxiliary schema -->		
+	<xs:include schemaLocation="aux_urcbindatagroundlog.xsd"/>
+
+	<!-- by default, atoms permit 0 or more inds or vars, so the atom module is redefined -->
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<!-- restrict atoms to binary and remove vars -->
+		<!-- (same as urcbindatagroundfact) -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="ind"/>
+				</xs:choice>
+			</xs:sequence>			
+		</xs:group>	
+	</xs:redefine>
+	
+</xs:schema>

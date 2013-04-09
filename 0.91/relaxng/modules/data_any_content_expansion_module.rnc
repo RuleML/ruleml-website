@@ -1,0 +1,38 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Data Element, Any Content" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, Data" ]
+dc:description [
+  "The expansion module for mixed-type Data element, a Type (Object) for literal constants and structure data from any namespace."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Data_any.Node.def
+## FIXME? Node.choice |= Data_any.Node.def
+# This module declares the following RuleML elements, attributes and patterns:
+#            * <Data>
+
+## an extension point for alternate spellings and internationalization of the data tag name.  
+Data_any-node.choice |= Data_any.Node.def
+
+## A fixed argument like RDF literals. It may be optionally associated with an XML Schema built-in datatype using the xsi:type attribute.
+## Data may have mixed content with any elements, and any attributes except in the namespace xsi.
+Data_any.Node.def =
+  
+  ## <Data>: literal constant optionally typed with @xsi:type. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Data
+  element Data {
+    (Data-datt.choice & reData.attlist), (text & anyElement.def*)
+  }
+anyElement.def =
+  element * {
+    attribute * { text }*,
+    (text & anyElement.def*)
+  }

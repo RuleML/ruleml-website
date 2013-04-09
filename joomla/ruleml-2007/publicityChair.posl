@@ -1,0 +1,304 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF profile for RuleML-2007 Publicity Chair: **Disclaimer** these rules are experimental and not offical									    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF contact and personal information									                                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%FOAF facts about Publicity Chairs	
+  
+foafname(firstName[Tracy],lastName[Bost]).
+foaftitle(title[Dr]).
+foafmbox(email[TracyATemailDOTcom]).
+exphones(TelephoneNumbers[office[0314],cellPhone[1234]]).
+
+%FOAF facts about Publicity Chair
+  
+foafname(firstName[Matthias],lastName[Nickles]).
+foaftitle(title[Dr]).
+foafmbox(email[MatthiasATemailDOTcom]).
+exphones(TelephoneNumbers[office[0235],cellPhone[5678]]).
+
+%Rule to obtain the Publicity Chairs contact information
+
+contact(?FirstName,?LastName,?Title,?Email,?Telephone) :-
+  foafname(firstName[?FirstName],lastName[?LastName]),
+  foaftitle(title[?Title]),
+  foafmbox(email[?Email]),
+  exphones(TelephoneNumbers[office[?Telephone],cellPhone[?]]).  
+  
+%TODO Extend personal information
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%	FOAF extended Rules for Publicity Chair						                                                                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%	Sponsoring Rules for the Publicity Chair				                                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%This is the main rule for sponsoring.  An organization may sponsor the RuleML 2007 symposium.  The query requires that a amount of the
+%organization is donating,  the results contain the level of the donations, the benefits of the donations, and if the deadline has passed or not,
+%the performative contains an action that should occur from the result of the donation
+
+sponsor(contact[?Name,?Organization],?Amount:integer,results[?Level,?Benefits,?DeadlineResults] , performative[?Action]) :-
+  requestSponsoringLevel(?Amount:integer,?Level),
+  requestBenefits(?Level,?Benefits),
+  checkDeadline(?DeadlineResults),
+  checkAction(?Action,?Level,?Amount:integer).
+
+%Action list could be extended Depending on the Organization, etc
+%Check action will determine what action the Publicity Chair should do depending on the level of the donation
+
+checkAction(?Action,?Level,?Amount:integer) :- actionPerformed(?Action,?Level,?Amount:integer).
+
+%When a sponsor makes a donation under 500 the Publicity Chair encourage them to donate more
+
+actionPerformed(?Action:string,preSponsor,?Amount:integer):- subtract(?Result:integer,500:integer,?Amount:integer),
+                                                             stringConcat(?Action,?Result:integer).
+presponsor(encourage[donate[300]]).													  
+
+%When a sponsor makes a bronze donation the Publicity Chair	should email the organization
+
+actionPerformed(email,bronze,?Amount:integer).
+
+%When a sponsor makes a silver donation the Publicity Chair should email the organization
+
+actionPerformed(email,silver,?Amount:integer).
+ 
+%When a sponsor makes a gold donation the Publicity Chair should phone the organization
+
+actionPerformed(phone,gold,?Amount:integer).
+
+%When a sponsor makes a platinum donation the Publicity Chair should phone the organization
+
+actionPerformed(phone,platinum,?Amount:integer).
+
+%When a sponsor makes a emerald donation the Publicity Chair should phone the organization
+
+actionPerformed(phone,emerald,?Amount:integer).
+
+%This rule checks to see if the deadline has passed.  It must compare the current date to the deadline date.  If the date is greater
+%than the deadline date, then the deadline has past.
+
+checkDeadline(passed[deadline]):-
+  date(?X:integer),
+  deadline(sponsoring, ?D:integer),
+  greaterThan(?X:integer,?D:integer).
+
+%This rule checks to see if the deadline is on going.  It must compare the current date to the deadline date.  If the date is less
+%than the deadline date, then the deadline is on going.
+
+checkDeadline(onGoing[deadline]):-
+  date(?X:integer),
+  deadline(sponsoring, ?D:integer),
+  lessThan(?X:integer,?D:integer).
+
+%This fact is used to set the deadline for sponsoring  
+deadline(sponsoring,20080830:integer).
+
+%date is dynamically defined in the java servlet code
+%date(20070815:integer).
+
+%This rule is used to determine is a sponsor donated a presponsor amount
+
+requestSponsoringLevel(?Amount:integer,?Level) :-
+  sponsoringLevel(rank0,?Level,under[us$[?UnderBronzeAmount:integer]]),
+  lessThan(?Amount:integer,?UnderBronzeAmount:integer).
+
+%This rule is used to determine is a sponsor donated a bronze amount
+  
+requestSponsoringLevel(?Amount:integer,?Level) :-
+  sponsoringLevel(rank1,?Level,us$[?BronzeAmount:integer]),
+  greaterThanOrEqual(?Amount:integer,?BronzeAmount:integer),
+  sponsoringLevel(rank2,silver,us$[?SilverAmount:integer]),
+  lessThan(?Amount:integer,?SilverAmount:integer).
+
+%This rule is used to determine is a sponsor donated a silver amount
+  
+requestSponsoringLevel(?Amount:integer,?Level) :- 
+  sponsoringLevel(rank2,?Level,us$[?SilverAmount:integer]),
+  greaterThanOrEqual(?Amount:integer,?SilverAmount:integer),
+  sponsoringLevel(rank3,gold,us$[?GoldAmount:integer]),
+  lessThan(?Amount:integer,?GoldAmount:integer).
+
+%This rule is used to determine is a sponsor donated a gold amount
+  
+requestSponsoringLevel(?Amount:integer,?Level) :-
+ sponsoringLevel(rank3,?Level,us$[?GoldAmount:integer]),
+ greaterThanOrEqual(?Amount:integer,?GoldAmount:integer),
+ sponsoringLevel(rank4,platinum,us$[?PlatinumAmount:integer]),
+ lessThan(?Amount:integer,?PlatinumAmount:integer).
+ 
+%This rule is used to determine is a sponsor donated a platinum amount
+ 
+requestSponsoringLevel(?Amount:integer,?Level) :- 
+  sponsoringLevel(rank4,?Level,us$[?PlatinumAmount:integer]),
+  greaterThanOrEqual(?Amount:integer,?PlatinumAmount:integer),
+  sponsoringLevel(rank5,emerald,us$[?EmeraldAmount:integer]),
+  lessThan(?Amount:integer,?EmeraldAmount:integer).
+  
+%This rule is used to determine is a sponsor donated a emerald amount
+  
+requestSponsoringLevel(?Amount:integer,?Level) :-
+  sponsoringLevel(rank5, ?Level,us$[?EmeraldAmount:integer]),
+  greaterThanOrEqual(?Amount:integer,?EmeraldAmount:integer).
+
+%These facts determine the amount of money that is required to meet a sponsor level
+
+%If an organization donates less than $500 they are a pre sponsor
+  
+sponsoringLevel(rank0, preSponsor,under[us$[500:integer]]).
+
+%If an organization donates $500 they are a bronze sponsor
+
+sponsoringLevel(rank1, bronze,us$[500:integer]).
+
+%If an organization donates $1000 they are a silver sponsor
+
+sponsoringLevel(rank2, silver, us$[1000:integer]).
+
+%If an organization donates $3000 they are a gold sponsor
+
+sponsoringLevel(rank3, gold, us$[3000:integer]).
+
+%If an organization donates $5000 they are a platinum sponsor
+
+sponsoringLevel(rank4, platinum, us$[5000:integer]).
+
+%If an organization donates $7500 they are a emerald sponsor
+
+sponsoringLevel(rank5, emerald, us$[7500:integer]).
+
+%This rule will return the benefits of the level of sponsor ship
+requestBenefits(?Level,?Benefits) :-
+  benefits(?Level,?Benefits).
+  
+
+%The follow facts determine the benefits for a sponsor level
+
+% A bronze sponsor get the following benefits:
+% 1) Logo on Site 2) Acknowledgement in Proceedings
+
+benefits(preSponsor,benefits[none]). 
+ 
+benefits(bronze, benefits[
+                  logo[on[site]],
+                  acknowledgement[in[proceedings]]
+                 ]).
+				 
+% A silver sponsor get the following benefits:
+% 1) Logo on Site 2) Acknowledgement in Proceedings 3)Option to target sponsoring Student
+			 
+benefits(silver, benefits[
+                  logo[on[site]],
+                  acknowledgement[in[proceedings]],
+                  option[sponsor[student]]
+                 ]).
+% A gold sponsor get the following benefits:
+% 1) Logo on Site 2) Acknowledgement in Proceedings 3)Option to target sponsoring Student
+% 4)1 Free Registration 5) Logo in Proceedings 6) Option to give out demos
+
+benefits(gold, benefits[
+                logo[on[site]],
+                acknowledgement[in[proceedings]],
+                option[sponsor[student]],
+                free[registration,amount[1]],
+                logo[in[proceedings]],
+                option[demo]
+              ]).
+				 
+% A platinum sponsor get the following benefits:
+% 1) Logo on Site 2) Acknowledgement in Proceedings 3)Option to target sponsoring Student
+% 4) 2 Free Registration 5) Logo in Proceedings 6) Option to give out demos
+% 7) Name in all Advance Publicity 8) Distrubtion of brochures to all Participants
+
+benefits(platinum, benefits[
+	                    logo[on[site]],
+	                    acknowledgement[in[proceedings]],
+	                    option[sponsor[student]],
+	                    free[registration,amount[2]],
+	                    logo[in[proceedings]],
+	                    option[demo],
+	                    name[all[advance[publicity]]],
+	                    distribution[brochures[all[participants]]]
+	                  ]). 
+
+% A emerald sponsor get the following benefits:
+% 1) Logo on Site 2) Acknowledgement in Proceedings 3)Option to target sponsoring Student
+% 4) 3 Free Registration 5) Logo in Proceedings 6) Option to give out demos
+% 7) Name in all Advance Publicity 8) Distrubtion of brochures to all Participants
+
+benefits(emerald, benefits[
+	               logo[on[site]],
+	               acknowledgement[in[proceedings]],
+	               option[sponsor[student]],
+	               free[registration,amount[3]],
+	               logo[in[proceedings]],
+	               option[demo],
+	               name[all[advance[publicity]]],
+	               distribution[brochures[all[participants]]]
+	             ]). 
+
+%Test query for sponsoring
+%sponsor(contact[ben,nrc],500:integer,results[?Level,?Benefits,?DeadlineResults] , performative[?Action]).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%	Discount Rules for Registration, sponsors get some free registrations                                                                       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%These facts check how many free registrations a sponsor level gets
+
+%A bronze sponsor gets 0 free registration
+
+checkFreeRegistrationForLevel(bronze,0:integer).
+
+%A silver sponsor gets 0 free registration
+
+checkFreeRegistrationForLevel(silver,0:integer).
+
+%A gold sponsor gets 1 free registration
+
+checkFreeRegistrationForLevel(gold,1:integer).
+
+%A platinum sponsor gets 1 free registration
+
+checkFreeRegistrationForLevel(platinum, 2:integer).
+
+%A emerald sponsor gets 1 free registration
+
+checkFreeRegistrationForLevel(emerald,3:integer).
+
+%The following rules will compute the individual discount of each registration and the total cost of the registration
+
+%Should group the output and input into plexs
+
+%This rule is used to determine if a sponsor gets all free registrations.
+
+registrationDiscount(?Organization:sponsor,?RegistrationCost:real,?Level,?NumberOfRegistrations:integer,?IndividualDiscountCost:real,?TotalCost:real) :-
+  checkFreeRegistrationForLevel(?Level,?NumberOfFreeRegistrations:integer),
+  lessThanOrEqual(?NumberOfRegistrations:integer,?NumberOfFreeRegistrations:integer),
+  multiply(?IndividualDiscountCost:real,?RegistrationCost:real,0:real),
+  multiply(?TotalCost:real,0:real,0:real).
+
+%This rule is used if the sponsor registers more then their free amount.
+
+registrationDiscount(?Organization:sponsor,?RegistrationCost:real,?Level,?NumberOfRegistrations:integer,?IndividualDiscountCost:real,?TotalCost:real) :-
+  checkFreeRegistrationForLevel(?Level,?NumberOfFreeRegistrations:integer),
+  greaterThan(?NumberOfRegistrations:integer,?NumberOfFreeRegistrations:integer),
+  multiply(?IndividualDiscountCost:real,?RegistrationCost:real,1:real),
+  subtract(?AmountOfNonFreeRegistrations:integer,?NumberOfRegistrations:integer,?NumberOfFreeRegistrations:integer),
+  multiply(?TotalCost:real,?AmountOfNonFreeRegistrations:integer,?IndividualDiscountCost:real).
+
+%This rule is used to calculate the discount of registration if the organization is a collaboration partner.
+
+registrationDiscount(?Organization:collaborationPartner,?RegistrationCost:real,?NumberOfRegistrations:integer,?IndividualDiscountCost:real,?TotalCost:real) :-
+   multiply(?IndividualDiscountCost:real,?RegistrationCost:real,0.9:real),
+   multiply(?TotalCost:real,?NumberOfRegistrations:integer,?IndividualDiscountCost:real).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%	Other Rules				                                                                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%TODO: Add more rules

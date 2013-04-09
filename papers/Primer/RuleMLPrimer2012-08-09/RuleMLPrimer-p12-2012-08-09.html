@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Primer Page Template</title>
+    <script>
+      var nextpage="RuleMLPrimer-p12a-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p12-slide">
+      <h1>Backward Chaining Derivation</h1>
+      <iframe class="section" src="iframe_contents/backward_chaining.html"> </iframe>      
+    </section>
+    <section id="section-p12-prose">
+      <h3>Backward Chaining Derivation - Notes</h3>
+      <p>The new rule and fact can augment our earlier rule and fact for a <span
+          style="font-style: italic"
+          >chaining</span> derivation example as follows: The
+        first conjunct of the <span
+          style="font-family: courier"
+          >&lt;Rel&gt;discount&lt;/Rel&gt;</span> rule's
+        <span
+          style="font-family: courier">&lt;if&gt;</span> chains to the <span
+          style="font-family: courier"
+          >&lt;Rel&gt;premium&lt;/Rel&gt;</span> rule,
+        which succeeds as shown earlier, binding<span
+          style="font-family: courier"></span><span style="font-family: courier"
+          >&lt;Var&gt;customer&lt;/Var&gt;</span> to <span
+          style="font-family: courier"
+          >&lt;Ind&gt;Peter Miller&lt;/Ind&gt;</span>. The
+        second conjunct just matches the <span
+          style="font-family: courier"
+          >&lt;Rel&gt;luxury&lt;/Rel&gt;</span> fact,
+        binding <span
+          style="font-family: courier"
+          >&lt;Var&gt;product&lt;/Var&gt;</span> to <span
+          style="font-family: courier"
+          >&lt;Ind&gt;Porsche&lt;/Ind&gt;</span>. So, the
+        <span
+          style="font-family: courier"
+        >&lt;Rel&gt;discount&lt;/Rel&gt;</span>
+        rule succeeds with those bindings, proving an atom shown here with its
+        translation to English:</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p11-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p13-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

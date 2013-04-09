@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a Binary Datalog RuleML sublanguage
+			File: aux_bindatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- redefine the previous sublanguage in the hierarchy to remove href attributes -->
+	<xs:redefine schemaLocation="aux_urcbindatalog.xsd">
+		<!-- remove href attributes -->
+		<xs:attributeGroup name="ind.attlist"/>
+	</xs:redefine>
+	
+</xs:schema>

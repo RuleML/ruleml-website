@@ -1,0 +1,37 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "The RuleML object identifier element" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, object identifier" ]
+dc:description [
+  "This is the Core Schema module for object identifiers in RuleML."
+]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= oid.edge.def
+edge.choice |= oid.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <oid>
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the object identifier tag name.  
+objectIdentifier-edge.choice |= oid.edge.def
+
+## An optional label for a clause, creating accessibility within the knowledge representation. 
+## This can help for representing prioritization between rules, for example. 
+## All type tags (i.e. those that begin with an uppercase letter) of RuleML can begin with 
+## such a label except those that permit only character data (e.g. <Ind>, <Rel>, etc.). 
+## Note that oids are not required to be unique within a rulebase.
+oid.edge.def =
+  
+  ## <oid>: a label for Node elements. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-oid
+  element oid { oid.content }
+
+## The object descriptor content model consists of any single term.
+## Note: this corrects an error in the oid content model of RuleML 0.91,
+## where Var is allowed in oid in bindatagroundlog and bindatagroundfact.
+oid.content |= AnyTerm.choice
+# For the declaration of the term patterns, see the term module (individual_expansion_module)
+#

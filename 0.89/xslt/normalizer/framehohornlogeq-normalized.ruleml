@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protect xmlns="http://www.ruleml.org/0.89/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/framehohornlogeq.xsd">
+	<!-- a trivial example rulebase for testing the framehohornlogeq RuleML sublanguage -->
+	<!-- mutex from courteous rules -->
+	<!--
+		!- pricediscount(?CUST,?Y) and pricediscount(?CUST,?Z) | neg (?Y = ?Z).
+	-->
+	<warden>
+		<Mutex>
+			<oppo>
+				<And>
+					<formula>
+						<Hterm>
+							<op>
+								<Con>pricediscount</Con>
+							</op>
+							<arg index="1">
+								<Var>CUST</Var>
+							</arg>
+							<arg index="2">
+								<Var>Y</Var>
+							</arg>
+						</Hterm>
+					</formula>
+					<formula>
+						<Neg>
+							<strong>
+								<Hterm>
+									<op>
+										<Con>pricediscount</Con>
+									</op>
+									<arg index="1">
+										<Var>CUST</Var>
+									</arg>
+									<arg index="2">
+										<Var>Z</Var>
+									</arg>
+								</Hterm>
+							</strong>
+						</Neg>
+					</formula>
+				</And>
+			</oppo>
+			<mgiv>
+				<!-- Neg not yet added to body, hence not allowed under mgiv -->
+				<!--   <Neg>	-->
+				<Equal>
+					<side>
+						<Var>Y</Var>
+					</side>
+					<side>
+						<Var>Z</Var>
+					</side>
+				</Equal>
+				<!--   </Neg>	-->
+			</mgiv>
+		</Mutex>
+	</warden>
+	<content>
+		<And mapClosure="universal">
+			<!-- from SWSL document at http://www.daml.org/services/swsl/report/swsl.shtml -->
+			<!-- section 6.2 -->
+			<!-- explicit equality -->
+			<formula>
+				<Implies>
+					<head>
+						<Equal>
+							<side>
+								<Hterm>
+									<op>
+										<Con>f</Con>
+									</op>
+									<arg index="0">
+										<Con>a</Con>
+									</arg>
+									<arg index="1">
+										<Var>X</Var>
+									</arg>
+								</Hterm>
+							</side>
+							<side>
+								<Hterm>
+									<op>
+										<Con>g</Con>
+									</op>
+									<arg index="0">
+										<Var>Y</Var>
+									</arg>
+									<arg index="1">
+										<Con>b</Con>
+									</arg>
+								</Hterm>
+							</side>
+						</Equal>
+					</head>
+					<body>
+						<Hterm>
+							<op>
+								<Con>p</Con>
+							</op>
+							<arg index="0">
+								<Var>X</Var>
+							</arg>
+							<arg index="1">
+								<Var>Y</Var>
+							</arg>
+						</Hterm>
+					</body>
+				</Implies>
+			</formula>
+			<!-- section 6.3 -->
+			<!-- non-positional Atom with required oid and optional op -->
+			<formula>
+				<Atom>
+					<oid>
+						<Con>o</Con>
+					</oid>
+					<op>
+						<Con>test relation</Con>
+					</op>
+					<slot>
+						<Hterm>
+							<op>
+								<Con>f</Con>
+							</op>
+							<arg index="1">
+								<Con>a</Con>
+							</arg>
+							<arg index="2">
+								<Con>b</Con>
+							</arg>
+						</Hterm>
+						<Con>3</Con>
+					</slot>
+				</Atom>
+			</formula>
+			<!-- singleton slot -->
+			<formula>
+				<Atom>
+					<oid>
+						<Con>mary</Con>
+					</oid>
+					<slot>
+						<Con>female</Con>
+					</slot>
+				</Atom>
+			</formula>
+			<!-- new set-valued tag 
+		<Atom>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+				<Set>
+					<Con>v1'</Con>
+					<Con>...</Con>
+					<Con>vk'</Con>
+				</Set>
+			</slot>
+		</Atom>-->
+			<!-- class membership and subclass molecules 
+		<InstanceOf>
+			<Con>t'</Con>
+			<Con>s'</Con>
+		</InstanceOf>
+		<SubclassOf>
+			<Hterm>
+				<Con>t'</Con>
+			</Hterm>
+			<Hterm>
+				<Con>s'</Con>
+			</Hterm>
+		</SubclassOf>-->
+			<!-- signature molecule 
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+				<Con>v'</Con>
+			</slot>
+		</Signature>-->
+			<!-- boolean signature molecule 
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+			</slot>
+		</Signature>-->
+			<!-- cardinality constraints 
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot minCard="0" maxCard="1">
+				<Hterm>
+					<Con>s'</Con>
+					<Con>t1'</Con>
+					<Con>...</Con>
+					<Con>tn'</Con>
+				</Hterm>
+				<Con>v'</Con>
+			</slot>
+		</Signature>-->
+			<!-- Slot access and path expressions 
+		<Hterm>
+			<oid>
+				<Con>r</Con>
+			</oid>
+			<op>
+				<Con>s</Con>
+			</op>
+			<Get>
+				<oid>
+					<Con>room</Con>
+				</oid>
+				<SlotProd>
+					<Con>ceiling</Con>
+					<Con>color</Con>
+				</SlotProd>
+			</Get>
+		</Hterm>-->
+			<!-- section 6.4 -->
+			<!-- reification -->
+			<formula>
+				<Hterm>
+					<oid>
+						<Con>a</Con>
+					</oid>
+					<op>
+						<Con/>
+					</op>
+					<slot>
+						<Con>b</Con>
+						<Reify>
+							<Hterm>
+								<op>
+									<Con>p</Con>
+								</op>
+								<arg index="0">
+									<Hterm>
+										<oid>
+											<Var>X</Var>
+										</oid>
+										<op>
+											<Con/>
+										</op>
+										<slot>
+											<Con>foo</Con>
+											<Con>bar</Con>
+										</slot>
+									</Hterm>
+								</arg>
+							</Hterm>
+						</Reify>
+					</slot>
+				</Hterm>
+			</formula>
+			<formula>
+				<Hterm>
+					<oid>
+						<Con>john</Con>
+					</oid>
+					<op>
+						<Con/>
+					</op>
+					<slot>
+						<Con>believes</Con>
+						<Reify>
+							<Implies>
+								<body>
+									<Hterm>
+										<op>
+											<Con>p</Con>
+										</op>
+										<arg index="0">
+											<Var>X</Var>
+										</arg>
+									</Hterm>
+								</body>
+								<head>
+									<Hterm>
+										<op>
+											<Con>q</Con>
+										</op>
+										<arg index="0">
+											<Var>X</Var>
+										</arg>
+									</Hterm>
+								</head>
+							</Implies>
+						</Reify>
+					</slot>
+				</Hterm>
+			</formula>
+			<!-- miscellaneous stuff, same as from hohornlog -->
+			<formula>
+				<Implies>
+					<head>
+						<Equal>
+							<side>
+								<Con>some constant</Con>
+							</side>
+							<side>
+								<Var>d</Var>
+							</side>
+						</Equal>
+					</head>
+					<body>
+						<And>
+							<formula>
+								<Or>
+									<formula>
+										<Equal>
+											<side>
+												<Con>some constant</Con>
+											</side>
+											<side>
+												<Var>d</Var>
+											</side>
+										</Equal>
+									</formula>
+									<formula>
+										<Hterm>
+											<op>
+												<Con>unequal</Con>
+											</op>
+											<arg index="1">
+												<Var>x</Var>
+											</arg>
+											<arg index="2">
+												<Var>person</Var>
+											</arg>
+										</Hterm>
+									</formula>
+								</Or>
+							</formula>
+						</And>
+					</body>
+				</Implies>
+			</formula>
+			<formula>
+				<Equal>
+					<side>
+						<Con>some constant</Con>
+					</side>
+					<side>
+						<Var>d</Var>
+					</side>
+				</Equal>
+			</formula>
+			<formula>
+				<Equal>
+					<side>
+						<Nano>
+							<opf>
+								<Fun>some function</Fun>
+							</opf>
+							<Con>arg1</Con>
+							<Con>arg2</Con>
+							<Con>arg3</Con>
+						</Nano>
+					</side>
+					<side>
+						<Nano>
+							<opf>
+								<Fun>some other function</Fun>
+							</opf>
+							<Con>arg4</Con>
+							<Con>arg5</Con>
+							<Con>arg6</Con>
+						</Nano>
+					</side>
+				</Equal>
+			</formula>
+			<!--<Forall>
+			<Var>d</Var>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>d</Var>
+			</Equal>
+		</Forall>
+		<Equivalent>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>d</Var>
+			</Equal>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>e</Var>
+			</Equal>
+		</Equivalent>-->
+			<formula>
+				<Implies>
+					<head>
+						<Hterm>
+							<op>
+								<Con>friend</Con>
+							</op>
+							<slot>
+								<Con>t</Con>
+								<Var>b</Var>
+							</slot>
+							<arg index="0">
+								<Var>x</Var>
+							</arg>
+							<arg index="1">
+								<Var>y</Var>
+							</arg>
+							<arg index="2">
+								<Con>Steph</Con>
+							</arg>
+						</Hterm>
+					</head>
+					<body>
+						<And>
+							<formula>
+								<Or>
+									<formula>
+										<Atom>
+											<oid>
+												<Con>o</Con>
+											</oid>
+											<Con>unequal</Con>
+										</Atom>
+									</formula>
+								</Or>
+							</formula>
+						</And>
+					</body>
+				</Implies>
+			</formula>
+			<!--<Equivalent>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+		</Equivalent>
+		<Forall>
+			<Var>x</Var>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+		</Forall>-->
+		</And>
+	</content>
+</Protect>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+xmlns="http://www.w3.org/2003/11/ruleml"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Clause RuleML elements module.
+			This is the XML Schema clause elements module for RuleML.
+			File: clause_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+			
+			This module declares the following clause RuleML elements:
+			* _head
+			* _body
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** _head ***
+		content model: (atom)
+		
+		The head of a rule, also known as the "consequent" or "then" part of the rule.
+
+		The '_head' role is usable within facts and implication rules.  '_head' uses
+		an atomic (or, in equalog, equational) formula.
+	-->
+	<xs:attributeGroup name="_head.attlist"/>
+	<xs:group name="_head.content">
+		<xs:choice>
+			<xs:element ref="atom"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_head.type">
+		<xs:group ref="_head.content"/>
+		<xs:attributeGroup ref="_head.attlist"/>
+	</xs:complexType>
+	<xs:element name="_head" type="_head.type"/>
+
+	<!-- 
+		*** _body ***
+		content model: (atom | and | or)
+	
+		The body of a rule, also known as the "antecedent" or "if" part of the rule.
+
+		The '_body' role is usable within query tests and implication rules. '_body'
+		uses an atomic (or, in equalog, equational) formula, an 'and' or an 'or'.
+	-->
+	<xs:attributeGroup name="_body.attlist"/>
+	<xs:group name="_body.content">
+		<xs:choice>
+			<xs:element ref="atom"/>
+			<xs:element ref="and"/>
+			<xs:element ref="or"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="_body.type">
+		<xs:group ref="_body.content"/>
+		<xs:attributeGroup ref="_body.attlist"/>
+	</xs:complexType>
+	<xs:element name="_body" type="_body.type"/>
+
+</xs:schema>

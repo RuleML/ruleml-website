@@ -1,0 +1,47 @@
+<!-- An XML DTD for a 'UR' RuleML Sublanguage -->
+<!-- Last Modification: 2002-03-05 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- a Uniform Resource Identifier is currently CDATA, but see W3C's [RFC2396] -->
+<!ENTITY % URI "CDATA">
+
+
+
+<!-- ATTLIST Declarations -->
+
+<!-- fixed arguments to relations etc. normally enclose non-empty PCDATA content between ind(ividual) tags -->
+<!-- inds having empty content can be used like null values in databases -->
+
+<!-- fixed arguments to relations etc. can also have the character of objects (resources) -->
+
+<!-- objects (resources) are inds using a URL/URI as their OID, as in SHOE or RDF (cf. URML) -->
+<!-- named objects (resources) additionally enclose some non-empty PCDATA content between ind tags -->
+<!-- anonymous objects (resources) are inds having empty content -->
+
+<!-- like for XHTML anchors etc. the URI can be used under an optional href attribute of inds -->
+
+<!ATTLIST ind href %URI; #IMPLIED>
+
+
+<!-- Such a URI can also be used under an optional href attribute of rel(ation)s as used for RDF predicates -->
+
+<!ATTLIST rel href %URI; #IMPLIED>
+
+
+<!-- Similarly for fun(ction)s -->
+
+<!ATTLIST fun href %URI; #IMPLIED>
+
+
+<!-- Similarly for c(onstruc)tors -->
+
+<!ATTLIST ctor href %URI; #IMPLIED>
+
+
+<!-- Finally the optional href attribute for an _arole in a ro(le )li(st) permits the a(rgument )role name to be specified by reference, as a (global) URI -->
+
+<!ATTLIST arole href %URI; #IMPLIED>

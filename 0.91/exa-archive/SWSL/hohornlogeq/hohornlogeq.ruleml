@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hohornlogeq.xsd">
+
+<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+
+<Assert mapClosure="universal">
+
+
+					<Hterm>
+						<Con uri="test">unequal</Con>
+      						<slot><Con>label</Con><Con>an example fact</Con></slot>
+						<resl><Var>test</Var></resl>
+					</Hterm>
+
+
+
+
+				<Equivalent>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+				</Equivalent>
+				
+				<Forall>
+					<Var>x</Var>
+					<Hterm>
+						<Con>unequal</Con>
+						<Var>x</Var>
+						<Var>person</Var>
+					</Hterm>
+
+				</Forall>
+
+
+		<Implies>
+			<head>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+		
+			</head>
+			<body>
+				<And>
+				<Or>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+				<Hterm>
+					<Con>unequal</Con>
+					<Var>x</Var>
+					<Var>person</Var>
+				</Hterm>
+				</Or>
+				</And>
+
+			</body>
+		</Implies>
+
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+
+     <Equal>
+        <Hterm>
+          <op><Con>some function</Con></op>
+          <Con>arg1</Con>
+          <Con>arg2</Con>
+          <Con>arg3</Con>
+        </Hterm>
+        <Hterm>
+          <op><Con>some other function</Con></op>
+          <Con>arg4</Con>
+          <Con>arg5</Con>
+          <Con>arg6</Con>
+        </Hterm>
+      </Equal>
+
+<Forall>
+    <Var>d</Var>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+</Forall>
+
+<Equivalent>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>d</Var>
+    </Equal>
+    <Equal>
+      <Con>some constant</Con>
+      <Var>e</Var>
+    </Equal>
+</Equivalent>
+
+<Implies>
+  <head>
+     <Hterm>
+      <op><Con>friend</Con></op>
+      <slot><Con>t</Con><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Con>Steph</Con>
+     </Hterm>
+  </head>
+  <body>
+    <And>
+    <Hterm>
+      <op><Con>friend</Con></op>
+      <Con>Jane</Con>
+      <Con>Joan</Con>
+      <Con>Jack</Con>
+      <Var>y</Var>
+      <Con>Frank</Con>
+      <slot><Con>yar</Con><Hterm>
+          <op><Con>constructor</Con></op>
+		<Con>yar2</Con><Var>c</Var>
+        </Hterm></slot>
+    </Hterm>
+    </And>
+  </body>
+</Implies>
+
+
+</Assert>
+
+</RuleML>

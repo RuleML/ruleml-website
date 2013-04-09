@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.tsheringML.com" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.tsheringML.com"
+>
+<xs:include schemaLocation = "TsheringML.xsd"/>
+<xs:include schemaLocation = "conferenceML.xsd"/>
+
+    <xs:attributeGroup name="Calendar.attlist"/>
+	<xs:group name="Calendar.content">
+		<xs:sequence>
+			<xs:choice minOccurs= "0" maxOccurs = "unbounded">
+				<xs:element ref="Break"/>
+				<xs:element ref="Conference"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Calendar.type">
+		<xs:group ref="Calendar.content"/>
+		<xs:attributeGroup ref="Calendar.attlist"/>
+	</xs:complexType>
+	<xs:element name="Calendar" type="Calendar.type"/>
+	
+	
+</xs:schema>	
+	
+	

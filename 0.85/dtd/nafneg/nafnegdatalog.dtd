@@ -1,0 +1,14 @@
+<!-- XML DTD for a Datalog RuleML sublanguage, including both explicit and default (strong/weak) negation -->
+<!-- File: nafnegdatalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-16 -->
+
+<!-- the parameter entity modifications affecting previously declared elements are found in -->
+<!-- datalog_mod.mod because they are common in this DTD and urdatalog as well -->
+<!ENTITY % datalog.mod SYSTEM "datalog_mod.mod">
+%datalog.mod;
+
+<!-- this module inherits from the (negation/NAF) Binary Datalog RuleML sublanguage (nafnegbindatalog) -->
+<!ENTITY % nafnegbindatalog_include SYSTEM "nafnegbindatalog.dtd">
+%nafnegbindatalog_include;
+

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd" 
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including both explicit
+				and default (strong/weak) negation
+			File: nafnegdatalog.xsd
+			Version: 0.88
+			Last Modification: 2005-01-21
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafnegdatalog includes the 'negation' module and redefines it slightly -->
+	<xs:redefine schemaLocation="modules/negation_module.xsd">
+
+		<!--
+			add Neg so that weak's content model is:
+			(Atom | Neg)
+
+			Note that this indirectly adds Neg to Naf so that Naf's content model is:
+			(weak | Atom | Neg)
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+	
+	<!--
+		note the addition of Naf (Negation as failure) and Neg (classical Negation)
+		from the negation module
+	-->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+				note that changing head and body automatically channges Implies so that its content model is:
+				(
+					oid?,	( head, body) | ( body, head) | ( (Atom | And | Or | Neg | Naf), (Atom | Neg) )
+				)
+		-->
+		
+		<!--
+			add Neg so that head's content model is:
+			(Atom | Neg)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that body's content model is:
+			(Atom | And | Or | Neg | Naf)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that content's content model (when under Query) is:
+			( Atom | And | Neg | Naf)
+
+			Note that this indirectly adds Naf and Neg to Query so its content model is:
+			(content | Atom | And | Neg | Naf)
+		-->
+		<xs:group name="content-query.content">
+			<xs:choice>
+				<xs:group ref="content-query.content"/>
+				<xs:element ref="Naf"/>	
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+		</xs:group>
+
+		<!--
+			add Naf and Neg so that formula's content model (when under And/Or) is:
+			(Atom | And | Or | Naf | Neg)
+
+			Note that this indirectly adds Naf and Neg to And and Or so their content models are:
+			( (formula | Atom | And | Or | Naf | Neg)* )
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>				
+			</xs:choice>	
+		</xs:group>
+
+	</xs:redefine>
+	
+</xs:schema>

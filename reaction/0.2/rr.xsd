@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Reaction Rules schema part of Reaction RuleML
+            
+			This is the XML Schema for reaction rules with event (on).
+			
+			File: rr.xsd
+			Version: 0.2
+			Last Modification: 2007-07-01
+			
+			This schema declares the following Reaction rule elements and attributes:
+			
+				  * redefines Rule by adding on (event part)
+				  * redefines RuleML by Message (messaging reaction rules)
+				  * includes algebra module  (complex event and action algebra)
+				    and redefined on and do with complex algebra operators and
+				    messages
+				  
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/modules/algebra_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/modules/message_module.xsd"/>
+
+	<xs:redefine schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/pr.xsd">
+
+		<!--
+			rr schema redefines RuleML by adding Message
+			note the new content model of RuleML: 
+			( oid?,  (Assert | Retract | Query)*, Message? )
+						
+		-->	
+
+		<xs:group name="RuleML.content">
+			<xs:sequence>
+				<xs:group ref="RuleML.content"/>				
+				<xs:element ref="Message" minOccurs="0"/>
+			</xs:sequence>	
+		</xs:group>
+
+
+		<!--
+			the RR schema redefines the Rule element
+			and adds reaction rules and messaging rules
+			to Rule so that Rule's content model is:
+			
+		    ( oid?, label?, scope?, quantification?,  
+	  		(	  	
+	  			active reaction rules, e.g. trigger (on-do) or ECA rules (on-if-do)	
+	  			(on, if?, then?, do, after?, else?, elseDo?, elseAfter?) |
+	  		
+	  			special local/inner messaging receive and send reaction rules
+	  			(on | do) |
+	  		
+	  			production rules, such as if-do or special cases such as if-do-elseDo
+	  			(if, do, after?, else?, elseDo?, elseAfter?) |
+	  		
+	  			derivation rules (if-then and if-then-else) and mixed derivation/reaction rules, e.g. if-then-elseDo
+	  			(if, then, else?, elseDo?, elseAfter?)
+	  		) )	
+	  		
+	  		The above content model is non-deterministic, the non-deterministic
+	  		implementation is:
+	  		
+	  		( oid?, label?, quantification?,  
+	  		 (
+	  			(on, (if?, then?, do, after?,else?, elseDo?, elseAfter?)? ) |
+	  		 	do |
+	  			(if, (do, after?, else?, elseDo?, elseAfter?) | 
+	  		     	 (then, else?, elseDo?, else After?) )
+	  		 )
+	  		)     	 
+		-->
+			<xs:group name="RuleCore.content">
+				<xs:choice>
+					<xs:group ref="RuleCore.content"/>			
+					<xs:group ref="ReactionRule.content"/>
+					<xs:group ref="MessagingRule.content"/>			
+				</xs:choice>
+			</xs:group>
+
+
+		<!--
+			rr schema redefines on by adding Message
+			and event algebra operators so that on's content model is:
+			( Naf | Neg | Atom | Rule | Message | Sequence | Disjunction | Xor | Conjunction | Concurrent | Not | Any | Aperiodic | Periodic | Ind | Var | Expr)						
+		-->	
+		<xs:group name="on.content">
+			<xs:choice>
+				<xs:group ref="on.content"/>
+				<xs:element ref="Message"/>
+				<xs:group ref="event_algebra_group.content" />
+				<!-- used in complex event definitions -->
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			rr schema redefines do, elseDo by adding Message
+			and action algebra operators so that on's content model is:
+			( Atom | Assert | Retract | Update | Message | Succession | Choice | Flow | Loop | Ind | Var | Expr)						
+		-->	
+		<xs:group name="do.content">
+			<xs:choice>
+				<xs:group ref="do.content"/>
+				<xs:element ref="Message"/>
+				<xs:group ref="action_algebra_group.content" />
+				<!-- used in complex event definitions -->
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:group>		
+	
+ 	</xs:redefine>
+
+</xs:schema>

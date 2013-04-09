@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlog.xsd">
+
+<!-- Tim Berners-Lee's authentication rule (without URI inspection):
+Any person who was some time in the last 2 months an employee of
+an organization which was some time in the last 2 months a W3C member
+may register -->
+
+<And mapClosure="universal">
+
+<Implies>
+  <head>
+    <Atom>
+      <opr>
+        <Rel>may register</Rel>
+      </opr>
+      <Var>any</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <opr>
+          <Rel>person</Rel>
+        </opr>
+        <Var>any</Var>
+      </Atom>
+      <Atom>
+        <opr>
+          <Rel>organization</Rel>
+        </opr>
+        <Var>org</Var>
+      </Atom>
+      <Atom>
+        <opr>
+          <Rel>employee in</Rel>
+        </opr>
+        <Var>any</Var>
+        <Var>org</Var>
+        <Cterm>
+          <opc>
+            <Ctor>last</Ctor>
+          </opc>
+          <Cterm>
+            <opc>
+              <Ctor>month</Ctor>
+            </opc>
+            <Ind>2</Ind>
+          </Cterm>
+        </Cterm>
+      </Atom>
+      <Atom>
+        <opr>
+          <Rel>member in</Rel>
+        </opr>
+        <Var>org</Var>
+        <Ind wref="http://www.w3.org/">W3C</Ind>
+        <Cterm>
+          <opc>
+            <Ctor>last</Ctor>
+          </opc>
+          <Cterm>
+            <opc>
+              <Ctor>month</Ctor>
+            </opc>
+            <Ind>2</Ind>
+          </Cterm>
+        </Cterm>
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+</And>
+
+</Assert>
