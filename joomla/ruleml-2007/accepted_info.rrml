@@ -1,9 +1,0 @@
-This query retrieves all accepted submissions from the RuleML-2007 easy chair system (database)
-The RuleML-2007 organizational agent (Prova inference service) delegates the query to 
-the RuleML-2007 program chair according to the repsonsibility-assignment matrix 
-(defined in an external OWL file).
-The Program Chair agent (Prova inference service) retrieves the submitted papers according to 
-its internal rule-based decision logic and its dynamic interfaces to the database and returns the answers
-to the organizational agent.
-
-

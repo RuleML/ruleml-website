@@ -1,4 +1,0 @@
-This query returns all public interfaces (rule functions)
-     of the RuleML-2007 rule responder.
-     It returns the signatures and the mode declarations 
-     (input/output modes) and a description for human use.	  
