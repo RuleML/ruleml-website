@@ -1,0 +1,553 @@
+<?cocoon-format type="text/html"><html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>Glossary of RuleML 0.9</title>
+<style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+       dt { font-weight: bold }
+       abbr, acronym { cursor:help }
+     </style>
+</head>
+<body bgcolor="#FFFFFF">
+		<center>
+			<br>
+			<br>
+			<h1>Glossary of RuleML 0.9</h1>
+			<h2>
+				David Hirtle
+			</h2>
+			
+			<table border="0" align="center">
+			<tr><td colspan="2" align="center"><h2>Version history:</h2></td></tr>
+			<!--<tr><td align="right">2001-01-25 - </td><td><a href="http://www.ruleml.org/indtd.html">Version 0.7</a></td></tr>
+			<tr><td align="right">2001-07-11 - </td><td><a href="http://www.ruleml.org/indtd0.8.html">Version 0.8</a></td></tr>
+			<tr><td align="right">2003-12-09 - </td><td><a href="http://www.ruleml.org/0.85/">Version 0.85</a></td></tr>
+			<tr><td align="right">2004-06-23 - </td><td><a href="http://www.ruleml.org/0.86/">Version 0.86</a></td></tr>
+			<tr><td align="right">2004-08-12 - </td><td><a href="http://www.ruleml.org/0.87/">Version 0.87</a></td></tr>
+			<tr><td align="right">2005-03-01 - </td><td><a href="http://www.ruleml.org/0.88/">Version 0.88</a></td></tr>
+			<tr><td align="right">2005-05-27 - </td><td><a href="http://www.ruleml.org/0.89/">Version 0.89</a></td></tr>-->
+			<tr>
+<td align="right"><h3>2005-11-09 - </h3></td>
+<td><h3><a href="http://www.ruleml.org/0.9/glossary">Version 0.9</a></h3></td>
+</tr>			
+			</table>
+
+			<h2>Latest version: <a href="http://www.ruleml.org/glossary/">www.ruleml.org/glossary</a>
+</h2>
+			<p>
+			<h2>Quick link: <a href="http://www.ruleml.org/spec/">Specification</a>
+</h2>
+		</center>
+
+	<h2>Contents</h2>
+<ul>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="#Glossary">Glossary</a></li>
+</ul>
+<h2><a name="Introduction">Introduction</a></h2>
+
+<p>This glossary describes every tag of RuleML as of version 0.9. It will also be updated with more general terms in the future.</p>
+<h2><a name="Glossary">Glossary</a></h2>
+
+
+<dl>
+
+<dt id="gloss-And"><code>&lt;And&gt;</code></dt>
+<dd>A conjunctive expression, where <code>&lt;And&gt;Atom&lt;/And&gt;</code> is equivalent to <code>Atom</code>.
+<p>Attributes: <a href="#gloss-@mapDirection"><code>@mapDirection</code></a>, <a href="#gloss-@mapClosure"><code>@mapClosure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-arg"><code>&lt;arg&gt;</code></dt>
+<dd>A role used for the positional arguments of a logical atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>), i.e. any of the following: <a href="#gloss-Ind"><code>&lt;Ind&gt;</code></a>, <a href="#gloss-Data"><code>&lt;Data&gt;</code></a>, <a href="#gloss-Var"><code>&lt;Var&gt;</code></a>, <a href="#gloss-Skolem"><code>&lt;Skolem&gt;</code></a> or <a href="#gloss-Reify"><code>&lt;Reify&gt;</code></a>.
+<p>Attributes: <a href="#gloss-@index"><code>@index</code></a> (required)</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-Assert"><code>&lt;Assert&gt;</code></dt>
+<dd>A <abbr title="Knowledge Query Manipulation Language">KQML</abbr>-like performative acting as a wrapper specifying that its content (optionally surrounded by a <a href="#gloss-formula"><code>&lt;formula&gt;</code></a> role) is asserted, making an 'implicit <a href="#gloss-And"><code>&lt;And&gt;</code></a>' assumption. This allows the separation of declarative content from such procedural performatives. <code>&lt;Assert&gt;</code> corresponds to a <code>&lt;Rulebase&gt;</code> in <a href="http://www.ruleml.org/0.87">RuleML 0.87</a> (and earlier).
+<p>Attributes: <a href="#gloss-@mapDirection"><code>@mapDirection</code></a>, <a href="#gloss-@mapClosure"><code>@mapClosure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/performative_module.xsd">performative module</a> and <a href="http://www.ruleml.org/fol">FOL RuleML</a>)</p>
+</dd>
+
+<dt id="gloss-Atom"><code>&lt;Atom&gt;</code></dt>
+<dd>A logical atom, i.e. an expression formed from a predicate (or relation) applied to a collection of its (logical) arguments.  The relation (<a href="#gloss-Rel"><code>&lt;Rel&gt;</code></a>) is followed by a sequence of zero or more arguments (<a href="#gloss-arg"><code>&lt;arg&gt;</code></a>).  Optional user-defined slots (<a href="#gloss-slot"><code>&lt;slot&gt;</code></a>) are also permitted before and/or after the arguments. Rest variables (<a href="#gloss-repo"><code>&lt;repo&gt;</code></a> and <a href="#gloss-resl"><code>&lt;resl&gt;</code></a>) are also permitted. For example, &quot;John is the father of Mary&quot;:
+<b><pre>
+&lt;Atom&gt;
+  &lt;Rel&gt;father&lt;/Rel&gt;
+  &lt;Ind&gt;John&lt;/Ind&gt;
+  &lt;slot&gt;&lt;Ind&gt;daughter&lt;/Ind&gt;&lt;Ind&gt;Mary&lt;/Ind&gt;&lt;/slot&gt;
+&lt;/Atom&gt;</pre></b>
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/atom_module.xsd">atom module</a> and <a href="http://www.ruleml.org/0.9/xsd/modules/holog_module.xsd">holog module</a>)</p>
+</dd>
+
+<dt id="gloss-body"><code>&lt;body&gt;</code></dt>
+<dd>The body of an implication rule (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>) containing the premise(s), also known as the &quot;antecedent&quot; or &quot;if&quot; part of the rule.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@card"><code>@card</code></dt>
+<dd>An attribute optionally specifying a <a href="#gloss-slot"><code>&lt;slot&gt;</code></a>'s cardinality.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/slot_module.xsd">slot module</a>)</p>
+</dd>
+
+<dt id="gloss-closure"><code>@closure</code></dt>
+<dd>An attribute indicating how the contained free variables are quantified. Allowed values are &quot;universal&quot; and &quot;existential&quot;.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Con"><code>&lt;Con&gt;</code></dt>
+<dd>A neutralized constant (for <a href="#gloss-Rel"><code>&lt;Rel&gt;</code></a>, <a href="#gloss-Ctor"><code>&lt;Ctor&gt;</code></a> and <a href="#gloss-Ind"><code>&lt;Ind&gt;</code></a>) of a Hilog term (<a href="#gloss-Hterm"><code>&lt;Hterm&gt;</code></a>). It is optionally surrounded by an operator (<a href="#gloss-op"><code>&lt;op&gt;</code></a>).
+<p>Attributes: <a href="#gloss-@type"><code>@type</code></a>, <a href="#gloss-@uri"><code>@uri</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/holog_module.xsd">holog module</a> and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-hilog"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+
+
+<dt id="gloss-Cterm"><code>&lt;Cterm&gt;</code></dt>
+<dd>A complex term, i.e. a logical term of the form &quot;c(...)&quot; where c is a constructor. The constructor (<a href="#gloss-Ctor"><code>&lt;Ctor&gt;</code></a>) is followed by a  sequence of zero or more arguments (<a href="#gloss-arg"><code>&lt;arg&gt;</code></a>). Optional user-defined slots (<a href="#gloss-slot"><code>&lt;slot&gt;</code></a>) are also permitted before and/or after the arguments, just like an atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>). Rest variables (<a href="#gloss-repo"><code>&lt;repo&gt;</code></a> and <a href="#gloss-resl"><code>&lt;resl&gt;</code></a>) are also permitted. For example:
+<b><pre>
+&lt;Cterm&gt;
+  &lt;Ctor&gt;book&lt;/Ctor&gt;
+  &lt;Var&gt;title&lt;/Var&gt;
+  &lt;Var&gt;author&lt;/Var&gt;
+  &lt;Var&gt;table of contents&lt;/Var&gt;
+  &lt;Var&gt;chapters&lt;/Var&gt;
+&lt;/Cterm&gt;</pre></b>
+<p>Attributes: <a href="#gloss-@type"><code>@type</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/cterm_module.xsd">cterm module</a>)</p>
+</dd>
+
+<dt id="gloss-Ctor"><code>&lt;Ctor&gt;</code></dt>
+<dd>A constructor, i.e. a logical function, of a complex term (<a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>). It is optionally surrounded by an operator (<a href="#gloss-op"><code>&lt;op&gt;</code></a>).
+<p>Attributes: <a href="#gloss-@uri"><code>@uri</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/cterm_module.xsd">cterm module</a>)</p>
+</dd>
+
+<dt id="gloss-Data"><code>&lt;Data&gt;</code></dt>
+<dd>A fixed argument like RDF literals. It may be optionally associated with an
+<a href="http://www.w3.org/TR/xmlschema-2/#built-in-datatypes">XML Schema built-in datatype</a> using the xsi:type attribute. For example:
+<b><pre>&lt;Data xsi:type=&quot;xs:dateTime&quot;&gt;2002-10-10T17:00:00Z&lt;/Data&gt;</pre></b>
+is valid (according to the <a href="http://www.w3.org/TR/xmlschema-2/#dateTime">dateTime</a> datatype), but the following is not:
+<b><pre>&lt;Data xsi:type=&quot;xs:dateTime&quot;&gt;tomorrow&lt;/Data&gt;</pre></b>
+Note, however, that &lt;Data&gt;tomorrow&lt;/Data&gt; is valid because no built-in datatype is given.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-declare"><code>&lt;declare&gt;</code></dt>
+<dd>A role used for variables (<a href="#gloss-Var"><code>&lt;Var&gt;</code></a>) declared within a quantifier (<a href="#gloss-Forall"><code>&lt;Forall&gt;</code></a> or <a href="#gloss-Exists"><code>&lt;Exists&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/quantifier_module.xsd">quantifier module</a>)</p>
+</dd>
+
+<dt id="gloss-degree"><code>&lt;degree&gt;</code></dt>
+<dd>An optional truth value (between 0 and 1) that may be assigned to facts and rules.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/atom_module.xsd">atom module</a>) and <a href="http://image.ntua.gr/FuzzyRuleML">Fuzzy RuleML</a>
+</p>
+</dd>
+
+<dt id="gloss-@direction"><code>@direction</code></dt>
+<dd>An attribute indicating the intended direction of an implication rule's (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>) inferencing. It has a neutral default value of &quot;bidirectional&quot;. Other allowed values are &quot;forward&quot; and &quot;forward&quot;.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Equal"><code>&lt;Equal&gt;</code></dt>
+<dd>An equational formula consisting of two expressions, each of which contains either an argument or a <a href="#gloss-Nano"><code>&lt;Nano&gt;</code></a> and may be optionally surrounded by a side (<a href="#gloss-side"><code>&lt;side&gt;</code></a>) role. For example, &quot;factorial(0)=1&quot; may be equivalently represented in the following two ways:
+<b><pre>
+&lt;Equal&gt;
+  &lt;Nano&gt;
+    &lt;Fun&gt;fac&lt;/Fun&gt;
+    &lt;Data xsi:type=&quot;xs:int&quot;&gt;0&lt;/Data&gt;
+  &lt;/Nano&gt;
+  &lt;Data xsi:type=&quot;xs:int&quot;&gt;1&lt;/Data&gt;
+&lt;/Equal&gt;</pre></b>
+<b><pre>
+&lt;Equal&gt;
+  &lt;side&gt;
+    &lt;Nano&gt;
+      &lt;Fun&gt;fac&lt;/Fun&gt;
+      &lt;Data xsi:type=&quot;xs:int&quot;&gt;0&lt;/Data&gt;
+    &lt;/Nano&gt;
+  &lt;/side&gt;
+  &lt;side&gt;
+    &lt;Data xsi:type=&quot;xs:int&quot;&gt;1&lt;/Data&gt;
+  &lt;/side&gt;    
+&lt;/Equal&gt;</pre></b>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/equality_module.xsd">equality module</a>)</p>
+</dd>
+
+<dt id="gloss-Equivalent"><code>&lt;Equivalent&gt;</code></dt>
+<dd>An equivalence expression, which is &quot;syntactic sugar&quot; for a pair of conjoined converse implication rules (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>). It consists of a pair of (optionally skipped) <a href="#gloss-torso"><code>&lt;torso&gt;</code></a> roles. For example, &quot;A person owning an object is equivalent to an object belonging to a person&quot;:
+<b><pre>
+&lt;Equivalent&gt;
+  &lt;torso&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;own&lt;/Rel&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/torso&gt;
+  &lt;torso&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;belongs&lt;/Rel&gt;
+      &lt;Var&gt;object&lt;/Var&gt;
+      &lt;Var&gt;person&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/torso&gt;
+&lt;/Equivalent&gt;</pre></b>
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Exists"><code>&lt;Exists&gt;</code></dt>
+<dd>Explicit existential quantifier. It consists of one or more variables (<a href="#gloss-Var"><code>&lt;Var&gt;</code></a>), each optionally surrounded by a <a href="#gloss-declare"><code>&lt;declare&gt;</code></a> role, followed by a logical formula (optionally surrounded by a <a href="#gloss-formula"><code>&lt;formula&gt;</code></a> role).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/quantifier_module.xsd">quantifier module</a>)</p>
+</dd>
+
+<dt id="gloss-Forall"><code>&lt;Forall&gt;</code></dt>
+<dd>Explicit universal quantifier. It consists of one or more variables (<a href="#gloss-Var"><code>&lt;Var&gt;</code></a>), each optionally surrounded by a <a href="#gloss-declare"><code>&lt;declare&gt;</code></a> role, followed by a logical formula (optionally surrounded by a <a href="#gloss-formula"><code>&lt;formula&gt;</code></a> role).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/quantifier_module.xsd">quantifier module</a>)</p>
+</dd>
+
+<dt id="gloss-formula"><code>&lt;formula&gt;</code></dt>
+<dd>The formula role of a conjunctive (<a href="#gloss-And"><code>&lt;And&gt;</code></a>) or disjunctive (<a href="#gloss-Or"><code>&lt;Or&gt;</code></a>) expression, quantifier (<a href="#gloss-Forall"><code>&lt;Forall&gt;</code></a> or <a href="#gloss-Exists"><code>&lt;Exists&gt;</code></a>), or performative (<a href="#gloss-Assert"><code>&lt;Assert&gt;</code></a>, <a href="#gloss-Query"><code>&lt;Query&gt;</code></a> or <a href="#gloss-Protect"><code>&lt;Protect&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a> and <a href="http://www.ruleml.org/0.9/xsd/modules/quantifier_module.xsd">quantifier module</a>)</p>
+</dd>
+
+<dt id="gloss-Fun"><code>&lt;Fun&gt;</code></dt>
+<dd>A user-defined function name of a <a href="#gloss-Nano"><code>&lt;Nano&gt;</code></a>. It is optionally surrounded by an operator (<a href="#gloss-op"><code>&lt;op&gt;</code></a>).
+<p>Attributes: <a href="#gloss-@uri"><code>@uri</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/equality_module.xsd">equality module</a>)</p>
+</dd>
+
+<dt id="gloss-Get"><code>&lt;Get&gt;</code></dt>
+<dd>A slot access primitive.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-head"><code>&lt;head&gt;</code></dt>
+<dd>The head of an implication rule (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>) containing the conclusion, also known as the &quot;consequent&quot; or &quot;then&quot; part of the rule.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Hterm"><code>&lt;Hterm&gt;</code></dt>
+<dd>A Hilog term, generalizing <a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a> and <a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/holog_module.xsd">holog module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-hilog"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-Implies"><code>&lt;Implies&gt;</code></dt>
+<dd>An implication rule. It consists of a conclusion role (<a href="#gloss-head"><code>&lt;head&gt;</code></a>) followed by a premise role (<a href="#gloss-body"><code>&lt;body&gt;</code></a>), or, equivalently (since roles constitute unordered elements), a premise role followed by a conclusion role. For example, &quot;The discount for a customer buying a product is 5.0 percent if the customer is premium and the product is regular&quot;:
+<b><pre>
+&lt;Implies&gt;
+  &lt;head&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;discount&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;Var&gt;product&lt;/Var&gt;
+      &lt;Ind&gt;5.0 percent&lt;/Ind&gt;
+    &lt;/Atom&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;premium&lt;/Rel&gt;
+        &lt;Var&gt;customer&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;regular&lt;/Rel&gt;
+        &lt;Var&gt;product&lt;/Var&gt;
+      &lt;/Atom&gt;
+    &lt;/And&gt;
+  &lt;/body&gt;
+&lt;/Implies&gt;</pre></b>
+Alternatively, the roles may be skipped, in which case the premise comes first followed by the conclusion as suggested by the element name 'Implies'  (since the body of a rule implies the head, not vice versa). Using the same example, the order changes:
+<b><pre>
+&lt;Implies&gt;
+  &lt;And&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;premium&lt;/Rel&gt;
+      &lt;Var&gt;customer&lt;/Var&gt;
+    &lt;/Atom&gt;
+    &lt;Atom&gt;
+      &lt;Rel&gt;regular&lt;/Rel&gt;
+      &lt;Var&gt;product&lt;/Var&gt;
+    &lt;/Atom&gt;
+  &lt;/And&gt;
+  &lt;Atom&gt;
+    &lt;Rel&gt;discount&lt;/Rel&gt;
+    &lt;Var&gt;customer&lt;/Var&gt;
+    &lt;Var&gt;product&lt;/Var&gt;
+    &lt;Ind&gt;5.0 percent&lt;/Ind&gt;
+  &lt;/Atom&gt;
+&lt;/Implies&gt;</pre></b>
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>, <a href="#gloss-@direction"><code>@direction</code></a>, <a href="#gloss-@kind"><code>@kind</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Ind"><code>&lt;Ind&gt;</code></dt>
+<dd>An individual constant, as in predicate logic, which can also be considered to be a fixed argument like RDF resources.
+<p>Attributes: <a href="#gloss-@type"><code>@type</code></a>, <a href="#gloss-@uri"><code>@uri</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-@index"><code>@index</code></dt>
+<dd>A required role for specifying the position of a positional argument (<a href="#gloss-arg"><code>&lt;arg&gt;</code></a>) within a logical atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-InstanceOf"><code>&lt;InstanceOf&gt;</code></dt>
+<dd>A class membership molecule.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-Integrity"><code>&lt;Integrity&gt;</code></dt>
+<dd>An integrity constraint. For example, &quot;An object cannot be both gold and rusty&quot;:
+<b><pre>
+&lt;Integrity&gt;
+  &lt;Neg&gt;
+    &lt;And&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;gold&lt;/Rel&gt;
+        &lt;Var&gt;object&lt;/Var&gt;
+      &lt;/Atom&gt;
+      &lt;Atom&gt;
+        &lt;Rel&gt;rusty&lt;/Rel&gt;
+        &lt;Var&gt;object&lt;/Var&gt;
+      &lt;/Atom&gt;       
+    &lt;/And&gt;
+  &lt;/Neg&gt;
+&lt;/Integrity&gt;</pre></b>
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>, <a href="#gloss-@direction"><code>@direction</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@kind"><code>@kind</code></dt>
+<dd>An attribute indicating the kind of an implication rule (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>). Allowed values are &quot;fo&quot;, which stands for First-Order (classical) implication (the default), and &quot;lp&quot;, which stands for Logic Programming implication.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@mapClosure"><code>@mapClosure</code></dt>
+<dd>An attribute indicating how the free variables falling within its scope (i.e. all child elements) are quantified. See <a href="http://www.ruleml.org/0.9/#Mapping">attribute mapping</a> for more details. Allowed values are &quot;universal&quot; and &quot;existential&quot;.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@mapDirection"><code>@mapDirection</code></dt>
+<dd>An attribute indicating the intended direction of implication rule (<a href="#gloss-Implies"><code>&lt;Implies&gt;</code></a>) inferencing of elements falling within its scope (i.e. all child elements). See <a href="http://www.ruleml.org/0.9/#Mapping">attribute mapping</a> for more details. This attribute has a neutral default value of &quot;bidirectional&quot;. Other allowed values are &quot;forward&quot; and &quot;backward&quot;.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@maxCard"><code>@maxCard</code></dt>
+<dd>An attribute optionally specifying a <a href="#gloss-slot"><code>&lt;slot&gt;</code></a>'s maximum cardinality.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/slot_module.xsd">slot module</a>)</p>
+</dd>
+
+<dt id="gloss-@minCard"><code>@minCard</code></dt>
+<dd>An attribute optionally specifying a <a href="#gloss-slot"><code>&lt;slot&gt;</code></a>'s minimum cardinality.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/slot_module.xsd">slot module</a>)</p>
+</dd>
+
+<dt id="gloss-Naf"><code>&lt;Naf&gt;</code></dt>
+<dd>A &quot;by default&quot; negation of a logical atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>)  (i.e. &quot;weak&quot; negation or negation as failure). The negated atom may be optionally surrounded by a <a href="#gloss-weak"><code>&lt;weak&gt;</code></a> role.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/naf_module.xsd">naf module</a>)</p>
+</dd>
+
+<dt id="gloss-Nano"><code>&lt;Nano&gt;</code></dt>
+<dd>A logical function usable within equational formulas (<a href="#gloss-Equal"><code>&lt;Equal&gt;</code></a>) of the form &quot;f(...)&quot; where f is a function name. The function name (<a href="#gloss-Fun"><code>&lt;Fun&gt;</code></a>)  is followed by a  sequence of zero or more flat (i.e. non-<a href="#gloss-Nano"><code>&lt;Nano&gt;</code></a>) arguments (<a href="#gloss-arg"><code>&lt;arg&gt;</code></a>), much like complex terms.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/equality_module.xsd">equality module</a>)</p>
+</dd>
+
+<dt id="gloss-Neg"><code>&lt;Neg&gt;</code></dt>
+<dd>A classical negation of a logical atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>)  (i.e. classical or &quot;strong&quot; negation). The negated atom may be optionally surrounded by a <a href="#gloss-strong"><code>&lt;strong&gt;</code></a> role.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/neg_module.xsd">neg module</a>)</p>
+</dd>
+
+<dt id="gloss-oid"><code>&lt;oid&gt;</code></dt>
+<dd>An optional label for a clause, creating accessibility within the knowledge representation. This can help for representing prioritization between rules, for example. All type tags (i.e. those that begin with an uppercase letter) of RuleML can begin with such a label except those that permit only character data (e.g. <a href="#gloss-Ind"><code>&lt;Ind&gt;</code></a>, <a href="#gloss-Rel"><code>&lt;Rel&gt;</code></a>, <a href="#gloss-Ctor"><code>&lt;Ctor&gt;</code></a>, etc.).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/desc_module.xsd">desc module</a>)</p>
+</dd>
+
+<dt id="gloss-op"><code>&lt;op&gt;</code></dt>
+<dd>An operator expression including either a relation (<a href="#gloss-Rel"><code>&lt;Rel&gt;</code></a>) of an atom (<a href="#gloss-op"><code>&lt;Atom&gt;</code></a>), a constructor (<a href="#gloss-Ctor"><code>&lt;Ctor&gt;</code></a>) of a complex term (<a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>), a function name (<a href="#gloss-Fun"><code>&lt;Fun&gt;</code></a>) of a <a href="#gloss-Nano"><code>&lt;Nano&gt;</code></a>, or a neutralized constant (<a href="#gloss-Con"><code>&lt;Con&gt;</code></a>) of a Hilog term (<a href="#gloss-Hterm"><code>&lt;Hterm&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/atom_module.xsd">atom module</a>, <a href="http://www.ruleml.org/0.9/xsd/modules/cterm_module.xsd">cterm module</a>, <a href="http://www.ruleml.org/0.9/xsd/modules/equality_module.xsd">equality module</a>, and <a href="http://www.ruleml.org/0.9/xsd/modules/holog_module.xsd">holog module</a>)</p>
+</dd>
+
+<dt id="gloss-Or"><code>&lt;Or&gt;</code></dt>
+<dd>A disjunctive expression, where <code>&lt;Or&gt;Atom&lt;/Or&gt;</code> is equivalent to <code>Atom</code>. 
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-Plex"><code>&lt;Plex&gt;</code></dt>
+<dd>A collection of (ordered) arguments (optionally enclosed by <a href="#gloss-arg"><code>&lt;arg&gt;</code></a>) and/or (unordered) user-defined slots (<a href="#gloss-slot"><code>&lt;slot&gt;</code></a>), identical to a complex term (<a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>) except not having a user-specified constructor (equivalent to having a system-specified constructor 'Plex'). Rest variables (<a href="#gloss-repo"><code>&lt;repo&gt;</code></a> and <a href="#gloss-resl"><code>&lt;resl&gt;</code></a>) are also permitted. For example:
+<b><pre>
+&lt;Plex&gt;
+  &lt;Var&gt;title&lt;/Var&gt;
+  &lt;Var&gt;author&lt;/Var&gt;
+  &lt;Var&gt;table of contents&lt;/Var&gt;
+  &lt;Var&gt;chapters&lt;/Var&gt;
+&lt;/Plex&gt;
+</pre></b>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/cterm_module.xsd">cterm module</a>)</p>
+</dd>
+
+<dt id="gloss-Protect"><code>&lt;Protect&gt;</code></dt>
+<dd>A <abbr title="Knowledge Query Manipulation Language">KQML</abbr>-like performative acting as a wrapper specifying that its content (optionally surrounded by a <a href="#gloss-formula"><code>&lt;formula&gt;</code></a> role) is protected, making an 'implicit <a href="#gloss-And"><code>&lt;And&gt;</code></a>' assumption. This allows the separation of declarative content from such procedural performatives.
+<p>Attributes: <a href="#gloss-@mapDirection"><code>@mapDirection</code></a>, <a href="#gloss-@mapClosure"><code>@mapClosure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/performative_module.xsd">performative module</a> and <a href="http://www.ruleml.org/fol">FOL RuleML</a>)</p>
+</dd>
+
+<dt id="gloss-Query"><code>&lt;Query&gt;</code></dt>
+<dd>A <abbr title="Knowledge Query Manipulation Language">KQML</abbr>-like performative acting as a wrapper specifying that its content (optionally surrounded by a <a href="#gloss-formula"><code>&lt;formula&gt;</code></a> role) is queried, making an 'implicit <a href="#gloss-And"><code>&lt;And&gt;</code></a>' assumption. This allows the separation of declarative content from such procedural performatives.
+<p>Attributes: <a href="#gloss-@closure"><code>@closure</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/performative_module.xsd">performative module</a> and <a href="http://www.ruleml.org/fol">FOL RuleML</a>)</p>
+</dd>
+
+<dt id="gloss-Reify"><code>&lt;Reify&gt;</code></dt>
+<dd>Supports reification (a kind of instantiation or quasi-quotation) as needed by <a href="http://www.w3.org/Submission/SWSF-SWSL"><acronym title="Semantic Web Services Language">SWSL</acronym></a>. It allows any RuleML tag available within the current sublanguage as content, treating it as a term for performing reasoning on.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-Rel"><code>&lt;Rel&gt;</code></dt>
+<dd>A relation, i.e. a logical predicate, of an atom (<a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>). It is optionally surrounded by an operator (<a href="#gloss-op"><code>&lt;op&gt;</code></a>).
+<p>Attributes: <a href="#gloss-@uri"><code>@uri</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/atom_module.xsd">atom module</a>)</p>
+</dd>
+
+<dt id="gloss-repo"><code>&lt;repo&gt;</code></dt>
+<dd>A positional rest variable used in <a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>s, <a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>s and <a href="#gloss-Plex"><code>&lt;Plex&gt;</code></a>s.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/rest_module.xsd">rest module</a>)</p>
+</dd>
+
+<dt id="gloss-resl"><code>&lt;resl&gt;</code></dt>
+<dd>A slotted rest variable used in <a href="#gloss-Atom"><code>&lt;Atom&gt;</code></a>s, <a href="#gloss-Cterm"><code>&lt;Cterm&gt;</code></a>s and <a href="#gloss-Plex"><code>&lt;Plex&gt;</code></a>s.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/rest_module.xsd">rest module</a>)</p>
+</dd>
+
+<dt id="gloss-RuleML"><code>&lt;RuleML&gt;</code></dt>
+<dd>The n-ary top-level of a RuleML document. It permits (ordered) transactions of performatives (<a href="#gloss-Assert"><code>&lt;Assert&gt;</code></a>, <a href="#gloss-Query"><code>&lt;Query&gt;</code></a> or <a href="#gloss-Protect"><code>&lt;Protect&gt;</code></a>), making an 'implicitly sequential' assumption.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/performative_module.xsd">performative module</a>)</p>
+</dd>
+
+<dt id="gloss-Set"><code>&lt;Set&gt;</code></dt>
+<dd>A set-valued result as in <code>t[m -&gt; {v1,...,vk}]</code>.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-side"><code>&lt;side&gt;</code></dt>
+<dd>One of two expressions that together make an equational formula (<a href="#gloss-Equal"><code>&lt;Equal&gt;</code></a>). This role may contain anything a regular argument (<a href="#gloss-arg"><code>&lt;arg&gt;</code></a>) can or a <a href="#gloss-Nano"><code>&lt;Nano&gt;</code></a>.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/equational_module.xsd">equational module</a>)</p>
+</dd>
+
+<dt id="gloss-Signature"><code>&lt;Signature&gt;</code></dt>
+<dd>A signature molecule of the form <code>t[m =&gt; v]</code>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-Skolem"><code>&lt;Skolem&gt;</code></dt>
+<dd>A Skolem individual constant, like RDF's blank nodes.
+<p>Attributes: <a href="#gloss-@type"><code>@type</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>, and the <a href="http://www.ruleml.org/posl/poslintweb-talk.pdf">Integrating Positional and Slotted Knowledge on the Semantic Web</a> slides)</p>
+</dd>
+
+<dt id="gloss-slot"><code>&lt;slot&gt;</code></dt>
+<dd>A user-defined slot consisting of a name (first position) and a filler (second position). For example:
+<b><pre>
+&lt;slot&gt;
+  &lt;Ind&gt;color&lt;/Ind&gt;
+  &lt;Ind&gt;blue&lt;/Ind&gt;
+&lt;/slot&gt;
+</pre></b>
+<p>Attributes: <a href="#gloss-@weight"><code>@weight</code></a>, <a href="#gloss-@card"><code>@card</code></a>, <a href="#gloss-@minCard"><code>@minCard</code></a> or <a href="#gloss-@maxCard"><code>@maxCard</code></a> (depending on context)</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/slot_module.xsd">slot module</a>
+</p>
+</dd>
+
+<dt id="gloss-SlotProd"><code>&lt;SlotProd&gt;</code></dt>
+<dd>A polyadic path expressions element.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-strong"><code>&lt;strong&gt;</code></dt>
+<dd>A role used for classical negation (<a href="#gloss-Neg"><code>&lt;Neg&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/neg_module.xsd">neg module</a>)</p>
+</dd>
+
+<dt id="gloss-SubclassOf"><code>&lt;SubclassOf&gt;</code></dt>
+<dd>A subclass molecule.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/frame_module.xsd">frame module</a>, and the <a href="http://www.w3.org/Submission/SWSF-SWSL/#ruleml-frames"><acronym title="Semantic Web Services Language">SWSL</acronym> submission</a> to the <abbr title="World Wide Web Consortium">W3C</abbr>)</p>
+</dd>
+
+<dt id="gloss-torso"><code>&lt;torso&gt;</code></dt>
+<dd>A symmetric role used in an equivalence expression (<a href="#gloss-Equivalent"><code>&lt;Equivalent&gt;</code></a>) combining the asymmetric <a href="#gloss-head"><code>&lt;head&gt;</code></a> and <a href="#gloss-body"><code>&lt;body&gt;</code></a>.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/connective_module.xsd">connective module</a>)</p>
+</dd>
+
+<dt id="gloss-@type"><code>@type</code></dt>
+<dd>A role for optionally specify a term's (user-defined) type.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-@uri"><code>@uri</code></dt>
+<dd>An attribute for referring to a URI.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/uri_module.xsd">uri module</a>)</p>
+</dd>
+
+<dt id="gloss-Var"><code>&lt;Var&gt;</code></dt>
+<dd>A logical variable, as in logic programming.
+<p>Attributes: <a href="#gloss-@type"><code>@type</code></a>
+</p>
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/term_module.xsd">term module</a>)</p>
+</dd>
+
+<dt id="gloss-warden"><code>&lt;warden&gt;</code></dt>
+<dd>A role used for an integrity constraint (<a href="#gloss-Integrity"><code>&lt;Integrity&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/performative_module.xsd">performative module</a>)</p>
+</dd>
+
+<dt id="gloss-weak"><code>&lt;weak&gt;</code></dt>
+<dd>A role used for negation as failure (<a href="#gloss-Naf"><code>&lt;Naf&gt;</code></a>).
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/naf_module.xsd">naf module</a>)</p>
+</dd>
+
+<dt id="gloss-@weight"><code>@weight</code></dt>
+<dd>An attribute optionally specifying a <a href="#gloss-slot"><code>&lt;slot&gt;</code></a>'s relative weight.
+<p>(See: <a href="http://www.ruleml.org/0.9/xsd/modules/slot_module.xsd">slot module</a>)</p>
+</dd>
+
+</dl>
+<br>
+		<p>
+		Site Contact:
+		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+		Page Version: 2006-05-02
+		<br>
+		<br>
+		<br>
+		<a name="Practice-Preach"></a>
+		<small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+	      <br>
+	      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+	   </small>
+		</p>
+	</body>
+</html>

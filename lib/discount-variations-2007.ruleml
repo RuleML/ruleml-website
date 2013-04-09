@@ -1,0 +1,220 @@
+<RuleML>                                                <!-- 2007-04-24 -->
+
+<!-- based on http://www.ruleml.org/lib/discount-variations-2003.ruleml -->
+
+<Assert mapClosure="universal">
+
+
+<!-- Implication Rule 1:
+     Backward notation of head and body roles, as in Logic Programming
+     (ternary discount relation applied via Atom)
+
+"The discount for a customer buying a product is 5.0 percent
+if the customer is premium and the product is regular."
+
+Notice that an individual constant can syntactically be an entire phrase
+like "5.0 percent". It will unify only with variables and with individuals
+having exactly the same spelling (incl. spaces). One could refine this markup
+by introducing a constructor term for "percent[5.0]", thus leaving Datalog
+towards full Horn logic.
+-->
+
+<Implies>
+  <head>
+    <Atom>
+      <op><Rel>discount</Rel></op>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+<!--  Implication Rule 1 (permuted):
+      Forward notation of body and head roles, similar to Production Systems
+      (role permutation does not affect the semantics) -->
+
+<Implies>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+  <head>
+    <Atom>
+      <op><Rel>discount</Rel></op>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Atom>
+  </head>
+</Implies>
+
+
+<!--  Transformation Rule 1':
+      Conditional directed equation returns transformed value through Equal element
+      (interpreted binary discount function applied via Expr)   -->
+
+<Implies>
+  <head>
+    <Equal oriented="yes">
+      <Expr>
+        <op><Fun in="yes">discount</Fun></op>
+        <Var>customer</Var>
+        <Var>product</Var>
+      </Expr>
+      <Ind>5.0 percent</Ind>
+    </Equal>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>
+
+
+<!--  Transformation Rule 1' (permuted):
+      Permuted body and head roles do not affect the semantics -->
+
+<Implies>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+  <head>
+    <Equal oriented="yes">
+      <Expr>
+        <op><Fun in="yes">discount</Fun></op>
+        <Var>customer</Var>
+        <Var>product</Var>
+      </Expr>
+      <Ind>5.0 percent</Ind>
+    </Equal>
+  </head>
+</Implies>
+
+
+<!--  Reaction Rule 1a ("Event" and "Condition"):
+      On receiving premium notification from management and if regular derivable
+      then derive discount -->
+
+<Reaction>
+  <event>
+    <Receive>
+      <from><Ind>management</Ind></from>
+      <op><Rel>premium</Rel></op>
+      <Var>customer</Var>
+    </Receive>
+  </event>
+  <body>
+    <Atom>
+      <op><Rel>regular</Rel></op>
+      <Var>product</Var>
+    </Atom>
+  </body>
+  <head>
+    <Atom>
+      <op><Rel>discount</Rel></op>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Atom>
+  </head>
+</Reaction>
+
+
+<!--  Reaction Rule 1b (Producction Rule with "Condition" and "Action"):
+      If premium and regular derivable then send discount to customer -->
+
+<Reaction>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>premium</Rel></op>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>regular</Rel></op>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </body>
+  <head>
+    <Send>
+      <to><Var>customer</Var></to>
+      <op><Rel>discount</Rel></op>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Send>
+  </head>
+</Reaction>
+
+
+<!--  Reaction Rule 1c ("Event", "Condition", and "Action"):
+      On receiving premium notification from management and if regular derivable
+      then send discount _to customer -->
+
+<Reaction>
+  <event>
+    <Receive>
+      <from><Ind>management</Ind></from>
+      <op><Rel>premium</Rel></op>
+      <Var>customer</Var>
+    </Receive>
+  </event>
+  <body>
+    <Atom>
+      <op><Rel>regular</Rel></op>
+      <Var>product</Var>
+    </Atom>
+  </body>
+  <head>
+    <Send>
+      <to><Var>customer</Var></to>
+      <op><Rel>discount</Rel></op>
+      <Var>product</Var>
+      <Ind>5.0 percent</Ind>
+    </Send>
+  </head>
+</Reaction>
+
+
+</Assert>
+
+</RuleML>

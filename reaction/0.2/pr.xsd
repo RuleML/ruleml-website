@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Production RuleML schema of Reaction RuleML including
+			transactional update primitives (Assert, Retract) 
+			and actions (do)
+			
+			
+			This layer defines the Production RuleML part of Reaction RuleML.
+			
+			File: pr.xsd
+			Version: 0.2
+			Last Modification: 2007-07-01
+			
+			This schema declares the following Reaction RuleML elements and attributes:
+				  								  
+				  * redefines Rule by adding do, elseDo (action)
+				    and after, elseAfter (post-condition)				 		
+				  * add transaction update primitives (Assert, Retract)		  				  				  				  
+				  * redefines Assert by adding @safety (transactional update) and @all 
+				  * redefines Retract by adding @safety (transactional update) and @all
+				  *
+				  				  				  				    				  
+
+			Assert and Retract can be used in the action part (do) or in style of 
+			serial Horn rules in the body part (if) of a derivation rule
+				   
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	   
+	<xs:redefine schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/dr.xsd">
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--	
+	the PR schema redefines the Rule element
+	and adds production rules and mixed derivation/production rules
+	to Rule so that Rule's content model is:
+	
+	( oid?, label?, scope?, quantification?, 
+		(
+			(if, ( (do, after?, else?, elseDo?, elseAfter?) | 
+				 (then, else?, elseDo?, elseAfter?) )  ) 
+		)
+	)	
+-->
+
+<!--
+	redefine ProductionRule content so that DerivationRule content model is:
+	(if, do, after?, else?, elseDo?, elseAfter?)
+-->
+	
+	<xs:group name="ProductionRule.content">
+		<xs:sequence>
+			<xs:group ref="ProductionRule.content"/>	
+			<xs:element ref="do"/>
+			<xs:element ref="after" minOccurs="0"/>
+			<xs:element ref="else" minOccurs="0"/>
+			<xs:element ref="elseDo" minOccurs="0"/>
+			<xs:element ref="elseAfter" minOccurs="0"/>
+		</xs:sequence>			
+	</xs:group>
+
+
+<!--
+	add elseDo and elseAfter so that DerivationRule content model is:
+	(if, then, else?, elseDo?, elseAfter?)
+-->
+	<xs:group name="DerivationRule.content">
+		<xs:sequence>	
+			<xs:group ref="DerivationRule.content"/>						
+			<xs:element ref="elseDo" minOccurs="0"/>
+			<xs:element ref="elseAfter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	 the PR schema redefines the Assert element
+	 and adds the optional attribute @all and @safety for transactional updates: 
+	 
+	 @safety = normal | transactional; default = normal
+	 @all = yes | no; default = no
+	 	 
+	( oid?, (formula | Rulebase | Atom | Rule | Equivalent | Entails | Forall | Equal | Neg)* ) 
+-->
+	<xs:attributeGroup name="Assert.attlist">
+		<xs:attributeGroup ref="Assert.attlist"/>
+		<xs:attributeGroup ref="safety.attrib"/>
+		<xs:attributeGroup ref="all.attrib"/>
+	</xs:attributeGroup>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	 the PR schema redefines the Retract element
+	 and adds the attribute @all and @safety for transactional updates
+
+-->
+
+	<xs:attributeGroup name="Retract.attlist">
+		<xs:attributeGroup ref="Retract.attlist"/>
+		<xs:attributeGroup ref="safety.attrib"/>
+		<xs:attributeGroup ref="all.attrib"/>
+	</xs:attributeGroup>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Assert, Retract, Update so that body's content model is:
+	(Atom | And | Or | Equal | Naf | Neg | Assert | Retract | Update)
+-->
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:group ref="body.content"/>			
+			<xs:element ref="Assert" />
+			<xs:element ref="Retract"/>
+			<xs:element ref="Update"/>
+		</xs:choice>
+	</xs:group>
+	
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Assert, Retract, Update so that formula's content model (below And/Or) is:
+	(Atom | Naf | Neg | And | Or | Equal | Assert | Retract | Update)
+-->
+<xs:group name="formula-and-or.content">
+	<xs:choice>
+		<xs:group ref="formula-and-or.content"/>
+		<xs:group ref="update_primitives.content" />
+	</xs:choice>
+</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+</xs:redefine>
+
+
+			
+</xs:schema>

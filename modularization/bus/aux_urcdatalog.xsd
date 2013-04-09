@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a 'UR'-Centered Datalog RuleML sublanguage
+			File: aux_urcdatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		'UR'-centered refers to an atom's first ind _requiring_ an href attribute 
+		while the second ind may or may not have an href attribute
+		
+		This 'local' constraint was impossible to express by DTDs, but is possible with
+		XML Schema.  For the time being, however, it has been ignored (because using the
+		current methodology, all attributes are global) and therefore urcdatalog is equivalent
+		to urcdatalog.
+	-->
+
+	<!-- there is no need to redefine, so simply include previous sublanguage's schema -->
+	<xs:include schemaLocation="aux_urcbindatalog.xsd"/>
+	
+</xs:schema>

@@ -1,0 +1,176 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.81/ruleml-equafun.dtd">
+
+
+<rulebase>
+
+
+<!-- a fully flattened transformational factorial definition -->
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>fac</fun></_opf>
+      <ind>0</ind>
+    </nano>
+  </_headf>
+  <_foot>
+    <ind>1</ind>
+  </_foot>
+</trans>
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>fac</fun></_opf>
+      <var>n</var>
+    </nano>
+  </_headf>
+  <_body>
+    <and>
+      <atom>
+        <_opr>
+          <rel>greater</rel>
+        </_opr>
+        <var>n</var>
+        <ind>0</ind>
+      </atom>
+      <eq>
+        <var>m</var>
+        <nano>
+          <_opf>
+            <fun>-</fun>
+          </_opf>
+          <var>n</var>
+          <ind>1</ind>
+        </nano>
+      </eq>
+      <eq>
+        <var>f</var>
+        <nano>
+          <_opf>
+            <fun>fac</fun>
+          </_opf>
+          <var>m</var>
+        </nano>
+      </eq>
+    </and>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf>
+        <fun>*</fun>
+      </_opf>
+      <var>n</var>
+      <var>f</var>
+    </nano>
+  </_foot>
+</trans>
+
+
+
+<!-- a partially flattened transformational factorial definition -->
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>fact</fun></_opf>
+      <ind>0</ind>
+    </nano>
+  </_headf>
+  <_foot>
+    <ind>1</ind>
+  </_foot>
+</trans>
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>fact</fun></_opf>
+      <var>n</var>
+    </nano>
+  </_headf>
+  <_body>
+    <andv>
+      <atom>
+        <_opr>
+          <rel>greater</rel>
+        </_opr>
+        <var>n</var>
+        <ind>0</ind>
+      </atom>
+      <eqv>
+        <var>f</var>
+        <nanov>
+          <_opf>
+            <fun>fact</fun>
+          </_opf>
+          <nano>
+            <_opf>
+              <fun>-</fun>
+            </_opf>
+            <var>n</var>
+            <ind>1</ind>
+          </nano>
+        </nanov>
+      </eqv>
+    </andv>
+  </_body>
+  <_foot>
+    <nano>
+      <_opf>
+        <fun>*</fun>
+      </_opf>
+      <var>n</var>
+      <var>f</var>
+    </nano>
+  </_foot>
+</trans>
+
+
+
+<!-- a non-flattened transformational factorial definition -->
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>factorial</fun></_opf>
+      <ind>0</ind>
+    </nano>
+  </_headf>
+  <_foot>
+    <ind>1</ind>
+  </_foot>
+</trans>
+
+<trans>
+  <_headf>
+    <nano>
+      <_opf><fun>factorial</fun></_opf>
+      <var>n</var>
+    </nano>
+  </_headf>
+  <_body>
+    <atom>
+      <_opr><rel>></rel></_opr>
+      <var>n</var>
+      <ind>0</ind>
+    </atom>
+  </_body>
+  <_foot>
+    <nanov>
+      <_opf><fun>*</fun></_opf>
+      <var>n</var>
+      <nanov>
+        <_opf><fun>factorial</fun></_opf>
+        <nano>
+          <_opf><fun>-</fun></_opf>
+          <var>n</var>
+          <ind>1</ind>
+        </nano>
+      </nanov>
+    </nanov>
+  </_foot>
+</trans>
+
+</rulebase>

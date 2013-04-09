@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+	A simpe active reaction rule.
+	The event is a nested reaction rule, e.g. on "time event" do "action", 
+	where "action" = input event for outer reaction rule.
+	
+	ContractLog / Prova formalization in RBSLA
+	
+	eca(dummy1,dummy2,dummy3,dummy4,_,_).
+	
+-->
+
+<Assert>
+
+	<!-- ECA rule with event being a nested reaction rule -->
+		
+	<Reaction exec="active" kind="eca">
+		<event> <!-- the role tag might be omitted if still unambigous -->
+			<Reaction exec="active" kind="ea">
+				<event>
+					<Atom><Rel>dummy1</Rel></Atom>
+				</event>
+				<action>
+					<Atom><Rel>dummy2</Rel></Atom>
+				</action>
+			</Reaction>
+		</event>
+		<body>
+			<Atom><Rel>dummy3</Rel></Atom>
+		</body>
+		<action>
+			<Atom><Rel>dummy4</Rel></Atom>
+		</action>	
+	</Reaction>
+	
+	
+	
+	
+	
+	
+</Assert>
+
+</RuleML>

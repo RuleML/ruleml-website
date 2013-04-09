@@ -1,0 +1,430 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.91/xsd" xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            Derivation RuleML schema of Reaction RuleML including
+			negation as failure (NAF), explicit strong negation (Neg),
+			equational logic (Equal)
+			
+			This layer defines the Derivation RuleML part of Reaction RuleML.
+			It adds necessary extensions to the RuleML hornlog layer for
+			the Derivation RuleML language family.
+			
+			File: dr.xsd
+			Version: 0.2
+			Last Modification: 2007-07-01
+			
+			This schema declares the following Reaction RuleML elements and attributes:
+				  								  
+				  * rename Implies into Rule (if-then-else)
+				  * redefines RuleML by adding label, scope, qualification
+				  * redefines Assert, Retract by adding Rule, label, scope, qualification
+				  * redefines Query by adding label, scope, qualification				 				  
+				  * redefines Rulebase by adding Rule, label, scope, qualification
+				  * redefines formula by adding Rule, label, scope, qualification
+				  * redefines Atom by adding label, scope, qualification
+				  * redefines Var by adding @mode (input / output mode declaration)				  				  				  
+				  * redefines Rel and Fun by adding @per				  
+				  * add Naf, Neg and Equal
+
+			 Rule is the core construct for all types of rules in Reaction RuleML.			 
+			 Equal can be used to bind constructed objects from procedural attachments 
+			 or external queries to variables, e.g. X = java.lang.String("xxx"),
+			 i.e. bind the String object "xxx" to the variable X
+	
+				   
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	   
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/modules/root_module.xsd"/>			
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/modules/rule_module.xsd"/>
+	<xs:include schemaLocation="http://ibis.in.tum.de/research/ReactionRuleML/0.2/modules/attribute_module.xsd"/>
+
+
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->	
+
+<!--
+	the DR schema redefines the Ind element
+	so that it might contain any XML code
+	
+	
+-->
+	<xs:group name="Ind.content">
+		<xs:sequence>
+		    <xs:group ref="Ind.content"/>
+			<xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+		</xs:sequence>
+	</xs:group>	
+
+<!--
+	the DR schema redefines the Rule element
+	and adds derivation rules to Rule so that Rule's content model is:
+	
+	( label?, scope?, quantification?, oid?, ( (if, (then, else?)) ) )
+-->
+	<xs:group name="Rule.content">
+		<xs:sequence>
+			<xs:group ref="labels.content"/>			
+			<xs:group ref="Rule.content"/>			
+		</xs:sequence>
+	</xs:group>
+
+
+	<xs:group name="RuleCore.content">
+		<xs:choice>
+			<xs:group ref="RuleCore.content"/>			
+			<xs:group ref="IfRule.content"/>			
+		</xs:choice>
+	</xs:group>
+
+
+<!--
+	adds content model of derivation rules:
+	(then, else?)	
+-->
+	<xs:group name="DerivationRule.content">
+		<xs:sequence>	
+			<xs:group ref="DerivationRule.content"/>	 			 
+			 <xs:element ref="then"/>						 	
+			 <xs:element ref="else" minOccurs="0"/>		
+		</xs:sequence>
+	</xs:group>	
+	
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	 the DR schema redefines the RuleML element
+	 and adds label, scope, qualification so that the content model is:
+	 
+	( label?, scope?, qualification?, oid?, (Assert | Retract | Query)* )
+ 
+-->
+		<xs:group name="RuleML.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="RuleML.content"/>
+			</xs:sequence>	
+		</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->		
+
+<!--
+	 the DR schema redefines the Assert element
+	 and adds label, scope, qualification, Neg and Rule so that Assert's (and Retract's) content model is:
+	 
+	( label?, scope?, qualification?, oid?, (formula | Rulebase | Atom | Rule | Equivalent | Entails | Forall | Equal | Neg)* ) 
+-->
+		<xs:group name="Assert.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Assert.content"/>
+			</xs:sequence>	
+		</xs:group>
+		<xs:group name="Retract.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Retract.content"/>
+			</xs:sequence>	
+		</xs:group>		
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:group ref="formula-assert.content"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Rule" />
+			</xs:choice>	
+		</xs:group>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->	
+
+<!--
+	 the DR schema redefines the Atom element
+	 and adds label, scope, qualification so that Atom's content model is:
+	 
+		(
+			label?, scope?, qualification?, oid?, (op | Rel), (slot)*,
+			(arg | Ind | Data | Skolem | Var | Reify)*, (slot)*
+		)
+	  
+-->
+		<xs:group name="Atom.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Atom.content"/>
+			</xs:sequence>	
+		</xs:group>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->	
+
+<!--
+	 the DR schema redefines the Expr element
+	 and adds label, scope, qualification so that Exprs's content model is:
+	 
+		(
+		  label?, scope?, qualification?, oid?, (op|Fun), (slot)*, (resl)?,
+		  (arg|Ind|Data|Skolem|Var|Reify|Expr|Plex)*,
+		  (repo)?, (slot)*, (resl)?
+		)  
+-->
+		<xs:group name="Expr.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Expr.content"/>
+			</xs:sequence>	
+		</xs:group>
+
+	
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->	
+	
+<!--
+	  DR  redefines the Var element by adding a mode attribute
+	  @mode = + | - | ?; default is ?
+-->
+
+	  <xs:attributeGroup name="Var.attlist">
+		  <xs:attributeGroup ref="Var.attlist" />
+		  <xs:attributeGroup ref="mode.attrib"/> 
+	  </xs:attributeGroup>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add label, scope, qualification, Neg and Rule so that Rulebase's content model is:
+	(  label?, scope?, qualification?, oid?,  (formula | Atom | Neg | Rule| Equivalent | Forall | Equal)*  )
+-->
+    <xs:group name="Rulebase.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Rulebase.content"/>
+			</xs:sequence>	
+	</xs:group>	
+	<xs:group name="formula-rulebase.content">
+		<xs:choice>
+		   <xs:group ref="formula-rulebase.content"/>
+		   <xs:element ref="Neg"/>
+		   <xs:element name="Rule" /> 
+		</xs:choice>	
+	</xs:group>		
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that head's content model is:
+	(Atom | Equal | Neg)
+-->
+	<xs:group name="head.content">
+		<xs:choice>
+			<xs:group ref="head.content"/>
+			<xs:element ref="Neg"/>			
+		</xs:choice>
+	</xs:group>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Naf, Neg so that body's content model is:
+	(Atom | And | Or | Equal | Naf | Neg)
+-->
+	<xs:group name="body.content">
+		<xs:choice>
+			<xs:group ref="body.content"/>
+			<xs:group ref="naf_neg.content"/>
+		</xs:choice>
+	</xs:group>
+	
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg and Rule so that formula's content model under Forall is:
+	
+	( Atom | Neg | Rule | Equivalent | Forall | Equal )
+
+-->
+	<xs:group name="formula-forall.content">
+		<xs:choice>
+		  <xs:group ref="formula-forall.content"/>
+		  <xs:element ref="Neg"/>
+		  <xs:element ref="Rule"/>
+		</xs:choice>
+	</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg so that formula's content model under Exists is:
+	( Atom | Neg | And | Or | Exists | Equal )		
+-->
+	<xs:group name="formula-exists.content">
+		<xs:choice>
+			<xs:group ref="formula-exists.content"/>
+			<xs:element ref="Neg"/>
+		</xs:choice>
+	</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add label, scope, qualification, Naf, Neg so that Query's content model is:
+	( label?, scope?, qualification?, oid?, (formula | Atom | Naf | Neg | Rulebase | And | Or | Entails | Exists | Equal)* )
+-->
+	<xs:group name="Query.content">
+			<xs:sequence>
+			    <xs:group ref="labels.content"/>			    
+				<xs:group ref="Query.content"/>
+			</xs:sequence>	
+	</xs:group>
+	<xs:group name="formula-query.content">
+		<xs:choice>
+			<xs:group ref="formula-query.content"/>
+			<xs:group ref="naf_neg.content"/>
+		</xs:choice>
+	</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Naf, Neg, Rule so that formula's content model (below And/Or) is:
+	(Atom | Naf | Neg | Rule | And | Or | Equal)
+-->
+<xs:group name="formula-and-or.content">
+	<xs:choice>
+		<xs:group ref="formula-and-or.content"/>
+		<xs:group ref="naf_neg.content"/>
+		<xs:element ref="Rule" />
+	</xs:choice>
+</xs:group>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add Neg  so that torso's content model is:
+	(Atom |  Neg | Equal)
+-->
+<xs:group name="torso.content">
+	<xs:choice>
+		<xs:group ref="torso.content"/>
+		<xs:element ref="Neg"/>
+	</xs:choice>
+</xs:group>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- 
+			Remove @in, to be re-added as @per
+
+--> 
+  <xs:attributeGroup name="in.attrib" /> 
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!--
+	add @per to Rel (in order to support procedural attachments and later modal "atoms")
+-->
+
+<xs:attributeGroup name="Rel.attlist">
+ 	<xs:attributeGroup ref="Rel.attlist" /> 
+	<xs:attributeGroup ref="per.attrib" />
+</xs:attributeGroup>
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+
+<!--
+	add @per to Fun (in order to support procedural attachments)
+-->
+
+<xs:attributeGroup name="Fun.attlist">
+ 	<xs:attributeGroup ref="Fun.attlist" />
+ 	<xs:attributeGroup ref="per.attrib" /> 
+</xs:attributeGroup>
+
+			
+</xs:redefine>
+
+
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- DR includes the 'naf' module and redefines it slightly
+	 so that Neg is allowed below Naf
+
+ -->
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/modules/naf_module.xsd">
+
+		<!--
+			add Neg so that weak's content model is:
+			(Atom | Neg )
+		-->
+		<xs:group name="weak.content">
+			<xs:choice>
+				<xs:group ref="weak.content"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+
+</xs:redefine>
+
+
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+<!-- DR includes the 'neg' module and redefines it slightly
+	 so that Equal is allowed below Neg
+
+ -->
+<xs:redefine schemaLocation="http://www.ruleml.org/0.91/xsd/modules/neg_module.xsd">
+
+		<!--
+			add Equal so that strong's content model is:
+			(Atom | Equal )			
+		-->
+		<xs:group name="strong.content">
+			<xs:choice>
+				<xs:group ref="strong.content"/>
+				<xs:element ref="Equal"/>
+			</xs:choice>
+		</xs:group>
+
+</xs:redefine>
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+		
+<xs:group name="naf_neg.content" >
+			<xs:choice>		
+				<xs:element ref="Naf"/>
+				<xs:element ref="Neg"/>
+			</xs:choice>	
+</xs:group>
+
+
+	
+</xs:schema>

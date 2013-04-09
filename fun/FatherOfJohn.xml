@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Assert SYSTEM "http://www.ruleml.org/fun/FinalVersionFunRuleML.dtd">
+<Assert>
+	<!-- home(father-of(John)) = Mexico City -->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">home</Fun>
+			<Expr>
+				<Fun in="no">father-of</Fun>
+				<Ind>John</Ind>
+			</Expr>
+		</Expr>
+		<Ind>Mexico City</Ind>
+	</Equal>
+	<!-- home(father-of(John)) = largest-city(Earth) -->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">home</Fun>
+			<Expr>
+				<Fun in="no">father-of</Fun>
+				<Ind>John</Ind>
+			</Expr>
+		</Expr>
+		<Expr>
+			<Fun in="yes">largest-city</Fun>
+			<Ind>Earth</Ind>
+		</Expr>
+	</Equal>
+	<!-- home(father-of(John)) = largest-city(planet-of(Sun,3)) -->
+	<!-- Expr-nesting-valued -->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">home</Fun>
+			<Expr>
+				<Fun in="no">father-of</Fun>
+				<Ind>John</Ind>
+			</Expr>
+		</Expr>
+		<Expr>
+			<Fun in="yes">largest-city</Fun>
+			<Expr>
+				<Fun in="yes">planet-of</Fun>
+				<Ind>Sun</Ind>
+				<Data>3</Data>
+			</Expr>
+		</Expr>
+	</Equal>
+	<!-- home(father-of(John)) = largest-city(planet-of(Sun,3))
+                    if within-interval(current-year(),2000,2006) -->
+	<!-- Expr-nesting-valued -->
+	<Implies>
+		<Atom>
+			<Rel>within-interval</Rel>
+			<Expr>
+				<Fun>current-year</Fun>
+			</Expr>
+			<Data>2000</Data>
+			<Data>2006</Data>
+		</Atom>
+		<Equal>
+			<Expr>
+				<Fun in="yes">home</Fun>
+				<Expr>
+					<Fun in="no">father-of</Fun>
+					<Ind>John</Ind>
+				</Expr>
+			</Expr>
+			<Expr>
+				<Fun in="yes">largest-city</Fun>
+				<Expr>
+					<Fun in="yes">planet-of</Fun>
+					<Ind>Sun</Ind>
+					<Data>3</Data>
+				</Expr>
+			</Expr>
+		</Equal>
+	</Implies>
+</Assert>

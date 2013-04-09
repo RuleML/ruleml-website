@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/framehohornlogeq.xsd">
+
+<Protect>
+
+	<!-- a trivial example rulebase for testing the framehohornlogeq RuleML sublanguage -->
+
+	<!--
+		!- pricediscount(?CUST,?Y) and pricediscount(?CUST,?Z) | neg (?Y = ?Z).
+
+		as a Mutex (deprecated):
+		
+		<Mutex>
+		 <oppo>
+		  <And>
+		    <Atom>
+		      <Rel>pricediscount</Rel>
+		      <Var>CUST</Var>
+		      <Var>Y</Var>
+		    </Atom>
+		    <Atom>
+		      <Rel>pricediscount</Rel>
+		      <Var>CUST</Var>
+		      <Var>Z</Var>
+		    </Atom>
+		  </And>
+		 </oppo>
+		 <mgiv>
+		  <Neg>
+		    <Equal>
+		      <Var>Y</Var>
+		      <Var>Z</Va
+		    </Equal>
+		  </Neg>
+		 </mgiv>
+		</Mutex>
+	-->
+	
+	<Integrity>
+		<Implies>
+		  <head>
+			<Neg>
+			  <And>
+			   	  <Hterm>
+					<Con>pricediscount</Con>
+					<Var>CUST</Var>
+					<Var>Y</Var>
+				  </Hterm>
+				  <Hterm>
+					<Con>pricediscount</Con>
+					<Var>CUST</Var>
+					<Var>Z</Var>
+				  </Hterm>
+			</And>
+			</Neg>
+		  </head>
+		  <body>
+		     <Neg>
+			<Equal>
+				<Var>Y</Var>
+				<Var>Z</Var>
+			</Equal>
+		     </Neg>
+  		  </body>
+		</Implies>
+	</Integrity>
+
+<!--
+	!- pricediscount(?CUST,fivepercent) and pricediscount(?CUST,tenpercent).
+	
+	as a Mutex (deprecated):
+	
+	<Mutex>
+	 <oppo>
+	  <And>
+	    <Atom>
+	      <Rel>pricediscount</Rel>
+	      <Var>CUST</Var>
+	      <Ind>fivepercent</Ind>
+	    </Atom>
+	    <Atom>
+	      <Rel>pricediscount</Rel>
+	      <Var>CUST</Var>
+	      <Ind>tenpercent</Ind>
+	    </Atom>
+	  </And>
+	 </oppo>
+	</Mutex>
+-->
+	<Integrity>
+		<Neg>
+			<And>
+			   	  <Hterm>
+					<Con>pricediscount</Con>
+					<Var>CUST</Var>
+					<Con>fivepercent</Con>
+				  </Hterm>
+				  <Hterm>
+					<Con>pricediscount</Con>
+					<Var>CUST</Var>
+					<Con>tenpercent</Con>
+				  </Hterm>
+			</And>
+		</Neg>
+	</Integrity>
+
+
+
+		<!-- from SWSL document at http://www.daml.org/services/swsl/report/swsl.shtml -->
+
+		<!-- section 6.2 -->
+		<!-- explicit equality -->
+		<Implies>
+			<head>
+				<Equal>
+					<Hterm>
+						<op>
+							<Con>f</Con>
+						</op>
+						<Con>a</Con>
+						<Var>X</Var>
+					</Hterm>
+					<Hterm>
+						<op>
+							<Con>g</Con>
+						</op>
+						<Var>Y</Var>
+						<Con>b</Con>
+					</Hterm>
+				</Equal>
+			</head>
+			<body>
+				<Hterm>
+					<op>
+						<Con>p</Con>
+					</op>
+					<Var>X</Var>
+					<Var>Y</Var>
+				</Hterm>
+			</body>
+		</Implies>
+
+		<!-- section 6.3 -->
+		<!-- non-positional Atom with required oid and optional op -->
+		<Atom>
+			<oid>
+				<Con>o</Con>
+			</oid>
+			<op>
+				<Con>test relation</Con>
+			</op>
+			<slot>
+				<Hterm>
+					<Con>f</Con>
+					<Con>a</Con>
+					<Con>b</Con>
+				</Hterm>
+				<Con>3</Con>
+			</slot>
+		</Atom>
+
+		<!-- singleton slot -->
+		<Atom>
+			<oid>
+				<Con>mary</Con>
+			</oid>
+			<slot>
+				<Con>female</Con>
+			</slot>
+		</Atom>
+
+		<!-- new set-valued tag -->
+		<Atom>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+				<Set>
+					<Con>v1'</Con>
+					<Con>...</Con>
+					<Con>vk'</Con>
+				</Set>
+			</slot>
+		</Atom>
+
+		<!-- class membership and subclass molecules -->
+		<InstanceOf>
+			<Con>t'</Con>
+			<Con>s'</Con>
+		</InstanceOf>
+		<SubclassOf>
+			<Hterm>
+				<Con>t'</Con>
+			</Hterm>
+			<Hterm>
+				<Con>s'</Con>
+			</Hterm>
+		</SubclassOf>
+
+		<!-- signature molecule -->
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+				<Con>v'</Con>
+			</slot>
+		</Signature>
+
+		<!-- boolean signature molecule -->
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot>
+				<Con>m'</Con>
+			</slot>
+		</Signature>
+
+		<!-- cardinality Constraints -->
+		<Signature>
+			<oid>
+				<Con>t'</Con>
+			</oid>
+			<slot minCard="0" maxCard="1">
+				<Hterm>
+					<Con>s'</Con>
+					<Con>t1'</Con>
+					<Con>...</Con>
+					<Con>tn'</Con>
+				</Hterm>
+				<Con>v'</Con>
+			</slot>
+		</Signature>
+
+		<!-- Slot access and path expressions -->
+		<Hterm>
+			<oid>
+				<Con>r</Con>
+			</oid>
+			<op>
+				<Con>s</Con>
+			</op>
+			<Get>
+				<oid>
+					<Con>room</Con>
+				</oid>
+				<SlotProd>
+					<Con>ceiling</Con>
+					<Con>color</Con>
+				</SlotProd>
+			</Get>
+		</Hterm>
+
+		<!-- section 6.4 -->
+		<!-- reification -->
+		<Hterm>
+			<oid>
+				<Con>a</Con>
+			</oid>
+			<op>
+				<Con/>
+			</op>
+			<slot>
+				<Con>b</Con>
+				<Reify>
+				<Hterm>
+					<op>
+						<Con>p</Con>
+					</op>
+					<Hterm>
+						<oid>
+							<Var>X</Var>
+						</oid>
+						<op>
+							<Con/>
+						</op>
+						<slot>
+							<Con>foo</Con>
+							<Con>bar</Con>
+						</slot>
+					</Hterm>
+				</Hterm>
+				</Reify>
+			</slot>
+		</Hterm>
+		<Hterm>
+			<oid>
+				<Con>john</Con>
+			</oid>
+			<op>
+				<Con/>
+			</op>
+			<slot>
+				<Con>believes</Con>
+	<Reify>
+	     <Implies>
+	        <body>
+	           <Hterm>
+	              <op><Con>p</Con></op>
+	              <Var>X</Var>
+	           </Hterm>
+	        </body>
+	        <head>
+	           <Hterm>
+	              <op><Con>q</Con></op>
+	              <Var>X</Var>
+	           </Hterm>
+	        </head>
+	     </Implies>
+	</Reify>
+
+			</slot>
+		</Hterm>
+
+
+
+		<!-- miscellaneous stuff, same as from hohornlog -->
+		<Implies>
+			<head>
+				<Equal>
+					<Con>some constant</Con>
+					<Var>d</Var>
+				</Equal>
+			</head>
+			<body>
+				<And>
+					<Or>
+						<Equal>
+							<Con>some constant</Con>
+							<Var>d</Var>
+						</Equal>
+						<Hterm>
+							<Con>unequal</Con>
+							<Var>x</Var>
+							<Var>person</Var>
+						</Hterm>
+					</Or>
+				</And>
+			</body>
+		</Implies>
+		<Equal>
+			<Con>some constant</Con>
+			<Var>d</Var>
+		</Equal>
+		<Equal>
+			<Nano>
+				<op>
+					<Fun>some function</Fun>
+				</op>
+				<Con>arg1</Con>
+				<Con>arg2</Con>
+				<Con>arg3</Con>
+			</Nano>
+			<Nano>
+				<op>
+					<Fun>some other function</Fun>
+				</op>
+				<Con>arg4</Con>
+				<Con>arg5</Con>
+				<Con>arg6</Con>
+			</Nano>
+		</Equal>
+		<Forall>
+			<Var>d</Var>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>d</Var>
+			</Equal>
+		</Forall>
+		<Equivalent>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>d</Var>
+			</Equal>
+			<Equal>
+				<Con>some constant</Con>
+				<Var>e</Var>
+			</Equal>
+		</Equivalent>
+		<Implies>
+			<head>
+				<Hterm>
+					<op>
+						<Con>friend</Con>
+					</op>
+					<slot>
+						<Con>t</Con>
+						<Var>b</Var>
+					</slot>
+					<Var>x</Var>
+					<Var>y</Var>
+					<Con>Steph</Con>
+				</Hterm>
+			</head>
+			<body>
+				<And>
+					<Or>
+						<Atom>
+							<oid>
+								<Con>o</Con>
+							</oid>
+							<Con>unequal</Con>
+						</Atom>
+					</Or>
+				</And>
+			</body>
+		</Implies>
+		<Equivalent>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+		</Equivalent>
+		<Forall>
+			<Var>x</Var>
+			<Hterm>
+				<Con>unequal</Con>
+				<Var>x</Var>
+				<Var>person</Var>
+			</Hterm>
+		</Forall>
+
+
+</Protect>
+
+</RuleML>

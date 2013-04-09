@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE rdf:RDF [
+         <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+         <!ENTITY ruleml 'http://www.ruleml.org/rdf#'>
+]>
+<rdf:RDF xmlns:rdf="&rdf;"
+         xmlns:ruleml="&ruleml;"
+	 xmlns="&ruleml;">
+
+<rulebase>
+<_clauses>
+<rdf:Seq>
+  <rdf:li>
+    <imp>
+      <_head>
+        <atom>
+          <_opr><rel ruleml:cdata="discount"/></_opr>
+          <_arg>
+            <rdf:Seq>
+              <rdf:li>
+                <var ruleml:cdata="customer"/>
+              </rdf:li>
+              <rdf:li>
+                <var ruleml:cdata="product"/>
+              </rdf:li>
+              <rdf:li>
+                <ind ruleml:cdata="5.0 percent"/>
+              </rdf:li>
+            </rdf:Seq>
+          </_arg>
+        </atom>
+      </_head>
+      <_body>
+        <and>
+          <_arg>
+            <rdf:Seq>
+              <rdf:li>
+                <atom>
+                  <_opr><rel ruleml:cdata="premium"/></_opr>
+                  <_arg>
+                    <rdf:Seq>
+                      <rdf:li>
+                        <var ruleml:cdata="customer"/>
+                      </rdf:li>
+                    </rdf:Seq>
+                  </_arg>
+                </atom>
+              </rdf:li>
+              <rdf:li>
+                <atom>
+                  <_opr><rel ruleml:cdata="regular"/></_opr>
+                  <_arg>
+                    <rdf:Seq>
+                      <rdf:li>
+                        <var ruleml:cdata="product"/>
+                      </rdf:li>
+                    </rdf:Seq>
+                  </_arg>
+                </atom>
+              </rdf:li>
+            </rdf:Seq>
+          </_arg>
+        </and>
+      </_body>
+    </imp>
+  </rdf:li>
+</rdf:Seq>
+</_clauses>
+</rulebase>
+
+</rdf:RDF>
+

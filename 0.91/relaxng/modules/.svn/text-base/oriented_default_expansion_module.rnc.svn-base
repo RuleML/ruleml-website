@@ -1,0 +1,16 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML equation orientation default value" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, orientation, oriented, equation, default" ]
+dc:description [ "The expansion module for the oriented equations default value" ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends the following RuleML elements and attributes:
+#            * @oriented
+oriented_default.value |= "no"

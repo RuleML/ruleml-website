@@ -1,0 +1,6 @@
+
+    This query computes the fee for a person.
+    It is delegated to the program chair who computes the fee according
+    to the defined policies of RuleML-2007.
+    The program chair in a sub-conversation also asks the sponsoring chair
+    if any discounts apply for the requester (e.g. because he is a sponsor).

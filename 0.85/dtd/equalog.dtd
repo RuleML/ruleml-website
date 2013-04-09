@@ -1,0 +1,13 @@
+<!-- XML DTD for a (Flat) Equational-Logic RuleML sublanguage -->
+<!-- File: equalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-10-22 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of all -->
+<!-- new elements) are found in equalog_mod.mod because they are common in this DTD and urequalog as well -->
+<!ENTITY % equalog.mod SYSTEM "equalog_mod.mod">
+%equalog.mod;
+
+<!-- this module inherits from the Horn-Logic RuleML sublanguage -->
+<!ENTITY % hornlog_include SYSTEM "hornlog.dtd">
+%hornlog_include;

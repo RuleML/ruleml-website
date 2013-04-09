@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.86/xsd"
+xmlns="http://www.ruleml.org/0.86/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Data RuleML elements module.
+			This is the XML Schema data module for RuleML.
+			File: data_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-24
+			
+			This module declares the following data RuleML elements/attributes:
+			* @type
+			* ind
+			* var
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** @type ***
+		
+		Optionally specifies the term's type.
+	-->
+	<xs:attributeGroup name="type.attrib">
+		<xs:attribute name="type" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** ind ***
+		content model: (#PCDATA)
+
+		An individual constant, as in predicate logic.
+		
+		The one kind of fixed argument, generalizing RDF literals and resources.  It can be
+		viewed logically as logical function whose arity is zero.
+
+		Individuals may have an optional 'type' attribute for term typing.
+	-->
+	<xs:attributeGroup name="ind.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="ind.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="ind.type" mixed="true">
+		<xs:group ref="ind.content"/>
+		<xs:attributeGroup ref="ind.attlist"/>
+	</xs:complexType>
+	<xs:element name="ind" type="ind.type"/>
+
+	<!--
+		*** var ***
+		content model: (#PCDATA)
+
+		A logical variable, as in logic programming.
+
+		The one kind of variable argument.
+ 
+		Variables may have an optional 'type' attribute for term typing.
+	-->
+	<xs:attributeGroup name="var.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="var.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="var.type" mixed="true">
+		<xs:group ref="var.content"/>
+		<xs:attributeGroup ref="var.attlist"/>
+	</xs:complexType>
+	<xs:element name="var" type="var.type"/>
+
+</xs:schema>

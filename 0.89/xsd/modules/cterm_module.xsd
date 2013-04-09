@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of slot -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Horn RuleML elements module.
+			This is the XML Schema horn module for RuleML.
+			File: horn_module.xsd
+			Version: 0.89
+			Last Modification: 2005-05-26
+			
+			This module declares the following horn RuleML elements:
+			* Cterm
+			* opc
+			* Ctor
+			* Plex
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Cterm ***
+		content model:
+		(
+			( (opc | Ctor), (slot)*, (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)*, (repo)?, (slot)*, (resl)? ) |
+			( (slot)*, (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)*, (repo)?, (slot)*, (resl)?, opc )
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+                        (
+                            ( 
+			       (opc | Ctor), (slot)*, 
+                                 (
+                              	    (resl)
+                              	    |
+                              	    ( (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (repo)?, (slot)*, (resl)? )?
+                                 )
+                            ) 
+                          |
+                            (
+                               (
+                                  ( 
+				     (slot)+, 
+				       (
+				          (resl)
+					  |
+                                    	  ( (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (repo)?, (slot)*, (resl)? )?
+                                       )
+                                  )
+                                |
+				  ( (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (repo)?, (slot)*, (resl)? )
+                               ),
+                               opc
+                            )
+                         )
+
+		A complex term, i.e. a logical term of the form "f(...)" where f is a constructor.
+
+		Complex, compound, or constructor terms are usable within other Cterms, Plexs, and Atoms.
+		The Cterm element uses 'opc' ("operator of constructors") role (or, directly, a 'Ctor')
+		followed by a sequence of arguments (optionally introduced by an 'arg' metarole)
+		surrounded by optional user-defined slots, or vice versa, much like Atoms. Rest variables
+		are also permitted.
+
+		Complex terms may have an optional 'type' attribute for term typing.
+	-->	
+	<xs:attributeGroup name="Cterm.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Cterm.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="opc"/>
+					<xs:element ref="Ctor"/>
+				</xs:choice>
+				<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="resl" minOccurs="1"/>
+					</xs:sequence>				
+					<xs:sequence minOccurs="0">
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:group ref="arg.content"/>
+						</xs:choice>
+						<xs:element ref="repo" minOccurs="0"/>
+						<xs:element name="slot" type="slot.type" minOccurs="0" 									maxOccurs="unbounded"/>
+						<xs:element ref="resl" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element name="slot" type="slot.type" minOccurs="1" 									maxOccurs="unbounded"/>
+						<xs:choice>
+							<xs:sequence>
+								<xs:element ref="resl" minOccurs="1"/>
+							</xs:sequence>							
+							<xs:sequence minOccurs="0">
+								<xs:choice minOccurs="1" maxOccurs="unbounded">
+									<xs:element ref="arg"/>
+									<xs:group ref="arg.content"/>
+								</xs:choice>
+								<xs:element ref="repo" minOccurs="0"/>							
+								<xs:element name="slot" type="slot.type" minOccurs="0" 											maxOccurs="unbounded"/>						
+								<xs:element ref="resl" minOccurs="0"/>			
+							</xs:sequence>
+						</xs:choice>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:group ref="arg.content"/>
+						</xs:choice>
+						<xs:element ref="repo" minOccurs="0"/>						
+						<xs:element name="slot" type="slot.type" minOccurs="0" 									maxOccurs="unbounded"/>					
+						<xs:element ref="resl" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="opc"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Cterm.type">
+		<xs:group ref="Cterm.content"/>
+		<xs:attributeGroup ref="Cterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="Cterm" type="Cterm.type"/>
+
+	<!--
+		*** opc ***
+		content model: (Ctor)
+	
+		A constructor operator expression (similar in spirit to opr).
+
+		This is a metarole which may be left implicit.  It uses a C(onstruc)tor.
+	-->
+	<xs:attributeGroup name="opc.attlist"/>
+	<xs:group name="opc.content">
+		<xs:sequence>
+			<xs:element ref="Ctor"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="opc.type">
+		<xs:group ref="opc.content"/>
+		<xs:attributeGroup ref="opc.attlist"/>
+	</xs:complexType>
+	<xs:element name="opc" type="opc.type"/>
+
+	<!--
+		*** Ctor ***
+		content model: (#PCDATA)
+
+		A constructor, i.e. a logical function.
+	-->
+	<xs:attributeGroup name="Ctor.attlist">
+			<xs:attributeGroup ref="wref.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Ctor.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Ctor.type" mixed="true">
+		<xs:group ref="Ctor.content"/>
+		<xs:attributeGroup ref="Ctor.attlist"/>
+	</xs:complexType>
+	<xs:element name="Ctor" type="Ctor.type"/>
+
+	<!--
+		*** Plex ***
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		content model (below Atom, Plex, slot):
+		( (slot)*, (arg | Ind | Skolem | Var | Cterm | Plex)*, (repo)?, (slot)*, (resl)? )
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+		   (slot)*,
+		     (
+		        (resl) |
+			( (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)+, (repo)?, (slot)*, (resl)? )?
+		     )
+		)
+
+		content model (below repo): ( (arg | Ind | Skolem | Var | Cterm | Plex | repo)* )
+		content model (below resl): ( (slot | resl)* )
+
+		Note that the above two do not apply to datalog sublanguages, since rest variables
+		are only introduced in hornlog and above.
+
+		An unordered collection of arguments. 
+
+		(com)Plex elements are usable within complex terms, atoms and other Plex elements.
+		(Previous to version 0.85, these were called tup(le)s - the addition of user-defined
+		roles meant the term "tup" was no longer appropriate because it implies order.)
+
+		The Plex element uses a sequence of arguments (optionally introduced by
+		an 'arg' metarole) surrounded by optional user-defined slots.
+	-->
+	<xs:attributeGroup name="Plex.attlist"/>
+	<xs:group name="Plex.content">
+		<xs:sequence>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="resl"/>
+				</xs:sequence>
+				<xs:sequence minOccurs="0">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="arg"/>
+						<xs:group ref="arg.content"/>
+					</xs:choice>
+					<xs:element ref="repo" minOccurs="0"/>
+					<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="resl" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>				
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Plex-repo.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="arg"/>
+				<xs:group ref="arg.content"/>
+				<xs:element ref="repo"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>	
+	<xs:group name="Plex-resl.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="slot" type="slot.type"/>
+				<xs:element ref="resl"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>	
+	<xs:complexType name="Plex.type">
+		<xs:group ref="Plex.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Plex-repo.type">
+		<xs:group ref="Plex-repo.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Plex-resl.type">
+		<xs:group ref="Plex-resl.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:element name="Plex" type="Plex.type"/>
+	
+</xs:schema>

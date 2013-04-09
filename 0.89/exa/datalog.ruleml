@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/datalog.xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+<!-- note the addition of the XML Schema namespace because a built-in datatype is used -->
+
+<!-- a trivial example rulebase for testing the Datalog RuleML sublanguage -->
+
+<And mapClosure="universal">
+
+<oid><Ind>test rulebase</Ind></oid>
+
+<Implies>
+  <oid><Ind>(implication) rule label</Ind></oid>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+  <Reify>
+   <Reify>
+    <Implies>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Implies>
+   </Reify>
+  </Reify>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+        <Skolem>constant b</Skolem>
+
+<Data xsi:type="xs:string">test</Data>
+<Data xsi:type="xs:integer">12</Data>
+<Data>tomorrow</Data>
+<Data xsi:type="xs:dateTime">2002-10-10T17:00:00Z</Data>
+<Data>test12</Data>
+
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <Skolem>constant b</Skolem>
+        <slot><Ind>role_name2</Ind><Ind>role 2</Ind></slot>
+      </Atom>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+      </Atom>
+
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+        <Skolem>constant b</Skolem>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+
+</And>    
+
+
+</Assert>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+  <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:vCard = "http://www.w3.org/2001/vcard-rdf/3.0#">
+
+    <rdf:Description rdf:about = "http://ibis.in.tum.de/staff/paschke/index.htm" >
+      <vCard:FN>Adrian</vCard:FN>
+      <vCard:N rdf:parseType="Resource">
+        <vCard:Family>Paschke</vCard:Family>
+        <vCard:Given>Adrian</vCard:Given>
+        <vCard:Other>Hans Georg Hartwig</vCard:Other>
+        <vCard:Prefix>Dipl. Wirtsch-Inf. (Univ.)</vCard:Prefix>
+      </vCard:N>
+      <vCard:BDAY> 1976-10-24 </vCard:BDAY>
+      <vCard:TITLE>Technical University Munich</vCard:TITLE>
+      <vCard:ROLE>firstStandbyProjectLead</vCard:ROLE>
+      <vCard:TEL rdf:parseType="Resource">
+        <rdf:value>+49 89 453454554</rdf:value>
+        <rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#work"/>
+        <rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#voice"/>
+      </vCard:TEL>
+      <vCard:EMAIL rdf:parseType="Resource">
+        <rdf:value>paschke@in.tum.de</rdf:value>
+        <rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#internet"/>
+      </vCard:EMAIL>
+      <vCard:ADR rdf:parseType="Resource">
+        <vCard:Street>Boltzmannstr. 3</vCard:Street>
+        <vCard:Locality>Garching</vCard:Locality>
+        <vCard:Pcode>D-85748</vCard:Pcode>
+        <vCard:Country> Germany</vCard:Country>
+      </vCard:ADR>
+    </rdf:Description>
+  </rdf:RDF>

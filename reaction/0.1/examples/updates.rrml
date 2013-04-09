@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Modules and dynamic OID-based updates -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% add external modules
+	
+:-eval(add("./ContractLog/update.prova")).
+:-eval(add("./ContractLog/utils.prova")).
+:-eval(add("./ContractLog/datetime.prova")).
+:-eval(add("./ContractLog/math.prova")).
+
+% update two facts with module id
+:-eval(add("module1","a(). b().")). % add two facts
+:-eval(remove("module1")). % remove module
+:-eval(remove("./ContractLog/datetime.prova")). % remove module
+
+% updates within a rule with ordered previously bound variables
+change1(X,Y):- 
+	f1(Z), 
+	add("update1","r1(_0,_1,_2):-f1(_2). r2(_2,_1,_0):-f1(_2).",[X,Y,Z]).
+	
+% update within a rule with not bound variables	
+change2(X,Y):-
+	add("update2","f1(1). r3(X,Y,Z):-f1(Z).").
+
+% remove within a rule of a complete module
+change3(X,Y):-
+	remove("update2").
+ -->
+ 
+ 
+	<Assert>
+		<oid><Ind uri="./ContractLog/update.prova"/></oid> <!-- import module = module oid -->
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/utils.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/datetime.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind uri="./ContractLog/math.prova"/></oid>
+	</Assert> 
+	
+	<Assert>
+		<oid><Ind>module1</Ind></oid> <!-- module oid -->
+		<Atom>
+			<Rel>a</Rel>
+		</Atom>	
+		<Atom>
+		    <Rel>b</Rel>
+		</Atom>
+	</Assert>
+	
+	<Retract>
+	    <oid><Ind>module1</Ind></oid>
+	</Retract>
+
+
+	<Retract>
+	    <oid><Ind uri="./ContractLog/datetime.prova"/></oid>
+	</Retract>
+	
+	
+
+	
+ <Assert>		
+	
+	<Implies>
+	  <head>
+	    <Atom>
+	      <op><Rel>change1</Rel></op>
+	      <Var>X</Var>
+	      <Var>Y</Var>
+	    </Atom>
+	  </head>
+	  <body>
+	    <And>
+	      <Atom>
+	        <op><Rel>f1</Rel></op>
+	        <Var>Z</Var>
+	      </Atom>
+	      <Assert>
+	      	<oid><Ind>update1</Ind></oid>
+	      	<Implies>
+	      		<head>
+			      	<Atom>
+	    		    	<op><Rel>r1</Rel></op>
+	        			<Var>X</Var>
+	        			<Var>Y</Var>
+	        			<Var>Z</Var>
+			        </Atom>
+			    </head>     
+			    <body>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Var>Z</Var>
+			    	</Atom>
+				</body>
+			</Implies>	
+		    <Implies>
+	      		<head>
+			      	<Atom>
+	    		    	<op><Rel>r2</Rel></op>
+	        			<Var>Z</Var>
+	        			<Var>X</Var>
+	        			<Var>Y</Var>
+			        </Atom>
+			    </head>     
+			    <body>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Var>Z</Var>
+			    	</Atom>
+				</body>
+			</Implies>	
+		  </Assert>	
+	    </And>
+	  </body>
+	</Implies>
+	
+	
+	<Implies>
+	  <head>
+	    <Atom>
+	      <op><Rel>change2</Rel></op>
+	      <Var>X</Var>
+	      <Var>Y</Var>
+	    </Atom>
+	  </head>
+	  <body>
+	    <Assert>
+	      <oid><Ind>update2</Ind></oid>	
+	      <Atom>
+	        <op><Rel>f1</Rel></op>
+	        <Ind>1</Ind>
+	      </Atom>
+	    
+	      	
+	      <Implies>
+	      		<head>
+			      	<Atom>
+	    		    	<op><Rel>r3</Rel></op>
+	        			<Ind>X</Ind>
+	        			<Ind>Y</Ind>
+	        			<Ind>Z</Ind>
+			        </Atom>
+			    </head>     
+			    <body>
+			    	<Atom>
+			    		<Rel>f1</Rel>
+			    		<Ind>Z</Ind>
+			    	</Atom>
+				</body>
+			</Implies>	
+		  </Assert>	
+	  </body>
+	</Implies>
+	
+	
+	<Implies>
+			  <head>
+			    <Atom>
+			      <op><Rel>change3</Rel></op>
+			    </Atom>
+			  </head>
+			  <body>
+			    <Retract>
+			      <Atom>
+			        <op><Rel>remove</Rel></op>
+			        <Ind>update2</Ind>
+			      </Atom>
+			    </Retract>
+			  </body>
+	</Implies>
+
+	
+	
+  </Assert>
+	
+</RuleML>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><title>RuleML Design</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head><body bgcolor="#EEEEEE">
+    <center>
+      <big>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+--&gt;</pre></b></td></tr></table>
+        <table bgcolor="#FFCCCC" border="1" cellpadding="5"><tr><td>R u l e M L</td></tr></table>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+&lt;--</pre></b></td></tr></table>
+      </big>
+      <br> <br>
+
+<h1>RuleML Design</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>,  <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a></h2>
+<h2>2002-09-03: Version 0.8</h2>
+    </center>
+
+<br> <br> <br>
+
+<p>
+This page describes the current RuleML design.
+</p>
+
+  <table align="center" border="0" cellpadding="0" cellspacing="7" width="100%"><tr><td bgcolor="#FFFFFF" valign="TOP" width="30%"></td><td bgcolor="#FFFFFF" valign="TOP" width="40%"></td><td bgcolor="#FFFFFF" valign="TOP" width="30%"></td></tr><tr><td bgcolor="#FFCCCC" valign="TOP" width="30%"><h2>Contents</h2><ul><li><a href="#The RuleML Design">The RuleML Design</a></ul></td><td align="left" valign="TOP" width="40%"></td><td bgcolor="#CCCCFF" valign="TOP" width="30%"></td></tr></table><h2><a name="The RuleML Design">The RuleML Design</a></h2>
+
+<p>
+The current RuleML design is summarized in this section.
+RuleML encompasses a hierarchy of rules, including
+reaction rules (event-condition-action rules),
+transformation rules (functional-equational rules),
+derivation rules (implicational-inference rules),
+also specialized to facts ('premiseless' derivation rules) and
+queries ('conclusionless' derivation rules),
+as well as
+integrity-constraints (consistency-maintenance rules).
+Till now, we have been mostly defining derivation rules, facts, and queries
+(cf. <a href="#DTDs-Schemas">current DTDs</a>).
+</p>
+
+<p>
+<a name="RuleML-hierarchy"></a>
+The <b>RuleML hierarchy</b> of general rules branches into the two direct categories
+of reaction rules and transformation rules. On the next level, transformation rules specialize
+to the subcategory of derivation rules.
+Then, derivation rules have further subsubcategories, namely facts and queries.
+Finally, queries specialize to integrity constraints.
+More subdivisions are being worked out, especially for reaction rules.
+Thus, the top-level RuleML picture looks as follows (type tags are given with
+each category, of which the most specific ones are used for concrete rule markups):
+<br><br>
+<table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+rules: rule
+
+    reaction rules: react
+
+    transformation rules: trans
+
+        derivation rules: imp
+
+            facts: fact
+
+            queries: query
+
+                integrity constraints: ic</pre></b></td></tr></table>
+</p>
+
+<p>
+A graphical view of RuleML rules is a reduction tree rooted in
+general rules. Its main branches distinguish
+reaction rules and transformation rules.
+Directly below transformation rules are derivation rules,
+Derivation rules specialize to facts and queries,
+which themselves can become integrity constraints.
+Thus, the most important reduction possibilites are as follows:
+<br><br>
+<table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+                     rules
+                    /     \
+                1. /       \ 2.
+                  /         \
+       reaction rules   transformation rules
+                                 |
+                              3. |
+                                 |
+                          derivation rules
+                            |          |
+                         4. |       5. |
+                            |          |
+                           facts   queries     
+                                       |
+                                    6. |
+                                       |
+                                   integrity constraints</pre></b></td></tr></table>
+</p>
+
+<p>
+Let us discuss the reduction tree's numbered reduction links in turn.
+(For a more fine-grained discussion of derivation rules, facts,
+and their further specialization to RDF triples see
+<a href="http://www.ruleml.org/ruleml-krdtd/sld001.htm">KR Principles and DTD Modularization</a>,
+in particular the
+<a href="http://www.ruleml.org/ruleml-krdtd/sld012.htm">hierarchy slide 11</a>.)
+<ol>
+  <li>Reaction rules can be reduced to general rules
+that return no value.
+  
+  <li>Transformation rules can be reduced to general rules
+whose 'event' trigger is always activated.
+  
+  <li>Derivation rules can be reduced to transformation rules
+that like characteristic functions on success just return <b><tt>true</tt></b>.
+  
+  <li>Facts can be reduced to derivation rules that
+have an empty (hence, 'true') conjunction of premises.
+  
+  <li>Queries can be reduced to derivation rules that have -- similar to refutation proofs -- an empty
+(hence, 'false') disjunction of conclusions or -- as in 'answer extraction' -- a conclusion
+that captures the derived variable bindings.
+  
+  <li>Integrity constraints can be reduced to queries
+that are 'closed' (i.e., produce no variable bindings).
+  
+</ol>
+</p>
+<p>
+While general rules, as the all-encompassing rule category, could
+implement all other ones, in RuleML we are introducing tailored
+special-purpose syntaxes for each of these categories, as shown by the
+<a href="#RuleML-hierarchy">RuleML hierarchy at the beginning of this section</a>.
+The following reductions of markup syntaxes only serve for our preliminary structuring
+of the various categories (for instance, we plan to permit <b><tt>and</tt></b>/<b><tt>or</tt></b> nestings besides flat conjunctions as premises):
+<ul>
+  <li>Reaction rules:
+<b><tt>&lt;react&gt;</tt></b> <b><tt>&lt;_event&gt;</tt></b> <i>trigger</i> <b><tt>&lt;/_event&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>action</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/react&gt;</tt></b>
+reducible to
+<b><tt>&lt;rule&gt;</tt></b> <b><tt>&lt;_event&gt;</tt></b> <i>trigger</i> <b><tt>&lt;/_event&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>action</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_foot&gt;</tt></b> <i>empty</i> <b><tt>&lt;/_foot&gt;</tt></b> <b><tt>&lt;/rule&gt;</tt></b>
+  
+  <li>Transformation rules:
+<b><tt>&lt;trans&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_foot&gt;</tt></b> <i>value</i> <b><tt>&lt;/_foot&gt;</tt></b> <b><tt>&lt;/trans&gt;</tt></b>
+reducible to
+<b><tt>&lt;rule&gt;</tt></b> <b><tt>&lt;_event&gt;</tt></b> <i>active</i> <b><tt>&lt;/_event&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_foot&gt;</tt></b> <i>value</i> <b><tt>&lt;/_foot&gt;</tt></b> <b><tt>&lt;/rule&gt;</tt></b>
+  
+  <li>Derivation rules:
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+reducible to
+<b><tt>&lt;trans&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt> <b><tt>&lt;_foot&gt;</tt></b> <b><tt>true</tt></b> <b><tt>&lt;/_foot&gt;</tt></b> &lt;/trans&gt;</tt></b>
+  
+  <li>Facts:
+<b><tt>&lt;fact&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/fact&gt;</tt></b>
+reducible to
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+  
+  <li>Queries:
+<b><tt>&lt;query&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/query&gt;</tt></b>
+reducible to
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>bindings(</i> <i>var1</i>, ..., <i>varK</i> <i>)</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+  
+  <li>Integrity constraints:
+<b><tt>&lt;ic&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/ic&gt;</tt></b>
+reducible to
+<b><tt>&lt;query kind=&quot;closed&quot;&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/query&gt;</tt></b>
+  
+</ul>
+</p>
+<p>
+Other ways of reduction would have also been possible:
+<ul>
+  <li>Transformation rules could be conversely reduced to derivation rules
+over special relations that have an extra argument for
+the transformation values, much like in their treatment with a built-in equality relation.
+  
+  <li>Derivation rules could be reduced to reaction rules
+whose 'event' trigger is always activated and
+whose action just adds or 'asserts' a conclusion
+when certain events/conditions (premises) are recognized/fulfilled.
+This asserting of conclusions can be regarded as a purely declarative step,
+as used for model generation and fixpoint semantics.
+Such rules can thus also be applied backward
+for proving a conclusion from premises.
+  
+  <li>Integrity constraints could be reduced to &quot;denials&quot; or
+special reaction rules
+whose only possible kind of action is to signal inconsistency when
+certain conditions are fulfilled (perhaps after
+recognizing a trigger event).
+  
+</ul>
+</p>
+<p>
+These reduction possibilities would have led to the following reductions of markup syntaxes:
+<ul>
+  <li>Transformation rules:
+<b><tt>&lt;trans&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt> <b><tt>&lt;_foot&gt;</tt></b> <i>value</i> <b><tt>&lt;/_foot&gt;</tt></b> &lt;/trans&gt;</tt></b>
+reducible to
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc-with-value</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+  
+  <li>Derivation rules:
+<b><tt>&lt;imp&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <i>conc</i> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/imp&gt;</tt></b>
+reducible to
+<b><tt>&lt;react&gt;</tt></b> <b><tt>&lt;_event&gt;</tt></b> <i>active</i> <b><tt>&lt;/_event&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <b><tt>&lt;assert&gt;</tt></b> <i>conc</i> <b><tt>&lt;/assert&gt;</tt></b> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/react&gt;</tt></b>
+  
+  <li>Integrity constraints:
+<b><tt>&lt;ic&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;/ic&gt;</tt></b>
+reducible to
+<b><tt>&lt;react&gt;</tt></b> <b><tt>&lt;_event&gt;</tt></b> <i>trigger</i> <b><tt>&lt;/_event&gt;</tt></b> <b><tt>&lt;_body&gt;</tt></b> <b><tt>&lt;and&gt;</tt></b> <i>prem1</i> ... <i>premN</i> <b><tt>&lt;/and&gt;</tt></b> <b><tt>&lt;/_body&gt;</tt></b> <b><tt>&lt;_head&gt;</tt></b> <b><tt>&lt;signal&gt;</tt></b> <i>inconsistency</i> <b><tt>&lt;/signal&gt;</tt></b> <b><tt>&lt;/_head&gt;</tt></b> <b><tt>&lt;/react&gt;</tt></b>
+  
+</ul>
+However, we prefer the
+<a href="#RuleML-hierarchy">RuleML hierarchy at the beginning of this section</a>.
+</p>
+<p>
+We can now make more precise our views regarding the application direction
+for the various rule categories:
+<ul>
+  <li>Reaction rules can only be applied in
+the forward direction in a natural fashion,
+observing/checking events/conditions and performing an action
+if and when all events/conditions have been recognized/fulfilled.
+  
+  <li>For transformation rules, on the other hand, the backward direction is normally preferred.
+  
+  <li>Derivation rules can be equally applied in
+the forward direction as well as in the backward direction, the latter reducing
+the proof of a goal (conclusion) to proofs of all its subgoals (premises).
+Since in different situations different application directions of
+derivation rules may be optimal (forward, backward, or mixed),
+RuleML does not prescribe any one of these.
+  
+  <li>For facts or 'unit clauses' there is no notion of
+an application direction.
+  
+  <li>For queries there is the following notion of
+application direction: as top-down goals, they are proved backward;
+but they can also be proved forward via 'goal-directed' bottom-up processing.
+  
+  <li>Integrity constraints are usually forward-oriented, i.e.
+triggered by update events, mainly for efficiency reasons.
+But they can instead be backward-oriented, trying to show (in)consistency
+by fulfilling certain conditions (without need for recognizing any event).
+  
+</ul>
+</p>
+<br>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2002-09-03
+
+<br><br><br>
+
+      <a name="Practice-Preach"></a><small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/indesign.xml">indesign.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/indesign.xml.txt">indesign.xml.txt</a>);
+      <br>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a href="http://xml.apache.org/cocoon/index.html" target="_self"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"></a></xhtml>
+  </body></html>
+<!-- This page was served in 2974 milliseconds by Cocoon 1.8 -->

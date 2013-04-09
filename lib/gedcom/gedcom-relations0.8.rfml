@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Mike Dean (BBN Technologies / Verizon) -->
+<!-- <!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/ruleml-bindatalog.dtd"> -->
+<!-- <!DOCTYPE rulebase SYSTEM "ruleml-datalog-standalone.dtd"> -->
+<rfml label="gedcom-relations">
+<!-- $Id: gedcom-relations.xml,v 1.10 2001/03/17 08:32:07 mdean Exp $ -->
+<!-- The http://www.daml.org/2001/01/gedom/gedcom.daml ontology is based on the
+existing Genealogical Data Communication (GEDCOM) data model,
+which is essentially "normalized" with no information duplicated
+between Individual and Family instances, but is not in the most
+convenient form for many operations.
+These rules express familiar family relationships.
+It's hoped that they can be used in queries and other reasoning
+applications as if they were defined directly as properties.
+A minor note:  with GEDCOM one should assume that any given piece of
+information could be missing (e.g. sex may not be known, and
+determininig that 2 people are first
+cousins shouldn't depend on knowing who their common grandparent is).
+Relations in these rules refer to the childIn and spouseIn properties
+in gedcom.daml or to other rules.
+  -->
+  <hn label="parent">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#childIn</con>
+
+      <var>child</var>
+
+      <var>family</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouseIn</con>
+
+      <var>parent</var>
+
+      <var>family</var>
+    </callop>
+  </hn>
+
+  <hn label="father">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#father</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>parent</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="mother">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#mother</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>parent</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="child">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#child</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+  </hn>
+
+  <hn label="son">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#son</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#child</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>child</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="daughter">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#daughter</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#child</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>child</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="grandparent">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>parent</var>
+
+      <var>grandparent</var>
+    </callop>
+  </hn>
+
+  <hn label="grandfather">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandfather</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </pattop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>grandparent</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="grandmother">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandmother</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </pattop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>grandparent</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="grandchild">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandchild</con>
+
+      <var>grandparent</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </callop>
+  </hn>
+
+  <hn label="grandson">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#grandson</con>
+
+      <var>grandparent</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>child</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="granddaughter">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#granddaughter</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </pattop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#grandparent</con>
+
+      <var>child</var>
+
+      <var>grandparent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>child</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="sibling">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>child1</var>
+
+      <var>child2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#childIn</con>
+
+      <var>child1</var>
+
+      <var>family</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#childIn</con>
+
+      <var>child2</var>
+
+      <var>family</var>
+    </callop>
+  </hn>
+
+  <hn label="siblingSymmetric">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>child1</var>
+
+      <var>child2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>child2</var>
+
+      <var>child1</var>
+    </callop>
+  </hn>
+
+  <hn label="brother">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#brother</con>
+
+      <var>child</var>
+
+      <var>sibling</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>child</var>
+
+      <var>sibling</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>sibling</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="sister">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sister</con>
+
+      <var>child</var>
+
+      <var>sibling</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>child</var>
+
+      <var>sibling</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>sibling</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="spouse">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>spouse1</var>
+
+      <var>spouse2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouseIn</con>
+
+      <var>spouse1</var>
+
+      <var>family</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouseIn</con>
+
+      <var>spouse2</var>
+
+      <var>family</var>
+    </callop>
+  </hn>
+
+  <hn label="spouseSymmetric">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>spouse1</var>
+
+      <var>spouse2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>spouse2</var>
+
+      <var>spouse1</var>
+    </callop>
+  </hn>
+
+  <hn label="husband">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#husband</con>
+
+      <var>spouse</var>
+
+      <var>husband</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>spouse</var>
+
+      <var>husband</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>husband</var>
+
+      <con>M</con>
+    </callop>
+  </hn>
+
+  <hn label="wife">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#wife</con>
+
+      <var>spouse</var>
+
+      <var>wife</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>spouse</var>
+
+      <var>wife</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sex</con>
+
+      <var>wife</var>
+
+      <con>F</con>
+    </callop>
+  </hn>
+
+  <hn label="uncle1">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#uncle</con>
+
+      <var>child</var>
+
+      <var>uncle</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#brother</con>
+
+      <var>parent</var>
+
+      <var>uncle</var>
+    </callop>
+  </hn>
+
+  <hn label="uncle2">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#uncle</con>
+
+      <var>child</var>
+
+      <var>uncle</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#aunt</con>
+
+      <var>child</var>
+
+      <var>aunt</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>aunt</var>
+
+      <var>uncle</var>
+    </callop>
+  </hn>
+
+  <hn label="aunt1">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#aunt</con>
+
+      <var>child</var>
+
+      <var>aunt</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sister</con>
+
+      <var>parent</var>
+
+      <var>aunt</var>
+    </callop>
+  </hn>
+
+  <hn label="aunt2">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#aunt</con>
+
+      <var>child</var>
+
+      <var>aunt</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#uncle</con>
+
+      <var>child</var>
+
+      <var>uncle</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#spouse</con>
+
+      <var>uncle</var>
+
+      <var>aunt</var>
+    </callop>
+  </hn>
+
+  <hn label="niece">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#niece</con>
+
+      <var>sibling</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#daughter</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>parent</var>
+
+      <var>sibling</var>
+    </callop>
+  </hn>
+
+  <hn label="nephew">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#nephew</con>
+
+      <var>sibling</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#son</con>
+
+      <var>parent</var>
+
+      <var>child</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>parent</var>
+
+      <var>sibling</var>
+    </callop>
+  </hn>
+
+  <hn label="firstCousin">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#firstCousin</con>
+
+      <var>cousin1</var>
+
+      <var>cousin2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>cousin1</var>
+
+      <var>sibling1</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>cousin2</var>
+
+      <var>sibling2</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>sibling1</var>
+
+      <var>sibling2</var>
+    </callop>
+  </hn>
+
+  <hn label="ancestor1">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#ancestor</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+  </hn>
+
+  <hn label="ancestor2">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#ancestor</con>
+
+      <var>child</var>
+
+      <var>ancestor</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#parent</con>
+
+      <var>child</var>
+
+      <var>parent</var>
+    </callop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#ancestor</con>
+
+      <var>parent</var>
+
+      <var>ancestor</var>
+    </callop>
+  </hn>
+
+  <hn label="descendent">
+    <pattop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#descendent</con>
+
+      <var>ancestor</var>
+
+      <var>child</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#ancestor</con>
+
+      <var>child</var>
+
+      <var>ancestor</var>
+    </callop>
+  </hn>
+
+  <hn label="cousin">
+    <pattop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#cousin</con>
+
+      <var>descendent1</var>
+
+      <var>descendent2</var>
+    </pattop>
+
+    <callop>
+      <con>http://www.daml.org/2001/01/gedcom/gedcom#sibling</con>
+
+      <var>sibling1</var>
+
+      <var>sibling2</var>
+    </callop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#descendent</con>
+
+      <var>sibling1</var>
+
+      <var>descendent1</var>
+    </callop>
+
+    <callop>
+      <con>
+      http://www.daml.org/2001/01/gedcom/gedcom#descendent</con>
+
+      <var>sibling2</var>
+
+      <var>descendent2</var>
+    </callop>
+  </hn>
+
+<!-- comment:  NOT seems to be required to specify stepchild (which also has temporal issues) -->
+</rfml>
+

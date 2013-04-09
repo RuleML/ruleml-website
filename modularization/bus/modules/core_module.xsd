@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec"
+xmlns="http://www.ruleml.org/inspec"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Core RuleML elements module.
+			This is the XML Schema core elements module for RuleML.
+			File: core_module.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-14
+			
+			This module declares the following core RuleML elements:
+			* rulebase
+			* fact
+			* query
+			* imp
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- rulebase -->
+	<!-- content model is  "(((_rbaselab, (fact | query)*) | ((fact | query)+, _rbaselab?))?)" -->
+	<xs:group name="rulebase.extend">
+		<xs:choice>
+			<xs:element ref="fact"/>
+			<xs:element ref="query"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="rulebase.attlist">
+		<xs:attributeGroup ref="direction.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:group name="rulebase.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="_rbaselab"/>
+				<xs:group ref="rulebase.extend" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="rulebase.extend" maxOccurs="unbounded"/>
+				<xs:element ref="_rbaselab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="rulebase.type">
+		<xs:group ref="rulebase.content" minOccurs="0"/>
+		<xs:attributeGroup ref="rulebase.attlist"/>
+	</xs:complexType>
+	<xs:element name="rulebase" type="rulebase.type"/>
+
+	<!-- fact -->
+	<!-- content model is "((_rlab, _head) | (_head, _rlab?))" -->	
+	<xs:attributeGroup name="fact.attlist"/>
+	<xs:group name="fact.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_head"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="fact.type">
+		<xs:group ref="fact.content"/>
+		<xs:attributeGroup ref="fact.attlist"/>
+	</xs:complexType>
+	<xs:element name="fact" type="fact.type"/>
+
+	<!-- imp -->
+	<!--
+		content model is "(
+					(_rlab, ( (_head, _body) |  (_body, _head) )) | 
+					(_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+					(_body, ( (_rlab, _head) | (_head, _rlab?) ))
+				)">
+	-->
+	<xs:attributeGroup name="imp.attlist"/>
+	<xs:group name="imp.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_head"/>
+			<xs:element ref="_body"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="imp.type">
+		<xs:group ref="imp.content"/>
+		<xs:attributeGroup ref="imp.attlist"/>
+	</xs:complexType>
+	<xs:element name="imp" type="imp.type"/>
+
+	<!-- query -->
+	<!-- content model is "((_rlab, _body) | (_body, _rlab?))" -->
+	<xs:attributeGroup name="query.attlist"/>
+	<xs:group name="query.content">
+		<xs:all>
+			<xs:element ref="_rlab" minOccurs="0"/>
+			<xs:element ref="_body"/>
+		</xs:all>
+	</xs:group>
+	<xs:complexType name="query.type" mixed="true">
+		<xs:group ref="query.content"/>
+		<xs:attributeGroup ref="query.attlist"/>
+	</xs:complexType>
+	<xs:element name="query" type="query.type"/>
+
+</xs:schema>

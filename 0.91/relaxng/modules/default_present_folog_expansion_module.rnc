@@ -1,0 +1,20 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML First-Order Logic Extension" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, first-order logic" ]
+dc:description [
+  "The expansion module for the first-order logic extensions."
+]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+mapMaterial-att-fo.choice |= mapMaterial-att.choice
+mapDirection-att-fo.choice |= mapDirection-att.choice
+# For the declaration of the scope material attribute pattern, see the material implication module (material_module)
+# For the declaration of the scope direction attribute pattern, see the inference direction module (direction_module)

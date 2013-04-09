@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<rulebase
+xmlns="http://www.ruleml.org/0.86/xsd"
+xsi:schemaLocation="http://www.ruleml.org/0.86/xsd http://www.ruleml.org/0.86/xsd/urcbindatalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+<!-- rel-ur-ind triple a la RDF report (http://www.w3.org/TR/REC-rdf-syntax/):
+"Ora Lassila  is the creator of  the resource http://www.w3.org/Home/Lassila."
+"http://www.w3.org/Home/Lassila  has creator  Ora Lassila." -->
+
+<fact>
+ <_head>
+  <atom>
+    <_opr>
+      <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </_opr>
+    <ind href="http://www.w3.org/Home/Lassila"/>
+    <ind>Ora Lassila</ind>
+  </atom>
+ </_head>
+</fact>
+
+
+<!-- Ground query asking for that triple -->
+
+<query>
+ <_body>
+  <atom>
+    <_opr>
+      <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </_opr>
+    <ind href="http://www.w3.org/Home/Lassila"/>
+    <ind>Ora Lassila</ind>
+  </atom>
+ </_body>
+</query>
+
+
+<!-- Non-ground query asking for matching triples -->
+
+<query>
+ <_body>
+  <atom>
+    <_opr>
+      <rel href="http://dublincore.org/documents/dces/index.shtml.rdf#Creator"/>
+    </_opr>
+    <var>home page</var>
+    <var>person</var>
+  </atom>
+ </_body>
+</query>
+
+
+
+</rulebase>

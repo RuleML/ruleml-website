@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a messaging reaction rule.
+The rule implements a simple query-answer pattern.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+<!-- 
+Prova AA formalization of messaging reaction rule in ECA style
+rcvMsg(XID,Protocol,From,"ACL:query-ref",available(Service)) :-
+	available(Service),
+	sendMsg(XID,Protocol,From,"ACL:inform",available(Service)).
+	
+ -->
+ 
+<Assert>
+	<Rule style="messaging" evaluation="strong">
+	
+	   <on>	      	
+	         <Message mode="inbound" directive="ACL:query-ref">
+	               <oid><Var>XID</Var></oid>
+	               <protocol><Ind>esb</Ind></protocol>
+	               <sender><Var>From</Var></sender>
+		           <content>  <!--message payload-->
+		              <Atom>
+		                 <Rel>available</Rel>
+		                 <Var>Service</Var>
+		              </Atom>
+		           </content>
+	         </Message>	         	        
+	   </on>
+	   
+	   <if>
+	   	<Atom>
+		    <Rel>available</Rel>
+		    <Var>Service</Var>
+		</Atom>
+	   </if>
+	   
+	   <do>
+	      <Message mode="outbound" directive="ACL:inform">
+	               <oid><Var>XID</Var></oid>
+	               <protocol><Ind>esb</Ind></protocol>
+	               <receiver><Var>From</Var></receiver>
+		       <content>  <!--message payload-->
+		              <Atom>
+		                 <Rel>available</Rel>
+		                 <Var>Service</Var>
+		              </Atom>
+		        </content>
+	         </Message>	         	        
+	   </do>
+	   
+	   
+	
+	</Rule>
+
+
+
+       <Atom>
+           <Rel>available</Rel>
+           <Var>"http://srvbichler6.informatik.tu-muenchen.de:9090/axis2/services/RuleMLValidationService</Var>
+       </Atom>
+       
+</Assert>
+
+</RuleML>

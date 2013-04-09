@@ -1,0 +1,103 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% The personal agent for the program chair 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% import of ContractLog libraries (modules)
+:-eval(consult('ContractLog/utils.prova')).
+:-eval(consult('ContractLog/update.prova')).
+:-eval(consult('ContractLog/list.prova')).
+:-eval(consult('ContractLog/math.prova')).
+:-eval(consult('ContractLog/datetime.prova')).
+:-eval(consult('ContractLog/owl.prova')).
+:-eval(consult('ContractLog/timeinterval.prova')).
+:-eval(consult('ContractLog/ec.prova')).
+:-eval(consult('ContractLog/calendar.prova')).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import Submission policy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+:-eval(add('use_caseRuleML-2007/RuleML-2007_ProgramChair1/Submission.prova')).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import Registration policy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+:-eval(add('use_caseRuleML-2007/RuleML-2007_ProgramChair1/Registration.prova')).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import Program policy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%:-eval(add('use_caseRuleML-2007/RuleML-2007_ProgramChair1/Program.prova')).	
+
+% general rule for receiving query messages
+% the rules first tries to understand the performative context
+% and tries to answer the query
+rcvMsg(XID,esb ,From, Performative, [X|Args]) :-
+    understandPerformative(XID, From, Performative, [X|Args]),
+    answerQuery(XID, From, Performative, [X|Args]).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for processing the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	
+% simple taxonomy of performatives for queries
+% query = request	
+performative(request):-performative(query).
+performative(query).
+	
+understandPerformative(XID, From, Performative, PayLoad) :-
+	performative(Performative).
+understandPerformative(XID, From, Performative, PayLoad) :-
+	not(performative(Performative)),
+	sendMsg(XID,esb,From,answer, notUnderstood(Performative)),
+	fail().	
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for answering the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	
+% answers query
+answerQuery(XID, From, Performative, [X|Args]):-
+	derive([X|Args]),
+	sendMsg(XID,esb,From, answer, [X|Args]).
+
+% incomprehensible answer
+answerQuery(XID, From, Performative, [X|Args]):-
+	not([X|Args]),	
+	sendMsg(XID,esb,From,answer, noAnswer([X|Args])),
+	fail().	
+	
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% personal rule base of the program chair
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+bibTexURL("http://ibis.in.tum.de/projects/paw/ruleML-2007/bibtex_Adrian.rdf").
+vCardURL("http://ibis.in.tum.de/projects/paw/ruleML-2007/vCard_Adrian.rdf").
+
+
+
+% dynamically create personal information from external RDF vCard
+% via OWL2Prova RDF triple queries
+person(Name,Role, Title, EMail, Telephone):-	
+  vCardURL(URL),
+  rdf(URL,"",_,"vCard_FN", Name),
+  rdf(URL,"",_,"vCard_ROLE", Role),
+  rdf(URL,"",_,"vCard_TITLE", Title),
+  rdf(URL,"",_,"vCard_TEL", TelNode),
+  rdf(URL,"",TelNode,"rdf_value",Telephone),
+  rdf(URL,"",_,"vCard_EMAIL",EMailNode),
+  rdf(URL,"",EMailNode,"rdf_value",EMail).
+  
+  
+% create reference information from external RDF bibtex file
+% via 0WL2Prova RDF queries  
+reference(Title,FirstAuthor):-
+  bibTexURL(URL),
+  rdf(URL,"",_,dc_title, Title),
+  rdf(URL,"",AuthorList, rdf_type, rdf_Seq),
+  rdf(URL,"",AuthorList, rdf__1 , FirstAuthor).   

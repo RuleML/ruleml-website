@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/nafdatalog.xsd">
+
+<!--A personX has multiple addresses if the personX lives at more than one address, 
+   and we fail to prove (using the builtin stringEqualIgnoreCase) that the addresses are the same -->
+
+<Assert mapClosure="universal">
+<Rulebase>
+<Implies>
+  <head>
+    <Atom>
+      <Rel>multi-address</Rel>
+      <Var>personX</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op><Rel>address</Rel></op>
+        <Var>personX</Var>
+        <Var type= "String">address1</Var>
+      </Atom>
+      <Atom>
+        <op><Rel>address</Rel></op>
+        <Var>personX</Var>
+        <Var type="String">address2</Var>
+      </Atom>
+      <Naf>
+        <Atom>
+          <Rel>stringEqualIgnoreCase</Rel>
+          <Var type="String">address1</Var>
+          <Var type="String">address2</Var>
+        </Atom>
+      </Naf>
+    </And>
+  </body>
+</Implies>
+</Rulebase>
+
+<!--Jack lives at 655 Graham Avenue -->
+    <Atom>
+      <op><Rel>address</Rel></op>
+      <Ind>Jack</Ind>
+      <Ind type="String">655 Graham Avenue</Ind>
+    </Atom>
+
+<!--Jack lives at 552 Windsor -->	
+    <Atom>
+      <op><Rel>address</Rel></op>
+      <Ind>Jack</Ind>
+      <Ind type="String">552 Windsor</Ind>
+    </Atom>
+	
+<!--Jim lives at 557 Regent -->
+	
+	<Atom>
+      <op><Rel>address</Rel></op>
+      <Ind>Jim</Ind>
+      <Ind type="String">557 Regent</Ind>
+    </Atom>
+</Assert>
+
+<!--It will succeed as Jack has two addresses -->
+<Query>
+  <Atom>
+    <Rel>multi-address</Rel>
+    <Ind>Jack</Ind>
+  </Atom>
+</Query>
+
+<!--It will fail as Jim has only one address -->
+<Query>
+  <Atom>
+    <Rel>multi-address</Rel>
+    <Ind>Jim</Ind>
+  </Atom>
+</Query>
+</RuleML>
+
+
+
+

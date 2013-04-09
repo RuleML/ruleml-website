@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Labelled logic, i.e. rules with OID name -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% rules and facts with meta data labels
+	
+
+metadata(label(rule1))::r1():-  partial(b1(),"fact1"). % note that in body the meta built-in "partial" should be used
+metadata(label(rule2))::r2():-  partial(b2(),"fact2").
+metadata(label(rule3))::r2(X):- metadata(b2(),X,"label"). % the meta built-in metadata returns the oid of the fact b2()
+metadata(label(fact1))::b1().
+metadata(label(fact2))::b2().
+
+
+
+ -->
+ 
+
+<Assert mapClosure="universal">
+
+			<Implies>
+			  <oid><Ind>rule1</Ind></oid>
+			  <head>
+			    <Atom>
+			      <op><Rel>r1</Rel></op>
+			    </Atom>
+			  </head>
+			  <body>
+			      <Atom>
+			        <oid><Ind>fact1</Ind></oid>
+			        <op><Rel>b1</Rel></op>
+			      </Atom>
+			  </body>
+			</Implies>
+			
+			<Implies>
+			  <oid><Ind>rule2</Ind></oid>
+			  <head>
+			    <Atom>
+		            <op><Rel>r2</Rel></op>
+			    </Atom>
+			  </head>
+			  <body>
+			      <Atom>
+           	        <oid><Ind>fact2</Ind></oid>
+			        <op><Rel>b2</Rel></op>
+			      </Atom>
+			  </body>
+			</Implies>
+			
+			
+			<Implies>
+			  <oid><Ind>rule3</Ind></oid>
+			  <head>
+			    <Atom>
+		            <op><Rel>r2</Rel></op>
+		            <Var>X</Var>
+			    </Atom>
+			  </head>
+			  <body>
+			      <Atom>
+           	        <oid><Var>X</Var></oid> <!-- note oid here is variable  i.e.  metadata(b2(),X,label) --> 
+			        <op><Rel>b2</Rel></op>
+			      </Atom>
+			  </body>
+			</Implies>
+
+
+			<Atom>
+    	        <oid><Ind>fact2</Ind></oid>
+			   <op><Rel>b2</Rel></op>
+			</Atom>
+			
+			<Atom>
+    	        <oid><Ind>fact1</Ind></oid>
+			   <op><Rel>b1</Rel></op>
+			</Atom>
+
+	
+	
+	</Assert>
+	
+</RuleML>

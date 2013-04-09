@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.8/ruleml-hornlog.dtd">
+
+
+<rulebase>
+
+
+<!-- non-ground-fact-like rule with 4-ary cterm as single argument -->
+
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>book</rel></_opr>
+      <cterm>
+        <_opc><ctor>parts</ctor></_opc>
+        <var>title</var>
+        <var>autor</var>
+        <var>toc</var>
+        <var>chapters</var>
+      </cterm>
+    </atom>
+  </_head>
+</fact>
+
+
+</rulebase>

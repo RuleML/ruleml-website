@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+
+<xs:schema targetNamespace="http://www.ruleml.org/0.9/xsd" xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+            ECA schema part of ECA-RuleML.
+			This is the XML Schema event condiiton action module for ECA-RuleML.
+			File: eca.xsd
+			Version: 0.1
+			Last Modification: 2005-09-26
+			
+			This schema declares the following ECA-RuleML elements and attributes:
+				  
+				  * ECA
+                  * time
+                  * event
+                  * condition
+                  * action
+                  * postcondition 
+                  * else
+                  * redefine Cterm(Attachment), Var(@mode), Naf(Cterm) and Neg(Cterm)
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/mode_module.xsd" />	
+<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/attachment_module.xsd" /> 
+
+
+ 
+<xs:redefine schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/hornlog2eca.xsd">
+
+<!-- 
+	  eca redefines the Cterm element by adding Attachment
+ -->	
+ 
+		<xs:group name="op-cterm.content">
+			<xs:choice>
+				<xs:group ref="op-cterm.content" />
+				<xs:element ref="Attachment" />
+			</xs:choice>
+		</xs:group>
+	
+<!--
+	   note the new content model of Cterm: 
+		
+		( oid?, (op | Ctor | Attachment), (slot)*, (resl)?, (arg|Ind|Data|Skolem|Var|Reify|Cterm|Plex)*, (repo)?, (slot)*, (resl)? )
+-->
+		
+<!--
+	  eca redefines the Var element by adding mode attribute
+-->
+
+		<xs:attributeGroup name="Var.attlist">
+		  <xs:attributeGroup ref="Var.attlist" />
+		  <xs:attributeGroup ref="mode.attrib"/> 
+	  </xs:attributeGroup>
+ 
+ 
+<!-- 
+		eca redefines the Neg element by adding Cterm
+-->
+
+   <xs:group name="strong.content">
+     <xs:choice>
+		 <xs:group ref="strong.content" />
+		 <xs:element ref="Cterm" />
+	</xs:choice>
+   </xs:group>
+  
+<!--
+	   note the new content model of Neg: (Atom | Equal | Cterm )
+--> 
+ 
+</xs:redefine>
+
+
+<xs:redefine schemaLocation="http://www.ruleml.org/0.9/xsd/modules/naf_module.xsd">
+<!-- 
+		eca redefines the Naf element by adding Cterm
+-->  
+   <xs:group name="weak.content">
+     <xs:choice>
+		 <xs:group ref="weak.content" />
+		 <xs:element ref="Cterm" />
+	</xs:choice>
+   </xs:group>
+
+<!--
+	   note the new content model of Naf: (oid?, (Atom | Cterm ))
+--> 
+   
+</xs:redefine>	
+
+	
+<!--
+      *** ECA ***
+      An ECA element that provides the basic syntax for ECA rules.
+
+      content model: neues Contenmodel !!!!!!!!!!!!!
+      (oid?, (Naf  |Neg | time)?, (Naf  |Neg | event)?, (Naf  |Neg | condition)?, (Naf  |Neg | action )?, (Naf  |Neg | postcondition )?, (Naf  |Neg | else )?)
+-->
+
+	<xs:attributeGroup name="ECA.attlist"/>
+	<xs:group name="ECA.content">
+		<xs:sequence>
+				<xs:element ref="oid" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="time" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="event" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="condition" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="action" />
+				<xs:element ref="postcondition" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="else" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ECA.type">
+		<xs:group ref="ECA.content"/>
+		<xs:attributeGroup ref="ECA.attlist"/>
+	</xs:complexType>
+	<xs:element name="ECA" type="ECA.type"/>
+
+<!--
+     *** time ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="time.attlist"/>
+	<xs:group name="time.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="time.type">
+		<xs:group ref="time.content"/>
+		<xs:attributeGroup ref="time.attlist"/>
+	</xs:complexType>
+	<xs:element name="time" type="time.type"/>
+
+<!--
+     *** event ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="event.attlist"/>
+	<xs:group name="event.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="event.type">
+		<xs:group ref="event.content"/>
+		<xs:attributeGroup ref="event.attlist"/>
+	</xs:complexType>
+	<xs:element name="event" type="event.type"/>
+
+<!--
+     *** condition ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="condition.attlist"/>
+	<xs:group name="condition.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="condition.type">
+		<xs:group ref="condition.content"/>
+		<xs:attributeGroup ref="condition.attlist"/>
+	</xs:complexType>
+	<xs:element name="condition" type="condition.type"/>
+
+<!--
+     *** action ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="action.attlist"/>
+	<xs:group name="action.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="action.type">
+		<xs:group ref="action.content"/>
+		<xs:attributeGroup ref="action.attlist"/>
+	</xs:complexType>
+	<xs:element name="action" type="action.type"/>
+
+<!--
+     *** postcondition ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="postcondition.attlist"/>
+	<xs:group name="postcondition.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="postcondition.type">
+		<xs:group ref="postcondition.content"/>
+		<xs:attributeGroup ref="postcondition.attlist"/>
+	</xs:complexType>
+	<xs:element name="postcondition" type="postcondition.type"/>
+
+<!--
+     *** else ***
+     
+     content model: (Naf | Neg | Cterm)
+-->
+
+	<xs:attributeGroup name="else.attlist"/>
+	<xs:group name="else.content">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="Naf" />			
+				<xs:element ref="Neg" />
+				<xs:element ref="Cterm" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="else.type">
+		<xs:group ref="else.content"/>
+		<xs:attributeGroup ref="else.attlist"/>
+	</xs:complexType>
+	<xs:element name="else" type="else.type"/>
+
+</xs:schema>

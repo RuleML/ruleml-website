@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="http://www.ruleml.org/translator"
+      href="translator.jnlp">
+   <information>
+      <title>TRANSLATOR</title> 
+      <vendor>David Hirtle</vendor>
+      <homepage href="http://www.ruleml.org/translator"/>
+      <description>TRANSLATOR: TRANSlator from LAnguage TO Rules</description>
+      <description kind="short">TRANSLATOR</description>
+      <offline-allowed/> 
+   </information>
+   <security>
+      <all-permissions/>
+   </security>
+   <resources>
+      <j2se version="1.4+"/>
+      <jar href="translator.jar" main="true" download="eager"/>
+      <jar href="xom.jar" download="eager" />
+      <jar href="BareBonesBrowserLaunch.jar" download="eager" />
+   </resources>
+   <application-desc main-class="org.ruleml.translator.gui.Translator"/>
+</jnlp>

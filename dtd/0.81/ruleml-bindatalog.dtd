@@ -1,0 +1,26 @@
+<!-- An XML DTD for a Binary Datalog RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % datalog.module "IGNORE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an: -->
+<!-- _opr ("operator of relations") role followed by two arguments, or similarly -->
+<!-- (since roles constitute unordered elements), -->
+<!-- a sequence of two arguments followed by an _opr role -->
+<!-- the arguments may be ind(ividual)s or var(iable)s -->
+
+<!ELEMENT atom ((_opr, (ind | var), (ind | var)) | ((ind | var), (ind | var), _opr))>

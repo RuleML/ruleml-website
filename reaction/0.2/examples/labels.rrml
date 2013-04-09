@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Labelled Meta-Data Annotated logic, e.g. rules with names -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+<!-- ContractLog/Prova formalization of RBSLA (ISO Prolog / Prova syntax)
+
+% rules and facts with meta data labels and scopes
+	
+
+metadata(label(rule1),priority(1))::r1():-  scope(b1(),"fact1"). % note that in if the meta built-in "partial" should be used
+metadata(label(rule2),prioritiy(2))::r2():-  scope(b2(),"fact2").
+metadata(label(fact1))::b1().
+metadata(label(fact2))::b2().
+
+
+
+ -->
+ 
+
+<Assert mapClosure="universal">
+
+	<Rule>			  
+	  	  <label>	  	  	
+	  	  	<Expr><Fun>priority</Fun><Ind>1</Ind></Expr>
+	  	  </label>
+	  	  <oid><Ind>rule1</Ind></oid>
+		  <if>
+			      <Atom>
+			        <scope><Ind uri="#fact1"/></scope>
+			        <op><Rel>b1</Rel></op>
+			      </Atom>
+		  </if>
+		  <then>
+			    <Atom>
+			      <op><Rel>r1</Rel></op>
+			    </Atom>
+		  </then>
+
+	</Rule>
+			
+	<Rule>
+	  <label>	  	  	
+	  	  	<Expr><Fun>priority</Fun><Ind>2</Ind></Expr>
+	  </label>
+	  <oid><Ind>rule2</Ind></oid>	  
+	  <if>
+	      <Atom>
+   	        <scope><Ind uri="#fact2"/></scope>
+	        <op><Rel>b2</Rel></op>	        
+	      </Atom>
+	  </if>	  
+	  <then>
+	    <Atom>
+            <op><Rel>r2</Rel></op>
+	    </Atom>
+	  </then>
+	</Rule>
+			
+	<Atom>
+	   <oid><Ind>fact1</Ind></oid>        
+	   <op><Rel>b2</Rel></op>
+	</Atom>
+	
+	<Atom>
+	   <oid><Ind>fact2</Ind></oid>        
+	   <op><Rel>b1</Rel></op>
+	</Atom>
+
+	
+	
+	</Assert>
+	
+</RuleML>

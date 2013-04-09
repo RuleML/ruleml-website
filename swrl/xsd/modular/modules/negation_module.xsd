@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.w3.org/2003/11/ruleml"
+xmlns="http://www.w3.org/2003/11/ruleml"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Negation RuleML elements module.
+			This is the XML Schema negation module for RuleML.
+			File: negation_module.xsd
+			Version: 0.86
+			Last Modification: 2004-06-23
+			
+			This module declares the following negation RuleML elements:
+			* neg
+			* naf
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** neg ***
+		content model: (atom)
+
+		Classical negation.
+
+		The 'neg' element negates its atom (explicitly, i.e. classical or "strong" negation).
+		It is usable within 'body', 'and' and 'or', as well as 'head' in the negdatalog
+		sublanguage.
+	-->
+	<xs:attributeGroup name="neg.attlist"/>
+	<xs:group name="neg.content">
+		<xs:sequence>
+			<xs:element ref="atom"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="neg.type">
+		<xs:group ref="neg.content"/>
+		<xs:attributeGroup ref="neg.attlist"/>
+	</xs:complexType>
+	<xs:element name="neg" type="neg.type"/>
+
+	<!--
+		*** naf ***
+		content model: (atom)
+
+		Negation as failure.
+
+		The 'naf' element negates its atom (by default, i.e. negation as failure).
+		It is usable within 'body', 'and' and 'or'.
+	-->
+	<xs:attributeGroup name="naf.attlist"/>
+	<xs:group name="naf.content">
+		<xs:choice>
+			<xs:element ref="atom"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="naf.type">
+		<xs:group ref="naf.content"/>
+		<xs:attributeGroup ref="naf.attlist"/>
+	</xs:complexType>
+	<xs:element name="naf" type="naf.type"/>
+	
+</xs:schema>

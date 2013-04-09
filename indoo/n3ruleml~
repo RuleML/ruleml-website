@@ -1,0 +1,117 @@
+
+N3 in Object-Oriented RuleML
+============================
+
+Harold Boley, NRC                                DRAFT 2003-04-02
+
+
+This writeup shows how to serialize four of the key N3 constructs
+in Object-Oriented RuleML. Object-oriented facts and OO rules can
+thus be exchanged as valid XML documents. Corresponding N3 and OO
+RuleML constructs show N3's "ASCII compactness" and RuleML's "XML
+typedness": both are useful for their purposes in Semantic Web KR.
+
+Background: http://www.w3.org/2001/sw/meetings/tech-200303/RuleMLUseCasesW3CPlenary2003Revised.pdf
+OO RuleML: http://www.ruleml.org/indoo
+RDF in OO RuleML: http://www.ruleml.org/indoo/ruleml-swarch.pdf
+N3: http://www.w3.org/2000/10/swap/Primer.html
+
+
+N3 subject-verb-object triples as object-oriented facts in RuleML:
+
+<#pat> <#child> <#al> .
+
+<ruleml:rulebase>
+  <fact>
+    <_head>
+      <atom>
+        <_opr><rel uriref="#pat"/></_opr>
+        <_r n="#child"><rel uriref="#al"/></_r>
+      </atom>
+    </_head>
+  </fact>
+</ruleml:rulebase>
+
+
+N3 "[...]"-bNodes as object-oriented cterms in RuleML:
+
+<#pat> <#child> [ <#age> "3" ] .
+
+<ruleml:rulebase>
+  <fact>
+    <_head>
+      <atom>
+        <_opr><rel uriref="#pat"/></_opr>
+        <_r n="#child">
+          <cterm>
+            <_opc><ctor/></_opc>
+            <_r n="#age"><ind>3</ind</_r>
+          </cterm>
+        </_r>
+      </atom>
+    </_head>
+  </fact>
+</ruleml:rulebase>
+
+
+N3 data tables as multi-fact OO rulebases in RuleML:
+
+<#pat>   <#age> "24";  <#eyecolor> "blue" .
+<#al>    <#age>  "3";  <#eyecolor> "green" .
+<#jo>    <#age>  "5";  <#eyecolor> "green" .
+
+<ruleml:rulebase>
+  <fact>
+    <_head>
+      <atom>
+        <_opr><rel uriref="#pat"/></_opr>
+        <_r n="#child">
+          <cterm>
+            <_opc><ctor/></_opc>
+            <_r n="#age"><ind>3</ind></_r>
+        <_r n="#eyecolor"><ind>blue</ind></_r>
+      </atom>
+    </_head>
+  </fact>
+  <fact>
+    <_head>
+      <atom>
+        <_opr><rel uriref="#al"/></_opr>
+        <_r n="#age"><ind>3</ind></_r>
+        <_r n="#eyecolor"><ind>green</ind></_r>
+      </atom>
+    </_head>
+  </fact>
+  <fact>
+    <_head>
+      <atom>
+        <_opr><rel uriref="#jo"/></_opr>
+        <_r n="#age"><ind>5</ind></_r>
+        <_r n="#eyecolor"><ind>green</ind></_r>
+      </atom>
+    </_head>
+  </fact>
+</ruleml:rulebase>
+
+
+N3 rules in OO RuleML:
+
+this log:forAll :x.
+{ :thermostat :temp :x } log:implies { :cooling :power :x } .
+
+<ruleml:rulebase>
+  <imp>
+    <_body>
+      <atom>
+        <_opr><rel uriref=":thermostat"/></_opr>
+        <_r n=":temp"><var>x</var></_r>
+      </atom>
+    </_body>
+    <_head>
+      <atom>
+        <_opr><rel uriref=":cooling"/></_opr>
+        <_r n=":power"><var>x</var></_r>
+      </atom>
+    </_head>
+  </imp>
+</ruleml:rulebase>

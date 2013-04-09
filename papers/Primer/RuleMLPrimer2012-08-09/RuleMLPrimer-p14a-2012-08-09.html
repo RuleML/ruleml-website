@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Primer Page Template</title>
+    <script>
+      var nextpage="RuleMLPrimer-p14b-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p14-slide">
+      <h1>RuleML hornlog (Horn Logic with Functional Expressions)</h1>
+      <pre class="example_code topspace">
+<span class="elem">&lt;Atom&gt;
+  &lt;Ind&gt;<code>Peter Miller</code>&lt;/Ind&gt;
+  &lt;Rel&gt;<code>gets a discount of,
+    on purchase of</code>&lt;/Rel&gt;
+  &lt;Expr&gt;
+    &lt;Fun&gt;<code>percent</code>&lt;/Fun&gt;
+    &lt;Data xsi:type="xs:decimal"&gt;<code>7.5</code>&lt;/Data&gt;
+  &lt;/Expr&gt;
+  &lt;Ind&gt;<code>Porsche</code>&lt;/Ind&gt;
+&lt;/Atom&gt;</span>
+      </pre>
+      
+    </section>
+    <section id="section-p14-prose">
+      <h3>RuleML hornlog (Horn Logic) - Notes</h3>
+      <p>RuleML uses Datalog as part of its <a href="http://www.cs.unb.ca/~boley/talks/RuleML-Overarching-Talk.pdf">family of sublanguages</a>.
+        A more expressive sublanguage is RuleML hornlog (Horn Logic), which includes functions with the
+        elements <span class="elem-inline">&lt;Expr&gt;</span> and <span class="elem-inline">&lt;Fun&gt;</span>.
+      </p>
+      
+        <p>The XML syntax of RuleML 1.0 is defined by <a href="http://ruleml.org/1.0/xsd/">XML schemas</a> and
+        <a href="http://ruleml.org/1.0/relaxng/">Relax NG schemas</a>. Its  presentation <a href="http://ruleml.org/#POSL">POSL</a> can be  translated online to RuleML/XML. The
+        semantics of Datalog RuleML and Hornlog RuleML employ Herbrand models. Various Datalog and Hornlog RuleML
+        implementations exist, including the (Naf Hornlog) RuleML reference implementation <a
+          href="http://ruleml.org/oojdrew/">OO jDREW</a>.</p>
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p13-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p14b-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

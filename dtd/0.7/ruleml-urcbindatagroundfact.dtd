@@ -1,0 +1,32 @@
+<!-- An XML DTD for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- a conclusion and premise is usable within 'infer from' implications -->
+<!-- conc element uses an atomic formula or an equational formula -->
+<!-- prem element uses an atomic formula, an equational formula, or an 'and' -->
+<!-- 'eq' in conc and prem permits an equational logic (cf. RFML) -->
+
+<!ENTITY % conc "atom">
+<!ENTITY % prem "and">
+
+
+
+<!ENTITY % datalog-and-hornlog.module "IGNORE">
+
+<!ENTITY % urcbindatagroundlog SYSTEM "ruleml-urcbindatagroundlog.dtd">
+%urcbindatagroundlog;
+
+
+
+<!-- ELEMENT Declaration -->
+
+
+<!-- an 'and' must be used within premises -->
+<!-- and uses zero formulas (facts have empty premises) -->
+
+<!ELEMENT and EMPTY>

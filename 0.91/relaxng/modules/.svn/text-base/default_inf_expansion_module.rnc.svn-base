@@ -1,0 +1,85 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Default-Valued Attributes" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, default-valued attributes" ]
+dc:description [
+  "The expansion module to allow attributes to have default values."
+]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+#
+
+## expressions have interpretation attribute as an attribute with default values.
+Expr-datt.choice |= interpretation-att-inf.choice
+
+## functors have interpretation and single-valuedness as an attribute with default values.
+Fun-datt.choice |=
+  interpretation-att-inf.choice & singlevalued-att-inf.choice
+
+## implications have inference direction and material implication as an attribute with default values. 
+## implications have scoped attributes that are activated at full first-order logic
+Implies-datt.choice |=
+  direction-att-inf.choice
+  & material-att-inf.choice
+  & mapMaterial-att-fo.choice
+  & mapDirection-att-fo.choice
+
+## rulebases have scope inference direction  and scope material implication as an attribute with default values. 
+Rulebase-datt.choice |=
+  mapMaterial-att-inf.choice & mapDirection-att-inf.choice
+
+## assertions and retractions have scope inference direction  and 
+## scope material implication as an attribute with default values. 
+AssertRetract-datt.choice |=
+  mapMaterial-att-inf.choice & mapDirection-att-inf.choice
+# For the declaration of the scope material attribute pattern, see the material implication module (material_module)
+# For the declaration of the scope direction attribute pattern, see the inference direction module (direction_module)
+
+## equations have orientation as an attribute with default values.
+Equal-datt.choice |= oriented-att-inf.choice
+
+## conjunctions have scoped attributes that are activated at full first-order logic
+And-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## conjunctions have scoped attributes that are activated at full first-order logic
+And-Query-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## queries have scoped attributes that are activated at full first-order logic
+Query-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## equivalences have scoped attributes that are activated at full first-order logic
+Equivalent-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## universal quantifications have scoped attributes that are activated at full first-order logic
+Forall-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## existential quantifications have scoped attributes that are activated at full first-order logic
+Exists-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## disjunctions have scoped attributes that are activated at full first-order logic
+Or-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## disjunctions have scoped attributes that are activated at full first-order logic
+Or-Query-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## strong negations have scoped attributes that are activated at full first-order logic
+Neg-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## weqk negations have scoped attributes that are activated at full first-order logic
+Naf-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice

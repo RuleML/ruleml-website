@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Behind-the-scenes XML Schema for the transition from nafhornlog to hohornlog
+			File: _nafhornlog-to-hohornlog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- hohornlog redefines the 'neg' module, removing Atom -->
+	<xs:redefine schemaLocation="modules/neg_module.xsd">
+
+		<!-- remove Atom from strong by restriction -->
+		<xs:group name="strong.content">
+			<xs:choice/>
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from Neg so that its content model is:
+			( oid?, (strong) )
+		-->	
+
+	</xs:redefine>
+	
+	<!-- note the removal of Atoms (thus also op and Rel), Cterms (thus also op and Ctor) and Ind -->
+	<xs:redefine schemaLocation="nafhornlog.xsd">
+
+		<!-- remove Atom from weak by restriction -->
+		<xs:group name="weak.content">
+			<xs:choice/>
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from Naf so that its content model is:
+			( oid?, (weak) )
+		-->
+
+		<!-- remove Ind, Data, Expr and Plex from arg by restriction -->
+		<xs:group name="arg.content">
+			<xs:choice>
+				<xs:element ref="Var"/>
+				<xs:element ref="Skolem"/>
+				<xs:element ref="Reify"/>
+			</xs:choice>
+		</xs:group>
+		<!-- note that the above indirectly removes these from slot fillers as well -->
+
+		<!-- remove Ind, Data, Expr and Plex from slot names by restriction -->
+		<xs:group name="slot-name.extend">
+			<xs:choice/>
+		</xs:group>
+		
+		<!--
+			remove Ind, Data, Expr and Plex from oid by restriction:
+			(Var | Skolem | Reify)
+		-->		
+		<xs:group name="oid.content">
+			<xs:choice>
+				<xs:element ref="Var"/>
+				<xs:element ref="Skolem"/>
+				<xs:element ref="Reify"/>
+			</xs:choice>
+		</xs:group>			
+
+		<!-- remove Atom from body by restriction -->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Naf"/>			
+			</xs:choice>
+		</xs:group>
+		
+		<!-- remove Atom from head by restriction -->
+		<xs:group name="head.content">
+			<xs:choice/>
+		</xs:group>	
+		<!--
+			note that the above indirectly removes Atom from Implies so that its content model is:
+			( oid?, ( head, body) | ( body, head) | ( (And | Or | Naf), () ) )	
+		-->
+
+		<!-- remove Atom from torso by restriction -->
+		<xs:group name="torso.content">
+			<xs:choice/>		
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from Equivalent so that its content model is:
+			( oid?, ( ( torso, torso) | ( (), () ) ) )	
+		-->
+
+		<!-- remove Atom from formula-assert by restriction -->
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:element ref="Rulebase"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>	
+				<xs:element ref="Entails"/>				
+				<xs:element ref="Forall"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly removes Atom from Assert so that its content model is:
+			( oid?, (formula | Rulebase | Implies | Equivalent | Entails | Forall)* )
+		-->	
+		
+		<!-- remove Atom from formula-rulebase by restriction -->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>	
+				<xs:element ref="Forall"/>
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly removes Atom from Rulebase so that its content model is:
+			( oid?, (formula | Implies | Equivalent | Forall)* )
+		-->	
+		
+		<!-- remove Atom from formula-and-or by restriction -->		
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from And/Or so that their content model is:
+			( oid?, (formula | And | Or | Naf)* )
+		-->	
+		
+		<!-- remove Atom from formula-query by restriction -->		
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:element ref="Rulebase"/>
+				<xs:element name="And" type="And-query.type"/>
+				<xs:element name="Or" type="Or-query.type"/>	
+				<xs:element ref="Entails"/>
+				<xs:element ref="Exists"/>
+				<xs:element ref="Naf"/>			
+			</xs:choice>
+		</xs:group>	
+		<!--
+			note that the above indirectly removes Atom from Query so that its content model is:
+			( oid?, (formula | Rulebase | And | Or | Entails | Exists | Naf)* )
+		-->
+
+		<!-- remove Atom from formula-forall by restriction -->
+		<xs:group name="formula-forall.content">
+			<xs:choice>
+				<xs:element ref="Implies"/>			
+				<xs:element ref="Equivalent"/>			
+				<xs:element ref="Forall"/>				
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from Forall so that its content model is:
+			( oid?, (declare | Var)+, (formula | Implies | Equivalent | Forall) )
+		-->	
+
+		<!-- remove Atom from formula-exists by restriction -->
+		<xs:group name="formula-exists.content">
+			<xs:choice>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>		
+				<xs:element ref="Exists"/>	
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly removes Atom from Exists so that its content model is:
+			( oid?, (declare | Var)+, (formula | And | Or | Exists) )
+		-->			
+		
+	</xs:redefine>
+
+</xs:schema>

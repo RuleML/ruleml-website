@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rulebase>
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>automobile</rel>
+				</_opr>
+				<_r n="color">
+					<ind/>
+				</_r>
+				<_r n="madein">
+					<ind/>
+				</_r>
+				<_r n="make">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind/>
+				</_r>
+				<_r n="speed">
+					<ind/>
+				</_r>
+				<_r n="year">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>vehicle</rel>
+				</_opr>
+				<_r n="make">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind/>
+				</_r>
+				<_r n="type">
+					<ind/>
+				</_r>
+				<_r n="year">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>
+	<signature formula="fact|imp" world="open" order="unsorted">
+		<_head>
+			<atom>
+				<_opr>
+					<rel>size</rel>
+				</_opr>
+				<_r n="height">
+					<ind/>
+				</_r>
+				<_r n="length">
+					<ind/>
+				</_r>
+				<_r n="width">
+					<ind/>
+				</_r>
+			</atom>
+		</_head>
+	</signature>
+	<signature formula="cterm" world="open" order="unsorted">
+		<_data>
+			<cterm>
+				<_opc>
+					<ctor>shipment</ctor>
+				</_opc>
+				<_r n="date">
+					<ind/>
+				</_r>
+				<_r n="orderNum">
+					<ind/>
+				</_r>
+				<_r n="orderSpec">
+					<cterm/>
+				</_r>
+			</cterm>
+		</_data>
+	</signature>
+	<signature formula="cterm" world="open" order="unsorted">
+		<_data>
+			<cterm>
+				<_opc>
+					<ctor>order</ctor>
+				</_opc>
+				<_r n="automobile">
+					<ind/>
+				</_r>
+				<_r n="orderNum">
+					<ind/>
+				</_r>
+			</cterm>
+		</_data>
+	</signature>
+	<fact>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>automobile</rel>
+				</_opr>
+				<_r n="year">
+					<ind>2002</ind>
+				</_r>
+				<_r n="speed">
+					<ind/>
+				</_r>
+				<_r n="model">
+					<ind>Boxster</ind>
+				</_r>
+				<_r n="make">
+					<ind>Porsche</ind>
+				</_r>
+				<_r n="madein">
+					<ind>Germany</ind>
+				</_r>
+				<_r n="color">
+					<ind>red</ind>
+				</_r>
+			</atom>
+		</_head>
+	</fact>
+	<fact>
+		<_head>
+			<atom>
+				<_opr>
+					<rel>size</rel>
+				</_opr>
+				<_r n="width">
+					<ind>8</ind>
+				</_r>
+				<_r n="length">
+					<ind>10</ind>
+				</_r>
+				<_r n="height">
+					<ind>5</ind>
+				</_r>
+				<ind>medium</ind>
+				<var>ALL</var>
+			</atom>
+		</_head>
+	</fact>
+	<fact>
+		<_head>
+			<atom>
+				<cterm>
+					<_opc>
+						<ctor>shipment</ctor>
+					</_opc>
+					<_r n="orderSpec">
+						<cterm>
+							<_opc>
+								<ctor>order</ctor>
+							</_opc>
+							<_r n="orderNum">
+								<ind/>
+							</_r>
+							<_r n="automobile">
+								<ind/>
+							</_r>
+						</cterm>
+					</_r>
+					<_r n="orderNum">
+						<ind/>
+					</_r>
+					<_r n="date">
+						<ind/>
+					</_r>
+					<cterm>
+						<_opc>
+							<ctor>order</ctor>
+						</_opc>
+						<_r n="orderNum">
+							<ind/>
+						</_r>
+						<_r n="automobile">
+							<ind/>
+						</_r>
+						<cterm>
+							<_opc>
+								<ctor>shipment</ctor>
+							</_opc>
+							<_r n="orderSpec">
+								<cterm/>
+							</_r>
+							<_r n="orderNum">
+								<ind/>
+							</_r>
+							<_r n="date">
+								<ind/>
+							</_r>
+						</cterm>
+					</cterm>
+				</cterm>
+			</atom>
+		</_head>
+	</fact>
+	<query>
+		<_body>
+			<and>
+				<atom>
+					<cterm>
+						<_opc>
+							<ctor>shipment</ctor>
+						</_opc>
+						<_r n="orderSpec">
+							<cterm>
+								<_opc>
+									<ctor>order</ctor>
+								</_opc>
+								<_r n="orderNum">
+									<var/>
+								</_r>
+								<_r n="automobile">
+									<var/>
+								</_r>
+								<cterm>
+									<_opc>
+										<ctor>foo</ctor>
+									</_opc>
+									<cterm>
+										<_opc>
+											<ctor>shipment</ctor>
+										</_opc>
+										<_r n="orderSpec">
+											<var/>
+										</_r>
+										<_r n="orderNum">
+											<var/>
+										</_r>
+										<_r n="date">
+											<var/>
+										</_r>
+									</cterm>
+									<ind>foobar</ind>
+								</cterm>
+							</cterm>
+						</_r>
+						<_r n="orderNum">
+							<var/>
+						</_r>
+						<_r n="date">
+							<var/>
+						</_r>
+						<cterm>
+							<_opc>
+								<ctor>shipment</ctor>
+							</_opc>
+							<_r n="orderSpec">
+								<var/>
+							</_r>
+							<_r n="orderNum">
+								<var/>
+							</_r>
+							<_r n="date">
+								<var/>
+							</_r>
+							<cterm>
+								<_opc>
+									<ctor>shipment</ctor>
+								</_opc>
+								<_r n="orderSpec">
+									<var/>
+								</_r>
+								<_r n="orderNum">
+									<var/>
+								</_r>
+								<_r n="date">
+									<var/>
+								</_r>
+							</cterm>
+						</cterm>
+					</cterm>
+				</atom>
+			</and>
+		</_body>
+	</query>
+</rulebase>

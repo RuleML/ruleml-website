@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/hornlog.xsd" direction="backward">
+
+<!-- a trivial example rulebase for testing the Hornlog RuleML sublanguage -->
+
+<Imp>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Slot><Ind>t</Ind><Var>b</Var></Slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+      <Slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor>constructor</Ctor></opc>
+          <Plex>
+            <Var>z</Var>
+            <Slot><Ind>yar2</Ind><Var>c</Var></Slot>
+          </Plex>
+        </Cterm></Slot>
+    </Atom>
+    </And>
+  </body>
+</Imp>
+
+<Query>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <Slot><Ind>role_name1</Ind><Ind>role 1</Ind></Slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <Slot><Ind>role_name2</Ind><Ind>role 2</Ind></Slot>
+      </Atom>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind>constant h</Ind>
+            <Cterm>
+              <opc><Ctor>empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+    </And>
+  </body>
+  <rlab><Ind>rule (query) label</Ind></rlab>
+</Query>
+
+<Fact>
+  <rlab>
+    <Cterm>
+      <opc><Ctor>rule label</Ctor></opc>
+      <Slot><Ind>label</Ind><Ind>an example fact</Ind></Slot>
+    </Cterm>
+  </rlab>
+  <head>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <Slot><Ind>role_name3</Ind><Ind>role 3</Ind></Slot>
+    </Atom>
+  </head>
+</Fact>
+
+<rbaselab>
+  <Cterm>
+    <opc><Ctor>rulebase label</Ctor></opc>
+    <Slot><Ind>label</Ind><Ind>an example rulebase</Ind></Slot>
+  </Cterm>
+</rbaselab>
+
+</Rulebase>

@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RuleML 0.7 version edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Mike Dean (BBN Technologies / Verizon) -->
+<!-- Transformed to RuleML 0.8 via RFML using XSLT by Elina Hotman, supervised by Harold Boley (DFKI), 2002-02-25 -->
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.8/ruleml-urdatalog.dtd">
+
+<rulebase>
+  <_rbaselab>
+    <ind>gedcom-relations</ind>
+  </_rbaselab>
+
+<!-- $Id: gedcom-relations.xml,v 1.10 2001/03/17 08:32:07 mdean Exp $ -->
+<!-- The http://www.daml.org/2001/01/gedom/gedcom.daml ontology is based on the
+existing Genealogical Data Communication (GEDCOM) data model,
+which is essentially "normalized" with no information duplicated
+between Individual and Family instances, but is not in the most
+convenient form for many operations.
+These rules express familiar family relationships.
+It's hoped that they can be used in queries and other reasoning
+applications as if they were defined directly as properties.
+A minor note:  with GEDCOM one should assume that any given piece of
+information could be missing (e.g. sex may not be known, and
+determininig that 2 people are first
+cousins shouldn't depend on knowing who their common grandparent is).
+Relations in these rules refer to the childIn and spouseIn properties
+in gedcom.daml or to other rules.
+  -->
+  <imp>
+    <_rlab>
+      <ind>parent</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#childIn" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>family</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouseIn" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>family</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>father</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#father" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>parent</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>mother</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#mother" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>parent</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>child</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#child" />
+        </_opr>
+
+        <var>parent</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>son</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#son" />
+        </_opr>
+
+        <var>parent</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#child" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>child</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>child</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>daughter</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#daughter" />
+        </_opr>
+
+        <var>parent</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#child" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>child</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>child</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>grandparent</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>grandparent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>grandparent</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>grandfather</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandfather" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>grandparent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>grandparent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>grandparent</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>grandmother</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandmother" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>grandparent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>grandparent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>grandparent</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>grandchild</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandchild" />
+        </_opr>
+
+        <var>grandparent</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>grandparent</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>grandson</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#grandson" />
+        </_opr>
+
+        <var>grandparent</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>grandparent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>child</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>granddaughter</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#granddaughter" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>grandparent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#grandparent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>grandparent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>child</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>sibling</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+        </_opr>
+
+        <var>child1</var>
+
+        <var>child2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#childIn" />
+          </_opr>
+
+          <var>child1</var>
+
+          <var>family</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#childIn" />
+          </_opr>
+
+          <var>child2</var>
+
+          <var>family</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>siblingSymmetric</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+        </_opr>
+
+        <var>child1</var>
+
+        <var>child2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+        </_opr>
+
+        <var>child2</var>
+
+        <var>child1</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>brother</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#brother" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>sibling</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>sibling</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>sibling</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>sister</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#sister" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>sibling</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>sibling</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>sibling</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>spouse</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+        </_opr>
+
+        <var>spouse1</var>
+
+        <var>spouse2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouseIn" />
+          </_opr>
+
+          <var>spouse1</var>
+
+          <var>family</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouseIn" />
+          </_opr>
+
+          <var>spouse2</var>
+
+          <var>family</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>spouseSymmetric</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+        </_opr>
+
+        <var>spouse1</var>
+
+        <var>spouse2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+        </_opr>
+
+        <var>spouse2</var>
+
+        <var>spouse1</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>husband</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#husband" />
+        </_opr>
+
+        <var>spouse</var>
+
+        <var>husband</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+          </_opr>
+
+          <var>spouse</var>
+
+          <var>husband</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>husband</var>
+
+          <ind>M</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>wife</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#wife" />
+        </_opr>
+
+        <var>spouse</var>
+
+        <var>wife</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+          </_opr>
+
+          <var>spouse</var>
+
+          <var>wife</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sex" />
+          </_opr>
+
+          <var>wife</var>
+
+          <ind>F</ind>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>uncle1</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#uncle" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>uncle</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#brother" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>uncle</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>uncle2</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#uncle" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>uncle</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#aunt" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>aunt</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+          </_opr>
+
+          <var>aunt</var>
+
+          <var>uncle</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>aunt1</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#aunt" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>aunt</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sister" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>aunt</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>aunt2</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#aunt" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>aunt</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#uncle" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>uncle</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#spouse" />
+          </_opr>
+
+          <var>uncle</var>
+
+          <var>aunt</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>niece</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#niece" />
+        </_opr>
+
+        <var>sibling</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#daughter" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>child</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>sibling</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>nephew</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#nephew" />
+        </_opr>
+
+        <var>sibling</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#son" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>child</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>sibling</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>firstCousin</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#firstCousin" />
+        </_opr>
+
+        <var>cousin1</var>
+
+        <var>cousin2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>cousin1</var>
+
+          <var>sibling1</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>cousin2</var>
+
+          <var>sibling2</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>sibling1</var>
+
+          <var>sibling2</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>ancestor1</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#ancestor" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>parent</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>ancestor2</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#ancestor" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>ancestor</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#parent" />
+          </_opr>
+
+          <var>child</var>
+
+          <var>parent</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#ancestor" />
+          </_opr>
+
+          <var>parent</var>
+
+          <var>ancestor</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>descendent</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#descendent" />
+        </_opr>
+
+        <var>ancestor</var>
+
+        <var>child</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#ancestor" />
+        </_opr>
+
+        <var>child</var>
+
+        <var>ancestor</var>
+      </atom>
+    </_body>
+  </imp>
+
+  <imp>
+    <_rlab>
+      <ind>cousin</ind>
+    </_rlab>
+
+    <_head>
+      <atom>
+        <_opr>
+          <rel
+          href="http://www.daml.org/2001/01/gedcom/gedcom#cousin" />
+        </_opr>
+
+        <var>descendent1</var>
+
+        <var>descendent2</var>
+      </atom>
+    </_head>
+
+    <_body>
+      <and>
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#sibling" />
+          </_opr>
+
+          <var>sibling1</var>
+
+          <var>sibling2</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#descendent" />
+          </_opr>
+
+          <var>sibling1</var>
+
+          <var>descendent1</var>
+        </atom>
+
+        <atom>
+          <_opr>
+            <rel
+            href="http://www.daml.org/2001/01/gedcom/gedcom#descendent" />
+          </_opr>
+
+          <var>sibling2</var>
+
+          <var>descendent2</var>
+        </atom>
+      </and>
+    </_body>
+  </imp>
+
+<!--
+comment: NOT seems to be required to specify stepchild (which also has
+temporal issues) -->
+</rulebase>
+

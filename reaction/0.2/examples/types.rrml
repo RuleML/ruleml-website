@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Typed terms / typed logic -->
+
+<RuleML xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:rbsla="http://ibis.in.tum.de/research/projects/rbsla/ontology/test.owl"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/dr.xsd">
+
+<!-- ContractLog/Prova formalization (ISO Prolog syntax)
+
+% rule example 1 with Java type system
+	
+discount(rbsla.test.Customer.C, rbsla.test.Product.P, 5) :-
+	premium(rbsla.test.Customer.C),
+	regular(rbsla.test.Product.P).
+
+
+% rule example 2 with Semantic Web type system 
+% "rbsla" denotes the namespace prefix
+
+discount(C:rbsla_Customer, P:rbsla_Product, rbsla_Percentage:5) :-
+	premium(C:rbsla_Customer),
+	regular(P:rbsla_Product).
+
+ -->
+ 
+
+<Assert mapClosure="universal">
+
+			<Rule>
+			  <if>
+			    <And>
+			      <Atom>
+			        <op><Rel>premium</Rel></op>
+			        <Var type="java://rbsla.test.Customer">C</Var>
+			      </Atom>
+			      <Atom>
+			        <op><Rel>regular</Rel></op>
+			        <Var type="java://rbsla.test.Product">P</Var>
+			      </Atom>	
+			    </And>
+			  </if>
+			  <then>
+			    <Atom>
+			      <op><Rel>discount</Rel></op>
+			      <Var type="java://rbsla.test.Customer">C</Var>
+			      <Var type="java://rbsla.test.Product">P</Var>
+			   	  <Ind type="java://java.lang.Integer">5</Ind>
+			    </Atom>
+			  </then>
+			</Rule>
+
+
+			<Rule>
+			  <if>
+			    <And>
+			      <Atom>
+			        <op><Rel>premium</Rel></op>
+			        <Var type="rbsla:Customer">C</Var>
+			      </Atom>
+			      <Atom>
+			        <op><Rel>regular</Rel></op>
+			        <Var type="rbsla:Product">P</Var>
+			      </Atom>
+			    </And>
+			  </if>			
+			  <then>
+			    <Atom>
+			      <op><Rel>discount</Rel></op>
+			      <Var type="rbsla:Customer">C</Var>
+			      <Var type="rbsla:Product">P</Var>
+			   	  <Ind type="rbsla:Percentage">5.0</Ind>
+			    </Atom>
+			  </then>
+
+			</Rule>
+
+	
+	
+	</Assert>
+	
+</RuleML>

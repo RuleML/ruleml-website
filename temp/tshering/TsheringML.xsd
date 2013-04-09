@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.tsheringML.com" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.tsheringML.com"
+>
+
+	<xs:attributeGroup name="Break.attlist">
+		<xs:attribute name="kind" use="required"> <!-- type = "xs:string"> -->
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="cake"/>
+					<xs:enumeration value="cookie"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:group name="Break.content">
+		<xs:sequence>
+		    <xs:element ref="Date"/>
+			<xs:element ref="Attendees"/>	
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Break.type">
+		<xs:group ref="Break.content"/>
+		<xs:attributeGroup ref="Break.attlist"/>
+	</xs:complexType>
+	<xs:element name="Break" type="Break.type"/>
+
+	<!--<xs:attributeGroup name="Date.attlist"/>
+	<xs:group name="Date.content">
+		<xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Date.type" mixed = "true">
+		<xs:group ref="Date.content"/>
+		<xs:attributeGroup ref="Date.attlist"/>
+	</xs:complexType>-->
+	<xs:element name="Date" type="xs:date"/>
+
+	<xs:attributeGroup name="Attendees.attlist"/>
+    <xs:group name="Attendees.content">	
+	    <xs:sequence>
+		<xs:element ref="name" minOccurs="1" maxOccurs="unbounded"/> 
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Attendees.type" mixed = "true">
+		<xs:group ref="Attendees.content"/>
+		<xs:attributeGroup ref="Attendees.attlist"/>
+	</xs:complexType>
+	<xs:element name="Attendees" type="Attendees.type"/>
+	
+	<xs:attributeGroup name="name.attlist"/>
+    <xs:group name="name.content">	
+	    <xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="name.type" mixed = "true">
+		<xs:group ref="name.content"/>
+		<xs:attributeGroup ref="name.attlist"/>
+	</xs:complexType>
+	<xs:element name="name" type="name.type"/>
+	
+	
+	<!--
+	
+	<David></David>
+	
+	==>
+	
+	<David/>
+	
+	-->
+</xs:schema>

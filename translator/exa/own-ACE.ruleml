@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+Text:
+If a person buys an object from a merchant and keeps it then the person owns the object. If a merchant sells an object to a person then the person buys the object from the merchant. John sells the book "XML Bible" to Mary. Mary keeps the book.
+
+Paraphrase:
+ John sells   a  book "XML Bible"   to Mary  . Mary keeps   the  book "XML Bible"    . if   a  person F  buys   a  object H   from   a  merchant G   and   the  person F  keeps   the  object H    then   the  person F  owns   the  object H    . if   a  merchant L  sells   a  object N   to   a  person M   then   the  person M  buys   the  object N   from   the  merchant L   .
+
+DRS:
+[A, B, C, D, E]
+named(A, John)-3
+object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-3
+named(B, Mary)-3
+object(B, atomic, named_entity, person, cardinality, count_unit, eq, 1)-3
+   [F, G, H, I, J]
+   object(F, atomic, person, person, cardinality, count_unit, eq, 1)-1
+   object(G, atomic, merchant, person, cardinality, count_unit, eq, 1)-1
+   object(H, atomic, object, object, cardinality, count_unit, eq, 1)-1
+   predicate(I, unspecified, buy, F, H)-1
+   modifier(I, unspecified, from, G)-1
+   predicate(J, unspecified, keep, F, H)-1
+   =>
+   [K]
+   predicate(K, unspecified, own, F, H)-1
+   [L, M, N, O]
+   object(L, atomic, merchant, person, cardinality, count_unit, eq, 1)-2
+   object(M, atomic, person, person, cardinality, count_unit, eq, 1)-2
+   object(N, atomic, object, object, cardinality, count_unit, eq, 1)-2
+   predicate(O, unspecified, sell, L, N)-2
+   modifier(O, unspecified, to, M)-2
+   =>
+   [P]
+   predicate(P, unspecified, buy, M, N)-2
+   modifier(P, unspecified, from, L)-2
+predicate(C, unspecified, sell, A, D)-3
+quoted_string(D, XML Bible)-3
+object(D, atomic, book, object, cardinality, count_unit, eq, 1)-3
+modifier(C, unspecified, to, B)-3
+predicate(E, unspecified, keep, B, D)-4
+
+FOL:
+exists(A, exists(B, exists(C, exists(D, exists(E, (named(A, John)-3)? (object(A, atomic, named_entity, person, cardinality, count_unit, eq, 1)-3)? (named(B, Mary)-3)? (object(B, atomic, named_entity, person, cardinality, count_unit, eq, 1)-3)?forall(F, forall(G, forall(H, forall(I, forall(J, (object(F, atomic, person, person, cardinality, count_unit, eq, 1)-1)? (object(G, atomic, merchant, person, cardinality, count_unit, eq, 1)-1)? (object(H, atomic, object, object, cardinality, count_unit, eq, 1)-1)? (predicate(I, unspecified, buy, F, H)-1)? (modifier(I, unspecified, from, G)-1)?predicate(J, unspecified, keep, F, H)-1=>exists(K, predicate(K, unspecified, own, F, H)-1))))))?forall(L, forall(M, forall(N, forall(O, (object(L, atomic, merchant, person, cardinality, count_unit, eq, 1)-2)? (object(M, atomic, person, person, cardinality, count_unit, eq, 1)-2)? (object(N, atomic, object, object, cardinality, count_unit, eq, 1)-2)? (predicate(O, unspecified, sell, L, N)-2)?modifier(O, unspecified, to, M)-2=>exists(P, (predicate(P, unspecified, buy, M, N)-2)?modifier(P, unspecified, from, L)-2)))))? (predicate(C, unspecified, sell, A, D)-3)? (quoted_string(D, XML Bible)-3)? (object(D, atomic, book, object, cardinality, count_unit, eq, 1)-3)? (modifier(C, unspecified, to, B)-3)?predicate(E, unspecified, keep, B, D)-4)))))
+-->
+
+<RuleML xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/folog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ruleml.org/0.9/xsd">
+   <oid>
+      <Ind>Translated version of ACE text "If a person buys an
+         object from a merchant and keeps it then the person
+         owns the object. If a merchant sells an object to a
+         person then the person buys the object from the merchant.
+         John sells the book "XML Bible" to Mary. Mary keeps
+         the book."</Ind>
+   </oid>
+   <Assert>
+      <Exists>
+         <Var>A</Var>
+         <Var>B</Var>
+         <Var>C</Var>
+         <Var>D</Var>
+         <Var>E</Var>
+         <And>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>A</Var>
+               <Ind>'John'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>A</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>named</Rel>
+               <Var>B</Var>
+               <Ind>'Mary'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>B</Var>
+               <Ind>atomic</Ind>
+               <Ind>named_entity</Ind>
+               <Ind>person</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Forall>
+               <Var>F</Var>
+               <Var>G</Var>
+               <Var>H</Var>
+               <Var>I</Var>
+               <Var>J</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>F</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>person</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>G</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>merchant</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>H</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>object</Ind>
+                        <Ind>object</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>I</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>buy</Ind>
+                        <Var>F</Var>
+                        <Var>H</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>modifier</Rel>
+                        <Var>I</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>from</Ind>
+                        <Var>G</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>J</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>keep</Ind>
+                        <Var>F</Var>
+                        <Var>H</Var>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>K</Var>
+                     <And>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>K</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>own</Ind>
+                           <Var>F</Var>
+                           <Var>H</Var>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Forall>
+               <Var>L</Var>
+               <Var>M</Var>
+               <Var>N</Var>
+               <Var>O</Var>
+               <Implies>
+                  <And>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>L</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>merchant</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>M</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>person</Ind>
+                        <Ind>person</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>object</Rel>
+                        <Var>N</Var>
+                        <Ind>atomic</Ind>
+                        <Ind>object</Ind>
+                        <Ind>object</Ind>
+                        <Ind>cardinality</Ind>
+                        <Ind>count_unit</Ind>
+                        <Ind>eq</Ind>
+                        <Data>1</Data>
+                     </Atom>
+                     <Atom>
+                        <Rel>predicate</Rel>
+                        <Var>O</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>sell</Ind>
+                        <Var>L</Var>
+                        <Var>N</Var>
+                     </Atom>
+                     <Atom>
+                        <Rel>modifier</Rel>
+                        <Var>O</Var>
+                        <Ind>unspecified</Ind>
+                        <Ind>to</Ind>
+                        <Var>M</Var>
+                     </Atom>
+                  </And>
+                  <Exists>
+                     <Var>P</Var>
+                     <And>
+                        <Atom>
+                           <Rel>predicate</Rel>
+                           <Var>P</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>buy</Ind>
+                           <Var>M</Var>
+                           <Var>N</Var>
+                        </Atom>
+                        <Atom>
+                           <Rel>modifier</Rel>
+                           <Var>P</Var>
+                           <Ind>unspecified</Ind>
+                           <Ind>from</Ind>
+                           <Var>L</Var>
+                        </Atom>
+                     </And>
+                  </Exists>
+               </Implies>
+            </Forall>
+            <Atom>
+               <Rel>predicate</Rel>
+               <Var>C</Var>
+               <Ind>unspecified</Ind>
+               <Ind>sell</Ind>
+               <Var>A</Var>
+               <Var>D</Var>
+            </Atom>
+            <Atom>
+               <Rel>quoted_string</Rel>
+               <Var>D</Var>
+               <Ind>'XML Bible'</Ind>
+            </Atom>
+            <Atom>
+               <Rel>object</Rel>
+               <Var>D</Var>
+               <Ind>atomic</Ind>
+               <Ind>book</Ind>
+               <Ind>object</Ind>
+               <Ind>cardinality</Ind>
+               <Ind>count_unit</Ind>
+               <Ind>eq</Ind>
+               <Data>1</Data>
+            </Atom>
+            <Atom>
+               <Rel>modifier</Rel>
+               <Var>C</Var>
+               <Ind>unspecified</Ind>
+               <Ind>to</Ind>
+               <Var>B</Var>
+            </Atom>
+            <Atom>
+               <Rel>predicate</Rel>
+               <Var>E</Var>
+               <Ind>unspecified</Ind>
+               <Ind>keep</Ind>
+               <Var>B</Var>
+               <Var>D</Var>
+            </Atom>
+         </And>
+      </Exists>
+   </Assert>
+</RuleML>

@@ -1,0 +1,28 @@
+<!-- XML DTD for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage -->
+<!-- File: urcbindatagroundlog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-11-04 -->
+
+<!-- rulebase's content model is extended to permit imp(lication) rules -->
+<!ENTITY % rulebase.content "(((_rbaselab, (imp | fact | query)*) | ((imp | fact | query)+, _rbaselab?))?)">
+
+<!-- this module inherits from the 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage (urcbindatagroundfact) -->
+<!-- note the modification to the previously rulebase element above (using a parameter entity, which overrides -->
+<!-- the entity specified in the included DTD) and the additional imp element below -->
+<!ENTITY % urcbindatagroundfact_include SYSTEM "urcbindatagroundfact.dtd">
+%urcbindatagroundfact_include;
+
+<!-- the direction attribute indicates the intended direction of imp inferencing;  -->
+<!-- it is a preliminary design choice and has a neutral default value -->
+<!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional">
+
+<!-- the new 'imp' element uses the conclusion role _head followed by the premise role _body (and the optional rule label, _rlab), -->
+<!-- or equivalently (since roles constitute unordered elements), uses a premise role _body followed by a conclusion role _head -->
+<!-- "<imp>_head _body</imp>" stands for "_head is implied by _body", i.e., "_head is true is implied by _body is true", or equivalently, -->
+<!-- "<imp>_body _head</imp>" stands for "_body implies _head", i.e., "_body is true implies _head is true" -->
+<!ENTITY % imp.content "(
+                           (_rlab, ( (_head, _body) |  (_body, _head) )) | 
+                           (_head, ( (_rlab, _body) | (_body, _rlab?) )) | 
+                           (_body, ( (_rlab, _head) | (_head, _rlab?) ))
+                        )">
+<!ELEMENT imp %imp.content;>

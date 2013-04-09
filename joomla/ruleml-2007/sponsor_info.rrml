@@ -1,0 +1,6 @@
+ Returns the sponsoring levels according to the sponsoring package
+     (sponsoring policy of RuleML-2007) depending on the amount of money
+     a sponsor wants to contribute to RuleML-2007.
+
+     This rule-based decision logic is implemented by the sponsoring chair
+     agent (a OO-jDrew rule engine servlet).

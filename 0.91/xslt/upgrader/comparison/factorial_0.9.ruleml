@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/hornlogeq.xsd">
+
+<!-- a flattened factorial definition -->
+
+<Assert mapClosure="universal">
+
+    <Equal>
+      <Nano>
+        <op>
+          <Fun>fac</Fun>
+        </op>
+        <Ind>0</Ind>
+      </Nano>
+      <Ind>1</Ind>
+    </Equal>
+
+
+<Implies>
+  <head>
+    <Equal>
+      <Nano>
+        <op>
+          <Fun>fac</Fun>
+        </op>
+        <Var>n</Var>
+      </Nano>
+      <Var>r</Var>
+    </Equal>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <op>
+          <Rel>greater</Rel>
+        </op>
+        <Var>n</Var>
+        <Ind>0</Ind>
+      </Atom>
+      <Equal>
+        <Var>m</Var>
+        <Nano>
+          <op>
+            <Fun>-</Fun>
+          </op>
+          <Var>n</Var>
+          <Ind>1</Ind>
+        </Nano>
+      </Equal>
+      <Equal>
+        <Var>f</Var>
+        <Nano>
+          <op>
+            <Fun>fac</Fun>
+          </op>
+          <Var>m</Var>
+        </Nano>
+      </Equal>
+      <Equal>
+        <Var>r</Var>
+        <Nano>
+          <op>
+            <Fun>*</Fun>
+          </op>
+          <Var>n</Var>
+          <Var>f</Var>
+        </Nano>
+      </Equal>
+    </And>
+  </body>
+</Implies>
+
+
+</Assert>
+
+</RuleML>

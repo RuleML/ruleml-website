@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Assert xmlns="http://www.ruleml.org/0.89/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlogeq.xsd">
+
+	<!-- This is a simple test file for testing 0.89 - 0.9 RuleML transformations.-->
+	
+	<!-- Ad. 4. <RuleML> top level element is introduced, permitting (ordered) transactions of performatives  -->
+	
+	<!--Ad. 5. <content> renamed to <formula> in <Assert>, <Query> and <Protect>
+         *** what we do we actually skip content element, as in case that And was a child of content, the formula would get multiple children-->
+	<content>
+		
+		<And mapClosure="universal">
+			
+			<!--Ad. 6. remove <And> element in <Assert> and <Protect>, move @mapClosure attribute from <And> to the enclosig element -->
+		
+			<!-- Ad. 1. <opr>, <opc> and <opf> merged into context-sensitive <op> -->				
+			
+			<Atom>
+				<oid>
+					<Ind>'opr', 'opc' and 'opf' merged into context-sensitive 'op' </Ind>
+				</oid>			
+				<Cterm> 
+					<opc>
+						<Ctor>book</Ctor>
+					</opc>
+					<Var>title</Var>
+					<Var>author</Var>
+					<Var>table of contents</Var>
+					<Var>chapters</Var>
+				</Cterm>				
+				<!-- Ad. 7. (official) introduction of a 'positionalized' prefix normal form
+     - <opr> (in Atom), <opc> (in Cterm) and <opf> (in Nano) is moved to the position of the first (or second, if <oid> is present) child -->	
+				<opr>
+					<Rel></Rel>
+				</opr>
+			</Atom>	
+								
+			<Equal>
+				<Nano>
+					<opf>
+						<Fun>some function</Fun>
+					</opf>
+				</Nano>			
+				<Ind>some ind</Ind>			
+			</Equal>		
+			
+		<!-- Ad. 3. @wlab and @wref are replaced with a single attribute: @uri  -->
+			<Atom>
+				<oid>
+					<Ind wlab="http://some.wlab.domain.com">'opr', 'opc' and 'opf' merged into context-sensitive 'op' </Ind>
+				</oid>
+				<opr>
+					<Rel>some relation</Rel>
+				</opr>
+				<Cterm>
+					<opc>
+						<Ctor wref="http://some.wref.domain.com">book</Ctor>
+					</opc>
+					<Var>title</Var>
+					<Var>author</Var>
+					<Var>table of contents</Var>
+					<Var>chapters</Var>
+				</Cterm>						
+			</Atom>							
+			
+	</And>
+	
+	</content>	
+</Assert>
+

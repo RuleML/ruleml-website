@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.85/dtd/equalog.dtd">
+
+<rulebase
+xmlns="http://www.ruleml.org/inspec"
+xsi:schemaLocation="http://www.ruleml.org/inspec http://www.ruleml.org/0.85/xsd/equalog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+<!--
+The function symbol "owner" could be user-defined by a rule
+or 'directed equation' owner(car17) = john. Now, the first premise of
+the 'functional Datalog' rule
+buy(Person,Object) <- pay(Person,owner(Object)) and take(Person,Object)
+is an "owner" function call nested into a "pay" relation call. With
+additional facts pay(fred,john) and take(fred,car17) also asserted,
+the "buy" relation call buy(fred,car17) would be computed thus:
+
+buy(fred,car17)
+pay(fred,owner(car17)) and take(fred,car17)
+pay(fred,john)         and true
+true                   and true
+true
+
+So, owner(car17) _computes_ the actual owner individual, rather than
+just _denoting_ it, as a cterm with a constructor symbol "owner"
+would. For this corresponding cterm in the first premise, we would
+have used square brackets like pay(Person,owner[car17]), but then one
+asserted fact would have to be the non-Datalog pay(fred,owner[car17]).
+Now, the above 'functional Datalog' rule can be flattened, obtaining
+
+buy(Person,Object) <- Own = owner(Object) and pay(Person,Own)
+                      and take(Person,Object)
+
+This flattened version, along with the directed equation and facts, can
+be marke up in the current RuleML as follows:
+-->
+
+<imp>
+  <_body>
+    <eq>
+      <nano>
+        <_opf><fun>owner</fun></_opf>
+        <ind>car17</ind>
+      </nano>
+      <ind>john</ind>
+    </eq>
+  </_body>
+</imp>
+
+<imp>
+ <_head>
+  <atom>
+    <_opr><rel>buy</rel></_opr>
+    <var>person</var>
+    <var>object</var>
+  </atom>
+ </_head>
+ <_body>
+  <and>
+    <eq>
+      <var>own</var>
+      <nano>
+        <_opf><fun>owner</fun></_opf>
+        <var>object</var>
+      </nano>
+    </eq>
+    <atom>
+      <_opr><rel>pay</rel></_opr>
+      <var>person</var>
+      <var>own</var>
+    </atom>
+    <atom>
+      <_opr><rel>take</rel></_opr>
+      <var>person</var>
+      <var>object</var>
+    </atom>
+  </and>
+ </_body>
+</imp>
+
+<fact>
+ <_head>
+  <atom>
+    <_opr><rel>pay</rel></_opr>
+    <ind>fred</ind>
+    <ind>john</ind>
+  </atom>
+ </_head>
+</fact>
+
+
+<fact>
+ <_head>
+  <atom>
+    <_opr><rel>take</rel></_opr>
+    <ind>fred</ind>
+    <ind>car17</ind>
+  </atom>
+ </_head>
+</fact>
+
+
+</rulebase>

@@ -1,0 +1,78 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Atomic Formulas" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, atom, atomic formulas, propositions" ]
+dc:description [ "The expansion module for atomic formulas." ]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= atom.Node.defs | atom.edge.defs
+Node.choice |= atom.Node.defs
+edge.choice |= atom.edge.defs
+# This module declares the following RuleML elements and attributes:
+#            * <Atom>
+#            * <Rel>
+#            * <op>
+# This module also declares the following RuleML choice pattern:
+#            * SimpleFormula-node.choice
+# Schema Design Pattern Key: see andor_expansion_module.rnc
+atom.Node.defs |= Atom.Node.def | Rel.Node.def
+atom.edge.defs |= op_Atom.edge.def
+
+## atomic formulas are a kind of simple formula
+SimpleFormula-node.choice |= Atom-node.choice | Equal-node.choice
+
+## an extension point for alternate spellings and internationalization of the atomic formula tag name.  
+Atom-node.choice |= Atom.Node.def
+Atom.Node.def =
+  
+  ## <Atom>: a predicate applied to arguments. See
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Atom
+  element Atom {
+    (Atom-datt.choice & reAtom.attlist), Atom.header, Atom.main
+  }
+
+## Atomic formulas may have an optional closure attribute.
+reAtom.attlist &= closure-att.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## Atomic formulas accept the header pattern of simple formulas.
+Atom.header &= SimpleFormula.header?
+
+## Simple formulas are fuzzifiable.
+SimpleFormula.header &= FuzzyFormula-header.choice?
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the operator tag name in atomic formulas.  
+operatorForAtoms-edge.choice |= op_Atom.edge.def
+
+## (context sensitive: see also expr_module and holog_module)
+## An operator expression including a relation (<Rel>) of an atom (<Atom>).
+op_Atom.edge.def =
+  
+  ## <op>: edge (role) element for the predicate of an atomic formula. See
+  ## http://www.ruleml.org/0.91/glossary/#gloss-op
+  element op { op_Atom.content }
+
+## The operator role in the context of an atomic formula is filled by a predicate.
+op_Atom.content |= Relation-node.choice
+
+## an extension point for alternate spellings and internationalization of the relation tag name.  
+Relation-node.choice |= Rel.Node.def
+
+## A relation, i.e. a logical Predicate, of an atom (<Atom>). It is optionally surrounded by an operator (<op>).
+Rel.Node.def =
+  
+  ## <Rel>: a category of name used as the predicate of an atomic formula. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Rel
+  element Rel { (Rel-datt.choice & reRel.attlist), Rel.content }
+
+## Relations accept the optional attribute pattern of resources.
+reRel.attlist &= Resource.attlist?
+
+## The content model for relations is text.
+Rel.content |= text

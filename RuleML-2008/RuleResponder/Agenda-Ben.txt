@@ -1,0 +1,83 @@
+Agenda Ben(2008-11-28)
+
+  OO jDREW Devlopment
+    Connect TD and BU together into a single interface
+	Batch-Queries, store a list of queries in a file
+
+    OO jDREW TD
+      Conjunctive Queries for RuleML in the TD GUI, POSL currently works but RuleML queries have a small problem -- Done
+    Taxonomy Querying
+	  Need to allow POSL to allow for independent order like the RDFS   -- Done
+    
+	Indexing
+	  Indexing Design Document
+	  Start with jDREW indexing for positional
+  
+  OO jDREW website
+    Restructuring the OO jDREW website
+      Structure design plan to prevent broken links
+  
+      Java Web Start
+	    Rename Online Demo <http://www.jdrew.org/oojdrew/demo.html>
+	    into Web Start <http://www.jdrew.org/oojdrew/web-start.html>?
+	    Documentation: Once started how can we later run it offline?
+  
+	  Rename Downloads <http://www.jdrew.org/oojdrew/download.html>
+	  into Source Download  <http://www.jdrew.org/oojdrew/source-download.html>?
+
+	  Documentation
+	    Examples
+	      Consolidation 
+	      Better grouping
+          Make top level item on side bar
+	    Type definitions
+	      Improve our Budget Rental example
+	      Add my Amphibious example
+		
+      Maintain OO jDREW website
+	    Pointers from STR to Slides
+        Upload newest version of OO jDREW -- Done
+        Give more interesting examples on the website
+        Difference between BU and TD (i.e. no naf in BU)
+        Mention VM constraints -- will do in the next update (-Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m) -- Done
+	    Road Map Update
+	    Document CVS and all local files -- all files are in the CVS, and the CS team at NRC will help anyone who needs to get direct access to the SVN
+	    Source Force download page -- done http://sourceforge.net/project/stats/detail.php?group_id=235724&ugn=oojdrew&type=prdownload&mode=12months&package_id=0
+	
+      Benchmarks
+        Create benchmark subpage
+        Add Ben's benchmark
+        Include Greg's (anonymized) benchmark
+	    Bench marks in LIPS
+	    Link from OO jDREW page
+		On side bar
+
+  Rule Responder
+    Auto-alerts on Mule ESB shutdown (better: startup script) -- focus on this
+	NRC Code Repository
+    New Rule Sets 
+    E-Health Use case/Application
+	  Possible start with Sheng Gao's project
+    RuleML-2008 Use Case
+		Update Rules and Policies
+			Group Registration, Individual registration
+			Geographical Knowledge (trip planning)
+		Improved Topology (STR)
+		  Horizontal Communication
+		    Send messages from PAs to PAs
+	        Mimic it by giving the OA the PAs address
+		Query Decomposition
+		Intelligent Delegation
+		Problems
+	      Changing a variable to a constant in queries
+		  Changing a constant to a variable in queries
+		  Typing a variable causes a parsing problem
+		  URIs as constants passed from OO jDREW do not work in Prova	
+		
+		Readme for 2008 to 2009 -- focus on this 00xy to 00xy + 1  Done -> http://ruleml.org/RuleML-2008/RuleResponder/RuleResponderRuleMLSymposiumUsecaseYearlyUpgrade.readme
+    
+		
+  RuleML Wiki
+    Move the old Wiki to a Semantic Media wiki
+
+	

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Atom
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://www.ruleml.org/temp/xsv-bug/restriction2.xsd"
+>
+
+	<arg>test</arg>
+	<arg>test</arg>
+	
+</Atom>

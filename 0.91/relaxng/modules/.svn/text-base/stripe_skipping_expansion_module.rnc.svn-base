@@ -1,0 +1,101 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Stripe-Skipping Module" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, stripe-skipping" ]
+dc:description [ "expansion module for stripe-skipping." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module extends the following RuleML choice patterns:
+#            * arg
+#            * op_Atom
+#            * op_Expr
+#            * body_Implies
+#            * body_Entails
+#            * head_Implies
+#            * head_Entails
+#            * torso
+#            * formula_And
+#            * formula_Or
+#            * formula_Forall
+#            * formula_Exists
+#            * formula_AssertRetract
+#            * formula_Query
+#            * formula_Rulebase
+#            * left
+#            * right
+#            * declare
+#            * weak
+#            * strong
+
+# All the RuleML roles below are made collapsible by allowing
+# substitution of their content model for the role pattern.
+
+## Stripe-skipping is allowed for positional arguments in atomic formulas and expressions.
+positionalArgument-edge.choice |= arg.content
+
+## Stripe-skipping is allowed for operators in atomic formulas.
+operatorForAtoms-edge.choice |= op_Atom.content
+
+## Stripe-skipping is allowed for operators in expressions.
+operatorForExpressions-edge.choice |= op_Expr.content
+# 
+#        *** <body> , <head> ***
+
+## In implications, both stripes may be skipped at the same time.
+Implies.main |= body_Implies-ss.content, head_Implies.content
+body_Implies-ss.content |= body_Implies.content
+head_Implies-ss.content |= head_Implies.content
+# Implies.main |= body_Implies-ss.content, head_Implies.name.choice
+# Implies.main |= body_Implies.name.choice, head_Implies-ss.content
+
+## In entailments, both stripes may be skipped at the same time.
+Entails.main |= body_Entails-ss.content, head_Entails-ss.content
+body_Entails-ss.content |= body_Entails.content
+head_Entails-ss.content |= head_Entails.content
+# Entails.main |= body_Entails-ss.content, head_Entails.name.choice
+# Entails.main |= body_Entails.name.choice, head_Entails-ss.content
+
+## Stripe-skipping is allowed asynchronously in equivalences.
+torso-edge.choice |= torso.content
+
+## Stripe-skipping is allowed asynchronously in equations.
+leftSide-edge.choice |= lhs.content
+rightSide-edge.choice |= rhs.content
+
+## Stripe-skipping is allowed asynchronously for formulas in conjunctions.
+formula_And-edge.choice |= formula_And.content
+
+## Stripe-skipping is allowed asynchronously for formulas in disjunctions.
+formula_Or-edge.choice |= formula_Or.content
+
+## Stripe-skipping is allowed for formulas in universal quantifications.
+formula_Forall-edge.choice |= formula_Forall.content
+
+## Stripe-skipping is allowed for formulas in existential quantifications.
+formula_Exists-edge.choice |= formula_Exists.content
+
+## Stripe-skipping is allowed asynchronously for formulas in assertions and retractions.
+formula_AssertRetract-edge.choice |= formula_AssertRetract.content
+
+## Stripe-skipping is allowed asynchronously for formulas in assertions and retractions.
+formula_Query-edge.choice |= formula_Query.content
+
+## Stripe-skipping is allowed asynchronously for formulas in assertions and retractions.
+formula_Rulebase-edge.choice |= formula_Rulebase.content
+declare-edge.choice |= declare.content
+
+## Stripe-skipping is allowed for weak negations.
+weak-edge.choice |= weak.content
+
+## Stripe-skipping is allowed for strong negations.
+strong-edge.choice |= strong.content
+# 
+
+
+

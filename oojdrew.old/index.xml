@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet href="homepage.xsl" type="text/xsl"?>
+
+<!-- Written by Marcel Ball "Marcel.Ball@nrc.gc.ca" -->
+
+<homepage>
+
+  <title>OO jDREW</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">OO jDREW</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+
+<h1>Object-Oriented jDREW</h1>
+<h2>Marcel Ball</h2>
+<h2>December 1, 2003: Version 0.1</h2>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+</p>
+
+  </opening>
+
+<!--<section>
+<header>Introduction</header>
+<p>
+
+</p>
+</section>-->
+
+<section label="xmlsyntax">
+<header>OO RuleML Syntax</header>
+<p>
+OO jDREW has parsers for two syntaxes. The first is the OO RuleML XML 
+syntax (<a href="http://www.ruleml.org/indoo/">http://www.ruleml.org/indoo</a>). 
+As the OO RuleML syntax is backward compatible with the RuleML 0.8 syntax, RuleML
+0.8 files can be parsed correctly using the same process outlined bellow.
+
+<h3>Parsing OO RuleML XML files in OO jDREW</h3><br/>
+<code>
+    ...
+    //Parsing of RuleML is done using the jdrew.oo.util.RuleMLParser class.
+    
+    String filename = "..." // path to file containing OO RuleML document.
+    
+    RuleMLParser rmp = new RuleMLParser(); //create parser object
+    
+    rmp.parseRuleMLFile(filename); //parse file
+    
+    Iterator it = rmp.iterator(); //creates an iterator of all parsed 
+    	    	    	    	  //clauses (jdrew.oo.util.DefiniteClause objects).
+				  //This iterator can then be passed to
+				  //as the parameter of the loadClauses method 
+				  //of a DCTree or BUTree object
+				  
+    // alternatively you can also parse a RuleML document that is stored in a 
+    // JDOM Document object using the parseRuleMLDocument(Document doc) method
+    // of the RuleMLParser class
+    ...
+</code>
+<br/><br/>
+
+<h3>Parsing Query Clauses</h3><br/>
+<code>
+    ...
+    //The RuleML parser can parse single queries using the parseQuery(Element el) method
+    //This method expects to be passed the query as a JDOM element object
+    
+    Element el = ... // get the query into a JDOM Element object
+    
+    DefiniteClause query = rmp.parseQuery(el);
+    ...
+</code>
+
+</p>
+</section>
+
+<section label="asciisyntax">
+<header>ASCII PR Syntax</header>
+<p>
+The second syntax that OO jDREW can parse is the ASCII PR Syntax 
+(<a href="http://www.daml.org/listarchive/joint-committee/1361.html">
+http://www.daml.org/listarchive/joint-committee/1361.html</a>)<br/><br/>
+
+<h3>Parsing OO RuleML XML files in OO jDREW</h3><br/>
+<code>
+    ...
+    //Parsing of the ASCII PR syntax is done using the jdrew.oo.util.DCParser class.
+    
+    String filename = "..." //path to file containing clauses in the ASCII PR syntax
+    
+    DCParser dcp = new DCParser();
+    
+    dcp.parseDCFile(filename); //parse file
+    
+    Iterator it = dcp.iterator(); //creates an iterator of all parsed 
+    	    	    	    	  //clauses (jdrew.oo.util.DefiniteClause objects).
+				  //This iterator can then be passed to
+				  //as the parameter of the loadClauses method 
+				  //of a DCTree or BUTree object
+    			  
+    //Alternatively you can parse clauses that are stored in a String using
+    //the parseDefiniteClauses(String clauses) method.
+    ...
+</code>
+
+<h3>Parsing Query Clauses in ASCII PR syntax</h3><br/>
+<code>
+    ...
+    String query = ... // get the query as a string
+    
+    DefiniteClause queryClause = dcp.parseQueryString(query);
+    ...
+</code>
+</p>
+</section>
+
+<section label="typesystem">
+<header>Type System and Type Definition in RDFS</header>
+<p>
+Type taxonomies for the OO jDREW typing system (described in <a href="http://www.cs.unb.ca/~boley/ruleml/ruleml-rgs.pdf"> </a>)
+are defined using RDFS, using the <tt>rdfs:Class</tt> and <tt>rdfs:subClassOf</tt> elements, within the clauses the types are 
+referred to using the value given to the <tt>rdf:ID</tt> attribute of the <tt>rdfs:Class</tt> element.
+<br/><br/>
+To parse the type taxonomy pass the filename of the RDFS document to the <tt>parseRDFS(String filename)</tt> method of a 
+<tt>jdrew.oo.util.RDFSParser</tt> object. The type taxonomy should be parsed before parsing any clauses that use the types, otherwise 
+the in memory type hierarchy will not be the same as the one defined in the RDFS document.
+<br/><br/>
+The RDFSParser is not yet completed, and is very sensitive to the format of the RDFS files, in particular the why that namespaces are
+declared and the use of prefixes. A sample RDFS file that will parse correctly is <a href="sample.rdfs">available</a>.
+</p>
+</section>
+
+<section label="currlimits">
+<header>Current limitations</header>
+<p>
+<itemize>
+<item>Currently the system is limited to having a single type hierarchy and symbol table in the java virtual machine. 
+Upcoming versions will allow the use of separate type hierarchies for each BUTree or DCTree object (although it will 
+still be possible to use a common one).</item>
+<item>Query clauses are represented as rules with as $top():- query conditions . If a query clause is output using the
+<tt>toPrologString()</tt>, <tt>toRuleML()</tt> or <tt>toRuleMLString()</tt> methods of the DefiniteClause class, it will
+be output as a rule with the head of $top(). This should be corrected in a future version to print it out as a proper query.</item>
+<item>
+The handling of negation as failure (NAF) (available if using the <tt>depthFirstSolutionIterator(DefiniteClause query),</tt> method of 
+a DCTree object) is not implemented properly in the parsers. To use negation as failure you must create an atom with the predicate '~',
+which contains a CTerm representation of the conditions that NAF should apply to. For the ASCII PR syntax, this means replacing '(' and 
+')' with '[' and ']', for the XML syntax, you must use a cterm element, with the predicated name as the value for the constructor (ctor).
+</item>
+<item>The <tt>toPrologString()</tt> method of the DefiniteClause clause should be renamed, as this now produces clauses in 
+the ASCII PR syntax.
+</item>
+</itemize>
+</p>
+</section>
+
+<section label="download">
+<header>Download OO jDREW library and sample front ends</header>
+<p>
+<a href="oojdrew.jar">Main OO jDREW Library</a><br/><br/>
+
+Prerequisites<br/><br/>
+
+<itemize>
+<item><a href="ptolemyjdrew.jar">Ptolemy II</a> Used by the OO jDREW type system. The copy of 
+Ptolemy II available for download here contains only the sections needed by OO jDREW.
+To get a complete source version of Ptolemy II please visit the Ptolemy II Homepage.<br/><br/>
+ 
+Ptolemy II is <a href="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm">Copyright 1997-2003</a> 
+The Regents of the University of California.<br/>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/">Ptolemy II Homepage</a></item>
+
+<item><a href="jdom.jar">JDOM XML Library</a> Used for XML support in OO jDREW.
+<br/>You download find more information about JDOM and download a source copy
+at <a href="http://www.jdom.org">http://www.jdom.org</a></item>
+
+<item>A working Java 2 implementation, such as the Sun J2SE 1.4.1 SDK available at 
+<a href="http://java.sun.com/">http://java.sun.com</a></item>
+</itemize>
+All three jar files should be downloaded and added to your CLASSPATH before using 
+programs that make use of OO jDREW.<br/><br/>
+
+<h3>Sample Front Ends</h3>
+<br/><br/>
+<a href="TDDemo.java">Top-down mode front end</a><br/> 
+<a href="TDDemoDoc.txt">Documentation</a> on using the top down front end.<br/><br/>
+
+Bottom-up mode front end - Not available currently.
+
+<h3>Complete Download</h3>
+A complete download, containing the sample front ends, as well as all three jar files, 
+is available in the following zip file <a href="oojdrewComplete.zip">oojdrewComplete.zip</a>.
+
+<br/><br/>
+<h3>Source Download</h3>
+A source download of OO jDREW will soon be available.
+</p>
+
+</section>
+
+
+
+  <closing>
+<p>
+Site Contact:
+Marcel Ball &lt;Marcel dot Ball at nrc dot gc dot ca&gt;.<br/>
+Page Version: 2003-12-01
+
+<br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this page at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+  </closing>
+
+
+</homepage>

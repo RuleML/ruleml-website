@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!-- JNLP File for SwingSet2 Demo Application --> 
+<jnlp spec="0.2 1.0"
+      codebase="http://www.jdrew.org/oojdrew/demo"
+      href="translator93.jnlp">
+   <information> 
+      <title>RuleML - POSL Bi-Directional Converter</title> 
+      <vendor>NRC</vendor>
+      <homepage href="http://www.jdrew.org/oojdrew/"/>
+      <description>OO jDREW Top-Down Engine</description>
+      <description kind="short">RuleML - POSL Bi-Directional Converter</description>
+      <offline-allowed/> 
+   </information> 
+   <resources>
+      <j2se version="1.3+" href="http://java.sun.com/products/autodl/j2se"/>
+      <j2se version="1.3+"/>
+      <jar href="OOjDREW93.jar" main="true" download="eager"/>
+      <jar href="xom.jar" download="eager" />
+      <jar href="ptolemy.jar" download="eager" />
+      <jar href="log4j-1.2.9.jar" download="eager" />
+      <jar href="antlr.jar" download="eager" />
+   </resources>
+   <application-desc main-class="jdrew.oo.gui.Translator"/>
+</jnlp> 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://ibis.in.tum.de/research/projects/rbsla/manager"
+  href="manager.jnlp">
+  <information>
+    <title>RBSLA Manager</title>
+    <vendor>Rule Based Service Level Agreement Project</vendor>
+    <homepage href="http://ibis.in.tum.de/research/projects/rbsla"/>
+    <description>RBSLA Manager</description>
+    <description kind="short">RBSLA Contract Manager</description>
+    <icon href="img/caption.png"/>
+    <icon kind="splash" href="img/splash4.png"/>
+    <offline-allowed/>
+  </information>
+<security>
+      <all-permissions/>
+  </security> 
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="lib/rbsla_manager.jar"/>
+  </resources>
+  <application-desc main-class="rbsla.gui.StartUp"/>
+</jnlp> 

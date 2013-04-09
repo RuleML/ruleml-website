@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of Con -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Atom RuleML elements module.
+			This is the XML Schema higher order logic module for RuleML.
+			File: holog_module.xsd
+			Version: 0.89
+			Last Modification: 2005-05-27
+			
+			See http://www.daml.org/services/swsl/report/swsl/#ruleml-hilog for more details.
+
+			This module declares the following RuleML elements:
+			* Hterm
+			* op
+			* Con
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Hterm ***
+		content model:
+		( 
+		   oid?, (op | Con | Skolem | Var | Reify | Hterm), (slot)*,
+		   (arg | Con | Skolem | Var | Reify | Hterm)*, (repo)?, (slot)*, (resl)?
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+                        (
+			   oid?, (op | Con | Skolem | Var | Reify | Hterm),
+			     (
+			       (slot)+,
+		                 (
+				    (resl)
+			           |
+		                    ( ( (arg | Con | Skolem | Var | Reify | Hterm)+, (repo)?, (slot)*, (resl)? )? )
+		                  )
+		                 |
+	                          ( ( (arg | Con | Skolem | Var | Reify | Hterm)+, (repo)?, (slot)*, (resl)? )? )
+	                     )
+                        )
+                    
+		A Hilog term, generalizing Atom and Cterm.                        
+                        
+		Extra restrictions:
+			- no other role tags (e.g. op) can interleave between user slots.
+			- op role tag may only appear at the beginning of the Hterm (leads to non-determinism
+			  if also allowable at end).
+			- oid role tag cannot be skipped (as is the case with slot), and may only appear at the
+			  beginning of the Hterm. (This holds for all occurrences of oid.)
+	
+	-->
+	<xs:attributeGroup name="Hterm.attlist"/>
+	<xs:group name="Hterm.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="oid"/>
+			</xs:choice>			
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="op"/>				
+					<xs:group ref="op.content"/>						
+				</xs:choice>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element name="slot" type="slot.type" minOccurs="1" 									maxOccurs="unbounded"/>
+						<xs:choice>
+							<xs:sequence>
+								<xs:element ref="resl" minOccurs="1"/>
+							</xs:sequence>
+							<xs:sequence minOccurs="0">
+								<xs:choice minOccurs="1" maxOccurs="unbounded">
+									<xs:element ref="arg"/>
+									<xs:group ref="arg.content"/>
+								</xs:choice>
+								<xs:element ref="repo" minOccurs="0"/>								
+								<xs:element name="slot" type="slot.type" minOccurs="0" 											maxOccurs="unbounded"/>
+								<xs:element ref="resl" minOccurs="0"/>	
+							</xs:sequence>
+						</xs:choice>
+					</xs:sequence>	
+					<xs:sequence>
+						<xs:sequence minOccurs="0">
+							<xs:choice minOccurs="1" maxOccurs="unbounded">
+								<xs:element ref="arg"/>
+								<xs:group ref="arg.content"/>
+							</xs:choice>
+							<xs:element ref="repo" minOccurs="0"/>								
+							<xs:element name="slot" type="slot.type" minOccurs="0" 										maxOccurs="unbounded"/>
+							<xs:element ref="resl" minOccurs="0"/>														
+						</xs:sequence>
+					</xs:sequence>
+				</xs:choice>	
+			</xs:sequence>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="Hterm.type">
+		<xs:group ref="Hterm.content"/>
+		<xs:attributeGroup ref="Hterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="Hterm" type="Hterm.type"/>
+
+	<!--
+		*** op ***
+		content model: (Con | Skolem | Var | Reify | Hterm)
+
+		A neutralized operator role (for opr and opc).
+
+		This is a metarole which may be left implicit.
+	-->
+	<xs:attributeGroup name="op.attlist"/>
+	<xs:group name="op.content">
+		<xs:choice>
+			<xs:element name="Con" type="Con-normal.type"/>
+			<xs:element ref="Skolem"/>			
+			<xs:element ref="Var"/>
+			<xs:element ref="Reify"/>
+			<xs:element ref="Hterm"/>				
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="op.type">
+		<xs:group ref="op.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+	<xs:element name="op" type="op.type"/>
+
+	<!--
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		*** Con ***
+		content model: (#PCDATA)
+
+		A neutralized constant (for Rel, Ctor and Ind).
+	-->
+       <!-- when Con is inside an oid, allow @wlab but not @wref -->
+	<xs:attributeGroup name="Con-oid.attlist">
+		   <xs:attributeGroup ref="type.attrib"/>
+               <xs:attributeGroup ref="wlab.attrib"/>		
+	</xs:attributeGroup>
+       <!-- when Con is not inside an oid, allow @wref but not @wlab -->
+       <xs:attributeGroup name="Con-normal.attlist">
+               <xs:attributeGroup ref="type.attrib"/>
+               <xs:attributeGroup ref="wref.attrib"/>
+       </xs:attributeGroup>
+	<xs:group name="Con.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Con-oid.type" mixed="true">
+		<xs:group ref="Con.content"/>
+		<xs:attributeGroup ref="Con-oid.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="Con-normal.type" mixed="true">
+		<xs:group ref="Con.content"/>
+		<xs:attributeGroup ref="Con-normal.attlist"/>
+	</xs:complexType>
+	<xs:element name="Con" type="Con-normal.type"/>
+	
+</xs:schema>

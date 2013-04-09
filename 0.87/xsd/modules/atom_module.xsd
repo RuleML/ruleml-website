@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd"
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Atom RuleML elements module.
+			This is the XML Schema atom elements module for RuleML.
+			File: atom_module.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+			
+			This module declares the following RuleML elements:
+			* Atom
+			* opr
+			* Rel
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Atom ***
+		content model:
+		(
+                    ( (opr | Rel), (role | Slot)*, (arg | Ind | Var)*, (role | Slot)* ) |
+                    ( (role | Slot)*, (arg | Ind | Var)+, (role | Slot)*, opr )
+                )
+		
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+
+                        (
+                            ( (opr | Rel),
+                              (role | Slot)*, 
+                              ( (arg | Ind | Var)+, (role | Slot)*)?
+                            ) 
+                          |
+                            (
+                               (
+                                  ( (role | Slot)+, 
+                                    ( (arg | Ind | Var)+, (role | Slot)* )?
+                                  )
+                                |
+                                  ((arg | Ind | Var)+, (role | Slot)*)
+                               ),
+                               opr
+                            )
+                         )
+
+		A logical atom, i.e. an expression formed from a predicate applied to a collection of its
+		(logical) arguments.
+
+		An atomic formula is usable within 'head','body', or 'And'. Atom elements use an 'opr' role
+		(or, directly, a 'Rel') followed by a sequence of zero or more arguments, or equivalently, with
+		'opr' at the end.
+
+		The arguments may be individuals or variables (or, in hornlog, complex terms or plexs) or
+		the optional metarole 'arg' specifying a positional argument.
+
+		Optional user-defined slots are also permitted before and/or after the individuals.
+	-->
+	<xs:group name="Atom.extend">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="arg"/>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:attributeGroup name="Atom.attlist"/>
+	<xs:group name="Atom.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="opr"/>				
+					<xs:element ref="Rel"/>
+				</xs:choice>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="role"/>
+					<xs:element ref="Slot"/>
+				</xs:choice>
+				<xs:sequence minOccurs="0">
+					<xs:group ref="Atom.extend"/>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="role"/>
+						<xs:element ref="Slot"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="role"/>					
+							<xs:element ref="Slot"/>
+						</xs:choice>
+						<xs:sequence minOccurs="0">
+							<xs:group ref="Atom.extend"/>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element ref="role"/>					
+								<xs:element ref="Slot"/>
+							</xs:choice>
+						</xs:sequence>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:group ref="Atom.extend"/>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="role"/>						
+							<xs:element ref="Slot"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="opr"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Atom.type">
+		<xs:group ref="Atom.content"/>
+		<xs:attributeGroup ref="Atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="Atom" type="Atom.type"/>
+
+	<!--
+		*** opr ***
+		content model: (Rel)
+
+		A relational operator expression.
+
+		This is a metarole which is usually left implicit.  It uses a Rel(ation) symbol.
+	-->
+	<xs:attributeGroup name="opr.attlist"/>
+	<xs:group name="opr.content">
+		<xs:sequence>
+			<xs:element ref="Rel"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="opr.type">
+		<xs:group ref="opr.content"/>
+		<xs:attributeGroup ref="opr.attlist"/>
+	</xs:complexType>
+	<xs:element name="opr" type="opr.type"/>
+
+	<!--
+		*** Rel ***
+		content model: (#PCDATA)
+
+		A relation, i.e. a logical predicate.
+	-->
+	<xs:attributeGroup name="Rel.attlist"/>
+	<xs:group name="Rel.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Rel.type" mixed="true">
+		<xs:group ref="Rel.content"/>
+		<xs:attributeGroup ref="Rel.attlist"/>
+	</xs:complexType>
+	<xs:element name="Rel" type="Rel.type"/>
+	
+</xs:schema>

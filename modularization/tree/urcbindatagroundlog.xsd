@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog RuleML sublanguage
+			File: urcbindatagroundlog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatalog.xsd">
+		<!-- remove vars -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="ind"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:group>	
+
+		<!-- remove vars -->
+		<xs:group name="_slot.extend">
+			<xs:choice>
+				<xs:element ref="ind"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+
+</xs:schema>

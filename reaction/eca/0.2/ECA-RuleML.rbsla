@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Test file for transformation from ECA-RuleML / ECA-RuleML in ContractLog/Prova syntax -->
+
+<RBSLA
+xmlns="http://www.ruleml.org/0.9/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd 
+http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.2/eca.xsd">
+ <Assert>
+	<ECA>
+	  <time><Cterm><Ctor>everyMinute</Ctor><Var>T</Var></Cterm></time>
+	  <event><Cterm><Ctor>available</Ctor><Ind>"http://www.google.de"</Ind></Cterm></event>
+	  <action><Cterm><Ctor>sendNotification</Ctor><Var>T</Var></Cterm></action>
+	</ECA>
+	<ECA>
+	  <time><Cterm><Ctor>everyMinute</Ctor><Var>T</Var></Cterm></time>
+	  <event><Cterm><Attachment><Ind>java.lang.Integer</Ind><Ind>parseInt</Ind></Attachment><Ind>7790</Ind></Cterm></event>
+	  <action><Cterm><Ctor>sendNotification</Ctor><Var>T</Var></Cterm></action>
+	</ECA>
+	<ECA>
+	  <time><Cterm><Ctor>everyMinute</Ctor><Var>T</Var></Cterm></time>
+	  <event><Cterm><Attachment><Ind>java.lang.Double</Ind><Ind>parseDouble</Ind></Attachment><Ind>77.90</Ind></Cterm></event>
+	  <action><Cterm><Ctor>sendNotification</Ctor><Var>T</Var></Cterm></action>
+	</ECA>
+ </Assert>	
+</RBSLA>

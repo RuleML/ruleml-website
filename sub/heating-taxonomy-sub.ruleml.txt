@@ -1,0 +1,369 @@
+<?xml version="1.0" standalone="no"?>
+<!-- <!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.81/ruleml-taxonomy.dtd"> -->
+
+<?xml-stylesheet href="sub2imp.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+
+<!--
+ONTOTHERM: THE ELOTHERM HEATING TAXONOMY IN RuleML
+Harold Boley, Robert Juergens, Detlev Stahl 2002-04-19
+
+
+RuleML has been extended by taxonomic subsumption between
+relations (here: unary predicates), modeled on its rules,
+of the form
+
+<sub>
+  <_shead>super-relation</_shead>
+  <_sbody>
+    <sor>
+      sub-relation1
+      . . .
+      sub-relationN
+    </sor>
+  </_sbody>
+</sub>
+
+or, pictorially,
+
+           super-relation
+               /   \
+              /     \
+             /       \
+sub-relation1  . . .  sub-relationN 
+
+Such subsumptions are used here to define the Ontotherm taxonomy for
+ELOTHERM according to the Clockwork Framework Structure.
+-->
+
+
+
+<rulebase>
+
+
+<sub>
+  <_shead><rel>Ontotherm (Clockwork Framework Structure)</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>problem (Real World)</rel>
+      <rel>heating equipment (Conceptual World)</rel>
+      <rel>inductor calculation (Choice of the Simulation Model)</rel>
+      <rel>parameter studies (Simulation Runs of the Temperature)</rel>
+      <rel>validation tests (Comparison Between Simulation and Measured Temperature Distribution for the Real World User</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead><rel>problem (Real World)</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>induction heating of bars</rel>
+      <rel>induction heating of billets</rel>
+      <rel>induction heating of tubes or pipes</rel>
+      <rel>induction heating of slabs</rel>
+      <rel>induction heating of sheets</rel>
+      <rel>induction heating of strips</rel>
+      <rel>induction heating of wires</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>induction heating of bars</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>round-bar heating</rel>
+      <rel>square-bar heating</rel>
+      <rel>rectangular-bar heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>induction heating of billets</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>round-billet heating</rel>
+      <rel>square-billet heating</rel>
+      <rel>rectangular-billet heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>induction heating of tubes or pipes</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>round-tube-or-pipe heating</rel>
+      <rel>square-tube-or-pipe heating</rel>
+      <rel>rectangular-tube-or-pipe heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead><rel>heating equipment (Conceptual World)</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>main transformer</rel>
+      <rel>frequency converter</rel>
+      <rel>heating machine</rel>
+      <rel>recooling unit</rel>
+      <rel>PLC</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>frequency converter</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>parallel-circuit converter</rel>
+      <rel>serial-circuit converter</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>parallel-circuit converter</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Thyristor type</rel>
+      <rel>IGBT type</rel>
+      <rel>MOSFET type</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>serial-circuit converter</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>high-frequency converter</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>IGBT type</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Elomat 8</rel>
+      <rel>Elomat 16</rel>
+      <rel>Elomat 22</rel>
+      <rel>Elomat 32</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>heating machine</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>BTH</rel>
+      <rel>CTH</rel>
+      <rel>ETH</rel>
+      <rel>PTH</rel>
+      <rel>RTH</rel>
+      <rel>STH</rel>
+      <rel>VTH</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>BTH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Type 1500</rel>
+      <rel>Type 2400</rel>
+      <rel>Type 3600</rel>
+      <rel>Type 4800</rel>
+      <rel>Type 6000</rel>
+      <rel>Type 7200</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>CTH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>bar heating</rel>
+      <rel>billet heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>ETH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>partial heating</rel>
+      <rel>edge heating</rel>
+      <rel>full-body heating</rel>
+      <rel>heating of thixo bars</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>PTH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>longitudinal-field heating</rel>
+      <rel>transversal-field heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>RTH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>full-body heating of tubes</rel>
+      <rel>seam heating of tubes</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>STH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>f. AMP 30</rel>
+      <rel>f. AMP 50</rel>
+      <rel>f. AMP 70</rel>
+      <rel>f. AMP 80</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>VTH</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>3600</rel>
+      <rel>4800</rel>
+      <rel>6000</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>recooling unit</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>water cooled</rel>
+      <rel>air cooled</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>water cooled</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>less 50 kW</rel>
+      <rel>less 100 kW</rel>
+      <rel>less 200 kW</rel>
+      <rel>less 500 kW</rel>
+      <rel>less 1000 kW</rel>
+      <rel>less 2000 kW</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>PLC</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Siemens</rel>
+      <rel>Allan Bradley</rel>
+      <rel>Mitsubishi</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>Siemens</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>S5</rel>
+      <rel>S7</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead><rel>inductor calculation (Choice of the Simulation Model)</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>1D temperature calculation</rel>
+      <rel>FEM temperature calculation with ANTRAS</rel>
+      <rel>FEM field and temperature calculation with ANSYS</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>1D temperature calculation</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>calculation of bar heating</rel>
+      <rel>calculation of billet heating</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>calculation of bar heating</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>regular for bars</rel>
+      <rel>degressive for bars</rel>
+      <rel>stop and go for bars</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+<sub>
+  <_shead><rel>calculation of billet heating</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>regular for billets</rel>
+      <rel>degressive for billets</rel>
+      <rel>stop and go for billets</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead><rel>parameter studies (Simulation Runs of the Temperature)</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Optimisation of the temperature distribution</rel>
+      <rel>Documentation and discussion of the results for each possible heating machine</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+<sub>
+  <_shead><rel>validation tests (Comparison Between Simulation and Measured Temperature Distribution for the Real World User</rel></_shead>
+  <_sbody>
+    <sor>
+      <rel>Determination of the difference between calculated and measured temperature distribution over time for the heated parts</rel>
+      <rel>Determination of the difference between calculated and measured temperature distribution over the cross section for the heated parts</rel>
+    </sor>
+  </_sbody>
+</sub>
+
+
+</rulebase>

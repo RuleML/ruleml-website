@@ -1,0 +1,269 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+namespace ruleml = "http://www.ruleml.org/0.91/xsd"
+
+dc:title [ "RuleML Custom-Built Schema" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com)" ]
+dc:subject [ "RuleML, custom-built" ]
+dc:description [
+    "custom-built main module for a RuleML sublanguage."
+]
+dc:date [ "2011-10-01T15:42:52-0300" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ]
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+# Call parameters
+# Base URL = http://www.ruleml.org/0.91/relaxng/schema_rnc.php 
+# GET parameter: backbone=x3f
+# GET parameter: default=x7
+# GET parameter: termseq=x7
+# GET parameter: lng=x1
+# GET parameter: propo=x3f
+# GET parameter: implies=x7
+# GET parameter: terms=xf3f
+# GET parameter: quant=x7
+# GET parameter: expr=xf
+# GET parameter: serial=xf
+# Complete URL = 
+#     http://www.ruleml.org/0.91/relaxng/schema_rnc.php?backbone=x3f&default=x7&termseq=x7&lng=x1&propo=x3f&implies=x7&terms=xf3f&quant=x7&expr=xf&serial=xf
+ start = Node.choice | edge.choice
+#
+# ROOT NODE AND PERFORMATIVES INCLUDED
+#
+include "modules/performative_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ATOMIC FORMULAS INCLUDED
+#
+include "modules/atom_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# CONJUNCTIONS AND DISJUNCTIONS INCLUDED
+#
+include "modules/andor_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# IMPLICATIONS INCLUDED
+#
+include "modules/implication_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# QUANTIFICATION OVER VARIABLES INCLUDED
+#
+include "modules/quantification_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# EXPRESSIONS INCLUDED
+#
+include "modules/expr_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DISJUNCTIONS IN CONCLUSIONS INCLUDED
+#
+include "modules/dis_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# RESTRICTIONS ON COMPOUNDING CLASSICAL FORMULAS REMOVED 
+#   FULL FIRST-ORDER EXPRESSIVITY (INCLUDING NEGATION) IS AVAILABLE 
+#
+include "modules/folog_cl_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ATTRIBUTES WITH DEFAULT VALUES ARE INITIALIZED
+#
+include "modules/default_inf_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ATTRIBUTES WITH DEFAULT VALUES ARE ABSENT OR OPTIONAL
+#
+include "modules/default_absent_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+include "modules/default_absent_folog_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ATTRIBUTES WITH DEFAULT VALUES REQUIRED
+#
+include "modules/default_present_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+include "modules/default_present_folog_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# POLYADIC TERM (ONE OR MORE TERMS) SEQUENCES INCLUDED
+#
+include "modules/termseq_poly_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ORDER MODE - UNORDERED GROUPS ENABLED
+#
+include "modules/unordered_groups_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# STRIPE-SKIPPING MODE ENABLED
+#
+include "modules/stripe_skipping_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+include "modules/asynchronous_stripe_skipping_entailment_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+include "modules/asynchronous_stripe_skipping_implication_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# EXPLICIT DATATYPING ENABLED
+#
+include "modules/explicit_datatyping_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+include "modules/dataterm_simple_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+include "modules/data_simple_content_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# xsi:schemaLocation ALLOWED IN RuleML
+#
+include "modules/xsi_schemalocation_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ABSTRACT HEADERS INCLUDED
+#
+include "modules/header_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# UNIVERSAL RESOURCE IDENTIFIERS (URIs) INCLUDED
+#
+include "modules/uri_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# RULEBASES INCLUDED
+#
+include "modules/rulebase_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ENTAILMENTS (PROVES) INCLUDED
+#
+include "modules/meta_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEGREE OF UNCERTAINTY INCLUDED
+#
+include "modules/fuzzy_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# STRONG NEGATION INCLUDED
+#
+include "modules/neg_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# WEAK NEGATIONS INCLUDED
+#
+include "modules/naf_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# EQUIVALENCES INCLUDED
+#
+include "modules/equivalent_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# INFERENCE DIRECTION ATTRIBUTE IS INCLUDED
+#
+include "modules/direction_attrib_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# NON-DEFAULT VALUES OF INFERENCE DIRECTION INCLUDED
+#
+include "modules/direction_non-default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEFAULT VALUES OF INFERENCE DIRECTION INCLUDED
+#
+include "modules/direction_default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# MATERIAL IMPLICATION ATTRIBUTE IS INCLUDED
+#
+include "modules/material_attrib_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# NON-DEFAULT VALUES OF MATERIAL IMPLICATION INCLUDED
+#
+include "modules/material_non-default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEFAULT VALUES OF MATERIAL IMPLICATION INCLUDED
+#
+include "modules/material_default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# OBJECT IDENTIFIERS INCLUDED
+#
+include "modules/desc_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SLOTS INCLUDED
+#
+include "modules/slot_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SLOT CARDINALITY INCLUDED
+#
+include "modules/card_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SLOT WEIGHTS INCLUDED
+#
+include "modules/weight_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# EQUATIONS INCLUDED
+#
+include "modules/equal_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# ORIENTED EQUALITY ATTRIBUTE IS INCLUDED
+#
+include "modules/oriented_attrib_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# NON-DEFAULT VALUES OF ORIENTED EQUALITY ATTRIBUTE INCLUDED
+#
+include "modules/oriented_non-default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEFAULT VALUE OF ORIENTED EQUALITY ATTRIBUTE INCLUDED
+#
+include "modules/oriented_default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# EXPLICIT TYPING OF TERMS INCLUDED
+#
+include "modules/type_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DATA TERMS INCLUDED
+#
+include "modules/dataterm_any_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DATA ELEMENTS INCLUDED
+#
+include "modules/data_any_content_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SKOLEM CONSTANTS INCLUDED
+#
+include "modules/skolem_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# REIFICATION TERMS INCLUDED, EXPLICIT CONTENT
+#
+include "modules/reify_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# INDIVIDUAL TERMS (INTERPRETED NAMES) ARE INCLUDED
+#
+include "modules/individual_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# VARIABLES (INTERPRETABLE NAMES) ARE INCLUDED
+#
+include "modules/variable_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# IMPLICIT CLOSURE INCLUDED
+#
+include "modules/closure_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SLOTTED REST VARIABLES INCLUDED
+#
+include "modules/resl_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# POSITIONAL REST VARIABLES INCLUDED
+#
+include "modules/repo_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# GENERALIZED LISTS INCLUDED
+#
+include "modules/plex_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SET-VALUED EXPRESSION ATTRIBUTE IS ABSENT OR OPTIONAL
+#
+include "modules/val_absence_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# SET-VALUED EXPRESSION ATTRIBUTE IS INCLUDED
+#
+include "modules/val_attrib_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# NON-DEFAULT VALUES OF THE SET-VALUED ATTRIBUTE INCLUDED
+#
+include "modules/val_non-default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEFAULT VALUE OF THE SET-VALUED ATTRIBUTE INCLUDED
+#
+include "modules/val_default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# INTERPRETED EXPRESSION ATTRIBUTE IS INCLUDED
+#
+include "modules/in_attrib_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# NON-DEFAULT VALUES OF EXPRESSION INTERPRETATION INCLUDED
+#
+include "modules/in_non-default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# DEFAULT VALUE OF EXPRESSION INTERPRETATION INCLUDED
+#
+include "modules/in_default_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+#
+# INITIALIZATION MODULES INCLUDED
+#
+include "modules/init_expansion_module.rnc" inherit = ruleml {start |= notAllowed}
+
+#

@@ -1,0 +1,137 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The HCLS Rule Responder Service
+%
+% http://ibis.in.tum.de/projects/paw/hcls/
+%
+% It allows to query various Web-based eScience services 
+% and data sources  and retrieve the 
+% data in the selected output format
+%
+% Currently the core queries to the service are written in the native
+% query syntax of the service, but it is straightforward to
+% add further transformation rules, which translate from a
+% common platform-independent query language such as 
+% XQuery, SQL, SPARQL into the platform-specific query language
+% of the service (following the idea of web service and RPC 
+% calls wrapped in SOAP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% import of additional ContractLog libraries (modules)
+:-eval(consult('ContractLog/utils.prova')).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Meta-data facts about services
+% TODO outsource this data to a Semantic Web description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+service(goPubMed,"http://www.gopubmed.org/",text).
+service(goPubMed,"http://www.gopubmed.org/",rdf).
+service(goPubMed,"http://www.gopubmed.org/",xml).
+service(goPubMedStatistic,"http://www.gopubmed.org/",xml).
+service(patabs,"http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-page+query+-id+3BCib1WGHAl",xml).
+service(hcls,"http://hcls.deri.ie/sparql/",xml).
+service(hcls,"http://hcls.deri.ie/sparql/",html).
+service(hcls,"http://hcls.deri.ie/sparql/",json).
+service(hcls,"http://hcls.deri.ie/sparql/",javascript).
+
+% public function interfaces of this rule service
+% describes the function signatures and types (untyped variables are also supported)
+% and the mode declarations and gives a narrative description for human
+% consumption
+interface(performative(Performative), performative("?"), "pragmatic performatives of this agent/service").
+interface(service(ServiceName,ServiceURL,ServiceOutputFormat),service("?","?","?"), "service description including the supported output formats").
+interface(interface(Signature,ModeDeclaration,Description),service("?","?","?"), "interface description of the public rule functions").
+interface(retrieveData(Result, Service, Format, Query), retrieveDate("-","+","+","+"), "submits a Query to service and returns the Result data in the selected Format").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% general rule for receiving query messages
+% the rules first tries to understand the pragmatic context
+% and then tries to answer the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rcvMsg(XID,esb, From, Performative, [X|Args]) :-
+	understandPerformative(XID, From, Performative, [X|Args]),
+	%processMessage(XID, From, Performative, [X|Args]).
+	processMessage(XID, "User", Performative, [X|Args]).
+rcvMsg(XID,esb, From, Performative, [X|Args]) :-
+	understandPerformative(XID, From, Performative, [X|Args]),
+	rcvMsg(XID,esb,Agent,no_further_answers, Payload),	
+	sendMsg(XID,esb,From,no_further_answers,[X|Args]).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for processing the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+% simple taxonomy of performatives for queries
+% query = request	
+performative(request):-performative(query).
+performative(query).
+	
+% try to understand the performative of the message
+understandPerformative(XID, From, "answer", PayLoad) :- !, fail().
+understandPerformative(XID, From, "end_of_transmission", PayLoad) :- !, fail().
+understandPerformative(XID, From, "no_further_answers", PayLoad) :- !, fail().  	
+understandPerformative(XID, From, Performative, PayLoad) :-
+	performative(Performative).
+understandPerformative(XID, From, Performative, PayLoad) :-
+	not(performative(Performative)),
+	sendMsg(XID,esb,From,"answer", notUnderstood("performative",Performative)),
+	sendMsg(XID,esb,From,"no_further_answers", PayLoad),
+	fail().
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% rules for answering the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+processMessage(XID, From, Performative, [X|Args]):-
+	derive([X|Args]),
+	sendMsg(XID,esb,From, answer, [X|Args]).
+	
+	
+
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Internal non-public rule base of the GoPubMed Rule Service
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+
+   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Selects the expert from the GoPubMed statistics
+% and the Patent Abstract database
+% according to the query
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	  
+expert(Expert,Query):-
+    bound(Query),
+    buildServiceURL(StatisticsURL,goPubMedStatistics, xml, Query),
+    XQuery = '
+       for $name in StatisticsURL//Author[0]/@name/text()
+       return $name',    
+    xquery_select(XQuery,name(ExpertName)),
+    concat(["([patabs-Inventor:",ExpertName,"*]%20&%20[patabs-Title:",Query,"*])"],Query2),
+    buildServiceURL(PatabsURL,patabs, xml, Query2),
+    XQuery2 = '
+       for $name in PatabsURL//Inventor[0]/text()
+       return $name',
+    )
+    xquery_select(XQuery2,name(Expert)),
+    ExperName = Expert. 
+
+
+% test URL for vCard
+vCardURL("http://ibis.in.tum.de/projects/paw/hcls/vCard.rdf").
+
+% create person information from RDF vCard; use the OWL2Prova RDF triple query built-in
+% instead of the sparql built-in.
+	
+person(Name,Role, Title, EMail, Telephone):-
+  searchForvCard(Name, URL),
+  rdf(URL,"",_,"vCard_FN", Name),
+  rdf(URL,"",_,"vCard_ROLE", Role),
+  rdf(URL,"",_,"vCard_TITLE", Title),
+  rdf(URL,"",_,"vCard_TEL", TelNode),
+  rdf(URL,"",TelNode,"rdf_value",Telephone),
+  rdf(URL,"",_,"vCard_EMAIL",EMailNode),
+  rdf(URL,"",EMailNode,"rdf_value",EMail).
+	

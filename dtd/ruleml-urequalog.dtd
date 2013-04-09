@@ -1,0 +1,31 @@
+<!-- An XML DTD for a 'UR' (Flat) Equational-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!-- an expression is usable within equational formulas -->
+<!-- expr uses ur, ind, var, or cterm terms or nano formulas -->
+
+<!ENTITY % expr "(ur | ind | var | cterm | nano)">
+
+
+<!ENTITY % equalog.module "IGNORE">
+
+<!ENTITY % equalog SYSTEM "ruleml-equalog.dtd">
+%equalog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- nano formula are usable within expressions -->
+<!-- nano element uses fun name followed by four (flat) kinds of arguments -->
+
+<!ELEMENT nano (fun, (ur | ind | var | cterm)*)>

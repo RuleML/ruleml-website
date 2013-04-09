@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/urcbindatagroundlog.xsd" direction="backward">
+
+<!-- a trivial example rulebase for testing the 'UR'-Centered Binary Ground-Datalog RuleML sublanguage -->
+
+<Imp>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>John</Ind>
+      <Ind>Bob</Ind>
+     </Atom>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Bob</Ind>
+      <Ind href="some_URI">Frank</Ind>
+    </Atom>
+    </And>
+  </body>
+</Imp>
+
+<Query>
+  <body>
+    <And>
+      <Atom>
+        <opr><Rel href="some_URI">some relation</Rel></opr>
+        <Slot><Ind>role_name1</Ind><Ind>role 1</Ind></Slot>
+        <Ind>constant a</Ind>
+        <Ind href="another_URI">constant b</Ind>
+        <Slot><Ind>role_name2</Ind><Ind>role 2</Ind></Slot>
+      </Atom>
+      <Atom>
+        <opr><Rel href="some_URI">another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+      </Atom>
+    </And>
+  </body>
+  <rlab><Ind>rule (query) label</Ind></rlab>
+</Query>
+
+<Fact>
+  <rlab><Ind>rule (fact) label</Ind></rlab>
+  <head>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind href="URI">constant e</Ind>
+      <Ind>constant b</Ind>
+      <Slot><Ind>role_name3</Ind><Ind>role 3</Ind></Slot>
+    </Atom>
+  </head>
+</Fact>
+
+<rbaselab><Ind>test rulebase</Ind></rbaselab>
+</Rulebase>

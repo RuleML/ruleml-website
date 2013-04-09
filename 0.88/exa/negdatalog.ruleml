@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/negdatalog.xsd">
+
+<!-- a trivial example rulebase for testing the Datalog RuleML sublanguage, with strong/classical negation -->
+
+<And direction="backward" innerclose="universal">
+
+<Implies>
+  <head>
+    <Neg>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+    </Neg>
+  </head>
+  <body>
+   <Neg>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+    </Atom>
+   </Neg>
+  </body>
+</Implies>
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+   <Or>
+    <Neg>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+     </Atom>
+    </Neg>
+   </Or>
+  </body>
+</Implies>
+
+    <Forall>
+	<Var type="Person">x1</Var>
+	<Var type="Person">x2</Var>
+	<Var type="Person">x3</Var>
+	<Var type="Person">x4</Var>
+           <Atom>
+               <opr><Rel>rel2</Rel></opr>
+               <Ind>4</Ind>
+               <Ind>5</Ind>
+               <Var>x6</Var>
+               <Ind>6</Ind>
+           </Atom>
+   </Forall>
+
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+
+</And>
+
+</Assert>

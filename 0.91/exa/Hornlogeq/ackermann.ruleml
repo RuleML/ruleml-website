@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hornlogeq.xsd">
+
+<Assert>
+<!--
+	Ackermann function:
+
+	Ackermann(m,n) = n+1   if m=0
+	               = Ackermann(m-1,1)   if m>0 and n=0
+	               = Ackermann(m-1,Ackermann(m,n-1))   if m>0 and n>0	
+-->
+
+	<!--
+		Ackermann(0,n) = n+1
+	-->
+	<Equal oriented="yes">
+		<Expr>
+			<Fun in="yes">Ackermann</Fun>
+			<Ind>0</Ind>
+			<Var>n</Var>
+		</Expr>
+		<Expr>
+			<Fun in="yes">add</Fun>
+			<Var>n</Var>
+			<Ind>1</Ind>
+		</Expr>
+	</Equal>
+
+	<!--
+		Ackermann(m,0) = Ackermann(m-1,1)   if m>0
+	-->
+	<Implies>
+		<head>
+			<Equal oriented="yes">
+				<Expr in="yes">
+					<Fun>Ackermann</Fun>
+					<Var>m</Var>
+					<Ind>0</Ind>
+				</Expr>
+				<Expr in="yes">
+					<Fun>Ackermann</Fun>
+					<Expr>
+						<Fun>subtract</Fun>
+						<Var>m</Var>
+						<Ind>1</Ind>
+					</Expr>
+					<Ind>1</Ind>
+				</Expr>
+			</Equal>
+		</head>
+		<body>
+			<Atom>
+				<Rel>greaterThan</Rel>
+				<Var>m</Var>
+				<Ind>0</Ind>
+			</Atom>
+
+		</body>
+	</Implies>
+	
+	<!--
+		Ackermann(m,n) = Ackermann(m-1,Ackermann(m,n-1))   if m>0 and n>0	
+	-->
+	<Implies>
+		<head>
+			<Equal oriented="yes">
+				<Expr in="yes">
+					<Fun>Ackermann</Fun>
+					<Var>m</Var>
+					<Ind>n</Ind>
+				</Expr>
+				<Expr in="yes">
+					<Fun>Ackermann</Fun>
+					<Expr>
+						<Fun>subtract</Fun>
+						<Var>m</Var>
+						<Ind>1</Ind>
+					</Expr>
+					<Expr in="yes">
+					    	<Fun>Ackermann</Fun>
+					        <Var>m</Var>
+					    	<Expr>
+						    <Fun>subtract</Fun>
+						    <Var>n</Var>
+						    <Ind>1</Ind>
+					    	</Expr>
+				    	</Expr>
+				</Expr>
+			</Equal>
+		</head>
+		<body>
+		       <And>
+			    <Atom>
+				    <Rel>greaterThan</Rel>
+				    <Var>m</Var>
+				    <Ind>0</Ind>
+			    </Atom>
+			    <Atom>
+				    <Rel>greaterThan</Rel>
+				    <Var>n</Var>
+				    <Ind>0</Ind>
+			    </Atom>
+		      </And>
+
+		</body>
+	</Implies>
+</Assert>
+</RuleML>

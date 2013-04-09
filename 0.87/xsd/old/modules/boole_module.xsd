@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd"
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Boolean RuleML elements module.
+			This is the XML Schema boolean elements module for RuleML.
+			File: boole_module.xsd
+			Version: 0.87
+			Last Modification: 2004-07-23
+			
+			This module declares the following boolean RuleML elements:
+			* And
+			* Or
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** And ***
+		content model: ( (Atom | Or)* )
+
+		A conjunctive body expression.
+
+		An 'And' uses zero or more atomic (or, in equalog, equational) formulas or disjunctions.
+		It is usable within 'body'. "<And>Atom</And>" is equivalent to "Atom", while "<And></And>"
+		is equivalent to "true".
+	-->
+	<xs:attributeGroup name="And.attlist"/>
+	<xs:group name="And.content">
+		<!-- note the min and maxOccurs constraints on the reference to this content model -->
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<xs:element ref="Or"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="And.type">
+		<xs:group ref="And.content" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:attributeGroup ref="And.attlist"/>
+	</xs:complexType>
+	<xs:element name="And" type="And.type"/>
+
+	<!--
+		*** Or ***
+		content model: ( (Atom | And)* )
+
+		An 'Or' uses zero or more atomic formulas or conjunctions.  It is usable within 'body'.
+		"<Or>Atom</Or>" is equivalent to "Atom".
+	-->
+	<xs:attributeGroup name="Or.attlist"/>
+	<xs:group name="Or.content">
+		<!-- note the min and maxOccurs constraints on the reference to this content model -->
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<xs:element ref="And"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Or.type">
+		<xs:group ref="Or.content" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:attributeGroup ref="Or.attlist"/>
+	</xs:complexType>
+	<xs:element name="Or" type="Or.type"/>
+
+</xs:schema>

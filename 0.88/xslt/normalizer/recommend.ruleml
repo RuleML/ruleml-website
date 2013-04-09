@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/urdatalog.xsd">
+
+<!-- challenge rule from RuleML site -->
+
+<And innerclose="universal">
+
+<Implies>
+  <head>
+    <Atom>
+      <opr>
+        <Rel>may look at</Rel>
+      </opr>
+      <Var>you</Var>
+      <Ind wref="http://www.cs.brandeis.edu/...">Rule-Based Systems</Ind>
+    </Atom>
+  </head>
+  <body>
+    <Atom>
+      <opr>
+        <Rel>want to review</Rel>
+      </opr>
+      <Var>you</Var>
+      <Ind>rule principles</Ind>
+    </Atom>
+  </body>
+</Implies>
+
+  <Atom>
+    <opr>
+      <Rel>want to review</Rel>
+    </opr>
+    <Ind>fred</Ind>
+    <Ind>rule principles</Ind>
+  </Atom>
+
+</And>
+
+</Assert>

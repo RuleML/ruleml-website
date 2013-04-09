@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd" elementFormDefault="qualified">
+	<!-- note that elementFormDefault is qualified because of the local declaration of op -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for atom-related RuleML elements.
+			File: atom_module.xsd
+			Version: 0.9
+			Last Modification: 2005-12-14
+			
+			This module declares the following RuleML elements:
+			* Atom
+			* degree
+			* op
+			* Rel
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	<!--
+             *** Atom ***
+		A logical atom, i.e. an expression formed from a predicate applied to a collection of its
+		(logical) arguments.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Atom
+	
+		content model (normally):
+		( oid?, degree?, (op | Rel), (slot)*, (arg | Ind | Data | Skolem | Var | Reify)*, (slot)* )
+		
+		however, the above content model is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+			(oid)?, degree?,  (op | Rel), (slot)*,
+			( (arg|Ind|Data|Skolem|Var|Reify)+, (slot)* )?
+		)
+
+		(another version of Atom is in the holog module)
+		
+		(Note the 'positionalized' normal form where the oid and op roles are at the beginning of the atom.)
+			  
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<xs:attributeGroup name="Atom.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>
+	<!-- necessary for redefinition to be binary in bindatalog -->
+	<!-- and for redefinition to add rest variables in hornlog -->
+	<xs:group name="Atom.extend.arg-repo">
+		<xs:choice>
+			<xs:group ref="Atom.extend.arg"/>
+			<!-- (repo) added in hornlog -->
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Atom.extend.arg">
+		<xs:sequence>
+			<!-- restricted to min=2 max=2 (i.e. binary) in bindatalog -->
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="arg"/>
+				<xs:group ref="arg.content"/>
+			</xs:choice>
+			<!-- (repo?) added in hornlog -->
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Atom.extend.slots">
+		<xs:sequence>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- (resl)? added in hornlog -->
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Atom.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:element ref="degree" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="op" type="op-atom.type"/>
+				<xs:group ref="op-atom.content"/>
+			</xs:choice>
+			<xs:group ref="Atom.extend.slots"/>
+			<xs:sequence minOccurs="0">
+				<xs:group ref="Atom.extend.arg-repo"/>
+				<xs:group ref="Atom.extend.slots"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Atom.type">
+		<xs:group ref="Atom.content"/>
+		<xs:attributeGroup ref="Atom.attlist"/>
+	</xs:complexType>
+	<xs:element name="Atom" type="Atom.type"/>
+	<!--
+		*** op ***
+		An operator expression including the relation of an atom.  Note that this replaces <opr> from 0.89 and earlier.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-op
+
+		content model (within Atom): (Rel)
+		(other versions are in the following modules: cterm, equality and holog)
+		
+		This element's content model is context-sensitive.
+		See http://www.w3.org/2000/04/26-csrules.html for details.
+	-->
+	<xs:attributeGroup name="op.attlist"/>
+	<xs:group name="op-atom.content">
+		<xs:sequence>
+			<xs:element ref="Rel"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="op-atom.type">
+		<xs:group ref="op-atom.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+	<xs:element name="op" type="op-atom.type"/>
+<!-- 
+	***degree**
+
+-->
+	<xs:attributeGroup name="degree.attlist"/>
+	<xs:group name="degree.content">
+		<xs:sequence>
+			<xs:element ref="Data"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="degree.type">
+		<xs:group ref="degree.content"/>
+		<xs:attributeGroup ref="degree.attlist"/>
+	</xs:complexType>
+	<xs:element name="degree" type="degree.type"/>
+
+
+	<!--
+		*** Rel ***
+		A relation, i.e. a logical predicate, of an atom.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-Rel
+		
+		content model: (#PCDATA)
+	-->
+	<xs:attributeGroup name="Rel.attlist">
+		<xs:attributeGroup ref="uri.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Rel.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Rel.type" mixed="true">
+		<xs:group ref="Rel.content"/>
+		<xs:attributeGroup ref="Rel.attlist"/>
+	</xs:complexType>
+	<xs:element name="Rel" type="Rel.type"/>
+</xs:schema>

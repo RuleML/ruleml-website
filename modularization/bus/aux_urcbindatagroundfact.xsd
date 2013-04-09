@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: aux_urcbindatagroundfact.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		This schema is at the top of the hierarchy, so it simply includes the base modules.
+		
+		The atom module is an exception: it is included separately by the main driver schema
+		(in this case, urcbindatagroundfact.xsd) because once atoms are declared as binary,
+		there is (apparently) no way to widen the lower bound of the occurrence range
+		i.e. from minOccurs="2" to minOccurs="1".  (There is no such difficulty with DTDs or,
+		apparently, with Relax NG.)  As a result of this restrictive expressivity,
+		there is no way to redefine bindatalog to get datalog without such a workaround.
+		
+		We're hoping that XML Schema 1.1 will address this issue.
+	-->
+	
+	<xs:include schemaLocation="modules/core_module.xsd"/>
+
+	<xs:include schemaLocation="modules/desc_module.xsd"/>
+
+	<xs:include schemaLocation="modules/clause_module.xsd"/>
+
+	<xs:include schemaLocation="modules/boole_module.xsd"/>
+
+	<xs:redefine schemaLocation="modules/role_module.xsd"/>
+
+	<xs:include schemaLocation="modules/term_module.xsd"/>
+	
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+	
+</xs:schema>

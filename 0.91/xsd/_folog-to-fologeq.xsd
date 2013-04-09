@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Behind-the-scenes XML Schema for the transition from folog to fologeq
+			File: _folog-to-fologeq.xsd
+			Version: 0.91
+			Last Modification: 2006-08-11
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:redefine schemaLocation="folog.xsd">
+
+		<!--
+			Remove @in, to be re-added (slightly changed) in fologeq
+			
+			This would be more intuitive if done by restricting Expr.attlist,
+			but this type of attribute restriction apparently isn't recognized by XSV.
+		-->
+		<xs:attributeGroup name="in.attrib"/>
+
+	</xs:redefine>
+	
+</xs:schema>

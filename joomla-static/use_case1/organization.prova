@@ -1,0 +1,13 @@
+% The organizational agent
+% Simply sends the incoming message to the personal agent "OOjDrewAgent3" 
+% (a simple OO jDrew Agent implemented as servlet)
+
+rcvMsg(XID,esb ,From, Primitive, [X|Args]) :-
+	sendMsg(XID,esb,"OOjDrewAgent3",Primitive, [X|Args]),
+	rcvMult(XID,esb,"OOjDrewAgent3",Primitives,Answer),
+	sendMsg(XID,esb,From, "answer", Answer).
+	
+
+	
+
+

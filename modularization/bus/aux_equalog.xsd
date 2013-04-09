@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for an Equational-Logic RuleML sublanguage
+			File: aux_equalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- include the equality module -->	
+	<xs:include schemaLocation="modules/equality_module.xsd"/>
+
+	<!-- redefine the previous sublanguage in the hierarchy to accommodate eqs -->
+	<xs:redefine schemaLocation="aux_hornlog.xsd">
+		<!-- _head is extended to permit eqs -->
+		<xs:group name="_head.extend">
+			<xs:choice>
+			<xs:group ref="_head.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>		
+		
+		<!-- _body is extended to permit eqs -->
+		<xs:group name="_body.extend">
+			<xs:choice>
+				<xs:group ref="_body.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>
+
+		<!-- and is extended to permit eqs -->
+		<xs:group name="and.extend">
+			<xs:choice>
+				<xs:group ref="and.extend"/>
+				<xs:element ref="eq"/>
+			</xs:choice>
+		</xs:group>	
+	</xs:redefine>
+
+</xs:schema>

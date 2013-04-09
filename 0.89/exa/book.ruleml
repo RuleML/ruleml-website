@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlog.xsd">
+
+<!-- non-ground-fact-like rule with 4-ary cterm as single argument -->
+
+<And>
+
+    <Atom closure="universal">
+      <opr><Rel>book</Rel></opr>
+      <Cterm>
+        <opc><Ctor>parts</Ctor></opc>
+        <Var>title</Var>
+        <Var>autor</Var>
+        <Var>toc</Var>
+        <Var>chapters</Var>
+      </Cterm>
+    </Atom>
+
+</And>
+
+</Assert>

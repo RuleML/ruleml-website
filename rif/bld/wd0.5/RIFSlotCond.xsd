@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified">
+  
+  <!--
+  
+  Based on the following Abstract EBNF
+  (see http://www.w3.org/2005/rules/wg/wiki/Core/Slotted_Conditions):
+
+  CONDITION  ::= 'And' '(' ('formula ->' CONDITION)* ')'
+                 |
+               'Or' '(' ('formula ->' CONDITION)* ')'
+                 |
+               'Exists' '(' ('declare ->' Var)+  'formula ->' CONDITION ')'
+                 |
+               ATOMIC
+  
+  ATOMIC     ::= Uniterm
+                 |
+               Equal
+                 |
+               CLASSIFICATION
+                 |
+               Frame
+
+  Uniterm    ::= 'Uniterm' '('
+                            'op ->' Const  ( ('arg ->' TERM)*  |  ( 'slot ->' '(' Const TERM ')' )* )
+                         ')'
+
+  Equal      ::= 'Equal' '(' 'side ->' TERM  'side ->' TERM ')'
+
+  CLASSIFICATION
+           ::= 'Instance' '(' 'oid ->' TERM  'op ->' TERM ')'
+                 |
+               'Subclass' '(' 'sub ->' TERM  'op ->' TERM ')'
+
+  Frame      ::= 'Frame' '(' 
+                          ( 'oid ->' TERM  |  'classinst ->' CLASSIFICATION )
+                          ( 'slot ->' '(' TERM (TERM | Frame) ')' )*
+                       ')'
+
+  TERM       ::= 'Const' ( '(' 'type ->' TYPENAME ')' )?  '(' CONSTNAME ')'
+                 |
+               'Var' '(' VARNAME ')'
+                 |
+               Uniterm
+  
+  -->
+  
+	<xs:group name="CONDITION">
+		<!--
+		CONDITION  ::= 'And' '(' ('formula ->' CONDITION)* ')'
+                 |
+               'Or' '(' ('formula ->' CONDITION)* ')'
+                 |
+               'Exists' '(' ('declare ->' Var)+  'formula ->' CONDITION ')'
+                 |
+               ATOMIC
+		-->
+		<xs:choice>
+			<xs:element ref="And"/>
+			<xs:element ref="Or"/>
+      <xs:element ref="Exists"/>
+      <xs:group ref="ATOMIC"/>
+		</xs:choice>
+	</xs:group>
+
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="formula"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="formula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="CONDITION"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:group name="ATOMIC">
+		<!--
+		ATOMIC     ::= Uniterm
+                 |
+               Equal
+                 |
+               CLASSIFICATION
+                 |
+               Frame
+		-->
+		<xs:choice>
+			<xs:element ref="Uniterm"/>
+			<xs:element ref="Equal"/>
+      <xs:group ref="CLASSIFICATION"/>
+      <xs:element ref="Frame"/>
+		</xs:choice>
+	</xs:group>
+  
+  <xs:element name="Uniterm">
+    <!--
+    Uniterm    ::= 'Uniterm' '('
+                            'op ->' Const  ( ('arg ->' TERM)*  |  ( 'slot ->' '(' Const TERM ')' )* )
+                         ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="op"/>
+        <xs:choice>
+          <xs:element ref="arg" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="slot" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="op">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="arg">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="slot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Equal">
+    <!--
+    Equal      ::= 'Equal' '(' 'side ->' TERM  'side ->' TERM ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="side"/>
+        <xs:element ref="side"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="side">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:group name="CLASSIFICATION">
+		<!--
+		CLASSIFICATION
+           ::= 'Instance' '(' 'oid ->' TERM  'op ->' TERM ')'
+                 |
+               'Subclass' '(' 'sub ->' TERM  'op ->' TERM ')'
+		-->
+		<xs:choice>
+			<xs:element ref="Instance"/>
+			<xs:element ref="Subclass"/>
+		</xs:choice>
+	</xs:group>
+  
+  <xs:element name="Instance">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="oid"/>
+        <xs:element name="op">
+          <!-- note difference from op in Const -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="TERM"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Subclass">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sub"/>
+        <xs:element name="op">
+          <!-- note difference from op in Const -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="TERM"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="oid">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="sub">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Frame">
+    <!-- 
+    Frame      ::= 'Frame' '(' 
+                          ( 'oid ->' TERM  |  'classinst ->' CLASSIFICATION )
+                          ( 'slot ->' '(' TERM (TERM | Frame) ')' )*
+                       ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="oid"/>
+          <xs:element ref="classinst"/>
+        </xs:choice>
+        <xs:element name="slot" minOccurs="0" maxOccurs="unbounded">
+          <!-- note difference from slot in Uniterm -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="TERM"/>
+              <xs:choice>
+                <xs:group ref="TERM"/>
+                <xs:element ref="Frame"/>
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="classinst">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="CLASSIFICATION"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:group name="TERM">
+		<!--
+		TERM       ::= 'Const' ( '(' 'type ->' TYPENAME ')' )?  '(' CONSTNAME ')'
+                 |
+               'Var' '(' VARNAME ')'
+                 |
+               Uniterm
+		-->
+		<xs:choice>
+			<xs:element ref="Const"/>
+			<xs:element ref="Var"/>
+      <xs:element ref="Uniterm"/>
+		</xs:choice>
+	</xs:group>
+  
+  <xs:element name="Const">
+    <xs:complexType mixed="true">
+      <xs:sequence/>
+      <xs:attribute name="type" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Var" type="xs:string"/>
+  
+</xs:schema>

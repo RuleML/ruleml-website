@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/naffolog.xsd"
+>
+<Assert>
+
+	<Entails>
+	
+		<Rulebase>
+		    
+		   <!-- a particular person is a student -->
+		    <Atom>
+		      <Rel>student</Rel>
+		      <Ind>personA</Ind>
+		    </Atom>
+           
+		    <!--a particular person is an employee -->
+		    <!-- 
+		     <Atom>
+		       <Rel>employee</Rel>
+		       <Ind>personA</Ind>
+		       <Ind>companyB</Ind>
+		     </Atom>
+		     -->
+			 
+		   <!--a student is a fulltime-student if the student cannot be proved as a parttime-student -->
+		    
+		    <Implies material="yes">
+		      <head>
+		        <Atom><Rel>fulltime-student</Rel><Var>person</Var></Atom>
+		      </head>
+		      <body>
+		        <And>
+		          <Atom><Rel>student</Rel><Var>person</Var></Atom>
+		          <Naf><Atom><Rel>parttime-student</Rel><Var>person</Var></Atom></Naf>
+		        </And>
+		      </body>
+		    </Implies>
+		    
+		</Rulebase>
+		
+		<!--An integrity constraint that a fulltime-student cannot also be an employee of a company-->
+		
+		<Rulebase>
+		    <Neg>
+		      <And>
+		        <Atom>
+		          <Rel>fulltime-student</Rel>
+		          <Var>person</Var>
+		        </Atom>
+		        <Atom>
+		          <Rel>employee</Rel>
+		          <Var>person</Var>
+		          <Var>company</Var>
+		        </Atom>       
+		      </And>
+		    </Neg>
+		</Rulebase>
+		
+	</Entails>
+
+</Assert>
+	
+</RuleML>
+ 
+ 
+       
+    
+           

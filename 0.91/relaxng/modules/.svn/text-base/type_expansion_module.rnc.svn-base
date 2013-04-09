@@ -1,0 +1,30 @@
+default namespace this = inherit
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML type attribute" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, type" ]
+dc:description [ "The expansion module for the optional type attribute." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= type.edge.def
+# This module declares the following RuleML attributes:
+#            * @type
+
+## attribute list for objects that can have user-defined types, includes an optional type attribute.
+Type.attlist &= type-att.choice?
+
+## an extension point for alternate spellings and internationalization of the oriented equation attribute name.  
+type-att.choice |= type.attrib.def
+type.attrib.def =
+    
+    ## A role for optionally specifying a term's (user-defined) type.
+    ## See http://www.ruleml.org/0.91/glossary/#gloss-type
+    attribute type { type.value }
+type.value |= xsd:string
+#
+type.edge.def = element type { type.content }
+type.content |= type.value

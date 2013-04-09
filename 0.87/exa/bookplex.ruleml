@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/hornlog.xsd">
+
+<!-- non-ground-fact-like rule with 4-element plex as single argument -->
+
+<Fact>
+  <head>
+    <Atom>
+      <opr><Rel>book</Rel></opr>
+      <Plex>
+        <Var>title</Var>
+        <Var>autor</Var>
+        <Var>toc</Var>
+        <Var>chapters</Var>
+      </Plex>
+    </Atom>
+  </head>
+</Fact>
+
+</Rulebase>

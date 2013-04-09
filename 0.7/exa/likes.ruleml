@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.7/dtd/ruleml-datalog.dtd">
+
+
+<rulebase>
+
+
+<!-- Clocksin/Mellish sample rule -->
+
+<if>
+  <atom>
+    <rel>likes</rel>
+    <ind>John</ind>
+    <var>x</var>
+  </atom>
+  <atom>
+    <rel>likes</rel>
+    <var>x</var>
+    <ind>wine</ind>
+  </atom>
+</if>
+
+<if>
+  <atom>
+    <rel>likes</rel>
+    <ind>Mary</ind>
+    <ind>wine</ind>
+  </atom>
+  <and/>
+</if>
+
+
+</rulebase>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML Primer Template." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>RuleML Primer Page Template</title>
+    <script>
+      var nextpage="RuleMLPrimer-p11-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p10-slide">
+      <h1>Datalog Rule with Conjunction</h1>
+
+      <figure><img class="diag topspace" src="../png/discount_implies_diag.png"
+         /></figure>
+      
+      <div class="natural-language"
+        >A customer gets a discount of 7.5 percent on the purchase of a product 
+        if the customer is premium and the product is
+        luxury.</div>
+      <iframe class="diag" src="iframe_contents/discount_implies.html"> </iframe>
+    </section>
+    <section id="section-p10-prose">
+      <h3>Datalog Rule with Conjunction - Notes</h3>
+      <p>Besides using a single atomic formula in the <span class="elem-inline"
+          >&lt;if&gt;</span> edge, a Datalog RuleML rule
+        can also use an entire conjunction of atoms. This will allow complex
+        conditions via 'conjoined' atoms, which can involve various variables.</p>
+
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p9-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p11-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

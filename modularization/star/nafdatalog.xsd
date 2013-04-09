@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including negation as failure (NAF)
+			File: nafdatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-21
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="modules/negation_module.xsd"/>
+
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<xs:group name="_body.extend">
+			<xs:choice>
+				<xs:group ref="_body.extend"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>	
+
+		<xs:group name="and.extend">
+			<xs:choice>
+				<xs:group ref="and.extend"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>	
+		
+		<xs:group name="or.extend">
+			<xs:choice>
+				<xs:group ref="or.extend"/>
+				<xs:element ref="naf"/>
+			</xs:choice>
+		</xs:group>			
+	</xs:redefine>
+	
+</xs:schema>

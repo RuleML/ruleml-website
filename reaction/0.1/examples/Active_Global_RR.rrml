@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a global active reaction rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+ContractLog / Prova formalization in RBSLA (related to ISO Prolog notation)
+
+eca(everyMinute(), detect(TroubleTicket:event_EventType1,T), maintenance(T), rbsla.utils.TroubleSystem.processTicket(TroubleTicket:event_EventType1), _, _).
+
+ -->
+ 
+<Assert>
+	<Reaction kind="eca" exec="active">
+			<event>
+			
+				<Reaction kind="ea" exec="active">
+				
+				    <event> <!-- role tag, can be omitted-->
+				       <Atom><Rel>everyMinute</Rel></Atom>
+				    </event>
+				
+				   <action>
+				   	 <Atom>
+				         <Rel>detect</Rel>
+				         <Var type="event:EventType1">TroubleTicket</Var> <!-- variable with Semantic Web type -->
+				         <Var>T</Var> <!-- untyped variable -->
+				     </Atom>
+				   </action>  
+				</Reaction>  
+				
+			</event>
+			
+			<body>
+			        <Atom>
+			           <Rel>maintenance</Rel>
+			           <Var>T</Var>
+			        </Atom>
+			</body>
+			
+			<action> 
+			        <Atom>
+			        	<!-- class/object -->
+						<oid><Ind uri="rbsla.utils.TroubleTicketSystem"/></oid>
+						<!-- method -->
+						<Rel in="yes" lang="java">processTicket</Rel>
+						<!-- parameter -->
+						<Var type="event:EventType1" mode="+">TroubleTicket</Var> 
+			     	</Atom>
+			</action>
+	
+	</Reaction>
+
+</Assert>
+
+</RuleML>

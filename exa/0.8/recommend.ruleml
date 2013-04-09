@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.8/ruleml-urdatalog.dtd">
+
+
+<rulebase>
+
+
+<!-- challenge rule from RuleML site -->
+
+<imp>
+  <_head>
+    <atom>
+      <_opr>
+        <rel>may look at</rel>
+      </_opr>
+      <var>you</var>
+      <ind href="http://www.cs.brandeis.edu/...">Rule-Based Systems</ind>
+    </atom>
+  </_head>
+  <_body>
+    <atom>
+      <_opr>
+        <rel>want to review</rel>
+      </_opr>
+      <var>you</var>
+      <ind>rule principles</ind>
+    </atom>
+  </_body>
+</imp>
+
+<fact>
+ <_head>
+  <atom>
+    <_opr>
+      <rel>want to review</rel>
+    </_opr>
+    <ind>fred</ind>
+    <ind>rule principles</ind>
+  </atom>
+ </_head>
+</fact>
+
+
+</rulebase>

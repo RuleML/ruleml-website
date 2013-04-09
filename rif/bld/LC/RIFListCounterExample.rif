@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+Test CounterExample (Open List W/O '|'-preceding element)
+
+-->
+
+<!DOCTYPE Document [
+  <!ENTITY rif "http://www.w3.org/2007/rif#">
+  <!ENTITY xs  "http://www.w3.org/2001/XMLSchema#">
+]>
+
+<List
+    xmlns="http://www.w3.org/2007/rif#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#">
+  <rest><Var>Z</Var></rest>
+</List>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: urcbindatagroundfact.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-17
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="modules/core_module.xsd">
+		<!-- remove imps -->
+		<xs:group name="rulebase.extend">
+			<xs:choice>
+				<xs:element ref="fact"/>
+				<xs:element ref="query"/>
+			</xs:choice>
+		</xs:group>	
+	</xs:redefine>
+
+	<xs:include schemaLocation="modules/desc_module.xsd"/>
+
+	<xs:include schemaLocation="modules/clause_module.xsd"/>
+
+	<xs:include schemaLocation="modules/boole_module.xsd"/>
+
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<!-- add href attribute -->
+		<xs:attributeGroup name="rel.attlist">
+			<xs:attributeGroup ref="rel.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+
+		<!-- remove vars and restrict atoms to binary -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="ind"/>
+				</xs:choice>
+			</xs:sequence>			
+		</xs:group>		
+	</xs:redefine>
+
+	<xs:redefine schemaLocation="modules/role_module.xsd">
+		<!-- remove vars -->
+		<xs:group name="_slot.extend">
+			<xs:choice>
+				<xs:element ref="ind"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+	<xs:redefine schemaLocation="modules/term_module.xsd">
+		<!-- add href attribute -->
+		<xs:attributeGroup name="ind.attlist">
+			<xs:attributeGroup ref="ind.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+	
+	<xs:include schemaLocation="modules/ur_module.xsd"/>
+	
+</xs:schema>

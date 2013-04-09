@@ -1,0 +1,13 @@
+<!-- XML DTD for a Horn-Logic RuleML sublanguage -->
+<!-- File: hornlog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-11-03 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of all -->
+<!-- new elements) are found in hornlog_mod.mod because they are common in this DTD and urhornlog as well -->
+<!ENTITY % hornlog.mod SYSTEM "hornlog_mod.mod">
+%hornlog.mod;
+
+<!-- this module inherits from the Datalog RuleML sublanguage -->
+<!ENTITY % datalog_include SYSTEM "datalog.dtd">
+%datalog_include;

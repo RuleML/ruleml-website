@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd"
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Toplevel RuleML elements module.
+			This is the XML Schema toplevel elements module for RuleML.
+			File: toplevel_module.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+			
+			This module declares the following toplevel RuleML elements/attributes:
+			* Rulebase
+			* clause
+			* @direction
+			* Fact
+			* Imp
+			* Query
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** Rulebase ***
+		content model:
+		(
+		  ( (rbaselab, (clause | Fact | Query | Imp)* ) |
+		  ( (clause | Fact | Query | Imp)+, rbaselab?) )?
+		)
+
+		A knowledge base of rules.
+
+		The 'Rulebase' root element uses 'Fact' assertions, 'Query' tests, and 'Imp' rules as
+		top-level elements, optionally introduced by 'clause' metaroles. A rulebase may have
+		an optional label, 'rbaselab', and/or a 'direction' attribute which indicates the
+		intended direction of Imp inferencing.
+	-->
+	<xs:attributeGroup name="Rulebase.attlist">
+		<xs:attributeGroup ref="direction.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Rulebase.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="rbaselab"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="clause"/>
+					<xs:element ref="Fact"/>
+					<xs:element ref="Query"/>
+					<xs:element ref="Imp"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="clause"/>
+					<xs:element ref="Fact"/>
+					<xs:element ref="Query"/>
+					<xs:element ref="Imp"/>
+				</xs:choice>
+				<xs:element ref="rbaselab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Rulebase.type">
+		<xs:group ref="Rulebase.content" minOccurs="0"/>
+		<xs:attributeGroup ref="Rulebase.attlist"/>
+	</xs:complexType>
+	<xs:element name="Rulebase" type="Rulebase.type"/>
+
+	<!--
+		*** clause ***
+		content model: ( Fact | Query | Imp )
+
+		This is a metarole which is usually left implicit.  It must contain a Fact, Query or Imp.
+	-->
+	<xs:attributeGroup name="clause.attlist"/>
+	<xs:group name="clause.content">
+		<xs:choice>
+			<xs:element ref="Fact"/>
+			<xs:element ref="Query"/>
+			<xs:element ref="Imp"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="clause.type">
+		<xs:group ref="clause.content"/>
+		<xs:attributeGroup ref="clause.attlist"/>
+	</xs:complexType>
+	<xs:element name="clause" type="clause.type"/>
+
+	<!--
+		*** @direction ***
+		
+		The direction attribute indicates the intended direction of implication rule
+		inferencing in a rulebase.  It has a neutral default value of "bidirectional".
+	-->
+	<xs:attributeGroup name="direction.attrib">
+		<xs:attribute name="direction" use="optional" default="bidirectional">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="forward"/>
+					<xs:enumeration value="backward"/>
+					<xs:enumeration value="bidirectional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<!--
+		*** Fact ***
+		content model: ( (rlab, ( head | Atom) ) | ( (head | Atom), rlab?) )
+
+		A fact within the rulebase.
+
+		'Fact' assertions are usable as degenerate rules on the top-level, optionally using
+		a conclusion role 'head'.  They can be viewed logically as implication rules
+		that have empty bodies.
+		e.g. "<Fact>head</Fact>" stands for "head is implied by true", i.e., "head is true".
+
+		A Fact may also have a label, 'rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:group name="Fact.extend">
+		<xs:choice>
+			<xs:element ref="head"/>
+			<xs:element ref="Atom"/>
+		</xs:choice>	
+	</xs:group>
+	<xs:attributeGroup name="Fact.attlist"/>
+	<xs:group name="Fact.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="rlab"/>
+				<xs:group ref="Fact.extend"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="Fact.extend"/>
+				<xs:element ref="rlab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Fact.type">
+		<xs:group ref="Fact.content"/>
+		<xs:attributeGroup ref="Fact.attlist"/>
+	</xs:complexType>
+	<xs:element name="Fact" type="Fact.type"/>
+
+	<!--
+		*** Imp ***
+		content model: (
+					(rlab, ( (head, body) |  (body, head) )) | 
+					(head, ( (rlab, body) | (body, rlab?) )) | 
+					(body, ( (rlab, head) | (head, rlab?) ))
+				)
+
+		An implication rule.
+
+		'Imp' rules are usable as general implications on the top-level.  They use
+		a conclusion role 'head' followed by a premise role 'body', or, equivalently
+		(since roles constitute unordered elements), a premise role 'body'
+		followed by a conclusion role 'head'.
+
+		e.g.
+		"<Imp>head body</Imp>" stands for "head is implied by body",
+		i.e., "head is true is implied by body is true" or, equivalently,
+		"<Imp>body head</Imp>" stands for "body implies head",
+		i.e., "body is true implies head is true".
+
+		An Imp may also have a label, 'rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:attributeGroup name="Imp.attlist"/>
+	<xs:group name="Imp.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="rlab"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="head"/>
+						<xs:element ref="body"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="body"/>
+						<xs:element ref="head"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="head"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="rlab"/>
+						<xs:element ref="body"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="body"/>
+						<xs:element ref="rlab" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element ref="body"/>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="rlab"/>
+						<xs:element ref="head"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="head"/>
+						<xs:element ref="rlab" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Imp.type">
+		<xs:group ref="Imp.content"/>
+		<xs:attributeGroup ref="Imp.attlist"/>
+	</xs:complexType>
+	<xs:element name="Imp" type="Imp.type"/>
+
+	<!--
+		*** Query ***
+		content model: ( (rlab, (body | Atom | And | Or) ) | ( (body | Atom | And | Or), rlab?) )
+
+		A query within the rulebase.
+
+		'Query' elements are usable as degenerate rules on the rulebase top-level, optionally using
+		a premise role 'body' in the same way that facts use 'head'.
+
+		e.g.
+		"<Query>body</Query>" stands for "false is implied by body",
+		i.e., "body cannot be proved", which is to be refuted by generating
+		the bindings for free variables in body.
+
+		A query may also have a label, 'rlab', useful for various purposes within the rulebase.
+	-->
+	<xs:group name="Query.extend">
+		<xs:choice>
+			<xs:element ref="body"/>
+			<xs:element ref="Atom"/>
+			<xs:element ref="And"/>
+			<xs:element ref="Or"/>
+		</xs:choice>
+	</xs:group>
+	<xs:attributeGroup name="Query.attlist"/>
+	<xs:group name="Query.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="rlab"/>
+				<xs:group ref="Query.extend"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:group ref="Query.extend"/>
+				<xs:element ref="rlab" minOccurs="0"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Query.type" mixed="true">
+		<xs:group ref="Query.content"/>
+		<xs:attributeGroup ref="Query.attlist"/>
+	</xs:complexType>
+	<xs:element name="Query" type="Query.type"/>
+
+</xs:schema>

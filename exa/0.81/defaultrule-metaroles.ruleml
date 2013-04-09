@@ -1,0 +1,50 @@
+<imp>
+  <_head>
+    <neg><atom>
+      <_opr><rel>isOfficialDocument</rel></_opr>
+      <var>DocumentName</var>
+    </atom></neg>
+  </_head>
+  <_body>
+    <or>
+      <not><atom type="RDF triple">
+        <_subject><var>DocumentName</var></_subject>
+        <_predicate><ind href="http://www.siemens.de/rdf-voc#hasbeenApproved"/></_predicate>
+        <_object><ind>ok</ind></_object>
+      </atom></not>
+      <not><atom type="RDF triple">
+        <_subject><var>DocumentName</var></_subject>
+        <_predicate><ind href="http://www.bmw.de/rdf-voc#hasbeenReleased"/></_predicate>
+        <_object><ind>yes</ind></_object>
+      </atom></not>
+    </or>
+  </_body>
+</imp>
+
+
+<imp>
+  <_head>
+    <neg><atom>
+      <_opr><rel>isOfficialDocument</rel></_opr>
+      <var>DocumentName</var>
+    </atom></neg>
+  </_head>
+  <_body>
+    <or>
+      <atom>
+        <_opr>
+          <rel href="http://www.siemens.de/rdf-voc#hasbeenApproved"/>
+        </_opr>
+        <var>DocumentName</var>
+        <ind>ok</ind>
+      </atom>
+      <atom>
+        <_opr>
+          <rel href="http://www.bmw.de/rdf-voc#hasbeenReleased"/>
+        </_opr>
+        <var>DocumentName</var>
+        <ind>yes</ind>
+      </atom>
+    </or>
+  </_body>
+</imp>

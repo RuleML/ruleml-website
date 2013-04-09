@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/bindatalog.xsd">
+                                                   
+                                                 
+<!-- A Simple example to test bindatalog -->
+   
+  <Assert mapClosure="universal">
+    
+       
+    <!-- wine08 is precious -->		
+    <Atom>
+      <Rel>precious</Rel>
+      <Ind>wine08</Ind>
+    </Atom>
+
+    
+    <!-- Something is precious if it is wine and it is old -->
+    <Implies>
+      <head>
+        <Atom>
+          <op><Rel>precious</Rel></op>
+          <Var>x</Var>
+        </Atom>
+      </head>
+      <body>
+        <And>
+          <Atom>
+            <op><Rel>wine</Rel></op>
+            <Var>x</Var>
+          </Atom>
+          <Atom>
+            <op><Rel>old</Rel></op>
+            <Var>x</Var>
+          </Atom>
+        </And>	 
+      </body>
+    </Implies>
+
+  </Assert>
+ 
+  <oid>
+    <Ind>
+      Can retract a fact which doesnot exist.The fact that goldwatch17 
+      is precious which doesnot exist is retracted.                                                         
+    </Ind>
+  </oid>
+  <Retract>
+    <Atom>
+      <Rel>precious</Rel>
+      <Ind>goldwatch17</Ind>
+    </Atom>
+  </Retract>
+ 
+</RuleML>

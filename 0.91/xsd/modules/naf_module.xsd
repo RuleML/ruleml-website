@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for negation-as-failure in RuleML.
+			File: naf_module.xsd
+			Version: 0.91
+			Last Modification: 2006-07-17
+			
+			This module declares the following RuleML elements:
+			* Naf
+			* weak
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Naf ***
+		A "by default" negation of a logical atom (i.e. "weak" negation or
+		negation-as-failure).
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Naf
+
+		content model: ( oid?, (weak | Atom) )
+	-->
+	<xs:attributeGroup name="Naf.attlist"/>
+	<xs:group name="Naf.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element ref="weak"/>
+				<xs:group ref="weak.content"/>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Naf.type">
+		<xs:group ref="Naf.content"/>
+		<xs:attributeGroup ref="Naf.attlist"/>
+	</xs:complexType>
+	<xs:element name="Naf" type="Naf.type"/>
+
+	<!--
+		*** weak ***
+		A role used for negation as failure.
+	
+		See http://www.ruleml.org/0.91/glossary/#gloss-weak
+
+		content model: ( Atom )
+	-->
+	<xs:attributeGroup name="weak.attlist"/>
+	<xs:group name="weak.content">
+		<xs:choice>
+			<xs:element name="Atom" type="Atom.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="weak.type">
+		<xs:group ref="weak.content"/>
+		<xs:attributeGroup ref="weak.attlist"/>
+	</xs:complexType>
+	<xs:element name="weak" type="weak.type"/>
+	
+</xs:schema>

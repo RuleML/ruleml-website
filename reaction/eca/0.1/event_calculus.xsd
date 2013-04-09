@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns="http://www.ruleml.org/0.9/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.9/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            Event part of ECA-RuleML.
+			This is the XML Schema complex event processing and state changes (fluents) for ECA-RuleML.
+			File: event.xsd
+			Version: 0.1
+			Last Modification: 2005-10-26
+			
+			This schema declares the following ECA-RuleML elements and attributes:
+			
+			* include pebeevents_module, efevents_module, quevents_module 
+			* redefine eca: Implies, Assert and Query(adding event processing)
+			* event_processing (group)
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+    	<xs:include schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/modules/events_module.xsd" />
+
+    	<xs:redefine schemaLocation="http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/eca.xsd" >
+
+<!-- 
+      event redefines the Query element adding processing events 
+-->
+           
+           <xs:group name="formula-query.content">
+				<xs:choice>
+					<xs:group ref="formula-query.content" />
+					<xs:group ref="event_processing.content" />						
+			   </xs:choice>
+		  </xs:group>		
+
+<!-- 
+		note the new content model of Query: 
+		(oid?, (formula | Atom | And | Or | Exists | (Happens | Planned | Initially | Initiates | Terminates | HoldAs | ValueAt))*)
+ -->								
+		
+<!-- 
+      event redefines the Assert element adding processing events											
+-->											
+	
+			<xs:group name="formula-assert.content">
+				<xs:choice>
+					<xs:group ref="formula-assert.content" />
+					<xs:group ref="event_processing.content" />
+				</xs:choice>				
+		    </xs:group>
+
+<!-- 
+		note the new content model of Assert: 
+		( oid?, (formula | Atom | Implies | Equivalent | Forall | (Happens | Planned | Initially | Initiates | Terminates | HoldAs | ValueAt))*)
+ -->	   	
+    	
+<!-- 
+	  event redefines Implies adding processing events
+-->
+
+    	<xs:group name="body.content" >
+			<xs:choice>
+				<xs:group ref="body.content" />
+				<xs:group ref="event_processing.content" />
+			</xs:choice>	
+		</xs:group>
+		
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content" />
+				<xs:group ref="event_processing.content" />
+			</xs:choice>
+		</xs:group>
+
+<!--			
+		note the new content model of Implies:
+		
+		Implies:  ( oid?, ( head, body) | ( body, head) | ( (Atom | And | Or) | (Happens | Planned | Initially | Initiates | Terminates | HoldAs | ValueAt))
+		, (Atom | (Happens | Planned | Initially | Initiates | Terminates | HoldAs | ValueAt)))
+ -->	
+ 		
+    	</xs:redefine>
+
+
+	
+		<xs:group name="event_processing.content">
+			<xs:choice>
+			   <xs:element ref="Happens" />
+			   <xs:element ref="Planned" />
+			   <xs:element ref="Initially" />
+			   <xs:element ref="Initiates" />
+			   <xs:element ref="Terminates" />
+			   <xs:element ref="HoldsAt" />
+			   <xs:element ref="ValueAt" />
+			</xs:choice>		
+		</xs:group>
+	
+</xs:schema>

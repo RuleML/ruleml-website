@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+
+<RuleML xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/hohornlogeq.xsd">
+
+<!--an example: Looking for a situation wherein a  buyer purchases from a seller a book whose author is LeRif, 
+    where the seller is also the author.(A Herbrand RIF condition in XML syntax -fully striped) -->
+
+
+    <Query>
+      <formula>
+        <Exists>
+          <declare><Var>Buyer</Var></declare>
+          <formula>
+            <Hterm>
+              <op><Con>purchase</Con></op>
+              <arg index = "1"><Var>Buyer</Var></arg>
+              <arg index = "2"><Var>Seller</Var></arg>
+              <arg index="3">
+                <Hterm>
+                  <op><Con>book</Con></op>
+                  <arg index = "1"><Var>Author</Var></arg>
+                  <arg index ="2"><Con>LeRif</Con></arg>
+                </Hterm>
+              </arg>
+              <arg index ="4"><Con>$49</Con></arg>
+            </Hterm>
+          </formula>
+        </Exists>   
+      </formula>
+      <formula>
+        <Equal>
+          <lhs><Var>Seller</Var></lhs>
+          <rhs><Var>Author</Var></rhs>
+        </Equal>
+      </formula>
+    </Query>
+</RuleML>

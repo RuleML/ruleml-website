@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd http://www.ruleml.org/0.9/xsd/hornlog.xsd">
+
+<!-- a simplified broker definition -->
+
+<Assert mapClosure="universal">
+
+<Implies>
+ <head>
+  <Atom>
+    <op><Rel>buy</Rel></op>
+    <Var>broker</Var>
+    <Var>prod</Var>
+  </Atom>
+ </head>
+ <body>
+  <And>
+    <Atom>
+      <op><Rel>want</Rel></op>
+      <Ind>customer-of-broker</Ind>
+      <Var>prod</Var>
+    </Atom>
+    <Atom>
+      <op><Rel>deal</Rel></op>
+      <Var>prod</Var>
+      <Cterm>
+        <op><Ctor>cost</Ctor></op>
+        <Ind>prod</Ind>
+      </Cterm>
+      <Ind>benefit-of-prod</Ind>
+    </Atom>
+  </And>
+ </body>
+</Implies>
+
+<Implies>
+ <head>
+  <Atom>
+    <op><Rel>deal</Rel></op>
+    <Var>prod</Var>
+    <Var>cost</Var>
+    <Var>benefit</Var>
+  </Atom>
+ </head>
+ <body>
+  <Atom>
+    <op><Rel>greater-or-equal</Rel></op>
+    <Var>benefit</Var>
+    <Var>cost</Var>
+  </Atom>
+ </body>
+</Implies>
+
+  <Atom>
+    <op><Rel>want</Rel></op>
+    <Ind>miller</Ind>
+    <Ind uri="www.stock.com/stock1"/>
+  </Atom>
+
+
+  <Atom>
+    <op><Rel>want</Rel></op>
+    <Ind>miller</Ind>
+    <Ind uri="www.stock.com/stock2"/>
+  </Atom>
+
+</Assert>
+
+</RuleML>

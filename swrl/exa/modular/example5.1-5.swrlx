@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE swrlx:Ontology [
+	 <!ENTITY swrlb 'http://www.w3.org/2003/11/swrlb'>
+	 <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema'>
+	 <!ENTITY ex1 'http://www.example.org/example1-ont'>
+	 <!ENTITY ex2 'http://www.example.org/example2-ont'>
+]>
+
+<swrlx:Ontology owlx:name="test1"
+  xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+  xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+  xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3.org/2003/11/swrlx http://www.ruleml.org/swrl/xsd/modular/swrlx.xsd"
+>
+  <owlx:Annotation>
+    <owlx:Documentation>SWRL Example 5.1-5</owlx:Documentation>
+  </owlx:Annotation>
+  <owlx:VersionInfo>$Id: example5.1-5.swrlx,v 1.1 2004/05/21 18:46:39 vivien Exp $</owlx:VersionInfo>
+
+  <ruleml:var>feet</ruleml:var>
+  <ruleml:var>inches</ruleml:var>
+  <ruleml:var>instance</ruleml:var>
+
+  <ruleml:imp>
+    <ruleml:_rlab ruleml:href="#convertLength"/>
+    <owlx:Annotation>
+      <owlx:Documentation>ex2:lengthInInches = ex1:lengthInFeet * 12</owlx:Documentation>
+    </owlx:Annotation>
+    <ruleml:_body>
+      <swrlx:datavaluedPropertyAtom swrlx:property="&ex1;#lengthInFeet">
+        <ruleml:var>instance</ruleml:var>
+        <ruleml:var>feet</ruleml:var>
+      </swrlx:datavaluedPropertyAtom>
+    </ruleml:_body>
+    <ruleml:_head>
+      <swrlx:builtinAtom swrlx:builtin="&swrlb;#multiply">
+        <ruleml:var>inches</ruleml:var>
+        <ruleml:var>feet</ruleml:var>
+        <owlx:DataValue owlx:datatype="&xsd;#int">12</owlx:DataValue>
+      </swrlx:builtinAtom>
+      <swrlx:datavaluedPropertyAtom swrlx:property="&ex2;#lengthInInches">
+        <ruleml:var>instance</ruleml:var>
+        <ruleml:var>inches</ruleml:var>
+      </swrlx:datavaluedPropertyAtom>
+    </ruleml:_head>
+  </ruleml:imp>
+
+</swrlx:Ontology>

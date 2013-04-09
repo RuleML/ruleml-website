@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/urhornlog.xsd">
+
+<!-- a trivial example rulebase for testing the 'UR' Hornlog RuleML sublanguage -->
+
+<And  direction="backward" innerclose="universal">
+
+<oid>
+  <Cterm>
+    <opc><Ctor>rulebase label</Ctor></opc>
+    <slot><Ind>label</Ind><Ind>an example rulebase</Ind></slot>
+  </Cterm>
+</oid>
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind wref="some_URI">Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind wref="some_URI">Jane</Ind>
+      <Ind wref="another_URI">Joan</Ind>
+      <Ind wref="another_URI">Jack</Ind>
+      <Var>y</Var>
+      <Ind wref="another_URI">Frank</Ind>
+      <slot><Ind>yar</Ind><Cterm>
+          <opc><Ctor wref="another_URI">constructor</Ctor></opc>
+          <Plex>
+            <Var>z</Var>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+          </Plex>
+        </Cterm></slot>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+      <Atom>
+        <opr><Rel wref="some_URI">some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind wref="another_URI">constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind wref="another_URI">role 2</Ind></slot>
+      </Atom>
+
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind wref="another_URI">constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind wref="another_URI">constant h</Ind>
+            <Cterm>
+              <opc><Ctor wref="empty_URI">empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+
+</And>
+
+</Assert>

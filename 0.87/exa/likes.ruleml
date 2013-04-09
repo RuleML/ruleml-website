@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/datalog.xsd">
+
+<!-- Clocksin/Mellish sample rule -->
+
+<Imp>
+ <head>
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Ind>John</Ind>
+    <Var>x</Var>
+  </Atom>
+ </head>
+ <body>
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Var>x</Var>
+    <Ind>wine</Ind>
+  </Atom>
+ </body>
+</Imp>
+
+<Fact>
+ <head>
+  <Atom>
+    <opr><Rel>likes</Rel></opr>
+    <Ind>Mary</Ind>
+    <Ind>wine</Ind>
+  </Atom>
+ </head>
+</Fact>
+
+</Rulebase>

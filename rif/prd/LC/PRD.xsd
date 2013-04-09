@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+    targetNamespace="http://www.w3.org/2007/rif#"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    xmlns="http://www.w3.org/2007/rif#"
+    elementFormDefault="qualified">
+
+<xs:import namespace='http://www.w3.org/XML/1998/namespace'
+           schemaLocation='http://www.w3.org/2001/xml.xsd'/>
+
+
+<!-- ================================================== -->
+<!-- Redefine some elements in the Core Conditions      -->
+<!-- Extension of the choice                            -->
+<!-- ================================================== -->
+
+   <xs:group name="ATOMIC">
+      <xs:choice>
+         <xs:element ref="Atom"/>
+         <xs:element ref="Frame"/>
+         <xs:element ref="Member"/>
+         <xs:element ref="Equal"/>
+         <xs:element ref="Subclass"/> <!-- Subclass is not in RIF-Core -->
+         <xs:element name="External" type="External-FORMULA.type"/>
+      </xs:choice>
+   </xs:group>
+
+   <xs:group name="FORMULA">
+      <xs:choice>
+         <xs:group   ref="ATOMIC"/> 
+         <xs:element ref="And"/>
+         <xs:element ref="Or"/>
+         <xs:element ref="Exists"/>
+         <xs:element ref="INeg"/> <!-- INeg is nt in RIF-Core -->
+      </xs:choice>
+   </xs:group>
+
+<!-- ================================================== -->
+<!-- Additional elements to the Core Condition schema   -->
+<!-- ================================================== -->
+
+   <xs:element name="Subclass">
+<!--                                                    -->
+<!--     <Subclass>                                     -->
+<!--        <sub> TERM </sub>                           -->
+<!--        <super> TERM </super>                       -->
+<!--     </Subclass>                                    -->
+<!--                                                    -->
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="sub">
+               <xs:complexType>
+                  <xs:group ref="TERM" minOccurs="1" maxOccurs="1"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="super">
+               <xs:complexType>
+                  <xs:group ref="TERM" minOccurs="1" maxOccurs="1"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <xs:element name="INeg">
+<!--                                                    -->
+<!--     <INeg>                                         -->
+<!--        <formula> FORMULA </formula>                -->
+<!--     </INeg>                                        -->
+<!--                                                    -->
+      <xs:complexType>
+        <xs:sequence>
+          <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="formula" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+<!-- ============================================ -->
+<!-- CoreCond.xsd starts here                     -->
+<!-- ============================================ -->
+
+  <xs:complexType name="External-FORMULA.type">
+    <!-- sensitive to FORMULA (Atom) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-FORMULA.type"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="content-FORMULA.type">
+    <!-- sensitive to FORMULA (Atom) context-->
+    <xs:sequence>
+      <xs:element ref="Atom"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="formula"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="formula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Atom">
+    <!--
+  Atom           ::= UNITERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="UNITERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+  
+  <xs:group name="UNITERM">
+    <!--
+  UNITERM        ::= Const '(' (TERM* ')'
+    -->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="op"/>
+      <xs:element name="args" type="args-UNITERM.type" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:group name="GROUNDUNITERM">
+    <!-- sensitive to ground terms
+  GROUNDUNITERM        ::= Const '(' (GROUNDTERM* ')'
+    -->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="op"/>
+      <xs:element name="args" type="args-GROUNDUNITERM.type" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+
+
+  <xs:element name="op">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="args-UNITERM.type">
+    <!-- sensitive to UNITERM (TERM) context-->
+    <xs:sequence>
+      <xs:group ref="TERM" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+
+
+  <xs:complexType name="args-GROUNDUNITERM.type">
+    <!-- sensitive to GROUNDUNITERM (TERM) context-->
+    <xs:sequence>
+      <xs:group ref="GROUNDTERM" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+
+  <xs:element name="Equal">
+    <!--
+  Equal          ::= TERM '=' ( TERM | IRIMETA? 'External' '(' Expr ')' )
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="left"/>
+        <xs:element ref="right"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="left">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="right">
+    <xs:complexType>
+        <xs:group ref="TERM"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Member">
+    <!--
+  Member         ::= TERM '#' TERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="instance"/>
+        <xs:element ref="class"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="instance">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Frame">
+    <!--
+  Frame          ::= TERM '[' (TERM '->' TERM)* ']'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="object"/>
+        <xs:element name="slot" type="slot-Frame.type" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:complexType name="slot-Frame.type">
+    <!-- sensitive to Frame (TERM) context-->
+    <xs:sequence>
+      <xs:group ref="TERM"/>
+      <xs:group ref="TERM"/>
+    </xs:sequence>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+ 
+  <xs:group name="TERM">  
+    <!--
+  TERM           ::= IRIMETA? (Const | Var | External | List )
+    -->
+      <xs:choice>
+         <xs:element ref="Const"/>
+         <xs:element ref="Var"/>
+         <xs:element name="External" type="External-TERM.type"/>
+         <xs:element ref="List"/>
+      </xs:choice>
+  </xs:group>
+
+  <xs:group name="GROUNDTERM">  
+    <!--
+  GROUNDTERM           ::= IRIMETA? (Const | List | 'External' '(' 'Expr' '(' GROUNDUNITERM ')' ')')
+    -->
+      <xs:choice>
+         <xs:element ref="Const"/>
+         <xs:element ref="List"/>
+         <xs:element name="External" type="External-GROUNDUNITERM.type"/>
+      </xs:choice>
+  </xs:group>
+  
+  <xs:element name="List">
+    <!--
+      List           ::= 'List' '(' GROUNDTERM* ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/> 
+        <xs:element name="items"> 
+          <xs:complexType> 
+            <xs:sequence>
+              <xs:group ref="GROUNDTERM" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+          </xs:complexType>
+        </xs:element> 
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+  
+  <xs:complexType name="External-TERM.type">
+    <!-- sensitive to TERM (Expr) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-TERM.type"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+
+  <xs:complexType name="External-GROUNDUNITERM.type">
+    <!-- sensitive to GROUNDTERM (Expr) context-->
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="content" type="content-GROUNDUNITERM.type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="content-TERM.type">
+    <!-- sensitive to TERM (Expr) context-->
+    <xs:sequence>
+      <xs:element ref="Expr"/>
+    </xs:sequence>
+  </xs:complexType>
+
+   
+   <xs:complexType name="content-GROUNDUNITERM.type">
+    <!-- sensitive to GROUNDTERM (Expr) context-->
+    <xs:sequence>
+      <xs:element name="Expr" type="content-GROUNDEXPR.type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="content-GROUNDEXPR.type">
+    <!-- sensitive to GROUNDEXPR context-->
+    <xs:sequence>
+      <xs:group ref="GROUNDUNITERM"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Expr">
+    <!--
+  Expr           ::= Const '(' (TERM | IRIMETA? 'External' '(' Expr ')')* ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="op"/>
+        <xs:element name="args" type="args-Expr.type" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="args-Expr.type">
+    <!-- sensitive to Expr (TERM) context-->
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:group ref="TERM"/>
+    </xs:choice>
+    <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+  </xs:complexType>
+
+  <xs:element name="Const">
+    <!--
+  Const          ::= '"' UNICODESTRING '"^^' SYMSPACE | CONSTSHORT
+    -->
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="type" type="xs:anyURI" use="required"/>
+      <xs:attribute ref="xml:lang"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Var">
+    <!--
+  Var            ::= '?' NCName
+    -->
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:group name="IRIMETA">
+    <!--
+  IRIMETA   ::= '(*' IRICONST? (Frame | 'And' '(' Frame* ')')? '*)'
+    -->
+    <xs:sequence>
+      <xs:element ref="id" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="meta" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
+ 
+  <xs:element name="id">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Const" type="IRICONST.type"/>   <!-- type="&rif;iri" -->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="meta">
+    <xs:complexType>
+     <xs:choice>
+       <xs:element ref="Frame"/>
+       <xs:element name="And" type="And-meta.type"/>
+     </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="And-meta.type">
+  <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element name="formula" type="formula-meta.type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="formula-meta.type">
+    <!-- sensitive to meta (Frame) context-->
+    <xs:sequence>
+      <xs:element ref="Frame"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="IRICONST.type" mixed="true">
+    <!-- sensitive to location/id context-->
+    <xs:sequence/>
+    <xs:attribute name="type" type="xs:anyURI" use="required" fixed="http://www.w3.org/2007/rif#iri"/>
+  </xs:complexType>
+
+<!-- ============================================ -->
+<!-- Definition of the actions (not in RIF-Core)  -->
+<!-- ============================================ -->
+
+   <xs:element name="New">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+   <xs:group name="INITIALIZATION">
+      <xs:choice>
+         <xs:element ref="New"/>
+         <xs:element ref="Frame"/>
+      </xs:choice>
+   </xs:group>
+
+   <xs:element name="Do">
+<!--                                                    -->
+<!--     <Do>                                           -->
+<!--        <actionVar ordered="yes">                   -->
+<!--          Var                                       -->
+<!--          INITIALIZATION                            -->
+<!--        </actionVar>*                               -->
+<!--        <actions ordered="yes">                     -->
+<!--          ACTION+                            -->
+<!--        </actions>                                  -->
+<!--     </Do>                                          -->
+<!--                                                    -->
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="actionVar" minOccurs="0" maxOccurs="unbounded">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="Var" minOccurs="1" maxOccurs="1"/>
+                     <xs:group ref="INITIALIZATION" minOccurs="1" maxOccurs="1"/>
+                  </xs:sequence>
+                  <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="actions" minOccurs="1" maxOccurs="1">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:group ref="ACTION" minOccurs="1" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                  <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <xs:group name="ACTION">
+      <xs:choice>
+         <xs:element ref="Assert"/>
+         <xs:element ref="Retract"/>
+         <xs:element ref="Modify"/>
+         <xs:element ref="Execute"/>
+      </xs:choice>	
+   </xs:group>
+
+   <xs:element name="Assert">
+<!--                                                    -->
+<!--     <Assert>                                       -->
+<!--        <target> [ Atom                             -->
+<!--                 | Frame                            -->
+<!--                 | Member ]                         -->
+<!--        </target>                                   -->
+<!--     </Assert>                                      -->
+<!--                                                    -->
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="target" minOccurs="1" maxOccurs="1">
+               <xs:complexType>
+                  <xs:choice>
+                     <xs:element ref="Atom"/>
+                     <xs:element ref="Frame"/>
+                     <xs:element ref="Member"/>
+                  </xs:choice>
+               </xs:complexType>
+	    </xs:element>
+	 </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+
+   <xs:element name="Retract">
+<!--                                                    -->
+<!--     <Retract>                                      -->
+<!--        <target ordered="yes"?>                     -->
+<!--           [ Atom                                   -->
+<!--             | Frame                                -->
+<!--             | TERM                                 -->
+<!--             | TERM TERM ]                          -->
+<!--        </target>                                   -->
+<!--     </Assert>                                      -->
+<!--                                                    -->
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="target" minOccurs="1" maxOccurs="1">
+               <xs:complexType>
+                  <xs:choice>
+                     <xs:element ref="Atom"/>
+                     <xs:element ref="Frame"/>
+                     <xs:group ref="TERM"/>
+                     <xs:sequence>
+                        <xs:group ref="TERM"/>
+                        <xs:group ref="TERM"/>
+                     </xs:sequence>
+                  </xs:choice>
+                  <xs:attribute name="ordered" type="xs:string" fixed="yes"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <xs:element name="Modify">
+<!--                                                    -->
+<!--     <Modify>                                       -->
+<!--        <target> Frame </target>                    -->
+<!--     </Modify>                                      -->
+<!--                                                    -->
+     <xs:complexType>
+      <xs:sequence>
+       <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+       <xs:element name="target" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element ref="Frame"/>
+         </xs:sequence>  
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence> 
+     </xs:complexType>           
+   </xs:element>
+   
+   <xs:element name="Execute">
+<!--                                                    -->
+<!--     <Execute>                                      -->
+<!--        <target> Atom </target>                     -->
+<!--     </Execute>                                     -->
+<!--                                                    -->
+     <xs:complexType>
+      <xs:sequence>
+       <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+       <xs:element name="target" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element ref="Atom"/>
+         </xs:sequence>  
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence> 
+     </xs:complexType>           
+   </xs:element>    
+
+<!-- ================================================== -->
+<!-- Redefine Group related Core construct              -->
+<!-- ================================================== -->
+
+   <xs:complexType name="Group-contents">
+      <xs:sequence>
+         <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+         <xs:element ref="behavior" minOccurs="0" maxOccurs="1"/>
+                     <!-- behavior in not in RIF-Core -->
+         <xs:element ref="sentence" minOccurs="0" maxOccurs="unbounded"/>          
+      </xs:sequence>
+   </xs:complexType>
+
+<!-- ================================================== -->
+<!-- Group related addition                             -->
+<!-- ================================================== -->
+
+   <xs:element name="behavior">
+<!--                                                    -->
+<!--     <behavior>                                     -->
+<!--        <ConflictResolution>                        -->
+<!--           xsd:anyURI                               -->
+<!--        <ConflictResolution>?                       -->
+<!--        <Priority>                                  -->
+<!--           -10,000 ? xsd:int ? 10,000         -->
+<!--        </Priority>?                                -->
+<!--     </behavior>                                    -->
+<!--                                                    -->
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="ConflictResolution" minOccurs="0" maxOccurs="1" type="xs:anyURI"/>
+            <xs:element name="Priority" minOccurs="0" maxOccurs="1">
+               <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                     <xs:minInclusive value="-10000"/>
+                     <xs:maxInclusive value="10000"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+<!-- ================================================== -->
+<!-- Redefine rule related Core constructs              -->
+<!-- ================================================== -->
+
+  <xs:group name="RULE">
+    <!--
+  RULE      ::= (IRIMETA? 'Forall' Var+ '(' CLAUSE ')') | CLAUSE
+    -->
+    <xs:choice>
+       <xs:element name="Forall" type="Forall-premises"/>
+       <xs:group   ref="CLAUSE"/> 
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="Forall-premises">
+    <xs:sequence>
+      <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="pattern" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="FORMULA"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element> 
+      <!-- different from formula in And, Or and Exists -->
+      <xs:element name="formula">
+        <xs:complexType>
+          <xs:group ref="RULE"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:group name="CLAUSE">  
+    <!--
+  CLAUSE   ::= Implies | ACTION_BLOCK
+    -->
+    <xs:choice>
+      <xs:element ref="Implies"/>
+      <xs:group ref="ACTION_BLOCK"/> 
+    </xs:choice>
+  </xs:group>
+
+   <xs:complexType name="then-part">
+            <xs:group ref="ACTION_BLOCK" minOccurs="1" maxOccurs="1"/>
+   </xs:complexType>
+
+<!-- ================================================== -->
+<!-- Rule related additions                             -->
+<!-- ================================================== -->
+  
+  <xs:group name="ACTION_BLOCK">
+    <!-- 
+  ACTION_BLOCK   ::= 'Do (' (Var (Frame | 'New'))* ACTION+  ')' |
+                     'And (' (Atom | Frame)* ')' | Atom | Frame 
+    -->                   
+    <xs:choice>
+     <xs:element  ref="Do"/>
+     <xs:element  name="And" type="And-then.type"/>
+     <xs:element  ref="Atom"/>
+     <xs:element  ref="Frame"/>
+    </xs:choice>
+  </xs:group>
+
+<!-- ================================================== -->
+<!-- CoreRule.xsd starts here                           -->
+<!-- ================================================== -->
+ 
+  <xs:element name="Document">
+    <!--
+  Document  ::= IRIMETA? 'Document' '(' Base? Prefix* Import* Group? ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="directive" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="payload" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="directive">
+    <!--
+  Base and Prefix represented directly in XML
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Import"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="payload">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Group" type="Group-contents"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Import">
+    <!--
+  Import    ::= IRIMETA? 'Import' '(' IRICONST PROFILE? ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/> 
+        <xs:element ref="location"/>
+        <xs:element ref="profile" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="location" type="xs:anyURI"/>
+ 
+  <xs:element name="profile" type="xs:anyURI"/>
+
+  <xs:element name="sentence">
+   <xs:complexType>
+     <xs:choice>
+       <xs:element name="Group" type="Group-contents"/>
+       <xs:group ref="RULE"/>
+       </xs:choice>
+   </xs:complexType>
+  </xs:element>
+      
+  <xs:element name="Implies">
+    <!--
+  Implies   ::= IRIMETA? ATOMIC  ':-' FORMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="if"/>
+        <xs:element name="then" type="then-part"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="And-then.type">
+    <!-- sensitive to then (And) context-->
+    <xs:sequence>
+      <xs:element name="formula" type="formula-then.type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="formula-then.type">
+    <!-- sensitive to then (And) context-->
+    <xs:choice>
+     <xs:element  ref="Atom"/>
+     <xs:element  ref="Frame"/>
+    </xs:choice>
+  </xs:complexType>
+
+ </xs:schema> 

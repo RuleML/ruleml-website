@@ -1,0 +1,110 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+
+dc:title [ "RuleML Basic Terms" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, term, individual" ]
+dc:description [ "The expansion module for basic terms." ]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= Ind.Node.def | arg.edge.def
+Node.choice |= Ind.Node.def
+edge.choice |= arg.edge.def
+# 
+# This module declares the following RuleML elements, attributes and patterns:
+#            * <arg>
+#            * <Ind>
+#            * @index
+# This module also declares the following RuleML choice pattern:
+#            AnyTerm.choice
+#            SimpleConstantTerm.choice
+#            SimpleKeyTerm.choice
+#            CompoundTerm.choice
+#            DataTerm.choice
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the positional argument tag name. 
+positionalArgument-edge.choice |= arg.edge.def
+
+## A role used for the positional arguments of a logical atom (<Atom>), i.e. any of the following: <Ind>, <Data>, <Var>, <Skolem> or <Reify> (also <Expr> and <Plex> in non-Datalog sublanguages).
+arg.edge.def =
+  
+  ## <arg>: one argument of an atomic formula. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-arg
+  element arg {
+    
+    ## The attribute @index is required for the positional argument role (property).
+    (arg-datt.choice & rearg.attlist),
+    arg.content
+  }
+arg-datt.choice |= index.attrib.def
+
+##
+index.attrib.def =
+  
+  ## A required attribute for specifying the position of a positional argument (<arg>) within a logical atom (<Atom>).
+  ## See http://www.ruleml.org/0.91/glossary/#gloss-index
+  attribute index { index.value }
+index.value |= xsd:positiveInteger
+
+## The content model of positional arguments for atomic formulas consists of any single term.
+arg.content |= AnyTerm.choice
+
+## Terms may be simple or compound.
+## Simple terms are either constant or quantifiable (variable).
+AnyTerm.choice |= SimpleConstantTerm.choice
+AnyTerm.choice |= SimpleQuantifiableTerm.choice
+# For the declaration of the quantifiable term pattern, see the quantification module (quantifier_module)
+
+## Compound terms may be partially constant and partially quantifiable.
+AnyTerm.choice |= CompoundTerm.choice
+
+## Skolem constants are simple constant terms, but are not used in keys. 
+SimpleConstantTerm.choice |= Skolem-node.choice
+# For the declaration of skolem constants, see the skolem module (skolem_module).
+
+## Reified RuleML tags are simple constant terms, but are not used in keys.
+SimpleConstantTerm.choice |= Reify-node.choice
+# For the declaration of reification terms, see the reification module (reify_module).
+
+## All terms used in keys must be constants.
+SimpleConstantTerm.choice |= SimpleKeyTerm.choice
+
+## Individuals and literals (data) are simple, constant terms, and may be used in slot keys.
+SimpleKeyTerm.choice |= Individual-node.choice | DataTerm.choice
+
+## Compound terms are built up from other terms.
+## Compound terms include expressions.
+CompoundTerm.choice |= Expression-node.choice
+# For the declaration of expressions terms, see the expression module (expr_module).
+
+## Compound terms include generalized lists, a special expression that returns 
+## the object that is the list of the arguments.
+CompoundTerm.choice |= Plex_Any-node.choice
+# For the declaration of generalized list terms, see the generalized list module (plex_module).
+
+## Data terms are literals, and may have simple or complex datatypes.
+DataTerm.choice |= Data-node.choice
+# For the declaration of data terms, see the data modules (data_module and complexdata_module).
+
+## an extension point for alternate spellings and internationalization of the individual tag name. 
+Individual-node.choice |= Ind.Node.def
+
+## An individual constant, as in Predicate logic, which can also be considered to be a fixed argument like RDF resources.
+Ind.Node.def =
+  
+  ## <Ind>: an individual constant. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Ind
+  element Ind { (Ind-datt.choice & reInd.attlist), Ind.content }
+
+## Individuals optionally accept the attribute patterns of resources, and objects with user-defined types.
+reInd.attlist &= Resource.attlist?
+reInd.attlist &= Type.attlist?
+# For the declaration of the attribute list for resources, see the uri modules (uri_module).
+# For the declaration of the attribute list for objects with user-defined types, see the type module (type_module). 
+
+## The content model for individuals is text.
+Ind.content |= text

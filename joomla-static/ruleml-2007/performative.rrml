@@ -1,0 +1,25 @@
+<RuleML xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+	<Message mode="outbound" directive="query-snyc">
+		<oid>
+			<Ind>RuleML-2007</Ind>
+		</oid>
+		<protocol>
+			<Ind>esb</Ind>
+		</protocol>
+		<sender>
+			<Ind>User</Ind>
+		</sender>
+		<content>
+			<Atom>
+				<Rel>performative</Rel>
+				<Var>Performative</Var>				
+			</Atom>
+		</content>
+	</Message>
+
+</RuleML>
+			  

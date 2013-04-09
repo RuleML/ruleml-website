@@ -1,0 +1,874 @@
+<!-- ==================================================================== -->
+<!-- Author : Said Tabet                                                  -->
+<!-- The RuleML Initiative, December 2001                                 -->
+<!-- ==================================================================== -->
+
+<rulebase label="AnimalsKB">
+
+<!-- ================================================================== -->
+<!-- FACTS                                                              -->
+<!-- ================================================================== -->
+
+<!-- ================================================================== -->
+<!-- Fact 1:                                                            -->
+<!-- Stretch has hair                                                   -->
+<!-- ================================================================== -->
+   <fact label="fact1">
+	<atom>
+	   <_opr>
+	      <rel>has</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>hair</ind>
+	</atom>
+   </fact>
+
+<!-- ================================================================== -->
+<!-- Fact 2:                                                            -->
+<!-- Stretch chews cud                                                  -->
+<!-- ================================================================== -->
+   <fact label="fact2">
+	<atom>
+	   <_opr>
+	      <rel>chews</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>cud</ind>
+	</atom>
+   </fact>
+
+<!-- ================================================================== -->
+<!-- Fact 3:                                                            -->
+<!-- Stretch chews cud                                                  -->
+<!-- ================================================================== -->
+   <fact label="fact3">
+	<atom>
+	   <_opr>
+	      <rel>has</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>long</ind>
+	   <ind>legs</ind>
+	</atom>
+   </fact>
+
+<!-- ================================================================== -->
+<!-- Fact 4:                                                            -->
+<!-- Stretch chews cud                                                  -->
+<!-- ================================================================== -->
+   <fact label="fact4">
+	<atom>
+	   <_opr>
+	      <rel>has</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>long</ind>
+	   <ind>neck</ind>
+	</atom>
+   </fact>
+
+<!-- ================================================================== -->
+<!-- Fact 5:                                                            -->
+<!-- Stretch chews cud                                                  -->
+<!-- ================================================================== -->
+   <fact label="fact5">
+	<atom>
+	   <_opr>
+	      <rel>has</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>tawny</ind>
+	   <ind>color</ind>
+	</atom>
+   </fact>
+
+<!-- ================================================================== -->
+<!-- Fact 5:                                                            -->
+<!-- Stretch chews cud                                                  -->
+<!-- ================================================================== -->
+   <fact label="fact6">
+	<atom>
+	   <_opr>
+	      <rel>has</rel>
+	   </_opr>
+	   <ind>Stretch</ind>
+	   <ind>dark</ind>
+	   <ind>spots</ind>
+	</atom>
+   </fact>
+
+
+
+<!-- ================================================================== -->
+<!-- RULES                                                              -->
+<!-- ================================================================== -->
+
+<!-- ================================================================== -->
+<!-- Rule 1:                                                            -->
+<!-- If an animal X has hair then X is a mammal                         -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule1" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>mammal</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+	   	   <and>
+	   	     <fact>
+			<atom>
+			   <_opr>
+			   	<rel>has</rel>
+			   </_opr>
+			   <var>x</var>
+			   <ind>hair</ind>
+			</atom>
+	   	     </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 2:                                                            -->
+<!-- If an animal X gives milk then X is a mammal                       -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule2" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>mammal</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+	   	   <and>
+	   	     <fact>
+			<atom>
+			   <_opr>
+			   	<rel>gives</rel>
+			   </_opr>
+			   <var>x</var>
+			   <ind>milk</ind>
+			</atom>
+	   	     </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 3:                                                            -->
+<!-- If an animal X has feathers then X is a bird                       -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule3" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>bird</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+	   	   <and>
+	   	     <fact>
+			<atom>
+			   <_opr>
+			   	<rel>has</rel>
+			   </_opr>
+			   <var>x</var>
+			   <ind>feathers</ind>
+			</atom>
+	   	     </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 4:                                                            -->
+<!-- If an animal X flies AND lays eggs then X is a bird                -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule4" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>bird</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>flies</rel>
+			      </_opr>
+			      <var>x</var>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>lays</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>eggs</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 5:                                                            -->
+<!-- If an animal X is a mammal AND eats meet then X is a carnivore     -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule5" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>carnivore</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>mammal</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>eats</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>meet</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 6:                                                            -->
+<!-- If an animal X is a mammal AND eats meet then X is a carnivore     -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule6" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>carnivore</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>mammal</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>pointed</ind>
+			      <ind>teeth</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>claws</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>forward-pointing</ind>
+			      <ind>eyes</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 7:                                                            -->
+<!-- If an animal X is a mammal AND has hoofs then X is an ungulate     -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule7" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>ungulate</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>mammal</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>hoofs</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 8:                                                            -->
+<!-- If an animal X is a mammal AND chews cud then X is an ungulate     -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule8" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>ungulate</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>mammal</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>chews</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>cud</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 9:                                                            -->
+<!-- If an animal X is a carnivore AND has tawny color                  -->
+<!-- and has dark spots then X is an cheetah                            -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule9" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>cheetah</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>carnivore</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>tawny</ind>
+			      <ind>color</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>dark</ind>
+			      <ind>spots</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 10:                                                           -->
+<!-- If an animal X is a carnivore AND has tawny color                  -->
+<!-- AND has black stripes then X is a tiger                            -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule10" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>tiger</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>carnivore</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>tawny</ind>
+			      <ind>color</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>black</ind>
+			      <ind>strips</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ==================================================================  -->
+<!-- Rule 11:                                                            -->
+<!-- If an animal X is an angulate AND has long legs AND has a long neck -->
+<!-- AND has tawny color AND has dark spots then X is a girafe           -->
+<!-- ==================================================================  -->
+ 	<imp label="AnimalsRule11" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>girafe</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>ungulate</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>long</ind>
+			      <ind>legs</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>long</ind>
+			      <ind>neck</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>tawny</ind>
+			      <ind>color</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>dark</ind>
+			      <ind>spots</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 12:                                                           -->
+<!-- If an animal X is an angulate AND has white color                  -->
+<!-- AND has black stripes then X is a penguin                          -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule12" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>zebra</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>ungulate</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>white</ind>
+			      <ind>color</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>black</ind>
+			      <ind>stripes</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 13:                                                           -->
+<!-- If an animal X is a bird AND does not fly AND has long legs        -->
+<!-- AND long neck AND is black and white then X is a penguin           -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule13" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>ostrich</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>bird</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>doesnot</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>fly</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>long</ind>
+			      <ind>legs</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>has</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>long</ind>
+			      <ind>neck</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>is</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>black_and_white</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 14:                                                           -->
+<!-- If an animal X is a bird  AND does not fly and swims               -->
+<!-- AND is black and white then X is a penguin                         -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule14" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>penguin</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>bird</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>doesnot</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>fly</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>swims</rel>
+			      </_opr>
+			      <var>x</var>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>is</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>black_and_white</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+
+<!-- ================================================================== -->
+<!-- Rule 15                                                            -->
+<!-- If an animal X is a bird AND is a good flyer then X is an albatros -->
+<!-- ================================================================== -->
+ 	<imp label="AnimalsRule15" priority="10">
+		<_head>
+       		   <conclusions>
+		   	<assert>
+			   <fact>
+			      <atom>
+			         <_opr>
+				    <rel>isa</rel>
+			         </_opr>
+				 <var>x</var>
+				 <ind>albatros</ind>
+		              </atom>
+		   	   </fact>
+		   	</assert>
+		   </conclusions>
+		</_head>
+		<_body>
+		   <and>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>bird</ind>
+			   </atom>
+	   	      </fact>
+	   	      <fact>
+			   <atom>
+			      <_opr>
+			   	   <rel>isa</rel>
+			      </_opr>
+			      <var>x</var>
+			      <ind>good</ind>
+			      <ind>flyer</ind>
+			   </atom>
+	   	      </fact>
+		   </and>
+		</_body>
+	</imp>
+</rulebase>

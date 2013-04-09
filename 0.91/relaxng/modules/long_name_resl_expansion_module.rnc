@@ -1,0 +1,19 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Long Names: Horn Logic" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, long names, Horn logic" ]
+dc:description [ "The expansion module for human-readable names specific to Horn Logic and up." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+
+##
+restOfSlots-edge.choice |= restOfSlots.edge.def
+restOfSlots.edge.def = element restOfSlots { resl.content }

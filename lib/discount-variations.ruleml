@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML>                                                <!-- 2010-06-11 -->
+
+<!-- based on http://www.ruleml.org/lib/discount-variations-2007.ruleml -->
+
+<Assert mapClosure="universal">
+
+<!-- We give variations on discount rule "Implies 1" from the RuleML examples
+(http://ruleml.org/1.0/exa/Datalog/discount.ruleml). The other rules could
+be varied in a similar manner.
+-->
+
+<!-- Implication Rule 1:
+     Backward notation of 'then' and 'if' roles, as in Logic Programming
+     (ternary discount relation applied via Atom)
+
+"The discount for a customer buying a product is 5.0 percent
+if the customer is premium and the product is regular."
+
+Notice that a Data constant can syntactically be an entire phrase
+like "5.0 percent". It will unify only with variables and with Data
+having exactly the same spelling (incl. spaces). One could refine this
+by introducing markup for a constructor term "percent[5.0]", thus
+proceeding from Datalog to Horn logic.
+-->
+
+<Implies>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>5.0 percent</Data>
+    </Atom>
+  </then>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+</Implies>
+
+
+<!--  Implication Rule 1 (permuted):
+      Forward notation of 'if' and 'then' roles, similar to Classical Logic and
+      Production Systems (role permutation will not affect the semantics) -->
+
+<Implies>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>5.0 percent</Data>
+    </Atom>
+  </then>
+</Implies>
+
+
+<!--  Equational Rule 1':
+      Conditional oriented equation returns rewritten value through Equal element
+      ('call-by-value'-interpreted binary discount function applied via Expr)   -->
+
+<Implies>
+  <then>
+    <Equal oriented="yes">
+      <Expr>
+        <Fun per="value">discount</Fun>
+        <Var>customer</Var>
+        <Var>product</Var>
+      </Expr>
+      <Data>5.0 percent</Data>
+    </Equal>
+  </then>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+</Implies>
+
+
+<!--  Equational Rule 1' (permuted):
+      Permuted 'if' and 'then' roles will not affect the semantics -->
+
+<Implies>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+  <then>
+    <Equal oriented="yes">
+      <Expr>
+        <Fun per="value">discount</Fun>
+        <Var>customer</Var>
+        <Var>product</Var>
+      </Expr>
+      <Data>5.0 percent</Data>
+    </Equal>
+  </then>
+</Implies>
+
+
+<!--  Reaction Rule 1a (Production Rule with "Condition" and "Action"):
+      If premium and regular derivable do assert discount for customer -->
+
+<Reaction>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+  <do>
+    <Assert>
+      <Atom>
+        <Rel>discount</Rel>
+        <Var>customer</Var>
+        <Var>product</Var>
+        <Data>5.0 percent</Data>
+      </Atom>
+    </Assert>
+  </do>
+</Reaction>
+
+
+<!--  Reaction Rule 1a* (Rule with "Condition" and "Action"):
+      If premium and regular derivable do send discount to customer -->
+
+<Reaction>
+  <if>
+    <And>
+      <Atom>
+        <Rel>premium</Rel>
+        <Var>customer</Var>
+      </Atom>
+      <Atom>
+        <Rel>regular</Rel>
+        <Var>product</Var>
+      </Atom>
+    </And>
+  </if>
+  <do>
+    <Send>
+      <to><Var>customer</Var></to>
+      <content>
+        <Atom>
+          <Rel>discount</Rel>
+          <Var>customer</Var>
+          <Var>product</Var>
+          <Data>5.0 percent</Data>
+        </Atom>
+      </content>
+    </Send>
+  </do>
+</Reaction>
+
+
+<!--  Reaction Rule 1b (Trigger Rule with "Event" and "Action"):
+      On receiving elite notification from marketing
+      do send discount to customer -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>elite</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <do>
+    <Send>
+      <to><Var>customer</Var></to>
+      <content>
+        <Atom>
+          <Rel>discount</Rel>
+          <Var>customer</Var>
+          <Var>product</Var>
+          <Data>12.0 percent</Data>
+        </Atom>
+      </content>
+    </Send>
+  </do>
+</Reaction>
+
+
+<!--  Reaction Rule 1c (ECA Rule with "Event", "Condition", and "Action"):
+      On receiving premium notification from marketing and if regular derivable
+      do send discount to customer -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>premium</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <if>
+    <Atom>
+      <Rel>regular</Rel>
+      <Var>product</Var>
+    </Atom>
+  </if>
+  <do>
+    <Send>
+      <to><Var>customer</Var></to>
+      <content>
+        <Atom>
+          <Rel>discount</Rel>
+          <Var>customer</Var>
+          <Var>product</Var>
+          <Data>5.0 percent</Data>
+        </Atom>
+      </content>
+    </Send>
+  </do>
+</Reaction>
+
+
+<!--  Reaction Rule 1d (rule with "Event" and "Conclusion"):
+      On receiving elite notification from marketing
+      then conclude discount -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>elite</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>12.0 percent</Data>
+    </Atom>
+  </then>
+</Reaction>
+
+
+<!--  Reaction Rule 1e (rule with "Event", "Conclusion", and "Action"):
+      On receiving elite notification from marketing
+      then conclude discount and do send discount to customer -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>elite</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>12.0 percent</Data>
+    </Atom>
+  </then>
+  <do>
+    <Send>
+      <to><Var>customer</Var></to>
+      <content>
+        <Atom>
+          <Rel>discount</Rel>
+          <Var>customer</Var>
+          <Var>product</Var>
+          <Data>12.0 percent</Data>
+        </Atom>
+      </content>
+    </Send>
+  </do>
+</Reaction>
+
+
+<!--  Reaction Rule 1f (rule with "Event", "Condition", and "Conclusion"):
+      On receiving premium notification from marketing and if regular derivable
+      then conclude discount -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>premium</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <if>
+    <Atom>
+      <Rel>regular</Rel>
+      <Var>product</Var>
+    </Atom>
+  </if>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>5.0 percent</Data>
+    </Atom>
+  </then>
+</Reaction>
+
+
+<!--  Reaction Rule 1g (rule with "Event", "Condition", "Conclusion", and "Action"):
+      On receiving premium notification from marketing and if regular derivable
+      then conclude discount and do send discount to customer -->
+
+<Reaction>
+  <on>
+    <Receive>
+      <from><Ind>marketing</Ind></from>
+      <content>
+        <Atom>
+          <Rel>premium</Rel>
+          <Var>customer</Var>
+        </Atom>
+      </content>
+    </Receive>
+  </on>
+  <if>
+    <Atom>
+      <Rel>regular</Rel>
+      <Var>product</Var>
+    </Atom>
+  </if>
+  <then>
+    <Atom>
+      <Rel>discount</Rel>
+      <Var>customer</Var>
+      <Var>product</Var>
+      <Data>5.0 percent</Data>
+    </Atom>
+  </then>
+  <do>
+    <Send>
+      <to><Var>customer</Var></to>
+      <content>
+        <Atom>
+          <Rel>discount</Rel>
+          <Var>customer</Var>
+          <Var>product</Var>
+          <Data>5.0 percent</Data>
+        </Atom>
+      </content>
+    </Send>
+  </do>
+</Reaction>
+
+
+</Assert>
+
+</RuleML>

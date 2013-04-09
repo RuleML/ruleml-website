@@ -1,0 +1,135 @@
+<!-- An XML DTD for a Datafun RuleML Sublanguage -->
+<!-- Last Modification: 2002-07-09 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % rellog.module "IGNORE">
+<!ENTITY % datalog.module "INCLUDE">
+<!ENTITY % datalog-and-hornlog.module "INCLUDE">
+<!ENTITY % datafun.module "INCLUDE">
+
+<!ENTITY % datalog SYSTEM "ruleml-datalog.dtd">
+%datalog;
+
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<!-- 'rulebase' root element uses 'trans' rules, 'imp' rules, and 'fact' assertions along with 'query' tests as top-level elements 
+-->
+<!-- It has an optional label.  -->
+
+<!-- direction attribute indicates the intended direction of imp inferencing;  -->
+<!-- it is a preliminary design choice and has a 'neutral' default value -->
+
+<!ELEMENT rulebase (( (_rbaselab, (trans | imp | fact | query)* ) | ((trans | imp | fact | query)+, _rbaselab?) )?) >
+<!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional">
+
+
+<!-- 'trans' is short for "transformation"; it is a kind of rule -->
+<!-- 'trans' rules are usable on the rulebase top-level -->
+<!-- 'trans' element uses an invocation role _headf ("head of functions"), optionally followed by a condition role _body, followed by a return role _foot, -->
+<!-- or equivalently (since roles constitute unordered elements), uses _headf, _foot, optionally _body, or another ordering of these roles -->
+<!-- "<trans>_headf _body _foot</trans>" stands for "_headf, if _body holds, is transformed to _foot", or equivalently, -->
+<!-- "<trans>_headf _foot _body</trans>" stands for "_headf is transformed to _foot if _body holds", etc. -->
+<!-- "<trans>_headf _foot</trans>" stands for "_headf is (unconditionally) transformed to _foot" -->
+
+<!-- rule label is a handle for the trans: for various uses, including prioritization -->
+ 
+<!ELEMENT trans ((_rlab, ((_headf, ((_body, _foot) | (_foot, _body?))) | (_body, ((_headf, _foot) | (_foot, _headf))) | (_foot, ((_body, _headf) | (_headf, _body?))) )) |
+                 (_headf, ((_rlab, ((_body, _foot) | (_foot, _body?))) | (_body, ((_rlab, _foot) | (_foot, _rlab?))) | (_foot, ((_body, _rlab?) | (_rlab, _body?))?) )) |
+                 (_body, ((_rlab, ((_headf, _foot) | (_foot, _headf))) | (_headf, ((_rlab, _foot) | (_foot, _rlab?))) | (_foot, ((_rlab, _headf) | (_headf, _rlab?))) )) |
+                 (_foot, ((_rlab, ((_body, _headf) | (_headf, _body?))) | (_body, ((_rlab, _headf) | (_headf, _rlab?))) | (_headf, ((_body, _rlab?) | (_rlab, _body?))?) ))) >
+
+
+<!-- 'query' elements are usable as degenerate rules on the rulebase top-level -->
+<!-- 'query' element uses just a premise role _body, a premise role _foot, or both -->
+<!-- "<query>_body</query>" stands for "false is implied by _body", i.e., "_body cannot be proved", which is to be 
+refuted by generating the bindings for free variables in _body -->
+<!-- "<query>_foot</query>" stands for "return the value of _foot" -->
+<!-- "<query>_body _foot</query>" generates the bindings for free variables in _body and returns the value of _foot -->
+
+<!-- "_rlab" is a handle for the query: for various uses, including editing -->
+
+<!-- This version modularly separates relational from functional queries, but has an "ambigous content model": -->
+<!--
+<!ELEMENT query ((_rlab, _body) | (_body, _rlab?) | (_rlab, _foot) | (_foot, _rlab?) | ((_rlab, ((_foot, _body) | (_body, _foot))) |
+                                                                                        (_foot, ((_rlab, _body) | (_body, _rlab?))) |
+                                                                                        (_body, ((_rlab, _foot) | (_foot, _rlab?))))) >
+-->
+
+<!-- This version non-modularly blends relational and functional queries, but has an "unambigous content model": -->
+<!ELEMENT query ((_rlab, ((_foot, _body?) | (_body, _foot?))) |
+                 (_foot, ((_rlab, _body?) | (_body, _rlab?))?) |
+                 (_body, ((_rlab, _foot?) | (_foot, _rlab?))?)) >
+
+
+<!-- _headf role is usable within 'trans' rules -->
+<!-- _headf uses a nano formula (notice: not 'by-value', to implement "constructor discipline") -->
+
+<!ELEMENT _headf (nano)>
+
+<![%datalog-and-hornlog.module;[
+
+<!-- _body role is usable within 'trans' and 'imp' rules -->
+<!-- _body uses an atomic formula, an atomic 'by-value' formula, an 'and', or a 'by-value' 'and' -->
+
+<!ELEMENT _body (atom | atomv | and | andv)>
+
+<![%datafun.module;[
+
+<!-- _foot role is usable within 'trans' rules -->
+<!-- _foot uses an ind, var, a nano formula, or a nano 'by-value' formula -->
+
+<!ELEMENT _foot (ind | var | nano | nanov)>
+
+]]>
+
+
+<!-- an 'andv' is usable within a body -->
+<!-- and uses zero or more atomic or atomic 'by-value' formulas -->
+
+<!ELEMENT andv ((atom | atomv)*)>
+
+]]>
+
+
+<![%datafun.module;[
+
+<!-- atomic 'by-value' formulas are usable within _body's, and 'andv's -->
+<!-- atomv element uses _opr ("operator of relations") role followed by four kinds of arguments, -->
+<!-- or vice versa, extending atoms -->
+
+<!ELEMENT atomv ((_opr, (ind | var | nano | nanov)*) | ((ind | var | nano | nanov)+, _opr))>
+
+
+<!-- nano formulas are usable within _headf's, _foot's, atomv's, and nanov's -->
+<!-- nano element uses _opf ("operator of functions") role followed by two kinds of arguments, -->
+<!-- or vice versa, much like atoms  -->
+
+<!ELEMENT nano ((_opf, (ind | var)*) | ((ind | var)+, _opf))>
+
+<!-- nanov formulas are usable within _foot's, atomv's, and nanov's -->
+<!-- nanov element uses _opf ("operator of functions") role followed by four kinds of arguments -->
+<!-- or vice versa, extending nanos -->
+
+<!ELEMENT nanov ((_opf, (ind | var | nano | nanov)*) | ((ind | var | nano | nanov)+, _opf))>
+
+]]>
+
+
+<!-- _opf is usable within nanos -->
+<!-- _opf uses fun(ction) symbol -->
+
+<!ELEMENT _opf (fun)>
+
+
+
+
+<!-- user-defined function names -->
+<!ELEMENT fun  (#PCDATA)>

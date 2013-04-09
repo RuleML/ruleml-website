@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Auxiliary XML Schema for a 'UR' Equational-Logic RuleML sublanguage
+			File: aux_urequalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- redefine the previous sublanguage in the hierarchy to re-add href attributes -->
+	<xs:redefine schemaLocation="aux_equalog.xsd">
+		<xs:attributeGroup name="ind.attlist">
+			<xs:attributeGroup ref="ind.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>	
+		
+		<xs:attributeGroup name="ctor.attlist">
+			<xs:attributeGroup ref="ctor.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+
+		<xs:attributeGroup name="fun.attlist">
+			<xs:attributeGroup ref="fun.attlist"/>
+			<xs:attributeGroup ref="href.attrib"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+	
+</xs:schema>

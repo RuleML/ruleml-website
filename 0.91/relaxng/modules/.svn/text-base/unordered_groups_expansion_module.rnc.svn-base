@@ -1,0 +1,61 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+
+dc:title [ "RuleML Positional Independence" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, positional independence" ]
+dc:description [ "The expansion module for positional independence." ]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+
+## Pre-fix operator notation for atomic formulas is optional in a relaxed-form serialization.
+## This pattern cannot be translated accurately into XSD.
+Atom.main |= operatorForAtoms-edge.choice & argumentsForAtoms.sequence
+argumentsForAtoms.sequence |= positionalArgumentsForAtoms.sequence & slotsForAtoms.sequence
+positionalArgumentsForAtoms.sequence |=
+    termsForAtoms.sequence & restOfPositionalArguments-edge.choice?
+# termsForAtoms.sequence |= termsPlus.sequence?
+slotsForAtoms.sequence |= slotTermsForAtoms.sequence & restOfSlots-edge.choice?
+
+## Pre-fix operator notation for expressions is optional in the relaxed-form serialization.
+## This pattern cannot be translated accurately into XSD.
+Expr.main |= operatorForExpressions-edge.choice & argumentsForExpressions.sequence
+argumentsForExpressions.sequence |=
+    positionalArgumentsForExpressions.sequence & slotsForExpressions.sequence
+positionalArgumentsForExpressions.sequence |=
+    termsForExpressions.sequence & restOfPositionalArguments-edge.choice?
+# termsForExpressions.sequence |= termsPlus.sequence?
+slotsForExpressions.sequence |= slotTermsForExpressions.sequence & restOfSlots-edge.choice?
+#
+
+## In the relaxed-form serialization, the body and head of an implication can occur in either order if striped.
+## This pattern can be translated accurately into XSD.
+Implies.main |= body_Implies.name.choice & head_Implies.name.choice
+
+## In the lax-order serialization, the body and head of a proof-theoretic entailment can occur in either order if striped.
+## This pattern can be translated accurately into XSD.
+Entails.main |= body_Entails.name.choice & head_Entails.name.choice
+
+## In the lax-order serialization, the object identifier occupies any position in the header of fuzzifiable formulas.
+## This pattern can be translated accurately into XSD using xs:any, but is not correctly translated by the Trang software.
+## The header for fuzzifiable formulas interleaves the patterns for general formulas and fuzzifiable objects.
+FuzzyFormula-header.choice |= Formula.header & Fuzzy.header
+# 
+# 
+# STRIPE-SKIPPING AND POSITIONAL-DNDEPENDENCE
+# RELAX NG ENHANCEMENT
+
+## non-linear interaction of stripe-skipping and lax-order
+## allows asynchronous stripe-skipping and body-head order reversal
+Implies.main |= head_Implies-ss.content, body_Implies.name.choice
+Implies.main |= head_Implies.name.choice, body_Implies-ss.content
+#
+
+## non-linear interaction of stripe-skipping and lax-order
+## allows asynchronous stripe-skipping and body-head order reversal
+Entails.main |= head_Entails-ss.content, body_Entails.name.choice
+Entails.main |= head_Entails.name.choice, body_Entails-ss.content

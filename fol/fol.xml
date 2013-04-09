@@ -1,0 +1,1500 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- <?xml-stylesheet href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl" type="text/xsl"?> -->
+<?xml-stylesheet href="../homepage.xsl" type="text/xsl"?>
+<?cocoon-process type="xslt"?>
+
+<!-- Written by Harold Boley -->
+
+<homepage>
+
+  <title>FOL RuleML: The First-Order Logic Web Language</title>
+
+  <opening>
+    <center>
+      <big>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+-->]]></code></box>
+        <box bgcolor="#FFCCCC">R u l e M L</box>
+        <box bgcolor="#CCCCFF"><code><![CDATA[
+
+<--]]></code></box>
+      </big>
+      <br/> <br/>
+
+<h1>FOL RuleML: The First-Order Logic Web Language</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, <a href="http://www.daml.org/people/mdean/">Mike Dean</a>, <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>, <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>, <a href="http://www.cs.unb.ca/~bspencer/">Bruce Spencer</a>, <a href="http://home.comcast.net/~stabet/">Said Tabet</a>, <a href="http://www.informatik.tu-cottbus.de/~gwagner/">Gerd Wagner</a></h2>
+<h3>Version History, 2004-08-10: Version 0.7</h3>
+<h3>Version History, 2004-11-02: Version 0.9</h3>
+    </center>
+
+<br/> <br/> <br/>
+
+<p>
+This paper describes First-Order Logic RuleML (FOL RuleML),
+which is planned to be the FOL sublanguage of RuleML 0.9, the
+rule component of SWRL FOL, and an FOL content language for SWSI.
+FOL RuleML is based on a modular combination of two syntactically
+characterized sublanguages:
+(1) Quantifier RuleML extends RuleML 0.87 by explicit quantifiers.
+(2) Disjunctive RuleML extends RuleML 0.87 by head disjunctions.
+Connectives for equivalence and negation are then modularly added
+for defining FOL RuleML. Its DTD is available for validation tests.
+Classical FOL model theory provides the semantics of FOL RuleML.
+FOL RuleML formulas can be used as the declarative content of
+KQML-like performatives 'Assert' and 'Query', which are augmented
+by a neutral 'Consider' performative.
+</p>
+
+  </opening>
+
+<section label="Introduction">
+<header>Introduction</header>
+<p>
+First-Order Logic RuleML (FOL RuleML) is introduced here as a language for the First-Order Logic Web
+on the basis of combining Quantifier RuleML and Disjunctive RuleML.
+This sublanguage combination is then enriched by further connectives, notably by classical negation,
+for achieving FOL RuleML. The markup language for first-order logic introduced here is itself proposed as a central RuleML sublanguage,
+extending the design of <a href="http://www.ruleml.org/0.87/">RuleML 0.87</a>. It will also benefit other sublanguages towards RuleML 0.9,
+such as the current Horn logic markup.
+</p>
+
+<p>
+A notion of 'query' will be used in this paper that corresponds to what has often been named 'goal' in the AI literature.
+A query in this sense encompasses a formula that can be proved either by direct retrieval or by a general (here, FOL) deduction
+(in FOL not necessarily based on ultimate direct retrievals).
+Other work on query languages has focussed on retrieval, and has generalized
+complementary aspects such as the expressiveness of query patterns, aggregates, etc.
+In particular, the W3C <a href="http://www.w3.org/2001/sw/DataAccess/">RDF Data Access Working Group</a>
+is defining generalized retrieval through multiple-valued graph pattern matching.
+It will be interesting to see how this could be simulated by, or combined with, the FOL queries discussed here.
+Another connection with W3C's DAWG is RuleML's striped syntax, motived by RDF,
+which in this paper will be carried over to FOL RuleML, and will be abridged via
+<a href="http://esw.w3.org/topic/StripeSkipping">StripeSkipping</a>.
+</p>
+
+<p>
+Explicit quantifiers, 'Forall' and 'Exists', are now optionally provided for FOL purposes.
+These quantifiers have been <a href="http://lists.w3.org/Archives/Public/www-rdf-rules/2003Nov/0178.html">requested</a>
+by RuleML participants as well as SWRL observers including Drew McDermott,
+and are essential for all full FOL languages such as
+<a href="http://lists.w3.org/Archives/Public/public-sws-ig/2004Jan/0024.html">DRS</a>,
+<a href="http://www.daml.org/listarchive/joint-committee/1714.html">SCL</a>, and FOL RuleML.
+We will also optionally provide an abbreviation syntax for regarding certain free variables
+as universally quantified variables, which is more explicit than the convention of Prolog/LP
+and many other (theorem-proving) systems: A 'closure' attribute on clauses can be set to "universal" (or "existential");
+similarly, for entire rulebases.
+</p>
+
+<!--
+<p>
+An explicit 'Assert' element can be used as the root over an FOL formula,
+which can be a conjunctive rulebase, whose (e.g., implicational) subformulas are
+axiomatically postulated as true, as distinguished from subformulas <b>within</b> axioms such as the bodies of 'Implies' clauses,
+whose truth-values are to be evaluated.
+</p>
+-->
+
+<p>
+In the spirit of the logic in 'FOL RuleML', the conjoined clauses of a rulebase are connected by an explicit 'And'.
+FOL RuleML also allows a corresponding 'Or', for disjoined clauses.
+Either of these parent connectives can have attributes for expressing properties of contained clauses.
+In particular, the free-variable convention of the clausal normal form in theorem provers is expressed explicitly
+by the attribute setting innerclose="universal", universally closing off clauses occurring as
+subformulas in the parent 'And'/'Or',
+i.e. acting as if all of its contained clauses would have the attribute setting closure="universal".
+</p>
+
+<p>
+RuleML 0.87 top-level elements ('Imp', 'Fact', and -- still -- 'Query') -- directly below a rulebase -- 
+can contain extra information
+such as a rule label (also planned: a rule salience etc.). This information is now also offered for sublevel elements,
+e.g. to refer to the elements of a local rulebase. We can thus avoid
+a top-level/sublevel duplication for connectives such as through a previously proposed 'Imp'/'Implies' distinction.
+</p>
+
+<p>
+RuleML files and messages strive for a strict separation of declarative content from procedural performatives,
+as pioneered by KQML.
+FOL RuleML is focused on the syntax and semantics of the FOL content language,
+specifying the FOL content formulas that can go into any performative
+of any other system that refers to the FOL RuleML namespace: these FOL formulas acquire their pragmatics from the
+enclosing performative context.
+Just for transmitting FOL RuleML content under a single XML root, without specifying what should be done with the content,
+we introduce a neutral performative, called 'Consider'. <a href="#Appendix 1">Appendix 1</a> gives a complete example,
+which uses the Horn subset of FOL to demonstrate a minimal XML wrapping of FOL RuleML content into performatives.
+Using FOL RuleML we may have, e.g., the same 'And' of clauses as the content that can be wrapped by, e.g., a KQML-'tell'-like
+'Assert' performative. <a href="#Appendix 2">Appendix 2</a> gives an example of an 'Assert'-'And' nesting,
+which corresponds to a 'Rulebase' in RuleML 0.87.
+Since FOL RuleML permits implications as queries, the same content could moreover
+be wrapped by a 'Query' performative. <a href="#Appendix 3">Appendix 3</a> gives an FOL query example.
+</p>
+
+<p>
+In this paper the performatives 'Consider', 'Assert', and 'Query' are the only examples used as
+wrappers (shown as blue-colored boxes) around FOL RuleML content (shown as white-colored boxes).
+Future RuleML work may contemplate a further performative wrapping an FOL formula used as an integrity constraint,
+which could be called 'Sustain'.
+Also, a 'Retract' performative, similar to KQML's 'untell', wrapping an FOL formula to be deleted,
+is relevant to some RuleML sublanguages.
+Certain performatives such as 'Query' can appear directly as the root of an XML file or message
+(e.g., the explicit 'Query' in <a href="#Appendix 2">Appendix 2</a>)
+or could be generated by processors (e.g., a top-down interpreter) from content such as an 'Implies' rule
+(e.g., extracting the query implicit in the body conjunction of the 'Implies' in <a href="#Appendix 1">Appendix 1</a>)
+to form a new XML file or message.
+However, the latter option is outside the scope of the RuleML language specification.
+</p>
+
+<p>
+Since the Semantic Web Services Initiative (<a href="http://www.swsi.org/">SWSI</a>) is working in areas related
+to performatives, and is planning to use FOL RuleML as an FOL content language, we envisage a close RuleML/SWSI collaboration
+in finishing the FOL RuleML content language and in defining RuleML/SWSI performatives.
+The second aspect of this collaboration goes much beyond FOL RuleML since performatives
+involve other RuleML sublanguages such as
+Object-Oriented RuleML (<a href="http://www.ruleml.org/indoo/">OO RuleML</a>) and are close to efforts in
+Reaction RuleML (<a href="http://mail.ruleml.org/pipermail/reaction-tg/">Reaction TG</a>).
+Also, previous work on OWL-QL (<a href="http://www.daml.org/dql/">DQL</a>) will be relevant here.
+One issue to be solved is how to build on Web Services standards such as <a href="http://www.w3.org/2000/xp/Group/">SOAP</a>
+when enriching the 'content' argument of performatives by
+further sublements for the receiver, sender, in-reply-to, etc. (which can become slots in OO RuleML).
+</p>
+
+<p>
+The RuleML/SWSI/DAWG collaboration will be simplified by the modularity stemming from the separation
+of FOL RuleML content and RuleML/SWSI/DAWG/... performatives.
+The <a href="#SynSem">Syntax and Semantics</a> of FOL RuleML is normative only w.r.t. the (white-boxed) FOL content language.
+</p>
+
+</section>
+
+
+<!--
+<section label="Changes">
+<header>Type/Role Tag Syntax Changes</header>
+<p>
+Since <a href="http://www.ruleml.org/indtd0.8.html#Overview">RuleML 0.8</a> we have marked up 'role' tags
+via a "<tt>_</tt>"-prefix and have left 'type' tags unprefixed.
+Already at that time we also considered the convention Java uses for a similar distinction:
+having method-like 'role' tags start with a lower-case letter,
+and having class-like 'type' tags start with an upper-case letter.
+Such a Java convention is now proposed for RuleML 0.9 and is employed in the following.
+</p>
+<p>
+Specifically, the type/role tag syntax has been changed in <a href="http://www.ruleml.org/0.87">RuleML 0.87</a> as follows:
+<br/> <br/>
+
+        <table border="1" cellpadding="3">
+            <tr align="center">
+                <td>
+                    <b>Old (Principle)</b>
+                </td>
+                <td>
+                    <b>New (Principle)</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>type</td>
+                <td>Type</td>
+            </tr>
+	    <tr align="center">
+                <td>_role</td>
+                <td>role</td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <b>Old (Examples)</b>
+                </td>
+                <td>
+                    <b>New (Examples)</b>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>atom</td>
+                <td>Atom</td>
+            </tr>
+	    <tr align="center">
+                <td>_head</td>
+                <td>head</td>
+            </tr>
+	    <tr align="center">
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        </table>
+</p>
+<p>
+Other changes, proposed beyond RuleML 0.87, will be introduced in the following
+to accomodate the FOL extensions and to benefit the current Horn logic markup.
+</p>
+</section>
+-->
+
+
+<section label="Quantifiers">
+<header>Explicit Quantifiers</header>
+<p>
+In the Quantifier RuleML module, explicit ('Forall' and 'Exists') quantifiers are allowed
+on all levels of rulebase elements,
+in particular immediately above and anywhere within implication elements.
+</p>
+
+<p>
+For example, the RuleML <a href="http://www.ruleml.org/indtd0.8.html#Context">'own' rule</a>
+(where the 'Imp' element happens to contain no rule-label child)
+<code><![CDATA[
+<Imp>
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Imp>]]></code>
+
+will be rewritten with an 'Implies' connective
+(whose 'closure' attribute will normally be generated from the 'innerclose' attribute of the parent connective,
+usually an 'And'):
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code></box><br/>
+
+The appendices illustrate an abridged version of this rule in context with the
+'closure' attribute lifted to an 'innerclose' attribute.
+ </p>
+
+ <p>
+This can be expanded to an 'own' rule with an explicit quantifier (a 'Forall' quantifier)
+extracting all variables that occur free in the 'closure'-attributed 'Implies'-connective formula.
+The extracted variables are put under 'declare' roles,
+and the 'closure'-less 'Implies' is put under a 'formula' role, as follows:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <declare><Var>person</Var></declare>
+  <declare><Var>merchant</Var></declare>
+  <declare><Var>object</Var></declare>
+  <formula>
+    <Implies>
+      <head>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </head>
+      <body>
+        <And>
+          <Atom>
+            <Rel>buy</Rel>
+            <Var>person</Var>
+            <Var>merchant</Var>
+            <Var>object</Var>
+          </Atom>
+          <Atom>
+            <Rel>keep</Rel>
+            <Var>person</Var>
+            <Var>object</Var>
+          </Atom>
+        </And>
+      </body>
+    </Implies>
+  </formula>
+</Forall>]]></code></box><br/>
+
+
+We will use the convention for role skipping of <a href="http://www.ruleml.org/0.87">RuleML 0.87</a>,
+which allows us to omit the 'declare' and 'formula' roles, as follows (where 'Var' type tags as direct child elements of
+'Forall' get their role tag reconstructed as 'declare', while any other type tag gets reconstructed as 'formula'):
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+    <body>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+    </body>
+  </Implies>
+</Forall>]]></code></box><br/>
+
+
+
+This itself can be considered as the prenex normal form of an 'own' rule with an explicit outer 'Forall' and
+an explicit inner (body-side) 'Exists' quantifier:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Implies>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+    <body>
+      <Exists>
+        <Var>merchant</Var>
+        <And>
+          <Atom>
+            <Rel>buy</Rel>
+            <Var>person</Var>
+            <Var>merchant</Var>
+            <Var>object</Var>
+          </Atom>
+          <Atom>
+            <Rel>keep</Rel>
+            <Var>person</Var>
+            <Var>object</Var>
+          </Atom>
+        </And>
+      </Exists>
+    </body>
+  </Implies>
+</Forall>]]></code></box>
+
+
+</p>
+<p>
+The 'Var' declaration part of quantified formulas like the above also provides a natural place
+to introduce types/sorts for those variables (once) as called for by <a href="http://www.ruleml.org/indoo/">OO RuleML</a>.
+</p>
+<p>
+
+
+Because of the unorderedness of roles, here 'head' and 'body' roles, the last but first version is syntactically equivalent to the following:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <body>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+    </body>
+    <head>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </head>
+  </Implies>
+</Forall>]]></code></box><br/>
+
+The role skipping of <a href="http://www.ruleml.org/0.87">RuleML 0.87</a>
+now allows us to omit the 'head' and 'body' roles, as suggested by the type tag 'Implies'
+(as opposed to a -- not currently existing --  type tag 'IsImpliedBy'):
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>merchant</Var>
+  <Var>object</Var>
+  <Implies>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </Implies>
+</Forall>]]></code></box><br/>
+
+
+While the above examples are just different ways of expressing
+a Horn rule using explicit quantifiers, the following example uses them for added FOL expressiveness.
+This new rule about claiming, both of whose 'Implies' elements contain a rule label, leaves the outer 'Forall' implicit and employs
+an explicit inner (body-side) 'Forall' over an embedded 'Implies': 
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <rlab><Ind>claiming-through-disclaimers</Ind></rlab>
+  <head>
+    <Atom>
+      <Rel>claim</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Forall>
+        <Var>x</Var>
+        <Implies>
+	  <rlab><Ind>disclaiming-of-other-persons</Ind></rlab>
+          <body>
+            <Atom>
+              <Rel>unequal</Rel>
+              <Var>x</Var>
+              <Var>person</Var>
+            </Atom>
+          </body>
+          <head>
+            <Atom>
+              <Rel>disclaim</Rel>
+              <Var>x</Var>
+              <Var>object</Var>
+            </Atom>
+          </head>
+        </Implies>
+      </Forall>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code></box><br/>
+
+In a similar way, the RuleML 'keep' fact
+(where the 'Fact' element contains a rule-label and a 'head' child)
+
+<code><![CDATA[
+<Fact>
+  <rlab><Ind>Mary-keeps-everything</Ind></rlab>
+  <head>
+    <Atom>
+      <Rel>keep</Rel>
+      <Ind>Mary</Ind>
+      <Var>object</Var>
+    </Atom>
+  </head>
+</Fact>]]></code>
+
+or, using the ('head') role reconstruction of <a href="http://www.ruleml.org/0.87/">RuleML 0.87</a>,
+
+<code><![CDATA[
+<Fact>
+  <rlab><Ind>Mary-keeps-everything</Ind></rlab>
+  <Atom>
+    <Rel>keep</Rel>
+    <Ind>Mary</Ind>
+    <Var>object</Var>
+  </Atom>
+</Fact>]]></code>
+
+will be rewritten as a 'keep' 'Atom'
+(whose 'closure' attribute will normally be generated from the 'innerclose' attribute of the parent connective,
+usually an 'And'):
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Atom closure="universal">
+  <rlab><Ind>Mary-keeps-everything</Ind></rlab>
+  <Rel>keep</Rel>
+  <Ind>Mary</Ind>
+  <Var>object</Var>
+</Atom>]]></code></box><br/>
+The appendices illustrate a version of this fact in context with the
+'closure' attribute lifted to an 'innerclose' attribute.
+ </p>
+
+ <p>
+This can be expanded to a 'keep' atom with an explicit quantifier (a 'Forall' quantifier)
+binding the declared free variable of the atomic formula, as follows:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>object</Var>
+  <Atom>
+    <rlab><Ind>Mary-keeps-everything</Ind></rlab>
+    <Rel>keep</Rel>
+    <Ind>Mary</Ind>
+    <Var>object</Var>
+  </Atom>
+</Forall>]]></code></box><br/>
+
+</p>
+</section>
+
+
+<section label="Disjunctions">
+<header>Head Disjunctions</header>
+<p>
+Disjunctions in the head of clauses and in all sublevel positions
+are allowed in the Disjunctive RuleML module.
+</p>
+
+<p>
+For example, the RuleML <a href="http://www.ruleml.org/indtd0.8.html#Context">'own' rule</a>
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <head>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Atom>
+        <Rel>buy</Rel>
+        <Var>person</Var>
+        <Var>merchant</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code></box><br/>
+
+can be changed into a disjunctive ('own'-or-'relinquish') rule as follows:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <head>
+    <Or>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>relinquish</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Or>
+  </head>
+  <body>
+    <Atom>
+      <Rel>buy</Rel>
+      <Var>person</Var>
+      <Var>merchant</Var>
+      <Var>object</Var>
+    </Atom>
+  </body>
+</Implies>]]></code></box><br/>
+
+In a similar manner, we permit a disjunctive fact that could be derived by the above rule and a suitable 'buy' fact:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Or>
+  <Atom>
+    <Rel>own</Rel>
+    <Ind>Mary</Ind>
+    <Ind>XMLBible</Ind>
+  </Atom>
+  <Atom>
+    <Rel>relinquish</Rel>
+    <Ind>Mary</Ind>
+    <Ind>XMLBible</Ind>
+  </Atom>
+</Or>]]></code></box>
+
+</p>
+</section>
+
+
+<section label="QuantiDisjuns">
+<header>Combined Quantifiers and Disjunctions</header>
+<p>
+Explicit ('Forall' and 'Exists') quantifiers can be combined with
+disjunctions in the head of clauses and in all sublevel positions.
+</p>
+<p>
+For example, this is a disjunctive ('claim'-or-'relinquish') rule with
+an inner (body-side) explicit quantifier (a 'Forall') over an embedded 'Implies': 
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <rlab><Ind>claiming-or-relinquishing-through-disclaimers</Ind></rlab>
+  <head>
+    <Or>
+      <Atom>
+        <Rel>claim</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+      <Atom>
+        <Rel>relinquish</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Or>
+  </head>
+  <body>
+    <Forall>
+      <Var>x</Var>
+      <Implies>
+      	<rlab><Ind>disclaiming-of-other-persons</Ind></rlab>
+        <body>
+          <Atom>
+            <Rel>unequal</Rel>
+            <Var>x</Var>
+            <Var>person</Var>
+          </Atom>
+        </body>
+        <head>
+          <Atom>
+            <Rel>disclaim</Rel>
+            <Var>x</Var>
+            <Var>object</Var>
+          </Atom>
+        </head>
+      </Implies>
+    </Forall>
+  </body>
+</Implies>]]></code></box>
+
+</p>
+</section>
+
+
+<section label="Equivalence">
+<header>Equivalence</header>
+<p>
+Besides reducing 'Equivalent' to a pair of conjoined converse 'Implies',
+we also allow to represent it directly, modeled on 'Implies', but
+with a symmetric 'torso' role that combines the asymmetric 'head' and 'body' roles.
+</p>
+
+For example, without introducing a new connective, a pair of conjoined converse
+'Implies' formulas can express an 'own'/'belongs' equivalence as follows:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <And>
+    <Implies>
+      <body>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </body>
+      <head>
+        <Atom>
+          <Rel>belongs</Rel>
+          <Var>object</Var>
+          <Var>person</Var>
+        </Atom>
+      </head>
+    </Implies>
+    <Implies>
+      <body>
+        <Atom>
+          <Rel>belongs</Rel>
+          <Var>object</Var>
+          <Var>person</Var>
+        </Atom>
+      </body>
+      <head>
+        <Atom>
+          <Rel>own</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </head>
+    </Implies>
+  </And>
+</Forall>]]></code></box><br/>
+
+
+However, with the 'Equivalent' connective, this 'own'/'belongs' equivalence can be shortened into a single rule thus:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Equivalent>
+    <torso>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </torso>
+    <torso>
+      <Atom>
+        <Rel>belongs</Rel>
+        <Var>object</Var>
+        <Var>person</Var>
+      </Atom>
+    </torso>
+  </Equivalent>
+</Forall>]]></code></box><br/>
+
+Because of the symmetry of equivalence, the 'torso' role can be trivially reconstructed (in the way the 'role' metarole
+is reconstructed in <a href="http://www.ruleml.org/0.87">RuleML 0.87</a>),
+so that the 'own'/'belongs' rule can be further shortened thus:
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Equivalent>
+    <Atom>
+      <Rel>own</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+    <Atom>
+      <Rel>belongs</Rel>
+      <Var>object</Var>
+      <Var>person</Var>
+    </Atom>
+  </Equivalent>
+</Forall>]]></code></box>
+
+
+</section>
+
+
+<section label="Negation">
+<header>Negation</header>
+<p>
+Classical negation in FOL RuleML is introduced as a 'Neg' element.
+(This is strictly separated from other RuleML sublanguages where partial-logic extensions to 'Neg' are permitted,
+from further sublanguages introducing the as-failure 'Naf' element, and from sublanguages
+also allowing certain 'Naf'/'Neg' combinations.)
+</p>
+
+For instance, in the earlier FOL-expressive example,
+the 'unequal' relation can be replaced by a 'Not'-negated 'equal' relation
+(we immediately omit its trivially reconstructed single-argument role, 'strong'): 
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Implies closure="universal">
+  <rlab><Ind>claiming-through-disclaimers</Ind></rlab>
+  <head>
+    <Atom>
+      <Rel>claim</Rel>
+      <Var>person</Var>
+      <Var>object</Var>
+    </Atom>
+  </head>
+  <body>
+    <And>
+      <Forall>
+        <Var>x</Var>
+        <Implies>
+          <rlab><Ind>disclaiming-of-other-persons</Ind></rlab>
+          <body>
+            <Neg>
+	      <Atom>
+                <Rel>equal</Rel>
+                <Var>x</Var>
+                <Var>person</Var>
+              </Atom>
+	    </Neg>
+          </body>
+          <head>
+            <Atom>
+              <Rel>disclaim</Rel>
+              <Var>x</Var>
+              <Var>object</Var>
+            </Atom>
+          </head>
+        </Implies>
+      </Forall>
+      <Atom>
+        <Rel>keep</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </And>
+  </body>
+</Implies>]]></code></box>
+<p>
+The tag 'Neg' may be renamed into 'Not', as detailed in the <a href="#Issues">Issues List</a>, item 9.
+</p>
+</section>
+
+
+
+<section label="Complex">
+<header>Complex Terms</header>
+<p>
+While the 'Atom' element was so far restricted to the constructorless FOL subset,
+it will now be extended for complex terms as also used in RuleML's Hornlog sublanguage.
+First, besides 'Ind' or 'Var' children, an 'Atom' can now contain 'Cterm' child elements.
+Similarly, a complex term or 'Cterm' is then defined to apply a constructor or 'Ctor' child element
+to 'Ind', 'Var', or (recursively) 'Cterm' child elements.
+</p>
+
+For instance, a 'Cterm' constructing a 'book' from an author, a title, and a year can be used within
+an 'Atom' expressing a 'buy' fact relating a buyer, a seller, and this book: 
+
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Atom>
+  <Rel>buy</Rel>
+  <Ind>Mary</Ind>
+  <Ind>John</Ind>
+  <Cterm>
+    <Ctor>book</Ctor>
+    <Ind>Elliotte Rusty Harold</Ind>
+    <Ind>XML Bible</Ind>
+    <Ind>2001</Ind>
+  </Cterm>
+</Atom>]]></code></box>
+
+</section>
+
+
+
+<section label="SynSem">
+<header>Syntax and Semantics</header>
+<p>
+The FOL RuleML syntax defines the connectives co-recursively in the usual FOL manner
+so that arbitrary nestings are allowed.
+</p>
+<p>
+The shortened form of the FOL RuleML content language (for simplicity also omitting the rlab role on atoms and connectives)
+is defined through the following normative DTD grammar,
+where the ENTITY declaration handles the markupless recursive non-terminal 'foformula':
+</p>
+<p>
+<box bgcolor="#FFFFFF"><code><![CDATA[<!ENTITY % foformula "(Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists)">
+
+<!ELEMENT Atom (Rel, (Ind | Var | Cterm)*)>
+<!ELEMENT Cterm (Ctor, (Ind | Var | Cterm)*)>
+
+<!ELEMENT And ((%foformula;)*)>
+<!ELEMENT Or ((%foformula;)*)>
+<!ELEMENT Neg (%foformula;)>
+<!ELEMENT Implies (%foformula;, %foformula;)>
+<!ELEMENT Equivalent (%foformula;, %foformula;)>
+
+<!ELEMENT Forall (Var+, %foformula;)>
+<!ELEMENT Exists (Var+, %foformula;)>
+
+<!ELEMENT Ind  (#PCDATA)>
+<!ELEMENT Var  (#PCDATA)>
+<!ELEMENT Rel  (#PCDATA)>
+<!ELEMENT Ctor  (#PCDATA)>
+
+<!ATTLIST And innerclose (universal | existential) #IMPLIED>
+<!ATTLIST Or innerclose (universal | existential) #IMPLIED>
+<!ATTLIST Neg innerclose (universal | existential) #IMPLIED>
+
+<!ATTLIST Atom closure (universal | existential) #IMPLIED>
+<!ATTLIST Implies closure (universal | existential) #IMPLIED>
+<!ATTLIST Equivalent closure (universal | existential) #IMPLIED>]]></code></box>
+</p>
+<p>
+Note that the attributes 'innerclose' and 'closure' are specified, respectively, for boolean ('And'/'Or'/'Neg')
+and clause ('Atom'/'Implies'/'Equivalent') elements with the keyword #IMPLIED,
+which makes them optional.
+Since the 'closure' attribute is the fundamental one (cf. <a href="#Appendix 1">Appendix 1</a>, Document 1b),
+on which the 'innerclose' attribute is based (cf. <a href="#Appendix 1">Appendix 1</a>, Document 1a),
+users can opt to employ 'closure' without employing 'innerclose', but not the other way round.
+The 'closure' attribute specifies a universal or existential
+closure over all variables that occur free in its clause element.
+The 'innerclose' attribute specifies correspondingly valued 'closure'/'innerclose' attributes for all
+'closure'/'innerclose'-less clauses/booleans occurring directly in its boolean element.
+It tells applications to propagate the value v (<tt>"universal"</tt> or <tt>"existential"</tt>)
+found in a innerclose=v of a boolean element to their direct subelements, inserting closure=v into any
+clause that does not already have a 'closure' attribute,
+and recursively inserting innerclose=v into any boolean that does not already have an 'innerclose' attribute.
+This also allows the explicit 'Forall'/'Exists' quantification over the variables in a boolean or clause element
+that does not use an 'innerclose' or 'closure' attribute, respectively.
+</p>
+<p>
+<box bgcolor="#FFFFFF">
+<br/>
+The semantics of the FOL RuleML content language is exactly the one of classical FOL model theory.
+<br/><br/>
+</box>
+</p>
+<p>
+The above DTD is available for validation tests at <a href="http://www.ruleml.org/fol/fol-monolith.dtd">http://www.ruleml.org/fol/fol-monolith.dtd</a>.
+<!--
+(Browse with, e.g., Firefox or the IE 6.0.2800.1106 version that has the appropriate SP1 Q8????? updates.)
+-->
+For example, Richard Goerwitz' <a href="http://www.stg.brown.edu/service/xmlvalid/">STG Validator</a> succeeds with
+the content language conjunction of the appendices:
+<br/><br/>
+<b>Text:</b><box bgcolor="#FFFFFF"><code><![CDATA[<?xml version="1.0" standalone="no"?>
+<!DOCTYPE And SYSTEM "http://www.ruleml.org/fol/fol-monolith.dtd">
+<And innerclose="universal">
+
+    ... content from Appendix 1, Document 1a ...
+ 
+</And>]]></code></box>
+<br/>
+While 'And' is distinguished here (after 'DOCTYPE') as the document root,
+'Or' and the other connectives can be designated as the root, too.
+</p>
+<p>
+The neutral 'Consider' performative, as illustrated in <a href="#Appendix 1">Appendix 1</a>,
+for transmitting FOL RuleML content under a single document root
+can be added to the above DTD via the following non-normative line:
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[<!ELEMENT Consider (%foformula;)>]]></code></box>
+</p>
+<p>
+The usual formula simplifications and transformations can be applied to these FOL RuleML formulas (e.g., leading to normal forms).
+For example, 'And' is often needed in the body and (e.g., for SWRL) in the head of clauses, but
+an 'And' (such as a conjunction of converse 'Implies' elements) is not required on a rulebase top-level
+that is itself an 'And' of child formulas.
+As another example, applying de Morgan, a top-level 'Or' of 'Implies' (and 'Equivalent') rules
+can be re-expressed via the classical negation
+of an 'And' of the classically negated rules.
+</p>
+<p>
+The tag 'Neg' may be renamed into 'Not', as detailed in the <a href="#Issues">Issues List</a>, item 9.
+</p>
+
+</section>
+
+
+<section label="Slotted">
+<header>Slotted FOL RuleML</header>
+<p>
+N-ary relations with named/keyed arguments can be expressed in FOL RuleML with slots,
+following <a href="http://www.ruleml.org/indoo">OO RuleML</a>.
+
+The Abstract Syntax sample formula with a named n-ary relationship from Peter Patel-Schneider's
+<a href="http://www-db.research.bell-labs.com/user/pfps/swrl/fol.html">Proposal for a SWRL Extension
+to First-Order Logic</a>  is:
+<code><![CDATA[
+forall( I-variable(x ex:FantasyNovel)
+      Purchase(buyer=ex:peter seller=ex:amazon object=x quantity="1"^^xsd:int))]]></code>
+
+Here is its XML Syntax in Slotted FOL RuleML (with two XML attributes:
+'type' for webized classes and 'wref' for webized individuals):
+<br/><br/><box bgcolor="#FFFFFF"><code><![CDATA[
+<Forall>
+  <Var type="ex:FantasyNovel">x</Var>
+  <Atom>
+    <Rel>Purchase</Rel>
+    <slot>
+      <Ind>buyer</Ind>
+      <Ind wref="ex:peter"/>
+    </slot>
+    <slot>
+      <Ind>seller</Ind>
+      <Ind wref="ex:amazon"/>
+    </slot>
+    <slot>
+      <Ind>object</Ind>
+      <Var>x</Var>
+    </slot>
+    <slot>
+      <Ind>quantity</Ind>
+      <Ind type="xsd:int">1</Ind>
+    </slot>
+  </Atom>
+</Forall>]]></code></box>
+</p>
+
+</section>
+
+
+<section label="SWRL">
+<header>SWRL FOL RuleML</header>
+<p>
+SWRL FOL and FOL RuleML can be joined to SWRL FOL RuleML
+by either adding RuleML extensions such as n-ary relations to SWRL FOL or
+by adding SWRL extensions such as data-valued properties to FOL RuleML.
+</p>
+<p>
+Peter Patel-Schneider's <a href="http://www-db.research.bell-labs.com/user/pfps/swrl/fol.html">Proposal for a SWRL Extension
+to First-Order Logic</a> can provide the direct model-theoretic semantics for the SWRL FOL subset of SWRL FOL RuleML.
+</p>
+
+<p>
+Using FOL RuleML as described here, the example assertion in XML concrete syntax of
+Peter Patel-Schneider's above document becomes the following SWRL FOL RuleML example
+(where the 'owlx:name' value has been webized and 'owlx:Annotation' has been left unchanged):
+<br/><br/>
+<box bgcolor="#CCCCFF"><code><![CDATA[
+<ruleml:Assert owlx:name="#Example">
+  <owlx:Annotation>
+    <owlx:Label>Example Rule for Expository Purposes</owlx:Label>
+  </owlx:Annotation>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <ruleml:Forall>
+    <ruleml:Var type="Person">x1</ruleml:Var>
+    <ruleml:Var type="Parent">x2</ruleml:Var>
+    <ruleml:Var type="Person">x3</ruleml:Var>
+    <ruleml:Var type="xsd:int">x4</ruleml:Var>
+    <ruleml:And>
+      <swrlx:individualPropertyAtom swrlx:property="hasParent">
+        <ruleml:Var>x1</ruleml:Var>
+        <ruleml:Var>x2</ruleml:Var>
+      </swrlx:individualPropertyAtom>
+      <swrlx:individualPropertyAtom swrlx:property="hasBrother"> 
+        <ruleml:Var>x2</ruleml:Var>
+        <ruleml:Var>x3</ruleml:Var>
+      </swrlx:individualPropertyAtom>
+      <swrlx:datatypePropertyAtom swrlx:property="hasAge"> 
+        <ruleml:Var>x2</ruleml:Var>
+        <ruleml:Var>x4</ruleml:Var>
+      </swrlx:datatypePropertyAtom>
+    </ruleml:And>
+  </ruleml:Forall>]]></code></box>
+<code><![CDATA[
+</ruleml:Assert>]]></code></box>
+</p>
+
+<p>
+Notice that with rulebases becoming 'And' assertions, each fact inside becoming an 'Atom'
+(in SWRL, an 'individualPropertyAtom' or a 'datatypePropertyAtom'),
+this example can be viewed either as an asserted formula whose connective is an 'And'
+or as a rulebase of three facts grouped together by an 'And' connective.
+</p>
+
+<p>
+Generally, in both views, FOL RuleML and SWRL FOL RuleML only permit one 'Assert' root
+per file or message.
+(Other, clearly distinct, RuleML sublanguages, studied by the <a href="http://mail.ruleml.org/pipermail/reaction-tg/">Reaction TG</a>,
+also permit for incremental, even dynamic, 'Assert' performatives, as required, e.g., for production rules.)
+</p>
+
+</section>
+
+
+<section label="Built-ins">
+<header>Built-ins for SWRL FOL RuleML</header>
+<p>
+The <a href="http://www.w3.org/Submission/2004/SUBM-SWRL-20040521/#8">SWRL Built-ins</a>,
+being designed in a declarative fashion and used through a specialized 'Atom' ('swrlx:builtinAtom'),
+can be easily extended to SWRL FOL RuleML.
+</p>
+
+<p>
+This is a test query using the 'swrlb:greaterThanOrEqual' built-in for SWRL FOL RuleML
+(we omit namespace declarations):
+<br/><br/>
+<box bgcolor="#CCCCFF"><code><![CDATA[
+<ruleml:Query owlx:name="#Test">
+  <owlx:Annotation>
+    <owlx:Label>Test Query for Expository Purposes</owlx:Label>
+  </owlx:Annotation>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <ruleml:Exists>
+    <ruleml:Var type="Person">x1</ruleml:Var>
+    <ruleml:Var type="Person">x2</ruleml:Var>
+    <ruleml:Var type="xsd:int">x3</ruleml:Var>
+    <ruleml:Var type="xsd:int">x4</ruleml:Var>
+    <ruleml:And>
+      <swrlx:datatypePropertyAtom swrlx:property="hasAge"> 
+        <ruleml:Var>x1</ruleml:Var>
+        <ruleml:Var>x3</ruleml:Var>
+      </swrlx:datatypePropertyAtom>
+      <swrlx:datatypePropertyAtom swrlx:property="hasAge"> 
+        <ruleml:Var>x2</ruleml:Var>
+        <ruleml:Var>x4</ruleml:Var>
+      </swrlx:datatypePropertyAtom>
+      <swrlx:builtinAtom swrlx:builtin="&swrlb;#greaterThanOrEqual"> 
+        <ruleml:Var>x3</ruleml:Var>
+        <ruleml:Var>x4</ruleml:Var>
+      </swrlx:builtinAtom>
+    </ruleml:And>
+  </ruleml:Exists>]]></code></box>
+<code><![CDATA[
+</ruleml:Query>]]></code></box>
+</p>
+
+</section>
+
+
+<section label="XSDs">
+<header>The FOL XSDs</header>
+
+<p>
+To obtain the Schema of RuleML 0.9
+we will incorporate the FOL modules along with other ones into
+the correspondingly adapted <a href="http://www.ruleml.org/spec">current XML Schema</a>.
+The monolith DTD grammar of <a href="#SynSem">Syntax and Semantics</a> and
+the monolith XSD derived from it for the <a href="http://www-db.research.bell-labs.com/user/pfps/swrl/fol.html#4">XML Concrete Syntax</a>
+of SWRL FOL will guide the modular XSD specification.
+</p>
+</section>
+
+
+<!--
+<section label="POSL">
+<header>FOL POSL: A POSL Version of FOL RuleML</header>
+<p>
+
+</p>
+</section>
+
+<section label="Applications">
+<header>FOL RuleML Applications</header>
+<p>
+
+</p>
+</section>
+-->
+
+
+<section label="Appendix 1">
+<header>Appendix 1: 'own' Example as Universal 'Consider'</header>
+
+Document 1a -- Universally Closed 'And' Elements in 'Consider' Wrapper:
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[
+<Consider>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <And innerclose="universal">
+
+    <Implies>
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Implies>
+    
+    <Atom>
+      <Rel>buy</Rel>
+      <Ind>Mary</Ind>
+      <Ind>John</Ind>
+      <Cterm>
+        <Ctor>book</Ctor>
+        <Ind>Elliotte Rusty Harold</Ind>
+        <Ind>XML Bible</Ind>
+        <Ind>2001</Ind>
+      </Cterm>
+    </Atom>
+
+    <Atom>
+      <Rel>keep</Rel>
+      <Ind>Mary</Ind>
+      <Var>object</Var>
+    </Atom>
+    
+  </And>]]></code></box>
+<code><![CDATA[
+</Consider>]]></code></box>
+
+
+<br/>
+
+
+Document 1b -- Universally Closed Clauses of 'And' in 'Consider' Wrapper (Document 1a After 'closure' Propagation):
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[
+<Consider>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <And>
+
+    <Implies closure="universal">
+      <And>
+        <Atom>
+          <Rel>buy</Rel>
+          <Var>person</Var>
+          <Var>merchant</Var>
+          <Var>object</Var>
+        </Atom>
+        <Atom>
+          <Rel>keep</Rel>
+          <Var>person</Var>
+          <Var>object</Var>
+        </Atom>
+      </And>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </Implies>
+    
+    <Atom closure="universal">
+      <Rel>buy</Rel>
+      <Ind>Mary</Ind>
+      <Ind>John</Ind>
+      <Cterm>
+        <Ctor>book</Ctor>
+        <Ind>Elliotte Rusty Harold</Ind>
+        <Ind>XML Bible</Ind>
+        <Ind>2001</Ind>
+      </Cterm>
+    </Atom>
+
+    <Atom closure="universal">
+      <Rel>keep</Rel>
+      <Ind>Mary</Ind>
+      <Var>object</Var>
+    </Atom>
+    
+  </And>]]></code></box>
+<code><![CDATA[
+</Consider>]]></code></box>
+
+
+
+
+
+
+</section>
+
+
+<section label="Appendix 2">
+<header>Appendix 2: 'own' Example as Universal 'Assert' with Existential Query</header>
+
+Document 2a -- Universally Closed 'And' Elements in 'Assert' Wrapper:
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[
+<Assert>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <And innerclose="universal">
+  
+    ... content from Appendix 1, Document 1a ...
+    
+  </And>]]></code></box>
+<code><![CDATA[
+</Assert>]]></code></box>
+<br/>
+Document 2b -- Existentially Closed Atom in 'Query' Wrapper (Response Provable from 'Assert'):
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[
+<Query>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <Atom closure="existential">
+    <Rel>own</Rel>
+    <Var>person</Var>
+    <Var>object</Var>
+  </Atom>]]></code></box>
+<code><![CDATA[
+</Query>]]></code></box>
+</section>
+
+
+<section label="Appendix 3">
+<header>Appendix 3: 'own' Example as Universal Query</header>
+
+Document 3 -- Universally Closed 'And' Elements in 'Query' Wrapper (No 'Assert' Given for Proving Response):
+<br/><br/><box bgcolor="#CCCCFF"><code><![CDATA[
+<Query>]]></code>
+<box bgcolor="#FFFFFF"><code><![CDATA[
+  <And innerclose="universal">
+  
+    ... content from Appendix 1, Document 1a ...
+    
+  </And>]]></code></box>
+<code><![CDATA[
+</Query>]]></code></box>
+</section>
+
+
+<section label="Issues">
+<header>Issues List</header>
+<enumerate>
+  <item>2004-06-21 Q (Michael Sintek): Should "pragmatic" top-level rulebase elements like 'Rule', 'Fact', 'Query',
+  'Ic' (integrity constraint), etc. be used instead of the top-level connectives (keeping only the corresponding sublevel connectives)?
+  A (Harold Boley): While 'Rule' and 'Fact' elements could be combined into an axiomatic 'Assertion' element,
+  'Query' will be removed from 'Rulebase' anyway (instead becoming the second element of a 'Turnstile', whose
+  first element is the 'Rulebase'), and 'Ic' will likely be introduced outside of 'Rulebase' as well;
+  however, the remaining 'Assertion' element would lead to a deeper markup, which would be a problem
+  especially for all earlier Horn-like sublanguages (alternating speech-act-like "pragmatic" wrapper information
+  with "semantic" content information also is a problem, and an interesting follow-up issue for Reaction Rules).
+  <br/>
+  <b>2004-09-12: Solved via existing 'Query' element and new 'Assert' element.</b>
+  </item>
+  <item>2004-09-07 Q (Ian Horrocks, Peter Patel-Schneider):
+  Can the distinction between to-be-asserted vs. to-be-checked formulas be moved out of the logic language?
+  A (Harold Boley, Mike Dean): Yes, makes sense.
+  <br/>
+  <b>2004-09-12: Solved by strict separation of declarative content from procedural performatives.</b>
+  </item>
+  <item>2004-09-14 Q (Benjamin Grosof):
+  Besides the delivery of derived facts (via 'Assert'), also bindings should be allowed on the top level
+  (cf. answerset in current SweetRules effort); how would this fit into the picture?
+  A (Harold Boley): Could be introduced as an 'in-reply-to'-like 'Response' performative (complementary to 'Query');
+  however, content language would need to encode variable bindings, which are less 'logical' than formulas.
+  <br/>
+  <b>2004-09-14: Factor out here, but work on it as part of surrounding shells of (interactive/reactive) RuleML and SWSI sublanguages.</b>
+  </item>
+  <item>2004-09-14 Q (Mike Dean):
+  What relationships exist with the W3C DAWG query effort?
+  A (Harold Boley, Benjamin Grosof): While using different query notions, collaboration with DAWG should be increased,
+  e.g. offering them our retrieval-query use cases; this requires that we can mark up query content with our preliminary 'Query' element
+  (the <a href="#Introduction">Introduction</a> elaborates our envisaged collaborations).
+  <br/>
+  <b>2004-09-19: Solved by normatively restricting new Syntax and Semantics section to content language.</b>
+  </item>
+  <item>2004-09-21 Q (Mike Dean):
+  Could we introduce a ("universal") default value for the 'closure' and 'innerclose' attributes?
+  A (Harold Boley, Ian Horrocks): Looks worth checking.
+  <br/>
+  <b>2004-09-23: Since we can also have explicit ('Exists') quantifiers over formulas,
+  formulas generally --  e.g., in the scope of quantifiers -- cannot have a global DTD/XSD default
+  (a syntactic default would also interfere with the 'innerclose' propagation now elaborated in <a href="#SynSem">Syntax and Semantics</a>).</b>
+  </item>
+  <item>2004-09-21 Q (Ian Horrocks, Mike Dean):
+  How can we further clarify that 'Query' and 'Assert' are only illustrations of how others could use FOL RuleML content
+  in their performatives?
+  A (Harold Boley, Ian Horrocks): Let's introduce a neutral performative for FOL formulas agnostic w.r.t.
+  them being asserted, queried, or whatever.
+  <br/>
+  <b>2004-09-25: Solved by the introduction of 'Consider' performative as non-normative wrapper in <a href="#SynSem">Syntax and Semantics</a>
+  and its color-wrapped illustration in new <a href="#Appendix 1">Appendix 1</a>.</b>
+  </item>
+  <item>2004-09-27 Q (Michael Kifer):
+  What is the use of the 'innerclose' attribute, in contrast to the 'closure' attribute?
+  A (Harold Boley): 'innerclose' marks up the convention of clausal theorem provers to close off all elements in a set of clauses,
+  each with their own scope, while 'closure' closes off a single clause, establishing its scope.
+  <br/>
+  <b>2004-09-27: Clarified in the "In the spirit of the logic ..." paragraph of the <a href="#Introduction">Introduction</a>.</b>
+  </item>
+  <item>2004-09-28 Q (Benjamin Grosof):
+  Could it be indicated that the 'innerclose' attribute is more experimental than the 'closure' attribute?
+  A (Harold Boley, Mike Dean): Yes: 'innerclose' has recently been introduced on top of 'closure'.
+  <br/>
+  <b>2004-09-28: Solved by a role comparison of both attributes in the paragraph after the DTD
+  in <a href="#SynSem">Syntax and Semantics</a>, with reference to a new Document 1b in <a href="#Appendix 1">Appendix 1</a>.</b>
+  </item>
+  <item>2004-10-26 Q (Pat Hayes):
+  Can we rename <b>'Neg'</b> into 'Not', because this is the standard word to refer to classical negation
+  (cf. Peter Patel-Schneider's <a href="http://www.daml.org/listarchive/joint-committee/1824.html">Comments</a>)?
+  A (Harold Boley): Let's think more about it, keeping compatibility with negation-as-failure communities in mind,
+  some of which would rename <b>'Naf'</b> into 'Not'.
+  <br/>
+  <b>2004-11-02: Still Open Issue after the 2004-10-28 RuleML telecon, Benjamin Grosof's
+  <a href="http://www.daml.org/listarchive/joint-committee/1826.html">markup tagnames for negation</a>,
+  and <a href="http://www.daml.org/listarchive/joint-committee/1829.html">another JC telecon</a>;
+  therefore either keep 'Neg' or rename it into 'Not' according to the feedback obtained after
+  Mike Dean's SWRL FOL announcement.</b>
+  </item>
+</enumerate>
+
+</section>
+
+
+<section label="Acknowledgments">
+<header>Acknowledgments</header>
+
+<p>This document was produced as part of the <a 
+href="http://www.daml.org/">DARPA DAML Program</a> in close
+collaboration with the <a href="http://www.ruleml.org/">RuleML
+Initiative</a>. It has benefited from extensive discussion in the <a
+href="http://www.daml.org/committee/">Joint US/EU  ad hoc Agent Markup
+Language Committee</a>, with contributions from <a 
+href="http://www.w3.org/People/Sandro/">Sandro Hawke</a> and <a 
+href="http://www.coginst.uwf.edu/users/user.php?UserID=phayes">Pat Hayes</a> being worthy of 
+particular mention. It has also benefited from the input of the <a 
+href="http://www.swsi.org/">Semantic Web Services Initiative (SWSI)</a>.
+FOL RuleML has already been used by Jing Mei as a target language for a <a 
+href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/">transformational implementation of the OWL Semantics</a>.
+
+ </p>
+
+</section>
+
+
+  <closing>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2005-03-08
+
+<br/><br/><br/>
+
+      <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at <a href="http://www.ruleml.org/fol/fol.xml">fol.xml</a>;
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a target="_self" href="http://xml.apache.org/cocoon/index.html"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="../cocoon-small.jpg" vspace="2"/></a></xhtml>
+  </closing>
+
+
+</homepage>

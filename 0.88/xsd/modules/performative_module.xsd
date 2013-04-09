@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd"
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of 'formula' -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Performative RuleML elements module.
+			This is the XML Schema performative elements module for RuleML.
+			File: performative_module.xsd
+			Version: 0.88
+			Last Modification: 2005-02-24
+			
+			This module declares the following toplevel RuleML elements/attributes:
+			* Assert
+			* Query
+			* content
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** Assert ***
+		content model:
+		(
+			(content | And)
+		)
+
+		A KQML-like performative acting as a wrapper which specifies that its content is asserted.  This
+		allows the separation of declarative content	from such procedural performatives.
+
+		Note that an Assert-And nesting corresponds to a Rulebase in RuleML 0.87.
+
+		See http://www.ruleml.org/fol/ for full details.
+	-->
+	<xs:attributeGroup name="Assert.attlist"/>
+	<xs:group name="Assert.content">
+		<xs:choice>
+			<xs:element name="content" type="content-assert.type"/>			
+			<xs:group ref="content-assert.content"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Assert.type">
+		<xs:group ref="Assert.content"/>
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:complexType>
+	<xs:element name="Assert" type="Assert.type"/>
+	
+	<!--
+		*** Query ***
+		content model:
+		(content | Atom | And | Or | Exists)
+
+		A KQML-like performative acting as a wrapper which specifies that its content is queried.  This
+		allows the separation of declarative content	from such procedural performatives.
+		
+		See http://www.ruleml.org/fol/ for full details.
+	-->
+	<xs:attributeGroup name="Query.attlist"/>
+	<xs:group name="Query.content">
+		<xs:choice>
+			<xs:element name="content" type="content-query.type"/>
+			<xs:group ref="content-query.content"/>
+		</xs:choice>			
+	</xs:group>
+	<xs:complexType name="Query.type">
+		<xs:group ref="Query.content"/>
+		<xs:attributeGroup ref="Query.attlist"/>
+	</xs:complexType>
+	<xs:element name="Query" type="Query.type"/>
+	
+	<!--
+		*** content ***
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		content model (below Assert): ( And )
+		content model (below Query): ( Atom | And | Or | Exists )
+
+		The content of a performative.
+
+		This is a metarole which may be left implicit.
+	-->
+	<xs:attributeGroup name="content.attlist"/>
+	<xs:group name="content-assert.content">
+		<xs:choice>
+			<xs:element name="And" type="And-assert.type"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="content-query.content">
+		<xs:choice>
+			<xs:element ref="Atom"/>
+			<xs:element name="And" type="And-query.type"/>
+			<xs:element name="Or" type="Or-query.type"/>	
+			<xs:element ref="Exists"/>				
+		</xs:choice>
+	</xs:group>	
+	<xs:complexType name="content-assert.type">
+		<xs:group ref="content-assert.content"/>
+		<xs:attributeGroup ref="content.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="content-query.type">
+		<xs:group ref="content-query.content"/>
+		<xs:attributeGroup ref="content.attlist"/>
+	</xs:complexType>	
+
+</xs:schema>

@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd"
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Horn RuleML elements module.
+			This is the XML Schema horn module for RuleML.
+			File: horn_module.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+			
+			This module declares the following hOrn RuleML elements:
+			* Cterm
+			* opc
+			* Ctor
+			* Plex
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Cterm ***
+		content model:
+		(
+			( (opc | Ctor), (role | Slot)*, (arg | Ind | Var | Cterm | Plex)*, (role | Slot)* ) |
+			( (role | Slot)*, (arg | Ind | Var | Cterm | Plex)+, (role | Slot)*, opc )
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+
+                        (
+                            ( (opc | Ctor),
+                              (role | Slot)*, 
+                              ( (arg | Ind | Var | Cterm | Plex)+, (role | Slot)*)?
+                            ) 
+                          |
+                            (
+                               (
+                                  ( (role | Slot)+, 
+                                    ( (arg | Ind | Var | Cterm | Plex)+, (role | Slot)* )?
+                                  )
+                                |
+                                  ((arg | Ind | Var | Cterm | Plex)+, (role | Slot)*)
+                               ),
+                               opc
+                            )
+                         )
+
+		A complex term, i.e. a logical term of the form "f(...)" where f is a constructor.
+
+		Complex, compound, or constructor terms are usable within other Cterms, Plexs, and Atoms.
+		The Cterm element uses 'opc' ("operator of constructors") role (or, directly, a 'Ctor')
+		followed by a sequence of four kinds of arguments (optionally introduced by an 'arg' metarole)
+		surrounded by optional user-defined slots, or vice versa, much like Atoms.
+
+		Complex terms may have an optional 'type' attribute for term typing.
+	-->	
+	<xs:attributeGroup name="Cterm.attlist">
+		<xs:attributeGroup ref="type.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Cterm.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="opc"/>
+					<xs:element ref="Ctor"/>
+				</xs:choice>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="role"/>
+					<xs:element ref="Slot"/>
+				</xs:choice>
+				<xs:sequence minOccurs="0">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="arg"/>
+						<xs:element ref="Ind"/>
+						<xs:element ref="Var"/>
+						<xs:element ref="Cterm"/>
+						<xs:element ref="Plex"/>
+					</xs:choice>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="role"/>
+						<xs:element ref="Slot"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="role"/>
+							<xs:element ref="Slot"/>
+						</xs:choice>
+						<xs:sequence minOccurs="0">
+							<xs:choice minOccurs="1" maxOccurs="unbounded">
+								<xs:element ref="arg"/>
+								<xs:element ref="Ind"/>
+								<xs:element ref="Var"/>
+								<xs:element ref="Cterm"/>
+								<xs:element ref="Plex"/>
+							</xs:choice>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element ref="role"/>
+								<xs:element ref="Slot"/>
+							</xs:choice>
+						</xs:sequence>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:element ref="Ind"/>
+							<xs:element ref="Var"/>
+							<xs:element ref="Cterm"/>
+							<xs:element ref="Plex"/>
+						</xs:choice>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="role"/>
+							<xs:element ref="Slot"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="opc"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Cterm.type">
+		<xs:group ref="Cterm.content"/>
+		<xs:attributeGroup ref="Cterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="Cterm" type="Cterm.type"/>
+
+	<!--
+		*** opc ***
+		content model: (Ctor)
+	
+		A constructor operator expression (similar in spirit to opr).
+
+		This is a metarole which is usually left implicit.  It uses a C(onstruc)tor.
+	-->
+	<xs:attributeGroup name="opc.attlist"/>
+	<xs:group name="opc.content">
+		<xs:sequence>
+			<xs:element ref="Ctor"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="opc.type">
+		<xs:group ref="opc.content"/>
+		<xs:attributeGroup ref="opc.attlist"/>
+	</xs:complexType>
+	<xs:element name="opc" type="opc.type"/>
+
+	<!--
+		*** Ctor ***
+		content model: (#PCDATA)
+
+		A constructor, i.e. a logical function.
+	-->
+	<xs:attributeGroup name="Ctor.attlist"/>
+	<xs:group name="Ctor.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Ctor.type" mixed="true">
+		<xs:group ref="Ctor.content"/>
+		<xs:attributeGroup ref="Ctor.attlist"/>
+	</xs:complexType>
+	<xs:element name="Ctor" type="Ctor.type"/>
+
+	<!--
+		*** Plex ***
+		content model: ( (role | Slot)*, (arg | Ind | Var | Cterm | Plex)*, (role | Slot)* )
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		( (role | Slot)*, ( (arg | Ind | Var | Cterm | Plex)+, (role | Slot)* )? )
+
+		An unordered collection of arguments. 
+
+		(com)Plex elements are usable within complex terms, atoms and other Plex elements.
+		(Previous to version 0.85, these were called tup(le)s - the addition of user-defined
+		roles meant the term "tup" was no longer appropriate because it implies order.)
+
+		The Plex element uses a sequence of four kinds of arguments (optionally introduced by
+		an 'arg' metarole) surrounded by optional user-defined slots.
+	-->
+	<xs:attributeGroup name="Plex.attlist"/>
+	<xs:group name="Plex.content">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="role"/>
+				<xs:element ref="Slot"/>
+			</xs:choice>
+			<xs:sequence minOccurs="0">
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="arg"/>
+					<xs:element ref="Ind"/>
+					<xs:element ref="Var"/>
+					<xs:element ref="Cterm"/>
+					<xs:element ref="Plex"/>
+				</xs:choice>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="role"/>
+					<xs:element ref="Slot"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Plex.type">
+		<xs:group ref="Plex.content"/>
+		<xs:attributeGroup ref="Plex.attlist"/>
+	</xs:complexType>
+	<xs:element name="Plex" type="Plex.type"/>
+	
+</xs:schema>

@@ -1,0 +1,72 @@
+<!-- An XML DTD for a (Flat) Equational-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-01-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % equalog.module "INCLUDE">
+
+
+<!-- Only a flat equational logic (without function nestings) is defined here. -->
+<!-- A nested equational logic would require atom versions, called 'relationships', -->
+<!-- with embedded applications, generalizing the flat nanos defined here; -->
+<!-- analogously, nano versions with embedded applications, are called 'applications' -->
+<!-- To keep one kind of 'eq' and 'and' (rather than needing two of both), -->
+<!-- only (flat) atoms and nanos are used here. For flatting use 'eq' variables. -->
+
+
+<!-- a conclusion and premise is usable within 'infer from' implications -->
+<!-- conc element uses an atomic formula or an equational formula -->
+<!-- prem element uses an atomic formula, an equational formula, or an 'and' -->
+<!-- 'eq' in conc and prem permits an equational logic (cf. RFML) -->
+
+<!ENTITY % conc "(atom | eq)">
+<!ENTITY % prem "(atom | eq | and)">
+
+
+<![%equalog.module;[
+
+<!-- an expression is usable within equational formulas -->
+<!-- expr uses ind, var, or cterm terms or nano formulas -->
+
+<!ENTITY % expr "(ind | var | cterm | nano)">
+
+]]>
+
+
+<!ENTITY % datalog-and-hornlog.module "IGNORE">
+
+<!ENTITY % hornlog SYSTEM "ruleml-hornlog.dtd">
+%hornlog;
+
+
+
+<!-- ELEMENT Declarations -->
+
+
+<!-- an 'and' is usable within premises -->
+<!-- and uses zero or more atomic or equational formulas -->
+
+<!ELEMENT and ((atom | eq)*)>
+
+
+<!-- an 'eq' is usable within a conclusion, premises, and an 'and' -->
+<!-- and uses two expressions -->
+
+<!ELEMENT eq (%expr;, %expr;)>
+
+
+<![%equalog.module;[
+
+<!-- nano formula are usable within expressions -->
+<!-- nano element uses fun name followed by three (flat: non-nano) kinds of arguments -->
+
+<!ELEMENT nano (fun, (ind | var | cterm)*)>
+
+]]>
+
+
+<!-- user-defined function names -->
+<!ELEMENT fun  (#PCDATA)>

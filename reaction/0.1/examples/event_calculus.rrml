@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Event Calculus State Processing -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/kr.xsd">
+
+<!-- ContractLog formalization of Event Calculus Axioms (ISO Prolog / Prova syntax) for State Processing
+initially(status(Server,unloaded)).
+happens(loading(s1),t1).
+happens(unloading(s1),t5).
+initiates(loading(Server),status(Server,loaded),T).
+terminates(unloading(Server),status(Server,loaded),T).
+eca(_,request(Customer,Service,T), neg(holdsAt(status(Server,loaded),T)), add(eis(loaded(Server)),"happens(loading(_0),_1).",[Server,T]),_,_).
+isLoaded(Server,T):- bound(Server), bound(T), holdsAt(status(Server,loaded),T).
+
+
+:-solve(holdsAt(status(Server,loaded),t3)).
+
+ -->
+ 
+<Assert>
+
+	<Reaction kind="a" exec="reasoning"> <!-- only action = "initially" and KR reasoning  -->		
+		<Initiates>
+			<Expr>
+				<Fun>status</Fun>
+				<Var>Server</Var>
+				<Ind>unloaded</Ind>
+			</Expr>
+		</Initiates>
+	</Reaction>
+
+
+	<Atom>
+		<Rel>happens</Rel>
+		<Expr>
+			<Fun>loading</Fun>
+			<Ind>s1</Ind>
+		</Expr>
+		<Ind>t1</Ind>
+	</Atom>
+
+	<Atom>
+		<Rel>happens</Rel>
+		<Expr>
+			<Fun>unloading</Fun>
+			<Ind>s1</Ind>
+		</Expr>
+		<Ind>t1</Ind>
+	</Atom>
+
+	<Reaction kind="ea" exec="reasoning"> <!-- KR reasoning rule -->		
+	   <event>
+		       <Expr>
+			        <Fun>loading</Fun>
+			        <Var>Server</Var>
+			   </Expr>
+		</event>
+		<action>
+			   <Initiates>
+			   		<state>
+			   			<Expr>
+			        		<Fun>status</Fun>
+			                <Var>Server</Var>
+			                <Ind>loaded</Ind>
+			         	</Expr>
+			   		</state>
+				</Initiates>
+  		</action>
+  	</Reaction>	
+  	
+
+	<Reaction kind="ea" exec="reasoning"> <!-- KR reasoning rule -->		
+	   <event>
+		       <Expr>
+			        <Fun>unloading</Fun>
+			        <Var>Server</Var>
+			   </Expr>
+		</event>
+		<action>
+			   <Terminates>
+			   		<state>
+			   			<Expr>
+			        		<Fun>status</Fun>
+			                <Var>Server</Var>
+			                <Ind>loaded</Ind>
+			         	</Expr>
+			   		</state>
+				</Terminates>
+  		</action>
+  	</Reaction>	
+
+
+
+
+	<Reaction kind="eca" exec="active"> <!-- KR reasoning rule -->		
+	   <event>
+		       <Atom>
+			        <Rel>request</Rel>
+			        <Var>Customer</Var>
+			        <Var>Service</Var>
+			        <Var>T</Var>			        			        
+			   </Atom>
+		</event>
+		<body>
+			<Neg>
+				<HoldsState>
+					<Expr>
+						<Fun>status</Fun>
+						<Var>Server</Var>
+						<Ind>loaded</Ind>
+					</Expr>
+					<Var>T</Var>
+				</HoldsState>
+			</Neg>
+		</body>
+		<action>
+			   <Assert>
+			   		<oid>
+			   			<Expr>
+			        		<Fun>eis</Fun>
+			        		<Expr>
+			                	<Fun>loaded</Fun>
+			                	<Var>Server</Var>
+			         		</Expr>			         		
+			         	</Expr>	
+			   		</oid>
+					<Atom>
+						<Rel>happens</Rel>
+						<Expr>
+							<Fun>loading</Fun>
+							<Var>Server</Var>
+						</Expr>
+						<Var>T</Var>
+					</Atom>
+				</Assert>						
+  		</action>
+  	</Reaction>		
+
+
+
+
+	<Implies>
+		<HoldsState>
+			<state>	
+				<Expr>
+					<Fun>status</Fun>
+					<Var mode="+">Server</Var>
+					<Ind>loaded</Ind>
+				</Expr>
+			</state>
+			<time>
+				<Var mode="+">T</Var>
+			</time>
+		</HoldsState>
+		
+		<Atom>
+			<Rel>isLoaded</Rel>
+			<Var mode="+">Server</Var>
+			<Var mode="+">T</Var>
+		</Atom>
+	
+	</Implies>
+
+</Assert>
+
+
+</RuleML>

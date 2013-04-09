@@ -1,0 +1,116 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+
+dc:title [ "RuleML Exclusive Disjunctions" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, exclusive disjunction" ]
+dc:description [
+  "The expansion module for exclusive disjunctions."
+]
+dc:date [ "2011-10-01" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ]
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= xor.Node.def | formula_Xor.edge.def
+Node.choice |= xor.Node.def
+edge.choice |= formula_Xor.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <Xor>
+#            * <formula>
+# This module also declares the following RuleML choice pattern:
+#            * XorFormula.choice
+#
+
+##
+Xor-node.choice |= xor.Node.def
+
+## A polyadic exclusive disjunctive expression, 
+## Within anything other than Query...
+xor.Node.def =
+  
+  ## <Xor>: polyadic exclusive disjunction where <Xor/> is false. 
+  element Xor {
+    (Xor-datt.choice & reXor.attlist), Xor.header, Xor.main
+  }
+
+## The attribute list of the exclusive disjunction element will accept a scoped closure attribute at full first-order logic.
+reXor.attlist &= mapClosure-att-fo.choice?
+
+## an extension point for alternate spellings and internationalization of the exclusive disjunction tag name in queries.  
+Xor-Query-node.choice |= Xor-Query.Node.def
+
+## Within Query...
+Xor-Query.Node.def =
+  
+  ##
+  element Xor {
+    (Xor-Query-datt.choice & reXor-Query.attlist),
+    Xor.header,
+    Xor.main
+  }
+
+## Within query, exclusive disjunctions may have an optional existential closure attribute.
+reXor-Query.attlist &=
+  closure-att.choice? & mapClosure-att-fo.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## The header section of the exclusive disjunction content model follows a common pattern for compound formulas.
+Xor.header &= CompoundFormula.header?
+
+## The main section of the exclusive disjunction content model contains zero or more formulas.
+Xor.main |= formula_Xor-edge.choice*
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the formula tag name in exclusive disjunctions.  
+formula_Xor-edge.choice |= formula_Xor.edge.def
+
+## The formula role of a exclusive disjunctive (<Xor>) expression, 
+## Within Xor ...
+formula_Xor.edge.def =
+  
+  ## <formula>: contains a single formula. See  
+  ## http://www.ruleml.org/0.91/glossary/#gloss-formula
+  element formula { formula_Xor.content }
+
+## Formulas within exclusive disjunctions consist of a single formula
+formula_Xor.content |= XorFormula.choice
+
+## formulas allowed to participate in exclusive disjunctions. 
+XorFormula.choice |=
+  SimpleFormula-node.choice
+  | And-node.choice
+  | Or-node.choice
+  | Xor-node.choice
+  | Negation-node.choice
+  | NegationAsFailure-node.choice
+  | Implication-fo-node.choice
+  | Forall-fo-node.choice
+  | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+
+## All formulas except conclusions accept exclusive disjunctions at any expressive power
+## Conclusion only accept exclusive disjunctions at disjunctive Horn logic or higher
+AndFormla.choice |= Xor-node.choice
+OrFormla.choice |= Xor-node.choice
+NegFormla.choice |= Xor-node.choice
+NafFormla.choice |= Xor-node.choice
+PremiseFormula.choice |= Xor-node.choice
+ExistsFormula.choice |= Xor-node.choice
+ForallFormula.choice |= Xor-node.choice
+RulebaseFormula.choice |= Xor-node.choice
+ConclusionFormula.choice |= Xor-dis-node.choice
+
+## exclusive disjunctions have scoped attributes that are activated at full first-order logic
+Xor-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## exclusive disjunctions have scoped attributes that are activated at full first-order logic
+Xor-Query-datt.choice |=
+  mapMaterial-att-fo.choice & mapDirection-att-fo.choice
+
+## this pattern is initialized notAllowed, and will be overriden if the xor_dis_expansion module is included
+Xor-dis-node.choice |= notAllowed

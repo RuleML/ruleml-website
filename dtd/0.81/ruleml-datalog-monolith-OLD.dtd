@@ -1,0 +1,95 @@
+<!-- An XML DTD for a Datalog RuleML Sublanguage: Monolith Version -->
+<!-- Last Modification: 2001-05-11 -->
+
+
+
+<!-- ELEMENT and ATTLIST Declarations -->
+
+
+<!-- 'rulebase' root element uses 'imp' rules and 'fact' assertions as top-level elements -->
+
+<!-- label attribute allows naming of an entire individual rulebase; -->
+<!-- e.g., this can help enable forward inferencing of selected rulebase(s)  -->
+
+<!-- direction attribute indicates the intended direction of imp inferencing;  -->
+<!-- it is a preliminary design choice and has a 'neutral' default value -->
+
+<!ELEMENT rulebase ((imp | fact)*)>
+<!ATTLIST rulebase label CDATA #IMPLIED>
+<!ATTLIST rulebase direction (forward | backward | bidirectional) "bidirectional">
+
+ 
+<!-- 'imp' rules are usable as general implications on the top-level -->
+<!-- 'imp' element uses a conclusion role _head followed by a premise role _body, or equivalently -->
+<!-- (since roles constitute unordered elements), uses a premise role _body followed by a conclusion role _head -->
+<!-- "<imp>_head _body</imp>" stands for "_head is implied by _body", i.e., "_head is true is implied by _body is true", or equivalently, -->
+<!-- "<imp>_body _head</imp>" stands for "_body implies _head", i.e., "_body is true implies _head is true" -->
+ 
+<!-- label attribute is a handle for the imp: for various uses, including editing -->
+ 
+<!ELEMENT imp ((_head, _body) | (_body, _head))>
+<!ATTLIST imp label CDATA #IMPLIED>
+
+ 
+<!-- 'fact' assertions are usable as degenerate rules on the top-level -->
+<!-- 'fact' element uses just a conclusion role _head -->
+<!-- "<fact>_head</fact>" stands for "_head is implied by true", i.e., "_head is true" -->
+ 
+<!-- label attribute is a handle for the fact: for various uses, including editing -->
+ 
+<!ELEMENT fact (_head) >
+<!ATTLIST fact label CDATA #IMPLIED>
+
+
+<!-- _head role is usable within 'imp' rules and 'fact' assertions -->
+<!-- _body role is usable within 'imp' rules -->
+<!-- _head uses an atomic formula -->
+<!-- _body uses an atomic formula or an 'and' -->
+
+<!ELEMENT _head (atom)>
+<!ELEMENT _body (atom | and)>
+
+ 
+<!-- an 'and' is usable within _body's -->
+<!-- 'and' uses zero or more atomic formulas -->
+<!-- "<and>atom</and>" is equivalent to "atom"-->
+<!-- "<and></and>" is equivalent to "true"-->
+ 
+<!ELEMENT and (atom*)>
+ 
+ 
+<!-- atomic formulas are usable within _head's, _body's, and 'and's -->
+<!-- atom element uses an: -->
+<!-- _opr ("operator of relations") role followed by a sequence of zero or more arguments, or similarly -->
+<!-- (since roles constitute unordered elements, and the zero-argument case must not cause ambiguity), -->
+<!-- a sequence of one or more arguments followed by an _opr role -->
+<!-- the arguments may be ind(ividual)s or var(iable)s -->
+ 
+<!ELEMENT atom ((_opr, (ind | var)*) | ((ind | var)+, _opr))>
+
+
+<!-- _opr is usable within atoms -->
+<!-- _opr uses rel(ation) symbol -->
+
+<!ELEMENT _opr (rel)>
+
+
+<!-- there is one kind of fixed argument -->
+ 
+<!-- individual constant, as in predicate logic -->
+ 
+<!ELEMENT ind  (#PCDATA)>
+ 
+ 
+<!-- there is one kind of variable argument -->
+ 
+<!-- logical variable, as in logic programming -->
+ 
+<!ELEMENT var  (#PCDATA)>
+ 
+ 
+<!-- there are only fixed (first-order) relations -->
+ 
+<!-- relation or predicate symbol -->
+ 
+<!ELEMENT rel  (#PCDATA)>

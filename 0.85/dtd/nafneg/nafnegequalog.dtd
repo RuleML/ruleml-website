@@ -1,0 +1,13 @@
+<!-- XML DTD for a (Flat) Equational-Logic RuleML sublanguage, including both explicit and default (strong/weak) negation -->
+<!-- File: nafnegequalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of all -->
+<!-- new elements) are found in equalog_mod.mod because they are common in this DTD and urequalog as well -->
+<!ENTITY % equalog.mod SYSTEM "equalog_mod.mod">
+%equalog.mod;
+
+<!-- this module inherits from the (negation/NAF) Horn-Logic RuleML sublanguage -->
+<!ENTITY % nafneghornlog_include SYSTEM "nafneghornlog.dtd">
+%nafneghornlog_include;

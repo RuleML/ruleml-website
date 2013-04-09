@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Datalog RuleML sublanguage
+			File: urcdatalog.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		'UR'-centeredness refers to Atoms requiring an Ind with a required href attribute
+		followed by an Ind with an optional href attribute.
+		
+		This 'local' required-vs-optional constraint was not possible with DTDs and appears
+		not to be possible with XSDs, so urcdatalog is currently equivalent to urdatalog
+		(and thus just redefines it without modification, which is equivalent to using xs:include)
+	-->	
+	<xs:redefine schemaLocation="urdatalog.xsd"/>
+	
+</xs:schema>

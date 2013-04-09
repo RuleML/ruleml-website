@@ -1,0 +1,1163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+      "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0022)http://internet.e-mail -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>RuleML Rules Lite: Concrete Syntax</title>
+  <style type="text/css">
+CODE {
+        FONT-FAMILY: monospace
+}
+DIV.constraint {
+        MARGIN-LEFT: 2em
+}
+DIV.issue {
+        MARGIN-LEFT: 2em
+}
+DIV.note {
+        MARGIN-LEFT: 2em
+}
+DIV.notice {
+        MARGIN-LEFT: 2em
+}
+DIV.exampleInner PRE {
+        MARGIN-TOP: 0em; MARGIN-BOTTOM: 0em; MARGIN-LEFT: 1em
+}
+DIV.exampleOuter {
+        BORDER-RIGHT: gray 4px double; PADDING-RIGHT: 0em; BORDER-TOP: gray 4px double; PADDING-LEFT: 0em; PADDING-BOTTOM: 0em; MARGIN: 0em; BORDER-LEFT: gray 4px double; PADDING-TOP: 0em; BORDER-BOTTOM: gray 4px double
+}
+DIV.exampleInner {
+        PADDING-RIGHT: 4px; BORDER-TOP: #d3d3d3 4px double; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN: 0em; PADDING-TOP: 4px; BORDER-BOTTOM: #d3d3d3 4px double; BACKGROUND-COLOR: #d5dee3
+}
+DIV.exampleWrapper {
+        MARGIN: 4px
+}
+DIV.exampleHeader {
+        FONT-WEIGHT: bold; MARGIN: 4px
+}
+TABLE.small {
+        FONT-SIZE: x-small
+}</style>
+  <link href="ruleslite_files/W3C-WD.css" type="text/css"
+  rel="stylesheet">
+</head>
+
+<body>
+
+<div class="head">
+<h1><a id="title" name="title"></a>RuleML Rules Lite</br>
+<a id="title" name="title"></a>Concrete Syntax</h1>
+
+<h2><a id="w3c-doctype" name="w3c-doctype"></a>September 30th, 2003</h2>
+
+</div>
+
+<div class="head">
+<dl>
+  <dt>This version:</dt>
+    <dd><a
+      href="http://www.ruleml.org/submission/ruleslite/concretesyntax.html">http://www.ruleml.org/submission/ruleslite/concretesyntax.html</a></dd>
+  <dt>Authors:</dt>
+    <dd>Harold Boley, NRC <a href="mailto:harold.boley@nrc.gc.ca">mailto:harold.boley@nrc.gc.ca</a></dd>
+    <dd>Said Tabet, <a href="mailto:stabet@ruleml.org">mailto:stabet@ruleml.org</a></dd>
+</dl>
+
+<hr>
+
+<h2><a id="abstract1" name="abstract1"></a>Acknowledgments</span></h2>
+<p></p>
+
+<p>Gerd Wagner, Benjamin Grosof, and others from the RuleML Initiative as well
+as Mike Dean and Sandro Hawke from the Joint Committee gave valuable input for
+this document. David Hirtle from UNB has helped implement and validate the examples.</p>
+
+<p></p>
+</div>
+<hr>
+
+<div>
+<h2><a id="abstract" name="abstract"></a>Abstract</h2>
+
+<p></p>
+
+<p>A new Abridged RuleML/XML Syntax
+compatible with RDF and OWL-DL is developed into the Rules Lite Concrete
+Syntax. This covers webized unary and binary Datalog facts, rules, and
+queries. Principles, Prolog-like and XML examples, as well as a DTD are
+given.</p>
+</div>
+
+<hr>
+
+<div class="toc">
+<h2><a id="contents" name="contents"></a></h2>
+
+<h1>Table of Contents</h1>
+
+<h2></h2>
+
+<p class="toc">1. <a href="#section_1">Introduction</span></a></p>
+<p class="toc">2. <a href="#section_2">Facts, Rules and Queries</a></span></p>
+<p class="toc">2. <a href="#section_3">Herbrand-like Models</a></span></p>
+<p class="toc">2. <a href="#section_4">Webizing</a></span></p>
+<p class="toc">2. <a href="#section_5">Conclusions</a></span></p>
+<p class="toc">2. <a href="#section_6">Appendix: RulesLite DTD</a></span></p>
+
+</div>
+
+<hr>
+
+<div class="body">
+
+<div class="div1">
+<h2><a id="section_1" name="section_1"></a>1. Introduction</h2>
+
+<div class="div2">
+<p>This
+is our report on the Rules Lite Concrete Syntax work for Datalog facts,
+rules, and queries, envisaged in recent JC telecons</span> (<a
+href="http://www.daml.org/listarchive/joint-committee/1431.html">http://www.daml.org/listarchive/joint-committee/1431.html</a>).</p>
+<p></p>
+<p>In this work all predicates are now going to be unary or binary (compatible with
+OWL-DL). Certain unary predicates could also be employed for typing some of
+the rule variables (the others being of type 'any'), as discussed in an
+earlier series of JC telecons</span>(<a
+href="http://www.daml.org/listarchive/joint-committee/1230.html">http://www.daml.org/listarchive/joint-committee/1230.html)</a>.</p>
+
+<p</p>
+
+<p>By allowing OWL's allValuesFrom and someValuesFrom restrictions (<a
+href="http://www.w3.org/TR/owl-guide/#allValuesFrom">http://www.w3.org/TR/owl-guide/#allValuesFrom</a>) in Rules Lite's bodies and (perhaps) heads, the concrete syntax could be further adapted to the recent OWL Rules proposal: <a
+href="http://www.daml.org/listarchive/joint-committee/1430.html">http://www.daml.org/listarchive/joint-committee/1430.html</a></p>
+
+<p></p>
+
+<p>
+For preparing Webizing, the following
+use of "#"-prefixed fragment identifiers is made for symbolic 'href'-attribute naming:
+</p>
+
+<p></p>
+</div>
+<div class="div2">
+<p></p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;ind&gt;constant&lt;/ind&gt;</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+<p></p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;ind href="#constant"/&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>The earlier:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_opr&gt;relation&lt;/_opr&gt;</span></pre>
+</div>
+</div>
+
+<p>becomes:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_opr href="#relation"&gt;</span></pre>
+</div>
+</div>
+</div>
+
+<p></p>
+
+<p>While the (always empty) 'ind'
+element is used -- in the first or second argument position -- for
+'href'-naming individual constants, a new 'data' element is used -- in the
+second argument position -- for tagging various data types as content (cf.
+RDF literals).</p>
+
+<p></p>
+
+<p>An Abridged RuleML/XML Syntax is employed
+except for Herbrand Models, which are represented using Deep Markup:</p>
+
+<p></p>
+
+<p><strong>1.</strong> The earlier:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_opr&gt;
+   &lt;rel&gt;relation&lt;/rel&gt;
+&lt;/_opr&gt;</span></pre>
+</div>
+</div>
+
+<p>is abridged to:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_opr href="#relation"/&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p><strong>2.</span></strong> The earlier:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_body&gt;
+   &lt;and&gt;
+       atom 1 ... atom k
+   &lt;/and&gt;
+&lt;/_body&gt;</span></pre>
+</div>
+</div>
+
+<p>is abridged to:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_body&gt;atom 1 ... atom k&lt;/_body&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<div class="body">
+<p><strong>3.</strong> Similarly:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;_head&gt;
+   &lt;and&gt;
+       atom 1 ... atom k
+   &lt;/and&gt;
+&lt;/_head&gt;</span></pre>
+</div>
+</div>
+
+<p>could be abridged to (for OWL Rules):</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt; font-weight: bold">&lt;_head&gt;atom 1 ... atom k&lt;/_head&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p><strong>4.</span></strong> The following prefix form will be allowed ( 0
+&lt; n &lt; 3 ):</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;atom&gt;
+   &lt;_opr href="#relation"/&gt;
+   term 1 ... atom n
+&lt;/atom&gt;</span></pre>
+</div>
+</div>
+
+<p>and the following postfix form will
+be forbidden ( 0 &lt; n &lt; 3 ):</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;atom&gt;
+   term 1 ... atom n
+   &lt;_opr href="#relation"/&gt;
+&lt;/atom&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p><strong>5.</strong> The earlier:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt"><span style="font-family: courier; font-weight: bold">&lt;fact&gt;</span><span style="font-weight: bold">
+   &lt;_head&gt;
+      &lt;atom&gt;...&lt;/atom&gt;
+   &lt;/_head&gt;
+&lt;/fact&gt;</span></span></pre>
+</div>
+</div>
+
+<p>will be further abridged
+to:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">&lt;facto&gt;
+   ...
+&lt;/facto&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>While
+this is a concrete XML syntax, it builds on a data model integrating the data
+models of XML and RDF: A role like _opr corresponds to an RDF property (used
+as an arc label in its DLG model). The concrete syntax in *4* becomes an
+'atom'-rooted tree with the operator and a sequence of the 1 or 2 argument
+terms as subtrees in the abstract syntax.</p>
+
+<p></p>
+
+<p>In the next main sections PR-Prolog
+examples will be followed by Abridged RuleML/XML syntax (except for the Deep
+RuleML/XML Markup of Models):</p>
+
+<p></p>
+
+<p><strong>PR-Prolog:</strong> Uses a Prolog-like presentation syntax as
+proposed in: <a
+href="http://www.daml.org/listarchive/joint-committee/1406.html">http://www.daml.org/listarchive/joint-committee/1406.html</a>.</p>
+
+<p>(The current PR syntax does not yet
+capture all information that is in the XML syntax such as the new ind/data
+distinction or the namespace declarations modeled on N3.)</p>
+
+<p></p>
+
+<p><strong>XML: </strong>Uses a version of the Abridged RuleML/XML
+syntax proposed in: <a
+href="http://www.daml.org/listarchive/joint-committee/1411.html">http://www.daml.org/listarchive/joint-committee/1411.html</a>.</p>
+
+<p></p>
+
+<p>The following section discusses Facts,
+Rules, and Queries (also usable as 'positive' or 'negative' integrity
+constraints) as well as Models. A general form of webizing will then be introduced
+for individuals as well as for for unary and binary predicates.</p>
+
+<p>The appendix will give the (DTD)
+syntax grammar.</p>
+
+<p></p>
+</div>
+<hr>
+
+<h2><a id="section_2" name="section_2"></a>2. Facts, Rules and Queries</span></h2>
+
+<p></p>
+
+<h2>2.1 Facts</h2>
+
+<p></p>
+
+<p>Since an N-ary relation can always be
+reduced to a conjunction of binary predicates, we will not go beyond binary
+here.</p>
+
+<p></p>
+
+<p>For instance, the fact</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">North America is flanked by the Atlantic and the Pacific</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>may initially seem to express a ternary
+relationship, but it can, e.g., be re-expressed using three binary facts
+glued together by a new individual, Oceanics, as shown below.</p>
+
+<p></p>
+
+<p>PR-Prolog:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">continent(North_America).
+country(Canada).
+country(USA).
+province(Ontario).
+oceanpair(Oceanics).
+ocean(Atlantic).
+ocean(Pacific).
+
+has_as_part(North_America,Canada).
+has_as_part(North_America,USA).
+has_as_part(Canada,Ontario).
+
+area(Canada,sqkm9976140).
+area(USA,sqkm9629091).
+
+flanked_by(North_America,Oceanics).
+flanked_by(Canada,Oceanics).
+flanked_by(USA,Oceanics).
+
+eastern(Oceanics,Atlantic).
+western(Oceanics,Pacific).</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>XML:</span></p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rulebase&gt;
+  &lt;facto&gt;
+    &lt;_opr href="#continent"/&gt;
+    &lt;ind href="#North_America"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#country"/&gt;
+    &lt;ind href="#Canada"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#country"/&gt;
+    &lt;ind href="#USA"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#province"/&gt;
+    &lt;ind href="#Ontario"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#oceanpair"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#ocean"/&gt;
+    &lt;ind href="#Atlantic"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#ocean"/&gt;
+    &lt;ind href="#Pacific"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#has_as_part"/&gt;
+    &lt;ind href="#North_America"/&gt;
+    &lt;ind href="#Canada"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#has_as_part"/&gt;
+    &lt;ind href="#North_America"/&gt;
+    &lt;ind href="#USA"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#has_as_part"/&gt;
+    &lt;ind href="#Canada"/&gt;
+    &lt;ind href="#Ontario"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#area"/&gt;
+    &lt;ind href="#Canada"/&gt;
+    &lt;data&gt;sqkm 9976140&lt;/data&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#area"/&gt;
+    &lt;ind href="#USA"/&gt;
+    &lt;data&gt;sqkm 9629091&lt;/data&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#flanked_by"/&gt;
+    &lt;ind href="#North_America"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#flanked_by"/&gt;
+    &lt;ind href="#Canada"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#flanked_by"/&gt;
+    &lt;ind href="#USA"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#eastern"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+    &lt;ind href="#Atlantic"/&gt;
+  &lt;/facto&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="#western"/&gt;
+    &lt;ind href="#Oceanics"/&gt;
+    &lt;ind href="#Pacific"/&gt;
+  &lt;/facto&gt;
+&lt;/rulebase&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<h2>2.2 Rules</h2>
+
+<p></p>
+
+<p>PR-Prolog:</p>
+
+<p></p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">stretches(?x,?y) :- has_as_part(?y,?x), co-flanked(?x,?y).
+co-flanked(?x,?y) :- flanked_by(?x,?z), flanked_by(?y,?z). </span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>The XML encoding is as
+follows:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rulebase&gt;
+   &lt;imp&gt;
+      &lt;_head&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#stretches"/&gt;
+            &lt;var&gt;x&lt;/var&gt;
+            &lt;var&gt;y&lt;/var&gt;
+         &lt;/atom&gt;
+      &lt;/_head&gt;
+      &lt;_body&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#has_as_part"/&gt;
+            &lt;var&gt;y&lt;/var&gt;
+            &lt;var&gt;x&lt;/var&gt;
+         &lt;/atom&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#co-flanked"/&gt;
+            &lt;var&gt;x&lt;/var&gt;
+            &lt;var&gt;y&lt;/var&gt;
+         &lt;/atom&gt;
+      &lt;/_body&gt;
+   &lt;/imp&gt;
+   &lt;imp&gt;
+      &lt;_head&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#co-flanked"/&gt;
+            &lt;var&gt;x&lt;/var&gt;
+            &lt;var&gt;y&lt;/var&gt;
+         &lt;/atom&gt;
+      &lt;/_head&gt;
+      &lt;_body&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#flanked_by"/&gt;
+            &lt;var&gt;x&lt;/var&gt;
+            &lt;var&gt;z&lt;/var&gt;
+         &lt;/atom&gt;
+         &lt;atom&gt;
+            &lt;_opr href="#flanked_by"/&gt;
+            &lt;var&gt;y&lt;/var&gt;
+            &lt;var&gt;z&lt;/var&gt;
+         &lt;/atom&gt;
+      &lt;/_body&gt;
+   &lt;/imp&gt;
+&lt;/rulebase&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<h2>2.3 Queries</h2>
+
+<p></p>
+
+<p>By queries, we mean conjunctive
+queries (as 'Negative' Integrity Constraints).</p>
+
+<p></p>
+
+<p>The PR-Prolog representation
+is:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-size: 10pt; font-family: courier; font-weight: bold">continent(x), ocean(x)</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>The XML encoding:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;query&gt;
+   &lt;_body&gt;
+      &lt;atom&gt;
+         &lt;_opr href="#continent"/&gt;
+         &lt;var&gt;x&lt;/var&gt;
+      &lt;/atom&gt;
+      &lt;atom&gt;
+         &lt;_opr href="#ocean"/&gt;
+         &lt;var&gt;x&lt;/var&gt;
+      &lt;/atom&gt;
+   &lt;/_body&gt;
+&lt;/query&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<h2><a id="section_3" name="section_3"></a>3. Herbrand-like Models</h2>
+
+<p></p>
+
+<p>Herbrand Models are represented using
+the unabridged Deep Markup (close to the abstract syntax).</p>
+
+<p></p>
+
+<p>The PR-Prolog representation
+is:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">continent(North_America).
+country(Canada).
+country(USA).
+province(Ontario).
+oceanpair(Oceanics).
+ocean(Atlantic).
+ocean(Pacific).
+
+has_as_part(North_America,Canada).
+has_as_part(Canada,Ontario).
+
+has_as_part(North_America,Ontario).   % from OWL
+
+area(Canada, sqkm9976140).
+area(USA, sqkm9629091).
+
+flanked_by(North_America,Oceanics).
+flanked_by(Canada, Oceanics).
+flanked_by(USA, Oceanics).
+
+flanks(Oceanics,North_America).   % from OWL
+flanks(Oceanics,Canada).          % from OWL
+flanks(Oceanics,USA).             % from OWL
+
+co-flanked(North_America,Canada).
+co-flanked(Canada,North_America).
+co-flanked(North_America,USA).
+co-flanked(USA,North_America).
+co-flanked(Canada,USA).
+co-flanked(USA,Canada).
+co-flanked(North_America,North_America).
+co-flanked(Canada,Canada).
+co-flanked(USA,USA).
+
+stretches(Canada,North_America).
+stretches(USA,North_America).
+
+eastern(Oceanics,Atlantic).
+western(Oceanics,Pacific).</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>The XML encoding is:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rulebase&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#continent"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#country"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#country"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#province"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Ontario"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#oceanpair"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#ocean"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Atlantic"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#ocean"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Pacific"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#has_as_part"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#has_as_part"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#has_as_part"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;ind href="#Ontario"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;                                          &lt;!-- from OWL --&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#has_as_part"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#Ontario"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#area"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;data&gt;sqkm 9976140&lt;/data&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#area"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+        &lt;data&gt;sqkm 9629091&lt;/data&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanked_by"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#Oceanics"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanked_by"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;ind href="#Oceanics"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanked_by"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+        &lt;ind href="#Oceanics"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;                                          &lt;!-- from OWL --&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanks"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+        &lt;ind href="#North_America"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;                                          &lt;!-- from OWL --&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanks"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;                                          &lt;!-- from OWL --&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#flanks"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;ind href="#North_America"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+        &lt;ind href="#North_America"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#North_America"/&gt;
+        &lt;ind href="#North_America"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Canada"/&gt;
+        &lt;ind href="#Canada"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#co-flanked"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#USA"/&gt;
+        &lt;ind href="#USA"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#eastern"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+        &lt;ind href="#Atlantic"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+  &lt;fact&gt;
+    &lt;_head&gt;
+      &lt;atom&gt;
+        &lt;_opr&gt;&lt;rel href="#western"/&gt;&lt;/_opr&gt;
+        &lt;ind href="#Oceanics"/&gt;
+        &lt;ind href="#Pacific"/&gt;
+      &lt;/atom&gt;
+    &lt;/_head&gt;
+  &lt;/fact&gt;
+
+&lt;/rulebase&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<h2><a id="section_4" name="section_4"></a>4. Webizing</h2>
+
+<p></p>
+
+<p>Individuals as well as unary and
+binary predicates can be webized by augmenting, within the href's, their
+symbolic "#"-names by URIs, so that two possibilities result:</p>
+
+<p></p>
+
+<p style="line-height: 13pt"><strong>1.</span></strong>Symbolic names: in XML with "#"-prefixed
+fragment identifiers (the pre-webized situation).</p>
+
+<p><strong>2.</strong>
+URIs: in XML with "#"-separated fragment identifiers (cf. RDF).</p>
+
+<p></p>
+
+<p>PR-Prolog (with N3-like URIs and
+namespace declarations):</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">w := <a href="http://www.waters.org">http://www.waters.org</a>
+
+continent(&lt;<a href="http://www.northamericaninstitute.org/">http://www.northamerica.org#North_America&gt;</a>).
+...
+oceanpair&lt;<a href="http://www.pairs.org/ocean">http://www.pairs.org#oceanpair</a>&gt;(&lt;<a href="http://www.oceanics.org/">http://w#oceanics&gt;</a>).
+...
+&lt;<a href="http://www.partonomy.org/has_as_part">http://www.mereology.org#has_as_part</a>&gt;(North_America,Canada).
+...
+&lt;<a href="http://www.direction.org/west">http://www.direction.org#western</a>&gt;(&lt;<a href="http://www.oceanics.org/">http://w#oceanics</a>&gt;,Pacific).</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p>The XML encoding is as
+follows:</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rulebase&gt;
+  <span style="color: #0000FF"><span style="color: #000000">xmlns:w="</span><span style="color: #0000FF">http://www.waters.org</span><span style="color: #000000">"</span></span><span style="color: #000000">&gt;
+
+  &lt;facto&gt;
+    &lt;_opr href="</span><span style="color: #0000FF">#continent</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">http://www.north_america.org#North_America</span>"/&gt;
+  &lt;/facto&gt;
+
+  ...
+
+  &lt;facto&gt;
+    &lt;_opr href="<span style="color: #0000FF">http://www.pairs.org/ocean#oceanpair</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">w#Oceanics</span>"/&gt;
+  &lt;/facto&gt;
+
+  ...
+
+  &lt;facto&gt;
+    &lt;_opr href="<span style="color: #0000FF">http://www.mereology.org#has_as_part</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">#North_America</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">#Canada</span>"/&gt;
+  &lt;/facto&gt;
+
+  ...
+
+  &lt;facto&gt;
+    &lt;_opr href="<span style="color: #0000FF">http://www.direction.org#western</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">w#Oceanics</span>"/&gt;
+    &lt;ind href="<span style="color: #0000FF">#Pacific</span>"/&gt;
+  &lt;/facto&gt;
+
+&lt;/rulebase&gt;</span></pre>
+</div>
+</div>
+
+<p></p>
+
+<h2><a id="section_5" name="section_5"></a>5. Conclusions</h2>
+
+<p></p>
+
+<p>After the definition of the Rules
+Lite Concrete Syntax, the next step is to modify existing parsers (and
+generators), allowing this syntax to be used for rule interchange. Possible
+implementations have been envisaged for cwm, Jena 2, OWL engines, jDREW, and
+Jess adaptations.</p>
+
+<p></p>
+
+<p>To demonstrate the extension path to
+N-ary relations ternary predicates could be added later as exemplified
+in: <a href="http://www.daml.org/listarchive/joint-committee/1444.html">http://www.daml.org/listarchive/joint-committee/1444.html</a>. as an alternative or complement, the transition to full Horn logic could be attempted, where data like sqkm9976140 could be 'analyzed' as
+complex terms like sqkm[9976140].</p>
+
+<p></p>
+
+<h2><a id="section_6" name="section_6"></a>6. Appendix: Rules Lite DTD</h2>
+
+<p></p>
+
+<p>The following DTD for rules lite
+supports both rules and facts.</p>
+
+<div class="div3">
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt"><span style="color: #00007F">&lt;</span><span style="color: #00007F"><span style="color: #00007F">!</span>ELEMENT rulebase ((imp | facto)*)&gt;
+
+&lt;!ELEMENT imp ((_head, _body) | (_body, _head))&gt;
+
+&lt;!ELEMENT facto (_opr, ind, (ind | data)?)&gt;
+
+&lt;!ELEMENT _head (atom)&gt;
+
+&lt;!ELEMENT _body (atom*)&gt;
+
+&lt;!ELEMENT atom (_opr, (ind | var), (ind | data | var)?)&gt;
+
+&lt;!ELEMENT _opr EMPTY&gt;
+
+&lt;!ELEMENT ind  EMPTY&gt;
+
+&lt;!ELEMENT data (#PCDATA)&gt;
+
+&lt;!ELEMENT var  (#PCDATA)&gt;
+
+&lt;!ATTLIST _opr href CDATA #REQUIRED&gt;
+
+&lt;!ATTLIST ind  href CDATA #REQUIRED&gt;</span>
+
+<span style="color: #7F0000">&lt;!-- The CDATA must be either URIs with "#"-separated fragment identifiers (for URI naming) --&gt;
+&lt;!-- or local, "#"-prefixed fragment identifiers (for symbolic naming).                     --&gt;</span></span></pre>
+</div>
+</div>
+
+<p></p>
+
+<p></p>
+
+<p></p>
+</body>
+</html>

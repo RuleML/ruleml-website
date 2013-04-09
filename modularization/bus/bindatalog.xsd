@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema Driver for a Binary Datalog RuleML sublanguage
+			File: bindatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- include the auxiliary schema -->
+	<xs:include schemaLocation="aux_urcbindatalog.xsd"/>
+
+	<!-- 	the atom module is redefined to be binary, and to remove href attributes -->
+	<xs:redefine schemaLocation="modules/atom_module.xsd">
+		<!-- restrict atoms to binary -->
+		<xs:group name="atom.extend">
+			<xs:sequence>
+				<xs:choice minOccurs="2" maxOccurs="2">
+					<xs:element ref="ind"/>
+					<xs:element ref="var"/>
+				</xs:choice>
+			</xs:sequence>	
+		</xs:group>	
+
+		<!-- remove href attributes -->
+		<xs:attributeGroup name="rel.attlist"/>	
+	</xs:redefine>
+	
+</xs:schema>

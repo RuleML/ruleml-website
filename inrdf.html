@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><title>RuleML DTDs</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head><body background="hintergrund.gif" bgcolor="#FFFFFF">
+    <center>
+      <big>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+--&gt;</pre></b></td></tr></table>
+        <table bgcolor="#FFCCCC" border="1" cellpadding="5"><tr><td>R u l e M L</td></tr></table>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+&lt;--</pre></b></td></tr></table>
+      </big>
+      <br> <br>
+
+<h1>RuleML in RDF</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a></h2>
+<h2>2001-03-09: Version 0.2</h2>
+    </center>
+
+<br> <br> <br>
+
+<p>
+This is an experimental RDF translator for a subset or RuleML.
+</p>
+  <h2>Sections</h2><ul><li><a href="#Overview">Overview</a><li><a href="#Explanations">Explanations</a></ul><h2><a name="Overview">Overview</a></h2>
+
+<p>
+RDF-like 'resources' can be represented in RuleML as 'ur' elements and
+triples can be represented as special, 'ur'-centered facts (see e.g. <a href="http://www.ruleml.org/ruleml-krdtd/sld009.htm">KR Principles and DTD Modularization</a>). Vice versa,
+RuleML rules can be represented in RDF, e.g. through the generation results
+of the experimental translator described here (you may also start from <a href="http://www.ruleml.org/RuleML-RDF/sld013.htm">RDF Relationships and DTD Modularization</a>).
+</p>
+<p>
+In order to be flexible w.r.t future changes of the RuleML DTD,
+the current RDF version of RuleML is defined by an XSLT stylesheet
+translating RuleML rules to RDF.
+The translation, based on Cocoon 1.8, can already be fed into RDF tools
+such as the RDFViz data grapher.
+</p>
+<p>
+The RDF representation directly reflects the tree structure of RuleML
+rulebases as defined by the RuleML DTD. For this, the abbreviated RDF
+syntax (similar to nested property lists) is used which nests subtrees
+and uses types as rdf:Descriptions:
+A particular rulebase becomes an RDF resource of type ruleml:Rulebase
+with an rdf:Container property leading to its rdf:Bag of rules labeled
+rdf:_1, rdf:_2, ...
+A ruleml:If rule has ruleml:Conc and ruleml:Prem properties leading to
+ruleml:Atom or ruleml:And resources. Etc., down to RuleML's PCDATA for
+relation symbols, individual constants, and variables, etc., which become
+corresponding resources with ruleml:Name literals in RDF.
+</p>
+<p>
+The RDF graphs generated in this way become quite large, due to the
+various intermediate layers of nodes. E.g., the own example becomes
+228 lines of pretty-printed RDF/XML, 166 RDF triples, and an 8-page RDFViz graph.
+Perhaps (some of) the node layers may be
+collapsed to obtain more compact RDF graphs. (Also, should the container
+Bag be abolished in a future RDF version, it would be possible to
+represent the bag content by unordered 'parallel' labeled arcs;
+for the Seq container we would still need some 'order' labels
+rdf:_1, rdf:_2, ...).
+The XSLT stylesheet would then need to be adapted to the new output form.
+</p>
+<h2><a name="Explanations">Explanations</a></h2>
+
+<p>
+The XSLT stylesheet <a href="http://www.ruleml.org/rdf/ruledf.xsl">ruledf.xsl</a> (<a href="http://www.ruleml.org/rdf/ruledf.xsl.txt">ruledf.xsl.txt</a>) implements the translator.
+Its output can
+be given to <a href="http://www.ilrt.bris.ac.uk/discovery/rdf-dev/rudolf/rdfviz/">RDFViz</a> for visualization.
+</p>
+<p>
+The RuleML <a href="http://www.ruleml.org/exa/own.ruleml.txt">own example</a> can be augmented by an XSLT prelude/prolog line,
+obtaining <a href="http://www.ruleml.org/rdf/own.ruleml">own.ruleml</a> (<a href="http://www.ruleml.org/rdf/own.ruleml.txt">own.ruleml.txt</a>). Running this through Cocoon leads to <a href="http://www.ruleml.org/rdf/own.rdf">own.rdf</a>.
+The RDFViz visualization of the RDF version of the RuleML example
+then leads to a large GIF image (<a href="http://www.ruleml.org/rdf/own-rdfviz.gif">own-rdfviz.gif</a>). For printing it on a
+matrix of pages, it can first be inserted as graphics into a standard
+spreadsheet program.
+</p>
+<p>
+Known omissions:
+<ul>
+  <li>The generated URLs ending in .../if-gensym, .../if-gensym, .../conc-gensym, etc.
+should really have a form like .../if-gen0001, .../if-gen0002, .../conc-gen0001, etc.
+This could be implemented in XSLT using generate-id.
+  
+  <li>The RuleML tags ur and eq are still missing.
+  
+</ul>
+</p>
+<br>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2001-03-09
+
+<br><br><br>
+
+      <a name="Practice-Preach"></a><small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/indtd.xml">inrdf.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/inrdf.xml.txt">indtd.xml.txt</a>);
+      <br>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a href="http://xml.apache.org/cocoon/index.html" target="_self"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"></a></xhtml>
+  </body></html>
+<!-- This page was served in 2523 milliseconds by Cocoon 1.8 -->

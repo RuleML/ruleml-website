@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a 'UR'-Centered Binary Ground-Datalog-Fact RuleML sublanguage
+			File: urcbindatagroundfact.xsd
+			Version: 0.87
+			Last Modification: 2004-08-06
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="urcbindatagroundlog.xsd">
+		<!--
+			remove Imps so that clause's content model is just:
+			( Fact | Query )
+		-->
+		<xs:group name="clause.content">
+			<xs:sequence>
+				<xs:element ref="Fact"/>
+				<xs:element ref="Query"/>
+			</xs:sequence>
+		</xs:group>
+
+
+		<!--
+			remove Imps so that Rulebase's content model is:
+			(
+			  ( (rbaselab, (clause | Fact | Query)* ) |
+			  ( (clause | Fact | Query)+, rbaselab?) )?
+			)
+		-->
+		<xs:group name="Rulebase.content">
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="rbaselab"/>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="clause"/>
+						<xs:element ref="Fact"/>
+						<xs:element ref="Query"/>
+					</xs:choice>
+				</xs:sequence>
+				<xs:sequence minOccurs="0">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="clause"/>
+						<xs:element ref="Fact"/>
+						<xs:element ref="Query"/>
+					</xs:choice>
+					<xs:element ref="rbaselab" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:group>		
+
+	</xs:redefine>
+	
+</xs:schema>

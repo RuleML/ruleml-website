@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ruleml="http://www.dfki.uni-kl.de/ruleml/rdf-voc#">
+  <ruleml:Rulebase about="http://www.xyz.org/and-gensym">
+    <ruleml:Container>
+      <rdf:Bag>
+        <rdf:li>
+          <ruleml:If about="http://www.xyz.org/if-gensym">
+            <ruleml:Conc>
+              <ruleml:Atom about="http://www.xyz.org/atom-gensym">
+                <ruleml:Relator>
+                  <ruleml:Rel about="http://www.xyz.org/rel-gensym">
+                    <ruleml:Name>buy</ruleml:Name>
+                  </ruleml:Rel>
+                </ruleml:Relator>
+                <ruleml:Container>
+                  <rdf:Seq>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>person</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>merchant</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>object</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                  </rdf:Seq>
+                </ruleml:Container>
+              </ruleml:Atom>
+            </ruleml:Conc>
+            <ruleml:Prem>
+              <ruleml:Atom about="http://www.xyz.org/atom-gensym">
+                <ruleml:Relator>
+                  <ruleml:Rel about="http://www.xyz.org/rel-gensym">
+                    <ruleml:Name>sell</ruleml:Name>
+                  </ruleml:Rel>
+                </ruleml:Relator>
+                <ruleml:Container>
+                  <rdf:Seq>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>merchant</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>person</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                    <rdf:li>
+                      <ruleml:Var about="http://www.xyz.org/var-gensym">
+                        <ruleml:Name>object</ruleml:Name>
+                      </ruleml:Var>
+                    </rdf:li>
+                  </rdf:Seq>
+                </ruleml:Container>
+              </ruleml:Atom>
+            </ruleml:Prem>
+          </ruleml:If>
+        </rdf:li>
+      </rdf:Bag>
+    </ruleml:Container>
+  </ruleml:Rulebase>
+</rdf:RDF>
+
+<!-- This page was served in 3472 milliseconds by Cocoon 1.8 -->

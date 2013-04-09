@@ -1,0 +1,1925 @@
+<?cocoon-format type="text/html"?><html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <title>RuleML Homepage</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head>
+   <body bgcolor="#FFFFFF">
+          
+      <center>
+               <a href="http://www.ruleml.org"><img src="http://www.ruleml.org/images/RuleMLlogo2005.jpg" border="none" alt="RuleML"></a>
+         
+         
+         
+               <br>
+         
+         <h1>The Rule Markup Initiative</h1>
+             
+      </center>
+      
+      <br>
+      
+      
+      <p>
+         The RuleML Initiative is an international non-profit organization covering all aspects of Web rules and their interoperation,
+         with a <a href="#Structure">Structure</a> and Technical Groups that center on
+         RuleML specification, tool, and application development. Around RuleML, an open network of individuals and groups from both
+         industry and academia has emerged,
+         having a shared interest in modern rule topics, including the interoperation of Semantic Web rules.
+         The RuleML Initiative has been collaborating with OASIS on <a href="http://www.legalxml.org/">Legal XML</a>, <a href="http://policy.ruleml.org/">Policy RuleML</a>, <a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=legalruleml">LegalRuleML</a>, and related efforts since 2004.
+         The Initiative has further been interacting with the developers of ISO Common Logic (<a href="http://cl.tamu.edu/">CL</a>), which became an International Standard, First edition, in October 2007.
+         RuleML is also a member of OMG, contributing to its Semantics of Business Vocabulary and Business Rules (<a href="http://www.omg.org/spec/SBVR/">SBVR</a>),
+         which went into Version 1.0 in January 2008, and to its Production Rule Representation (<a href="http://www.omg.org/spec/PRR/">PRR</a>), which went into Version 1.0 in December 2009.
+         Moreover, participants of the RuleML Initiative have supported the development of the W3C Rule Interchange Format (<a href="http://www.w3.org/2005/rules/wiki/RIF_Working_Group">RIF</a>),
+         which attained Recommendation status in June 2010.
+         The annual <a href="http://en.wikipedia.org/wiki/RuleML_Symposium">RuleML Symposium</a>
+         has taken the lead in bringing together delegates from industry and academia who share this interest focus in Web rules.
+         
+      </p>
+      
+      <p>
+         RuleML (Rule Markup Language, which has also become a Rule Modeling Language and a <a href="http://ruleml.org/metalogic/">Rule MetaLogic</a>)
+         is a unifying family of XML-serialized rule languages spanning across all industrially relevant kinds of Web rules.
+         As a research-based language family, RuleML acts as the connector between <a href="http://www.w3.org/2005/rules/wiki/RIF_Working_Group">RIF</a>
+         -- via the emerging <a href="http://www.w3.org/2005/rules/wiki/RIF_FAQ#What_is_the_relationship_between_RuleML_and_RIF.3F">RIF RuleML</a> subfamily --
+         and <a href="http://common-logic.org/">Common Logic</a> -- via the planned <a href="http://philebus.tamu.edu/pipermail/cl/2010-October/002179.html">CL RuleML</a> subfamily.
+         As an industry-focused de facto standard, RuleML has become the overarching specification of Web rules crosss-fertilizing
+         with corresponding OMG specifications
+         (mainly <a href="http://www.omg.org/spec/SBVR/">SBVR</a> and <a href="http://www.omg.org/spec/PRR/">PRR</a>)
+         and constituting the foundation of an OASIS specification (<a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=legalruleml">LegalRuleML</a>).
+         Through its participation in <a href="http://www.w3.org/Submission/SWRL/">SWRL</a> and <a href="http://www.w3.org/Submission/SWSF-SWSL/">SWSL</a>, RuleML has already accommodated and extended other rule languages, building interoperation bridges between them.
+         The current <a href="#Specification">Specification</a> of RuleML is <a href="/1.0/">Version 1.0</a>.
+         
+      </p>
+      
+        
+      <table border="0" width="100%" cellspacing="7" cellpadding="0" align="center">
+         <tr>
+            <td valign="TOP" width="30%" bgcolor="#FFFFFF"></td>
+            <td valign="TOP" width="40%" bgcolor="#FFFFFF"></td>
+            <td valign="TOP" width="30%" bgcolor="#FFFFFF"></td>
+         </tr>
+         <tr>
+            <td valign="TOP" width="30%" bgcolor="#FFCCCC">
+               <h2>Contents</h2>
+               <ul>
+                  <li><a href="#Initiative">The Initiative</a></li>
+                  <li><a href="#Uses">Uses</a></li>
+                  <li><a href="#Scope">Scope</a></li>
+                  <li><a href="#Participants-Logos">Participants' Logos</a></li>
+                  <li><a href="#Participants-Systems">Participants' Systems (Updated: 2008-07-22)</a></li>
+                  <li><a href="#Steps">Initial Steps</a></li>
+                  <li><a href="#Design">Design</a></li>
+                  <li><a href="#Specification">Specification</a></li>
+                  <li><a href="#Queries">Queries</a></li>
+                  <li><a href="#ASP">ASP RuleML</a></li>
+                  <li><a href="#OO">Object-Oriented RuleML</a></li>
+                  <li><a href="#PSOA">Positional-Slotted, Object-Applicative RuleML (Updated: 2012-08-04)</a></li>
+                  <li><a href="#RIF">RIF</a></li>
+                  <li><a href="#RDF">RDF</a></li>
+                  <li><a href="#Lite">RuleML Lite</a></li>
+                  <li><a href="#FOL">FOL RuleML</a></li>
+                  <li><a href="#Induction">Induction</a></li>
+                  <li><a href="#Translators">Translators</a></li>
+                  <li><a href="#Engines">Engines</a></li>
+                  <li><a href="#POSL">Positional-Slotted Language (Updated: 2012-11-17)</a></li>
+                  <li><a href="#Grailog">Graph inscribed logic (Updated: 2012-09-26)</a></li>
+                  <li><a href="#Interfaces">User Interfaces (Updated: 2011-03-21)</a></li>
+                  <li><a href="#Library">Rulebase Library (Updated: 2011-11-20)</a></li>
+                  <li><a href="#Papers-Publications">Papers-Publications (Updated: 2010-02-07)</a></li>
+                  <li><a href="#Structure">Structure (Updated: 2012-08-04)</a></li>
+                  <li><a href="#Contacts">Contacts</a></li>
+               </ul>
+            </td>
+            <td valign="TOP" width="40%" align="left">
+               <h2>News-Events</h2>
+               <ul>
+                  
+                  <li><b>Call for Papers for the 7th International Web Rule Symposium</b> (<a href="http://2013.ruleml.org">RuleML-2013</a>).
+                         The symposium will  be
+                         held on July 11-13, 2013 just prior to the <a href="http://www.aaai.org/Conferences/AAAI/aaai13.php">AAAI-13</a> conference in Bellevue, Seattle
+                         Metropolitan Area, WA, USA.
+                         
+                     <ul>
+                              
+                        <li>Abstract submission: February 19, 2013.</li> 
+                              
+                        <li>Paper submission: February 20, 2013.</li>
+                            
+                     </ul>
+                         The RuleML-2013 Conference is also hosting
+                         
+                     <ul>
+                              
+                        <li>The 7th Int'l Rule Challenge.</li>
+                              
+                        <li>The 3rd Doctoral Consortium on Rules.</li>
+                              
+                        <li>An OASIS Legal RuleML TC Meeting and Tutorial.</li>
+                            
+                     </ul>
+                       
+                  </li>
+                    
+                  <li>
+                         2012-07-22: <b>Defeasible RuleML Version 1.0 Release</b>: The specification of <a href="http://ruleml.org/1.0/defeasible/defeasible.html">Defeasible RuleML Version 1.0</a> has been released for review.
+                       
+                  </li>
+                    
+                  <li>
+                         We are pleased to announce that <a href="http://www.doc.ic.ac.uk/~rak/">Robert Kowalski</a>, <a href="http://www.lirmm.fr/~mugnier/">Marie-Laure Mugnier</a>, and <a href="http://fr.linkedin.com/pub/francois-briant/1/43/395">Francois Briant</a> will be <a href="http://dbis.informatik.tu-cottbus.de/ruleml2012/keynotes.html">keynote speakers</a> at 
+                         <a href="http://2012.ruleml.org">RuleML-2012</a>. The submission date for papers has been extended to April 15, 2012.
+                       
+                  </li>
+                    
+                  <li>2012-03-12: <a href="http://rohaninezhad.wikispaces.com/">Mehdi Rohaninezhad</a> from the National University of Malaysia (<a href="http://www.ukm.my/v3/">UKM</a>), Faculty of Information Science And Technology (<a href="http://www.ftsm.ukm.my/">FTSM</a>),
+                     <a href="http://www.ftsm.ukm.my/samn/">Knowledge Technology Research Group</a>, created <a href="http://ruleml.org/talks/PeopleFriendAdvisor-talk.pdf">People Friend Advisor</a> (<a href="http://ruleml.org/talks/PeopleFriendAdvisor-talk.pptx">pptx</a>) using RuleML/POSL and OO jDREW.
+                     
+                  </li>
+                  
+                  <li>2012-01-28: <b>Deliberation RuleML Version 1.0 Release</b>: The specification of <a href="http://ruleml.org/1.0/">Deliberation RuleML Version 1.0</a> has been released for review.
+                     Please check out this major 'Rosetta' release with 'parallel' schema definitions in XSD and Relax NG.
+                     Free-form reviews should be sent to <a href="http://mail.ruleml.org/mailman/listinfo/ruleml-all">ruleml-all</a> by February 29, 2012.
+                     For your review, you can give your overall impression, visit the Schema Specification page,
+                     and then select from the following, or put everything into the context of your own work.
+                     Perhaps start with a look at the <a href="http://ruleml.org/papers/Primer">RuleML Primer</a>, and
+                     amongst the <a href="http://ruleml.org/1.0/#quicklinks">Quick links</a> of the Schema Specification:
+                       
+                     <ul>
+                            
+                        <li>
+                               Learn about the Relax NG schemas (<a href="http://ruleml.org/1.0/relaxng/">http://ruleml.org/1.0/relaxng</a>) and MYNG-based schema customization (<a href="http://ruleml.org/1.0/myng/">http://ruleml.org/1.0/myng</a>)
+                               
+                        </li>
+                            
+                        <li>
+                               Find out about the re-organized and new examples, and give validation a try according to either or both of the schema
+                           languages (<a href="http://ruleml.org/1.0/exa/">http://ruleml.org/1.0/exa</a>)
+                               
+                        </li>
+                            
+                        <li>
+                               See the listed tools and post to <a href="http://mail.ruleml.org/mailman/listinfo/ruleml-all">ruleml-all</a> if your own tools are not yet included (<a href="http://wiki.ruleml.org/index.php/RuleML_Implementations">http://wiki.ruleml.org/index.php/RuleML_Implementations</a>)
+                               
+                        </li>
+                            
+                        <li>
+                               Test the <a href="https://github.com/OOjDREW/OOjDREW/downloads">GitHub</a>-downloadable OO jDREW Version 1.0 to run examples up to Naf Hornlog RuleML expressiveness (<a href="http://www.jdrew.org/oojdrew/">http://www.jdrew.org/oojdrew</a>)
+                               
+                        </li>
+                          
+                     </ul>
+                     
+                  </li>
+                    
+                  <li><b>Call for Papers for the 6th International Symposium on Rules: Research Based, Industry Focused</b> (<a href="http://2012.ruleml.org">RuleML-2012</a>).
+                     This year, the RuleML Symposium will be held in conjunction with <a href="http://www2.lirmm.fr/ecai2012/">ECAI 2012</a>, the 20th biennial European Conference on Artificial Intelligence, in Montpellier, France, August 27-29, 2012.
+                     Abstract submission: March 25, 2012. Paper submission: April 1, 2012.
+                     RuleML-2012 will be the host of the 7th AIS SigPrag International Conference on Pragmatic Web (<a href="http://www.csw.inf.fu-berlin.de/pragweb/index.php">ICPW 2012</a>).
+                     The RuleML-2012 Symposium is also holding the <a href="http://2012.ruleml.org/phdconsortium">RuleML-2012 Doctoral Consortium</a> and
+                     the <a href="http://2012.ruleml.org/rulechallenge">6th International Rule Challenge</a>.
+                     
+                  </li>
+                  
+                  <li>2012-01-19: The first meeting of the OASIS <a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=legalruleml">LegalRuleML</a> Technical Committee was held.
+                     
+                  </li>
+                  
+                  <li>2011-12-15: Reuben Peter-Paul and Gen Zou, supported by Sadnan Al-Manir, are implementing the <a href="#PSOA">PSOA RuleML</a> specification
+                     -- as part of the <a href="http://reubenpeterpaul.github.com/PSOA-to-TPTP/">PSOA2TPTP</a> project co-led by Alexandre Riazanov and Harold Boley --
+                     via a translator to the <a href="http://www.cs.miami.edu/~tptp/TPTP/QuickGuide/">TPTP</a> format so it can be run in <a href="http://riazanov.webs.com/software.htm">VampirePrime</a>.
+                     
+                  </li>
+                  
+                  <li>2011-12-08: Markus Zucker and Christian Fabbricatore have moved the reference implementation of (Naf Hornlog) RuleML, the
+                     Object-Oriented Java Deductive Reasoning Engine for the Web (<a href="http://ruleml.org/oojdrew/">OO jDREW</a>),
+                     to <a href="https://github.com/OOjDREW">OO jDREW GitHub Social Coding</a>,
+                     where it is being further developed.
+                     
+                  </li>
+                  
+                  <li>2011-11-18: Tara Athan's GIS Dissertation
+                     <a href="http://ruleml.org/papers/AthanDissertation/AthanGISDissertation2011.pdf">XCLX: An XML-based Common Logic eXtension with Embedded Geography Markup Language</a> has been accepted.
+                     
+                  </li>
+                  
+                  <li>2011-10-29: Harold Boley wrote <a href="http://ruleml.org/metalogic/">Specifying the Rule Metalogic on the Web</a>.
+                     
+                  </li>
+                  
+                  <li>2011-10-05: Harold Boley presented <a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog.pdf">RuleML/Grailog: The Rule Metalogic Visualized with Generalized Graphs</a>
+                     at <a href="http://web-and-philosophy.org/philoweb2011_pt-ai_salonica/">PhiloWeb 2011</a>.
+                     
+                  </li>
+                  
+                  <li><b>RuleML Challenge-2011 Demo Award:</b> Late-Breaking Demos can be submitted until October 7th, 2011
+                     (<a href="http://2011.ruleml.org/america/?page_id=113">RuleML2011@BRF Challenge</a>).
+                     
+                  </li>
+                  
+                  <li>
+                         2011-03-17:
+                         <a href="http://www.athant.com">Athan Services</a>
+                          and RuleML have started a project
+                         on re-engineering and improving the RuleML XSDs in
+                         <a href="http://relaxng.org/">Relax NG</a>.
+                         The first result of this project is a version of RuleML 0.91 in Relax NG,
+                         which implements bindatalog in the normal form.
+                         The modular design of the Relax NG schema will allow greater flexibility
+                         in customizing language features, increased ease of development,
+                         testing, and documentation.
+                         The design also prepares the way for the second phase
+                         of the project, the alignment of a subset of RuleML with
+                         <a href="http://common-logic.org/">Common Logic</a>.  
+                         Items currently available for alpha-testing from the RuleML website
+                         include the
+                         <a href="http://ruleml.org/0.91/relaxng">Relax NG schema</a>,
+                         <a href="http://code.google.com/p/jing-trang/">Trang</a>-generated <a href="http://ruleml.org/0.91/trang">XSD schema</a>, and
+                         <a href="http://www.oxygenxml.com/">oXygen</a>-generated
+                         <a href="http://ruleml.org/0.91/docng/bindatalog_normal/">documentation</a>.
+                         The principles of this approach are discussed on the <a href="http://wiki.ruleml.org/index.php/MYNG">MYNG - RuleML Wiki</a> Page.
+                       
+                  </li>
+                    
+                  <li><b>Call for Papers for the 5th International Symposium on Rules: Research Based, Industry Focused</b> (<a href="http://2011.ruleml.org">RuleML-2011</a>).
+                     In 2011, two instalments of the RuleML Symposium will take place.
+                     The first one will be held in conjunction with the
+                     International Joint Conference on Artificial Intelligence (<a href="http://ijcai-11.iiia.csic.es/">IJCAI 2011</a>)
+                     in Barcelona, Spain, July 16th-22th, 2011.
+                     The second one will be co-located with the Business Rules
+                     Forum 2011 (<a href="http://www.businessrulesforum.com/">BRF 2011</a>) to be held in Fort Lauderdale, Florida, USA, November 3rd-5th, 2011. The
+                     <a href="http://2011.ruleml.org/america/">RuleML-2011@BRF</a> instalment will include the <a href="http://2011.ruleml.org/america/?page_id=126">RuleML Challenge Award</a>, which this year will be dedicated to Rules and Ontologies.
+                     For RuleML-2011@IJCAI a selection of best papers will be presented during a
+                     joint session with IJCAI, and the authors of these papers will be invited to
+                     submit a revised paper for inclusion into the IJCAI proceedings.
+                     
+                  </li>
+                  
+                  <li>
+                     2011-01-18: <a href="http://responder.ruleml.org/">Rule Responder</a> and <a href="http://lpis.csd.auth.gr/systems/emerald/">EMERALD</a> are multi-agent systems assisting user communities based on Semantic Web and multi-agent standards.
+                     The <a href="http://ruleml.org/press/EmeraldRuleMLResponderPressRelease-2010-04-23.pdf">Collaboration between RuleML and Aristotle University</a> made these multi-agent systems
+                     interoperable in order to automate collaboration across communities using a declarative, knowledge-based approach.
+                     Bidirectional RuleML gateways between EMERALD and Rule Responder were built, which could also be adapted for other interoperation
+                     needs.
+                     Multi-step interaction scenarios among agents based on the <a href="http://ruleml.org/SymposiumPlanner/">SymposiumPlanner</a> use case have been deployed through the <a href="http://ruleml.org/RuleML-2010/RuleResponder/RuleResponder.htm">RuleML-2010 Symposium Q&amp;A web page</a>.
+                     Details are found on the <a href="http://lpis.csd.auth.gr/systems/EMERALDRR/">EMERALD Rule Responder website</a>.
+                       
+                  </li>
+                    
+                  <li>2010-12-28: The well-known Wine Ontology is made available as a sizeable RuleML Use Case in Web rule conversion, upgrading,
+                     and normalization (<a href="http://ruleml.org/usecases/wineonto/">WineOnto</a>)
+                       
+                  </li>
+                    
+                  <li>2010-10-21: <a href="http://2010.ruleml.org">RuleML-2010</a> presentations for the Washington DC Semantic Web Meetup Group (<a href="http://www.meetup.com/semweb-31/calendar/14349685/">Lotico Washington Semantic Web</a>)
+                       start with brief Introduction slides (<a href="http://files.meetup.com/987383/RuleML-SemWeb-Meetup-2010.pptx">RuleML - Where Web Rule Research Meets Industry</a>)
+                       
+                  </li>
+                    
+                  <li><b>The 4th International Web Rule Symposium: Research Based and Industry Focused</b>
+                       (<a href="http://2010.ruleml.org">RuleML-2010</a>) will take place
+                       in Washington, DC, USA, October 21-23, 2010, co-located with the Business Rules Forum Conference 2010
+                       (<a href="http://www.businessrulesforum.com">BR Forum</a>).
+                       RuleML-2010 is the premier industry-focused event to discuss and exchange new ideas,
+                       practical developments and experiences on all topics related to the engineering,
+                       management, integration, interoperation and interchange of rules in open
+                       distributed environments such as the Web or Enterprise Systems. RuleML-2010 will enable delegates
+                       to better understand Web/Enterprise rules and rule-based event processing technologies
+                       and their potential, and how to exploit these technologies in their own organizations.
+                       The proceedings will <a href="http://www.springer.com/computer/information+systems+and+applications/book/978-3-642-04984-2">again</a>
+                       be published as Springer LNCS.
+                       <a href="http://logic.stanford.edu/people/genesereth/">Michael Genesereth</a> and
+                       <a href="http://www.drrw.net/">David Webber</a>
+                       will give keynotes.
+                       Go to <a href="http://2010.ruleml.org/call-for-papers.html">RuleML-2010 Call for Papers</a>
+                       and then to <a href="http://www.csw.inf.fu-berlin.de/ruleml2010/ruleml-2010-challenge.html">RuleML-2010 Challenge</a>:
+                       
+                     <ul>
+                            
+                        <li>
+                               Extended Abstract submission deadline: June 6, 2010
+                               
+                        </li>
+                            
+                        <li>
+                               Extended Paper Submission deadline: June 11, 2010
+                               
+                        </li>
+                            
+                        <li>
+                               Challenge Paper Submission deadline (EXTENDED): Aug. 27, 2010
+                               
+                        </li>
+                          
+                     </ul>
+                       
+                  </li>
+                    
+                  <li>Recent <a href="http://responder.ruleml.org/">Rule Responder</a> instantiations include
+                         
+                     <ul>
+                            
+                        <li>
+                               <a href="http://ruleml.org/SymposiumPlanner">SymposiumPlanner</a>-2009/2010,
+                               
+                        </li>
+                            
+                        <li>
+                               <a href="http://ruleml.org/WellnessRules">WellnessRules</a>/<a href="http://ruleml.org/WellnessRules2">WellnessRules2</a>, and
+                               
+                        </li>
+                            
+                        <li>
+                               <a href="http://ruleml.org/PatientSupporter">PatientSupporter</a>,
+                               
+                        </li>
+                          
+                     </ul>
+                       using RuleML for (Prolog-N3) interchange.
+                       
+                  </li>
+                    
+                  <li>2010-06-22: With <a href="http://www.w3.org/2005/rules/wiki/RIF_FAQ#What_is_the_relationship_between_RuleML_and_RIF.3F">input from RuleML</a>,
+                       the <a href="http://www.w3.org/2005/rules/wiki/RIF_Working_Group">W3C RIF Working Group</a> published
+                       <a href="http://www.w3.org/News/2010#entry-8839">six recommendations and five related documents</a>.
+                       See also <a href="#RIF">RIF RuleML</a> developments.
+                       
+                  </li>
+                    
+                  <li><b>Press Release</b>, Fredericton, Canada, Thessaloniki, Greece, April 23, 2010:
+                       <a href="http://ruleml.org/press/EmeraldRuleMLResponderPressRelease-2010-04-23.pdf">RuleML and Aristotle University Collaborate on Rule-Based Multi-Agent System Emerald RuleML Responder</a> 
+                       
+                  </li>
+                    
+                  <li>Call for Presentations/Participation: <b>Special Rules Track at <a href="http://semtech2010.semanticuniverse.com/">SemTech 2010</a>, co-organized by RuleML</b>.
+                       For schedule and registration see: <a href="http://semtech2010.semanticuniverse.com/rules">Semantic Rules</a>
+                       
+                  </li>
+                  
+                    
+                  <li>The <a href="http://www.ruleml.org/inews.html">RuleML News-Events Archive</a> shows all previous news.
+                       
+                  </li>
+                    
+               </ul>
+            </td>
+            <td valign="TOP" width="30%" bgcolor="#CCCCFF">
+               <h2>Resources</h2> 
+               
+               
+               <p>
+                  <b>Mission Statement:</b>
+                  
+                  <p>
+                     The goal of the Rule Markup Initiative is to develop RuleML as the
+                     canonical Web language for rules using XML markup, formal semantics,
+                     and efficient implementations.
+                     
+                  </p>
+                  
+                  <p>
+                     RuleML covers the entire rule spectrum,
+                     from derivation rules to transformation rules to
+                     reaction rules. RuleML can thus specify queries and inferences in Web
+                     ontologies, mappings between Web ontologies, and dynamic Web behaviors
+                     of workflows, services, and agents.
+                     
+                  </p>
+                  <br>
+                  <b>Mission Approach:</b>
+                  
+                  <p>
+                     Rather than focusing on academic research prototypes, RuleML is about rule
+                     interoperation between industry standards (such as JSR 94, SQL'99, OCL,
+                     BPMI, WSFL, XLang, XQuery, RQL, OWL, DAML-S, and ISO Prolog) as well as
+                     established systems (CLIPS, Jess, ILOG JRules, Blaze Advisor, Versata,
+                     MQWorkFlow, BizTalk, Savvion, etc.).
+                     
+                  </p>
+                  
+                  <p>
+                     The Initiative develops a modular RuleML specification and transformations 
+                     from and to other rule standards/systems. Moreover, it coordinates the
+                     development of tools to elicit, maintain, and execute RuleML rules.
+                     It also collects use cases, e.g. on business rules and reactive services.
+                     
+                  </p>
+                  <br>
+                  <b>Primer:</b>
+                  
+                  <p>
+                     The <a href="http://www.ruleml.org/papers/Primer">RuleML Primer</a>
+                     has its current focus on the Datalog sublanguage, developing the discount example from its parts.
+                     
+                  </p>
+                  <br>
+                  
+                  <b>Lists/Groups:</b>
+                  
+                  <ul>
+                     
+                     <li>
+                          <a href="http://mail.ruleml.org/pipermail/ruleml-all/2003-November/000000.html">Subscribe</a> to our main mailing list:
+                          <a href="http://mail.ruleml.org/pipermail/ruleml-all/">ruleml-all</a>.
+                        
+                     </li>
+                     
+                     <li>
+                          Get up to date with the Fuzzy RuleML TG mailing list:
+                          <a href="http://mail.ruleml.org/pipermail/fuzzy-tg/">fuzzy-tg</a>.
+                        
+                     </li>
+                     
+                     <li>
+                          Peek into the Reaction Rules TG mailing list:
+                          <a href="http://mail.ruleml.org/pipermail/reaction-tg/">reaction-tg</a>.
+                        
+                     </li>
+                     
+                     <li>
+                          <a href="http://mail.jdrew.org/pipermail/jdrew-all/2005-June/000000.html">Consider</a> to join the engine mailing list:
+                          <a href="http://mail.jdrew.org/pipermail/jdrew-all/">jdrew-all</a>.
+                        
+                     </li>
+                     
+                     <li>
+                          Discuss Web rule-based agents on the Rule Responder TG mailing list:
+                          <a href="http://tech.groups.yahoo.com/group/Rule_Responder/">responder-tg</a>.
+                        
+                     </li>
+                     
+                     <li>
+                          Join the LinkedIn RuleML group or some of its subgoups:
+                          <a href="http://www.google.ca/search?q=LinkedIn+RuleML+group">LinkedIn RuleML group</a>.
+                        
+                     </li>
+                     
+                  </ul>
+                  
+               </p>
+               
+               <br>
+               <b>Challenge Demos:</b>
+               
+               <p>
+                  The page for <b><a href="http://ruleml-challenge.cs.nccu.edu.tw/?q=submitform">RuleML Challenge Demos</a></b>
+                  has been created by the research group of
+                  <a href="http://www.cs.nccu.edu.tw/~jong/">Yuh-Jong Hu</a> from the
+                  <a href="http://www.cs.nccu.edu.tw/">Department of Computer Science</a> at the
+                  National Chengchi University (<a href="http://www.nccu.edu.tw/">NCCU</a>), Taipei, Taiwan, where it is being maintained by Jack.
+                  
+               </p>
+               
+            </td>
+         </tr>
+      </table>
+      <h2><a name="Initiative">The Initiative</a></h2>
+      
+      
+      <p>
+         The <a href="#Participants-Logos">participants</a> of the RuleML Initiative
+         constitute an open network of
+         individuals and groups from both industry and academia. We are not
+         commencing from zero but have done some work related to rule markup or have
+         actually proposed some specific tag set for rules.
+         Our main objective is to provide a basis for an integrated rule-markup approach
+         that will be beneficial to all involved and to the rule community
+         at large. This shall be achieved by having all participants
+         collaborate in establishing translations between existing tag sets and
+         in converging on a shared rule-markup vocabulary.
+         This RuleML kernel language can
+         serve as a specification for immediate rule interchange and can be gradually
+         extended - possibly together with <a href="#Related">related initiatives</a> -
+         towards a proposal that could be submitted to the
+         <a href="http://www.w3.org/">W3C</a>.
+         
+      </p>
+      
+      <h2><a name="Uses">Uses</a></h2>
+      
+      
+      <table border="1" cellpadding="5" bgcolor="#CCCCFF">
+         <tr>
+            <td>
+               <a name="Example-English"></a>
+               If you want to review rule principles,
+               (then) you may look at
+               <a href="http://www.cs.nott.ac.uk/~sxp/ES3/index.htm">Rule-Based Expert Systems</a>. (<a href="insteps.html#Example-RuleML">BTW, this is itself a simple rule</a>.)
+               If you want to review XML principles,
+               you may go to the beginning of
+               <a href="http://www.dfki.uni-kl.de/km/knowmark/">Knowledge Markup Techniques</a>.
+               
+            </td>
+         </tr>
+      </table>
+      
+      
+      <p>
+         Rules are being used for many interconnected purposes,
+         capturing regularities in
+         application domains such as the following:
+         
+         <ul>
+              
+            <li>Engineering: Diagnosis rules (also model-based approaches appreciate
+               and combine with rules, as described by Adnan Darwiche in
+               <a href="http://www.cs.ucla.edu/~darwiche/realize.ps">Model-based diagnosis under real-world constraints</a>,
+               AI Magazine, Summer 2000)
+                 
+            </li>
+              
+            <li>Commerce: Business rules (including XML versions such as the
+               Business Rules Markup Language
+               (<a href="http://www.oasis-open.org/cover/brml.html">BRML</a>) of IBM's
+               <a href="http://www.research.ibm.com/rules/home.html">Business Rules for Electronic Commerce</a>
+               project)
+                 
+            </li>
+              
+            <li>Law: Legal reasoning (Robert Kowalski and Marek Sergot have been
+               formalizing legal rules in an <a href="http://www-lp.doc.ic.ac.uk/ProjectPages/legal.html">Imperial College group</a>)
+                 
+            </li>
+              
+            <li>Internet: Access authentication
+               (Tim Berners-Lee proposed registration engines that use authentication rules
+               <a href="http://www.w3.org/DesignIssues/Inconsistent.html">such as the following</a>:
+               Any person who was some time in the last 2 months an employee
+               of an organization which was some time in the last 2 months a
+               W3C member may register.)
+                 
+            </li>
+            
+         </ul>
+         
+         Rather than reinventing rule principles and markups in each such community,
+         the idea of RuleML is to 'package' the rule aspect of these domains and
+         and make it available as an
+         <a href="http://www.w3.org/TR/REC-xml-names/">(XML) namespace</a>,
+         <tt>.../RuleML</tt>, which can be mixed with
+         a namespace for
+         natural-language (<a href="http://www.w3.org/TR/xhtml1/">XHTML</a>) texts
+         and possible domain-specific namespaces
+         (much like <a href="http://www.w3.org/Math/">MathML</a> is mixed into
+         such domain texts).
+         
+      </p>
+      
+      <h2><a name="Scope">Scope</a></h2>
+      
+      
+      <p>
+         Rules can be stated (1) in natural language, (2) in some formal notation,
+         or (3) in a combination of both. Being in the third, 'semiformal' category,
+         the RuleML Initiative is working towards an XML-based markup language that
+         permits Web-based rule storage, interchange, retrieval, and firing/application.
+         
+      </p>
+      <a name="Related"></a>
+      
+      <p>
+         Markup standards and initiatives related to RuleML include:
+         
+         <ul>
+              
+            <li>Mathematical Markup Language
+               (<a href="http://www.w3.org/Math/">MathML</a>):
+               However, MathML's <i>Content Markup</i> is better suited for defining functions
+               rather than relations or general rules
+                 
+            </li>
+              
+            <li>DARPA Agent Markup Language (<a href="http://www.daml.org/">DAML</a>):
+               While the contributing
+               <a href="http://www.cs.umd.edu/projects/plus/SHOE/">SHOE project</a>
+               has permitted Horn rules and a DAML-RULES is planned, the current
+               <a href="http://www.daml.org/language/">DAML+OIL</a> (March 2001)
+               does not yet include a specification of explicit inference rules
+                 
+            </li>
+              
+            <li>Predictive Model Markup Language
+               (<a href="http://www.dmg.org/html/pmml_v1_1.html">PMML</a>):
+               With this XML-based language one can define and share various models
+               for data-mining results, including
+               <a href="http://www.dmg.org/html/assocrules.html">association rules</a>
+                 
+            </li>
+              
+            <li>Attribute Grammars in XML (<a href="http://www.dfki.uni-kl.de/~boley/xmlag/attgramm/sld001.htm">AG-markup</a>):
+               For AG's semantic rules, there are various possible XML markups that are
+               similar to Horn-rule markup
+                 
+            </li>
+              
+            <li>Extensible Stylesheet Language Transformations
+               (<a href="http://www.w3.org/TR/xslt">XSLT</a>):
+               This is a restricted term-rewriting system of rules, written in XML,
+               for transforming XML documents into other XML documents
+                 
+            </li>
+            
+         </ul>
+         
+      </p>
+      
+      <h2><a name="Participants-Logos">Participants' Logos</a></h2>
+      
+      
+      <p>
+         The RuleML Initiative consists of <a href="http://www.dfki.de/~urban/ruleml/inlogos.html">the participants represented here by their logos</a>.
+         
+      </p>
+      
+      <h2><a name="Participants-Systems">Participants' Systems (Updated: 2008-07-22)</a></h2>
+      
+      
+      <table border="1" cellpadding="5" bgcolor="#CCCCFF">
+         <tr>
+            <td>
+               
+               <table border="1" cellpadding="5" bgcolor="#FFCCCC">
+                  <tr>
+                     <td>
+                        Besides on the <a href="#Related">related work</a>, the RuleML Initiative is based on
+                        the following systems of the participants listed in parentheses:
+                        
+                            
+                        <ol>
+                                 
+                           <li><a href="http://www.cs.mu.oz.au/agentlab/">Agent Frameworks</a>
+                                          (<a href="http://www.cs.mu.oz.au/~leon/">Leon Sterling</a>,
+                                           <a href="http://www.cs.mu.oz.au/">Department of Computer Science and Software Engineering, University of Melbourne</a>, Australia)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.haifa.il.ibm.com/projects/software/amit/">AMIT/ADI</a>
+                                          (<a href="http://www.research.ibm.com/people/a/adi/">Asaf Adi</a>,
+                                           <a href="mailto:sommer@il.ibm.com">Ziva Sommer</a>,
+                                           <a href="http://www.haifa.il.ibm.com/">IBM Research Lab in Haifa</a>, Israel)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://tmitwww.tm.tue.nl/staff/gwagner/AORML/">AORML</a>
+                                          (<a href="http://tmitwww.tm.tue.nl/staff/gwagner/">Gerd Wagner</a>,
+                                           <a href="http://tmitwww.tm.tue.nl/index-e.html">Faculty of Technology Management, I &amp; T, Eindhoven University of Technology</a>, The Netherlands)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.mindbox.com/solutions/products.shtml">ARTEnterprise</a>
+                                          (<a href="mailto:samir.rohatgi@mindbox.com">Samir Rohatgi</a>,
+                                           <a href="mailto:brian.sauk@mindbox.com">Brian Sauk</a>,
+                                           <a href="http://www.mindbox.com">MindBox Inc.</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.kr.tuwien.ac.at/staff/roman/aspruleml/">ASP RuleML</a>
+                                          (<a href="http://www.kr.tuwien.ac.at/staff/roman/">Roman Schindlauer</a>,
+                                           <a href="http://www.kr.tuwien.ac.at/staff/eiter/eiter.html">Thomas Eiter</a>,
+                              	     Vienna University of Technology;
+                                           <a href="http://www.mat.unical.it/~ianni/">Giovambattista Ianni</a>,
+                              	     Universita' della Calabria;
+                              	     Austria, Italy)
+                                    
+                           </li>     
+                                 
+                           <li><a href="http://www.smartbot-technologies.de/botform.html">BotForm&amp;trade</a>
+                                          (<a href="mailto:sven.seelig@smartbot-technologies.de">Sven Seelig</a>,
+                                           <a href="mailto:sml@smartbot-technologies.de">Sonja Muller Landmann</a>,
+                                           <a href="http://www.smartbot-technologies.de">Smart Bot Technologies</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://ebusiness.mit.edu/bgrosof/paps/fipa-grosof-07-00-distrib.ps">BRML/DAML-RULES</a>
+                                          (<a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a>,
+                                           <a href="http://mitsloan.mit.edu">MIT Sloan School of Management</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.pi4soa.org">CDL</a>
+                                          (<a href="mailto:steve@pi4tech.com">Steve Ross-Talbot</a>,
+                                           <a href="http://www.pi4tech.com/">Pi4 Technologies</a>;
+                                           UK)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.research.ibm.com/rules">CommonRules</a>
+                                          (<a href="mailto:hychan@us.ibm.com">Hoi Chan</a>,
+                                           <a href="http://www.research.ibm.com">IBM T.J. Watson Research</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.informatik.uni-bremen.de/~ga/research/ruleml.html">Deimos&amp;Phobos</a>
+                                          (<a href="http://www.ics.forth.gr/~antoniou/">Grigoris Antoniou</a>,
+                                           <a href="http://www.informatik.uni-bremen.de/">Fachbereich Mathematik &amp; Informatik, Universit&auml;t Bremen</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://lpis.csd.auth.gr/systems/dr-device.html">DR-DEVICE</a>
+                                          (<a href="http://www.csd.auth.gr/~nick">Nick Bassiliades</a>,
+                                           <a href="http://www.csd.auth.gr/~lpis">Logic Programming and Intelligent Systems (LPIS) Group</a>,
+                                           <a href="http://www.csd.auth.gr/index.en.php">Dept. of Informatics</a>,
+                                           <a href="http://www.auth.gr">Aristotle University of Thessaloniki</a>, Greece;
+                              	     <a href="http://www.ics.forth.gr/~antoniou">Grigoris Antoniou</a>,
+                                           <a href="http://www.ics.forth.gr/isl/">Information Systems Laboratory</a>,
+                                           <a href="http://www.ics.forth.gr/">Institute of Computer Science</a>,
+                                           <a href="http://www.forth.gr">FORTH</a>, Heraklion, Crete, Greece)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.sybase.com/detail?id=1012526">EAI Rules engine</a>
+                                          (<a href="mailto:rwhalen@sybase.com">Ruth Whalen</a>, <a href="mailto:Darren.Damato@New-Era-of-Networks.com">Darren D'Amato</a>,
+                                           <a href="http://www.sybase.com/">Sybase Database Management Systems</a>, <a href="http://www.sybase.com/neweraofnetworks">New Era Of Networks, Inc.</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.agfa.com/w3c/euler/">Euler</a>
+                                          (<a href="http://www.agfa.com/w3c/jdroo/">Jos De Roo</a>,
+                                           <a href="http://www.agfa.com/">AGFA</a>, Belgium)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.dsic.upv.es/~jorallo/flip/">FLIP</a>
+                                          (<a href="http://www.dsic.upv.es/~jorallo/">Jose Hernandez-Orallo</a>,
+                                           <a href="http://www.dsic.upv.es/">DSIC</a>, <a href="http://www.upv.es/">Politechnical University of Valencia</a>, Spain)
+                                    
+                           </li>
+                                 
+                           <li>Java Forward-Chaining Engines Integration
+                                          (<a href="mailto:ebonnet_NO_SPAM_EMAIL@genigraph.fr">Emmanuel Bonnet</a>,
+                                           <a href="mailto:gmolines@optechsoftware.com">Guilhem Molines</a>,
+                                           <a href="mailto:onicolas_NO_SPAM_EMAIL@genigraph.fr">Olivier Nicolas</a>,
+                                           <a href="http://www.genigraph.fr">Genigraph/OpTech Software</a>, France, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://flora.sourceforge.net">Flora-2</a>
+                                          (<a href="http://www.cs.sunysb.edu/~kifer">Michael Kifer</a>,
+                                           <a href="http://www.cs.sunysb.edu/~guizyang">Guizhen Yang</a>,
+                                           <a href="http://www.cs.sunysb.edu">Department of Computer Science</a>
+                                           <a href="http://www.stonybrook.edu">State University of New York at Stony Brook</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.iit.nrc.ca/www/E_Business/Research.html">jDREW</a>
+                                          (<a href="http://www.cs.unb.ca/~bspencer">Bruce Spencer</a>,
+                                           <a href="http://www.cs.unb.ca">Faculty of Computer Science</a>,
+                                           <a href="http://www.unb.ca">University of New Brunswick</a> and
+                                           <a href="http://www.iit.nrc.ca/">Institute for Information Technology</a>,
+                                           <a href="http://www.nrc.ca/">National Research Council of Canada</a>, Canada)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://herzberg.ca.sandia.gov/jess/">Jess</a>
+                                          (<a href="http://herzberg.ca.sandia.gov">Ernest Friedman-Hill</a>,
+                                           <a href="http://www.sandia.gov/">Distributed Systems Research, Sandia National Labs</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li>KNOW: Knowledge Norm Of Webmind
+                                          (<a href="mailto:Pei.Wang@temple.edu">Pei Wang</a>,
+                                           <a href="http://www.webmind.com/">Webmind Inc.</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://lispminer.vse.cz">LispMiner</a>
+                                          (<a href="http://nb.vse.cz/~svatek/welcom_e.htm">Vojtech Svatek</a>,
+                                           <a href="mailto:rauch@vse.cz">Jan Rauch</a>,
+                                           <a href="mailto:xlinv05@vse.cz">Vaclav Lin</a>,
+                                           <a href="http://nb1.vse.cz/~svatek/ke_group.htm">Knowledge Engineering Group</a>,
+                                           <a href="http://kizi2.vse.cz">Department of Information and Knowledge Engineering (DIKE)</a>,
+                                           <a href="http://www.vse.cz">University of Economics, Prague</a>, Czech Republic)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://machine-knows.etri.re.kr/bossam/docs/logicml.html">LogicML</a>/<a href="http://machine-knows.etri.re.kr/bossam">Bossam Rule Engine</a>
+                                          (<a href="mailto:minsu@etri.re.kr">Minsu Jang</a>,
+                                           <a href="mailto:jcsohn@etri.re.kr">Joochan Sohn</a>,
+                                           <a href="http://www.etri.re.kr/e_etri/">ETRI</a>, Korea)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.mandarax.org/">Mandarax</a>
+                                          (<a href="mailto:jens.dietrich@unforgettable.com">Jens Dietrich</a>,
+                                           Department of Computer Science, <a href="http://www.polytechnic.edu.na/">Polytechnic of Namibia</a>, Namibia)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://galeb.etf.bg.ac.yu/~vm/papers/r7inen3.lo.pdf">Obelix</a>
+                                          (<a href="http://galeb.etf.bg.ac.yu/~vm">Veljko Milutinovic</a>,
+                                           <a href="mailto:sasa@galeb.etf.bg.ac.yu">Sasa Mitrovic</a>,
+                                           <a href="http://www.etf.bg.ac.yu/?lang=en">Faculty of Electrical Engineering</a>,
+                                           <a href="http://www.beograd.org.yu/english/zivot/obrnauka/univerz/">University of Belgrade</a>,
+                                           Serbia and Montenegro)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://kmi.open.ac.uk/projects/ocml/">OCML</a>
+                                          (<a href="http://kmi.open.ac.uk/people/motta/">Enrico Motta</a>,
+                                           <a href="http://kmi.open.ac.uk/people/domingue/">John Domingue</a>,
+                                           <a href="http://kmi.open.ac.uk/home-t.cfm">Knowledge Media Institute</a>,
+                                           <a href="http://www.open.ac.uk/">The Open University</a>,
+                                           UK)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.i-u.de/schools/eberhart/ontojava/">OntoJava</a>
+                                          (<a href="http://www.aifb.uni-karlsruhe.de/WBS/aeb/">Andreas Eberhart</a>,
+                                           <a href="http://www.i-u.de/">International University in Germany</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.inf.fu-berlin.de/inst/ag-nbi/research/owltrans/">OWLTrans</a>
+                                          (<a href="http://www.is.pku.edu.cn/~mayyam/">Jing Mei</a>,
+                                           <a href="http://www.inf.fu-berlin.de/inst/ag-nbi/">Networked Information Systems</a>,
+                              	     <a href="http://www.fu-berlin.de/">Freie Universit&auml;t Berlin</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://cs-www.cs.yale.edu/homes/dvm/">PDDL: Planning Domain Definition Language</a>
+                                          (<a href="http://cs-www.cs.yale.edu/homes/dvm/">Drew V. McDermott</a>,
+                                           <a href="http://www.cs.yale.edu/">Department of Computer Science, Yale University</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://protege.stanford.edu">Prot&eacute;g&eacute;-2000</a>
+                                          (<a href="http://smi-web.stanford.edu/people/musen/">Mark Musen</a>,
+                                           <a href="http://smi-web.Stanford.EDU/">Stanford Medical Informatics</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.prova.ws">Prova Language for Rule-based Java Scripting, Information Integration, and Agent Programming</a>
+                                         (<a href="http://www.soi.city.ac.uk/~firmata">Alex Kozlenkov</a>,
+                                           <a href="http://www.soi.city.ac.uk">School of Informatics</a>,
+                                           <a href="http://www.city.ac.uk">City University, London</a>, UK)
+                                    
+                           </li>
+                                 
+                           <li>RBML: Rule Base Markup Language
+                                          (<a href="http://www.geocities.com/Christopher.Roberts/">Chris Roberts</a>,
+                                           <a href="http://www.sun.com/">Sun Microsystems</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://ibis.in.tum.de/staff/paschke/rbsla/index.htm">RBSLA: Rule-based Service Level Agreements</a>
+                                          (<a href="http://ibis.in.tum.de/staff/paschke/index.htm">Adrian Paschke</a>,
+                                           <a href="http://ibis.in.tum.de/index.htm">Internet-based Information Systems (IBIS) </a>,
+                                           <a href="http://www.in.tum.de/index_en.html">Department of Informatics, Technical University Munich</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.relfun.org/rfml/">RFML</a>
+                                          (<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>,
+                                           <a href="http://www.dfki.de/">DFKI</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://arabella.mcm.unisg.ch/SeCo/">SeCo</a>
+                                          (<a href="http://www.netacademy.org/netacademy/register.nsf/mcm_staff/bschmid">Beat Schmid</a>,
+                                           <a href="http://www.mcm.unisg.ch/">Institute for Media and Communications Management</a>,
+                                           University of St. Gallen, Switzerland)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.damlsmm.ri.cmu.edu">Semantic Matchmaker</a>
+                                          (<a href="http://www-2.cs.cmu.edu/%7Esycara/">Katia Sycara</a>,
+                                           <a href="http://www-2.cs.cmu.edu/~softagents/atlas/homepages/paolucci_massimo.html">Massimo Paolucci</a>,
+                                           <a href="http://www-2.cs.cmu.edu/~softagents">The Intelligent Software Agents Lab</a>,
+                                           <a href="http://www.ri.cmu.edu">The Robotics Institute</a>,
+                                           <a href="http://www.cs.cmu.edu">School of Computer Science</a>,
+                                           <a href="http://www.cmu.edu">Carnegie Mellon University</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.dfki.uni-kl.de/frodo/triple/">TRIPLE</a>
+                                          (<a href="http://www.stefandecker.org/">Stefan Decker</a>,
+                                           <a href="http://www.deri.ie/">Digital Enterprise Research Institute</a>;
+                                           <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>,
+                                           <a href="http://www.dfki.de/">DFKI</a>;
+                                           Germany, Ireland)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.ida.liu.se/~pawpi/research.html">Type-Based Diagnoser</a>
+                                          (<a href="http://www.ida.liu.se/~janma/">Jan Maluszynski</a>,
+                                           <a href="http://www.ida.liu.se/sweb/">Swedish Semantic Web Initiative</a>,
+                                           <a href="http://www.ida.liu.se/index.en.shtml">Department of Computer and Information Science</a>,
+                                           <a href="http://www.lith.liu.se/en/index.html">Link&ouml;ping University</a>,
+                                           Sweden)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://home.comcast.net/~stabet/urml.html">URML</a>
+                                          (<a href="mailto:david_ash99@yahoo.com">David Ash</a>,
+                                           <a href="http://www.realtimeagentsinc.com">Real Time Agents Inc.</a>;
+                                           <a href="mailto:prabhakar_bhogaraju@yahoo.com">Prabhakar Bhogaraju</a>,
+                                           <a href="http://www.mindbox.com/">MindBox</a>;
+                                           <a href="http://home.comcast.net/~stabet/">Said Tabet</a>,
+                                           <a href="http://www.macgregor.com/">Macgregor Inc.</a>;
+                                           USA)
+                                    
+                           </li>
+                                 
+                           <li>Versata Logic Suite for Transaction Logic
+                                          (<a href="mailto:James_Liddle@Versata.com">James Liddle</a>,
+                                           <a href="mailto:Kamran_Yousaf@Versata.com">Kamran Yousaf</a>,
+                                           <a href="HTTP://WWW.Versata.com">Versata</a>;
+                                           UK)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.soi.city.ac.uk/~msch/cgi/viva/">Vivid Agents</a>/<a href="http://www.soi.city.ac.uk/~msch/revise/revise.html">Revise</a>
+                                          (<a href="http://www.soi.city.ac.uk/~msch/">Michael Schroeder</a>,
+                                           <a href="http://www.soi.city.ac.uk/">The School of Informatics</a>,
+                                           <a href="http://www.city.ac.uk/">City University London</a>,
+                                           UK)
+                                    
+                           </li>
+                                 
+                           <li>VPP
+                                          (<a href="mailto:randerson@macgregor.ws">Rand Anderson</a>,
+                                           <a href="http://www.macgregor.ws">Macgregor</a>, USA)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://centria.di.fct.unl.pt/~cd/projectos/w4/index.htm">W4</a>
+                                          (<a href="http://centria.di.fct.unl.pt/~cd">Carlos Viegas Dam&aacute;sio</a>,
+                                           <a href="http://centria.di.fct.unl.pt/">CENTRIA (Centro de Intelig&ecirc;ncia Artificial da
+                                 Universidade Nova de Lisboa)</a>, Portugal)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://www.xcerpt.org">Xcerpt</a>
+                                          (<a href="http://www.pms.informatik.uni-muenchen.de/mitarbeiter/bry/">Fran&ccedil;ois Bry</a>,
+                                           <a href="http://www.wastl.net/">Sebastian Schaffert</a>,
+                                           <a href="http://www.pms.informatik.uni-muenchen.de/index-e.html">Teaching and Research Unit Programming and Modelling Language</a>,
+                                           <a href="http://www.informatik.uni-muenchen.de/index-e.html">Institute of Computer Science, Ludwig-Maximilians-Universit&auml;t M&uuml;nchen</a>, Germany)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://kr.cs.ait.ac.th/xet/">XET</a>/<a href="http://kr.cs.ait.ac.th/XDD/">XDD</a>
+                                          (<a href="mailto:vw@cs.ait.ac.th">Vilas Wuwongse</a>,
+                                           <a href="mailto:ca@cs.ait.ac.th">Chutiporn Anutariya</a>,
+                                           <a href="http://kr.cs.ait.ac.th/">Knowledge Representation Laboratory</a>,
+                                           <a href="http://www.ait.ac.th/">Asian Institute of Technology</a>, Thailand)
+                                    
+                           </li>
+                                 
+                           <li><a href="http://xrml.kaist.ac.kr">XRML</a>
+                                          (<a href="http://iis.kaist.ac.kr/~jklee/">Jae Kyu Lee</a>,
+                                           <a href="http://icec.net/">ICEC</a>,
+                                           <a href="http://iis.kaist.ac.kr/">KAIST</a>, Korea)
+                                    
+                           </li>
+                               
+                        </ol>
+                        
+                     </td>
+                  </tr>
+               </table>
+               
+            </td>
+         </tr>
+      </table>
+      
+      <p>
+         2001-05-11:
+         "RuleML, the emerging standards effort on XML Rules knowledge
+         representation, continues to progress in its design -- and also in its
+         acceptance; notably, IBM this past month joined as participant and publicly
+         disclosed that it is prototyping support for RuleML.  Presentation
+         materials from two recent W3C meetings, and a new short overview conference
+         paper, are now available:  see <a href="http://ebusiness.mit.edu/bgrosof/#XMLRules">http://ebusiness.mit.edu/bgrosof/#XMLRules</a>."
+         (Also see: <a href="http://www.alphaworks.ibm.com/tech/commonrules">alphaWorks Posting</a>. Contact: <a href="mailto:hychan@us.ibm.com">Hoi Chan</a>.)
+         
+      </p>
+      
+      <h2><a name="Steps">Initial Steps</a></h2>
+      
+      
+      <p>
+         Some 
+         <a href="insteps.html">initial steps taken by the RuleML Initiative</a>
+         have been
+         to structure the area of rule markup,
+         to raise issues and identify tasks, and
+         to propose tentative rule tags/attributes.
+         
+      </p>
+      
+      <h2><a name="Design">Design</a></h2>
+      
+      
+      <p>
+         The
+         
+         Overarching Specification of Web Rules
+         (<a href="http://cs.unb.ca/~boley/papers/RuleML-Overarching.pdf">Overarching</a>)
+         shows the big picture of how we conceive and formalize rule markup;
+         this has been the basis of much of our more specific work.
+         
+      </p>
+      
+      <h2><a name="Specification">Specification</a></h2>
+      
+      
+      
+      <p>
+         2001-01-31: A preliminary RuleML DTD has been released:
+         <a href="indtd.html">RuleML DTD Version 0.7</a>.
+         
+      </p>
+      
+      <p>
+         2001-07-11: A revised DTD version has been finalized:
+         <a href="indtd0.8.html">RuleML DTD Version 0.8</a>.
+         
+      </p>
+      
+      <p>
+         2001-09-25: A preliminary XML Schema for a Datalog subset of RuleML has been released:
+         <a href="inxsd0.8.html">RuleML Schema Version 0.8</a>.
+         
+      </p>
+      
+      <p>
+         2002-04-02: A query DTD version has been realized (cf. <a href="#Queries">Queries</a>):
+         <a href="indtd0.8.html">RuleML DTD Version 0.8</a>.
+         
+      </p>
+      
+      <p>
+         2004-01-28: A revised DTD/XSD version has been released:
+         <a href="0.85/">RuleML Version 0.85</a>.
+         
+      </p>
+      
+      <p>
+         2004-07-15: A stable XSD version has been released:
+         <a href="0.86/">RuleML Version 0.86</a>.
+         
+      </p>
+      
+      <p>
+         2004-08-12: A new XSD version has been released:
+         <a href="0.87/">RuleML Version 0.87</a>.
+         
+      </p>
+      
+      <p>
+         2004-11-02: A monolithic DTD version of FOL RuleML 0.9 has been released:
+         <a href="http://www.ruleml.org/fol/">FOL RuleML Version 0.9</a>.
+         
+      </p>
+      
+      <p>
+         2005-03-01: A new XSD version has been released: <a href="0.88/">RuleML Version 0.88</a>.
+         
+      </p>
+      
+      <p>
+         2005-05-27: A new XSD version has been released: <a href="0.89/">RuleML Version 0.89</a>.
+         
+      </p>
+      
+      <p>
+         2005-11-09: A new XSD version has been released: <a href="0.9/">RuleML Version 0.9</a>.
+         
+      </p>
+      
+      <p>
+         2006-08-24: A new XSD version has been released: <b><a href="0.91/">RuleML Version 0.91</a></b>.
+         
+      </p>
+      
+      <p>
+         2011-12-09: A new XSD / Relax NG version has been released: <b><a href="1.0/">RuleML Version 1.0</a></b>.
+         
+      </p>
+      
+      <h2><a name="Queries">Queries</a></h2>
+      
+      
+      
+      <p>
+         As in many deduction approaches, RuleML queries are regarded as headless implications,
+         symmetrically to regarding facts as bodiless
+         implications. They enumerate the bindings of all their free (existentially interpreted) variables.
+         
+      </p>
+      
+      <p>
+         Queries were added to RuleML 0.8 as a third top-level element of rulebases besides facts and imps
+         (since this extension is purely additive, all queriless RuleML 0.8 rulebases should still validate).
+         This gives us "for free" all refinements of RuleML's existing system of sublanguages via the _body
+         role of queries:
+         because of RuleML's DTD inheritance, additions were only required for
+         <a href="http://www.ruleml.org/dtd/0.8/ruleml-datalog.dtd">ruleml-datalog.dtd</a>
+         (<a href="http://www.ruleml.org/dtd/0.8/ruleml-datalog.dtd.txt">ruleml-datalog.dtd.txt</a>)
+         and
+         <a href="http://www.ruleml.org/dtd/0.8/ruleml-urcbindatagroundfact.dtd">urcbindatagroundfact.dtd</a>
+         (<a href="http://www.ruleml.org/dtd/0.8/ruleml-urcbindatagroundfact.dtd.txt">urcbindatagroundfact.dtd.txt</a>).
+         In particular,
+         <a href="http://www.ruleml.org/dtd/0.8/ruleml-datalog.dtd">ruleml-datalog.dtd</a>'s
+         query-extended rulebase definition is inherited by
+         <a href="http://www.ruleml.org/dtd/0.8/ruleml-hornlog.dtd">ruleml-hornlog.dtd</a>,
+         where queries in datalog use only inds and vars but queries in hornlog automatically also permit cterms
+         (because hornlog atoms permit cterms).
+         
+      </p>
+      
+      <p>
+         RuleML queries are illustrated by our business-rule example
+         <a href="http://www.ruleml.org/exa/0.8/discount.ruleml">discount.ruleml</a>
+         (<a href="http://www.ruleml.org/exa/0.8/discount.ruleml.txt">discount.ruleml.txt</a>)
+         and by
+         <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>'s
+         <a href="http://www.w3.org/2001/11/13-RDF-Query-Rules/">RDF Query example</a>
+         <a href="http://www.ruleml.org/exa/0.8/wsdl-rdf-query.ruleml">wsdl-rdf-query.ruleml</a>
+         (<a href="http://www.ruleml.org/exa/0.8/wsdl-rdf-query.ruleml.txt">wsdl-rdf-query.ruleml.txt</a>).
+         
+      </p>
+      
+      <p>
+         This query incorporation into RuleML assumes that the sublanguage expressiveness
+         should be the same for 'assertions' (facts and imps) and for the 'requests' (queries) on them.
+         So, it cannot, e.g., express queries on ground triples
+         (containing no variables) via non-ground triples (containing variables):
+         <a href="http://www.ruleml.org/exa/0.8/creator.ruleml">creator.ruleml</a>
+         (<a href="http://www.ruleml.org/exa/0.8/creator.ruleml.txt">creator.ruleml.txt</a>).
+         However, users can still employ one rulebase (module) with its DTD for 'assertions',
+         and another rulebase (module) with a different DTD for 'requests'.
+         
+      </p>
+      
+      <h2><a name="ASP">ASP RuleML</a></h2>
+      
+      
+      
+      <p>
+         <a href="http://www.kr.tuwien.ac.at/staff/roman/ruleml/">ASP RuleML</a> defines a sublanguage of RuleML for answer-set programs in
+         XML Schema. This variant facilitates the specification of a number of
+         ASP-related constructs in a general manner. Moreover, it constitutes a
+         base language for specific ASP extensions, such as HEX-programs.
+         
+      </p>
+      
+      <h2><a name="OO">Object-Oriented RuleML</a></h2>
+      
+      
+      
+      <p>
+         Via <a href="indoo">Object-Oriented RuleML (OO RuleML)</a> frame-like knowledge representation
+         with facts (instances) and rules (methods) is now directly supported.
+         
+      </p>
+      
+      <h2><a name="PSOA">Positional-Slotted, Object-Applicative RuleML (Updated: 2012-08-04)</a></h2>
+      
+      
+      
+      <p>
+         Positional-Slotted, Object-Applicative RuleML (PSOA RuleML) permits relation applications with optional object identifiers
+         and,
+         orthogonally, arguments that are positional or slotted. The resulting positional-slotted,
+         object-applicative (psoa) terms and rules over them were given a first-order model-theoretic foundation
+         (<a href="http://www.cs.unb.ca/~boley/papers/SemanticsPsoaRules.pdf">paper</a>, <a href="http://www.cs.unb.ca/~boley/talks/SemanticsPsoaRules-talk-UNB2011.pdf">slides</a>),
+         blending slot distribution, as in <a href="#RIF">RIF</a>, with integrated psoa terms, as in RuleML.
+         In order to support reasoning in PSOA RuleML, the implemention of the <a href="http://reubenpeterpaul.github.com/PSOA-to-TPTP/">PSOA2TPTP</a> translator is in progress, which
+         maps PSOA RuleML knowledge bases to the <a href="http://www.cs.miami.edu/~tptp/TPTP/QuickGuide/">TPTP</a> format, as widely used for theorem provers.
+         With this translator, reasoning in PSOA RuleML is available using the <a href="http://riazanov.webs.com/software.htm">VampirePrime</a> prover.
+         The composition of PSOA2TPTP and VampirePrime to PSOATransRun is being developed at <a href="http://wiki.ruleml.org/index.php/PSOA_RuleML">PSOA RuleML</a>.
+         
+      </p>
+      
+      <h2><a name="RIF">RIF</a></h2>
+      
+      
+      <p>
+         RIF RuleML specifications are being collected here:
+         
+         <ul>
+            
+            <li>
+                 <a href="http://ruleml.org/rif/RIF-CASPD.html">RIF-CASPD</a>
+               
+            </li>
+            
+            <li>
+                 <a href="http://ruleml.org/rif/RIF-CLPWD.html">RIF-CLPWD</a>
+               
+            </li>
+            
+         </ul>
+         Convergence of RIF and RuleML is facilitated by <a href="#PSOA">PSOA RuleML</a>.
+         
+      </p>
+      
+      <h2><a name="RDF">RDF</a></h2>
+      
+      
+      
+      <p>
+         An experimental RDF translator for a subset of RuleML 0.7 is available in XSLT:
+         <a href="http://www.ruleml.org/inrdf.html">RuleML in RDF Version 0.2</a>.
+         RuleML 0.8 now stands in the direct <a href="http://www.ruleml.org/0.8/#Context">Context</a>
+         of RDF.
+         
+      </p>
+      
+      <p>
+         2001-06-20: <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a> has implemented
+         a (Java) parser for an RDF version of the Horn-logic subset of RuleML 0.8;
+         it reflects an RDF RuleML syntax
+         by (Java) classes that currently generate textual Horn clauses but could be adapted for generating
+         the XML RuleML syntax:
+         <a href="http://www.dfki.uni-kl.de/frodo/rdf2java/">The FRODO rdf2java Tool</a>.
+         A converse translator from XML RuleML 0.8 to RDF RuleML 0.8 should be easier to write in XSLT
+         than was possible for the above-linked RuleML 0.7 translator.
+         
+      </p>
+      
+      <h2><a name="Lite">RuleML Lite</a></h2>
+      
+      
+      
+      <p>
+         <a href="http://www.daml.org/listarchive/joint-committee/1490.html">RuleML Lite</a> has been developed basically
+         as a RuleML subset compatible with RDF and OWL-DL that covers webized unary and binary Datalog facts, rules, and queries.
+         The RuleML Lite design has interacted with the <a href="http://www.daml.org/2003/11/swrl/">SWRL</a> design via
+         the <a href="http://www.daml.org/committee/">Joint Committee</a>.
+         
+      </p>
+      
+      <h2><a name="FOL">FOL RuleML</a></h2>
+      
+      
+      
+      <p>
+         The <a href="http://www.ruleml.org/fol/">FOL RuleML</a> language has been developed in interaction between
+         the <a href="#Structure">RuleML Steering Committee</a> and the <a href="http://www.daml.org/committee/">Joint Committee</a>,
+         with input from <a href="http://philebus.tamu.edu/mailman/listinfo/scl">Simplified Common Logic (SCL)</a>.
+         FOL RuleML shares/reuses most of the earlier RuleML LP syntax,
+         incorporating First-Order-Logic quantifiers and disjunctions as well as equivalence and negation.
+         FOL RuleML strives for a strict separation of declarative content from procedural (Assert, Query) performatives,
+         as pioneered by KQML.
+         This and further changes to the current <a href="http://www.ruleml.org/0.87/">RuleML 0.87</a>
+         will also benefit other sublanguages towards RuleML 0.9, in particular the Horn logic subset.
+         FOL RuleML is the rule component of <a href="http://www.daml.org/2004/11/fol/">SWRL FOL</a>
+         and a proposed FOL content language for <a href="http://www.swsi.org/">SWSI</a>.
+         It can be viewed as a generalization of SWRL FOL
+         in that it is an XML form of full FOL, with n-ary relations (predicate symbols) and
+         constructors (logical function symbols).
+         
+      </p>
+      
+      <p>
+         2004-11-02: <a href="http://www.ruleml.org/fol/">FOL RuleML 0.9</a> has been released,
+         using a <a href="http://www.ruleml.org/fol/#SynSem">monolithic DTD specification</a>.
+         
+      </p>
+      
+      <p>
+         2004-11-14: An <a href="http://lists.w3.org/Archives/Public/www-rdf-rules/2004Nov/0008.html">FOL RuleML announcement</a> has been sent.
+         
+      </p>
+      
+      <h2><a name="Induction">Induction</a></h2>
+      
+      
+      
+      <p>
+         The FLIP Group uses RuleML in machine learning:
+         <a href="http://www.dsic.upv.es/~flip/RuleML/">About using RuleML for expressing machine learning knowledge</a>.
+         In the <a href="http://lispminer.vse.cz">LispMiner</a> project
+         work with RuleML is directed towards statistical association rules.
+         
+      </p>
+      
+      <h2><a name="Translators">Translators</a></h2>
+      
+      
+      
+      <p>
+         Since RuleML should help rule-system interoperation,
+         (XSLT, ...) translators for RuleML rulebases are rather important. Please send us further translator
+         pairs between your system and RuleML -- even if your translators are (still)
+         partial.
+         
+      </p>
+      
+      <p>
+         In February 2001 <a href="http://www.daml.org/people/mdean/">Mike Dean</a> created the first operational RuleML rulebase,
+         <a href="http://www.daml.org/2001/02/gedcom-ruleml/">GEDCOM</a>,
+         with rules on family relationships (child, spouse, etc.) run via XSLT translators to the XSB, JESS, and n3/cwm engines.
+         
+      </p>
+      
+      <p>
+         2001-09-17: <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>
+         has specified <a href="http://www.relfun.org/ruleml/rfml-ruleml.html">XSLT translators between the Horn-logic subsets of RuleML and RFML</a>.
+         These can make implementations of both systems available to each other and
+         permit, e.g., a preliminary HTML rendering of RuleML rulebases.
+         The XSLT stylesheets may also serve as blueprints for specifying further translators
+         to/fro RuleML.
+         
+      </p>
+      
+      <p>
+         2001-09-19: <a href="http://www.aifb.uni-karlsruhe.de/WBS/aeb/">Andreas Eberhart</a>
+         implemented an alpha version of <a href="http://www.i-u.de/schools/eberhart/ontojava/">OntoJava</a>.
+         The basic idea is to automatically map Prot&eacute;g&eacute; ontologies, instances defined
+         in them, and RuleML rules into a sinlge Java main memory DB / rule engine
+         that can then be used as the basis of an application.
+         He is looking forward to hearing of your ideas and input.
+         
+      </p>
+      
+      <p>
+         2002-02-04: <a href="http://www.aifb.uni-karlsruhe.de/WBS/aeb/">Andreas Eberhart</a>
+         extended <a href="http://www.i-u.de/schools/eberhart/ontojava/">OntoJava</a>
+         by reaction rules:
+         <b><pre>
+&lt;java&gt;
+        runtime.Loader.load("http://localhost:8080/servlet/SearchGate?flight="
+                         + &lt;var&gt;F&lt;/var&gt;.name, false);
+&lt;/java&gt;</pre></b>
+         This example loads RDF info into the DB, which comes from a kind of Web Service.
+         So emails can be sent as well, etc.
+         While this is not 'cross-platform', it should be interessting from an engineering
+         point of view.
+         
+      </p>
+      
+      <p>
+         2002-07-08: <a href="mailto:stabet@ruleml.org">Said Tabet</a> created an
+         <a href="http://www.ruleml.org/jess/RuleMLTransform.xsl">XSLT stylesheet</a>
+         for transforming from a version of RuleML to Jess.
+         The full Java environment for running this is available from
+         <a href="mailto:stabet@ruleml.org">Said Tabet</a>.
+         
+      </p>
+      
+      <p>
+         2003-08-26: Stephen Greene has specified
+         <a href="http://www.ruleml.org/ooruleml-xslt/oo2prml.html">XSLT translators between Positional and Object-Oriented RuleML</a>.
+      </p>
+      
+      <p>
+         2004-08-12: David Hirtle has created an
+         <a href="http://www.ruleml.org/0.87/#XSLT">XSLT translator between RuleML 0.86 and 0.87</a> as part of the
+         0.87 release.
+      </p>
+      
+      <p>
+         2005-03-01: David Hirtle has created an
+         <a href="http://www.ruleml.org/0.88/#XSLT-Based%20Upgrader">XSLT "upgrader"</a> to translate between RuleML 0.87 and 0.88 as part of the
+         0.88 release.  An <a href="http://www.ruleml.org/0.88/#XSLT-Based%20Normalizer">XSLT "normalizer"</a> for reconstructing all skipped role tags to achieve a fully-expanded, normal form is also included with this release.
+      </p>
+      
+      <p>
+         2005-05-27: The
+         <a href="http://www.ruleml.org/0.89/#XSLT-Based%20Upgrader">XSLT "upgrader" from 0.88 to 0.89</a> has been created as part of the
+         0.89 release.  An <a href="http://www.ruleml.org/0.89/#XSLT-Based%20Normalizer">updated XSLT "normalizer"</a> for achieving a normal form is also included.
+      </p>
+      
+      <p>2005-09-13: Jie Li has updated an earlier translator from RFML to RuleML <a href="http://www.ruleml.org/usecases/chemxelem/#XSLT%20Stylesheet">as part of the ChemXelem use case</a>.
+      </p>
+      
+      
+      <h2><a name="Engines">Engines</a></h2>
+      
+      
+      
+      <p>
+         One or more rule engines will be needed for executing RuleML rulebases.
+         On 2000-11-15, the RuleML Initiative thus joined forces with the
+         Java Specification Request <a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_094_ruleengine.html">JSR-000094 Java Rule Engine API</a>.
+         This cooperation will enable a direct cross-fertilization between the
+         complementary specifications of the open XML-based Rule Markup Language
+         and of the Java runtime API for rule engines.
+         
+      </p>
+      
+      
+      <p>
+         2001-06-04: <a href="mailto:jens.dietrich@unforgettable.com">Jens Dietrich</a>
+         implemented the first complete input-processing-output environment for RuleML.
+         To download the api (source code) click
+         <a href="http://www.mandarax.org/downloads.html">Mandarax RuleML</a>.
+         Any feedback is welcome! If you have problems, don't hesitate to contact Jens
+         for assistance.
+         
+      </p>
+      
+      <p>
+         2002-03-08: <a href="mailto:jens.dietrich@unforgettable.com">Jens Dietrich</a>
+         has finally published <a href="http://www.mandarax.org/downloads.html">Mandarax 1.6</a>
+         with major improvements, including new docs and all the features discussed in the
+         <a href="http://www.mandarax.org/docs/dagstuhl.pdf">Mandarax Dagstuhl Talk</a>.
+         One of the new packages is
+         <a href="http://www.mandarax.org/downloads/xkb_b1.jar">xkb_b1.jar</a>
+         -- it contains
+         a modular driver to translate rule bases to XML and vice versa. I.e., there
+         are tiny
+         adapter objects responsible for exporting/importing rules, facts, terms
+         etc.
+         This should enable us to set up a reference application for any new standard
+         in hours.
+         
+      </p>
+      
+      
+      <p>
+         2001-06-26: <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>
+         has implemented a small XSB-based engine that can also be looked at as
+         the first RuleML querying <i>agent</i>.
+         It's a servlet (running in Tomcat) that receives RuleML rulebases in
+         RDF RuleML syntax (since he uses <a href="http://www.dfki.uni-kl.de/frodo/rdf2java/">The FRODO rdf2java Tool</a>)
+         together with some queries, evaluates them with XSB Prolog (in auto-tabling mode,
+         which should be equivalent to bottom-up evaluation!), and returns the result
+         as an HTML page containing the bindings as facts of instantiated queries.
+         A future version must, of course,
+         return a RuleML file.
+         Simply try
+         <a href="http://serv-4100.dfki.uni-kl.de:8765/ruleml/">this URL</a>.
+         Click on 'example' and paste the RDF RuleML popping up into the input window (note
+         that pasting XML/RDF cannot be directly done in IE, only in Netscape; use
+         "view source" in IE).
+         Alternatively, you can use the
+         <a href="http://serv-4100.dfki.uni-kl.de:8765/ruleml/rulemltrans.html">Prolog parser and RDF translator</a>
+         to generate the RDF RuleML.
+         Since we cannot guarantee that the above URLs always work (server reboots etc.),
+         <a href="xsb-rdf-ruleml.gif">this picture</a> shows the agent in action.
+         Any feedback is welcome! If you have problems, don't hesitate to contact Michael
+         for assistance.
+         
+      </p>
+      
+      
+      <p>
+         2002-02-06: <a href="http://www.cs.unb.ca/~bspencer">Bruce Spencer</a> further refined
+         <a href="http://www.cs.unb.ca/~bspencer/dagstuhl-jdrew.pdf">The Design of j-DREW, a Deductive Reasoning Engine for the Semantic Web</a>.
+         
+      </p>
+      
+      <p>
+         2005-05-06: Marcel Ball [maball AT gmail DOT com] revised the documentation of
+         <a href="http://www.jdrew.org/oojdrew/">OO jDREW</a>, summarized in the Position Paper
+         <a href="http://www.ruleml.org/w3c-ws-rules/implementing-ruleml-w3c-ws.html">Implementing RuleML Using Schemas, Translators, and Bidirectional Interpreters</a>
+         of the
+         <a href="http://www.w3.org/2004/12/rules-ws/cfp">W3C Workshop on Rule Languages for Interoperability</a>.
+         
+      </p>
+      
+      <p>
+         2007-07-26: Benjamin Craig [ben.craig AT unb DOT ca] has been continuing the development of
+         <a href="http://www.jdrew.org/oojdrew/">OO jDREW</a> with a series of extended releases,
+         and is developing the OO jDREW part of <a href="http://responder.ruleml.org/">Rule Responder</a>.
+         
+      </p>
+      
+      <p>2008-06-30: A team led by <a href="http://lpis.csd.auth.gr/people/nbassili/">Nick Bassiliades</a>,  <a href="http://www.ics.forth.gr/%7Eantoniou/">Grigoris Antoniou</a> and <a href="http://www.governatori.net/">Guido Governatori</a> has released a 
+         new version of <a href="http://lpis.csd.auth.gr/systems/dr-device.html#v081">DR-Device 
+            (version 0.81)</a> with support
+         for modalities and proof exporting. DR-Device is a defeasible logic 
+         reasoning system with priorities among
+         rules, two types of negation (strong, default) and conflicting (mutually 
+         exclusive) literals.
+         The system is implemented on top of CLIPS and has been extended to 
+         introduce rule modes that determine
+         the modality of the conclusion and modalized literals in the premises of 
+         rule bodies.
+         Furthermore, the system exports in a formal RuleML-like representation 
+         an explanation for the proof of the rule program conclusions.
+         The aim is (a) to take advantage of the expressive power of modal logics 
+         to define various agent behaviors, and (b) to
+         to increase user/agent trust towards rule-based Semantic Web 
+         applications.
+      </p>
+      
+      <h2><a name="POSL">Positional-Slotted Language (Updated: 2012-11-17)</a></h2>
+      
+      
+      
+      <p>
+         The Positional-Slotted presentation, shorthand, and exchange syntax for rules
+         (<a href="http://www.ruleml.org/submission/ruleml-shortation.html">POSL spec</a>, <a href="http://www.ruleml.org/posl/poslintweb-talk.pdf">POSL slides</a>)
+         merges Prolog's positional and F-Logic's slotted syntaxes.
+         Its need has emerged from discussions on ASCII syntaxes in the <a href="http://www.daml.org/committee/">Joint Committee</a>.
+         A pair of <a href="http://www.ruleml.org/posl/converter.jnlp">online translators (including Types)</a>, in Java Web Start,
+         have enabled writing knowledge bases in the RuleML/POSL shorthand while deploying them in the RuleML/XML serialization,
+         as well as getting RuleML/XML rendered as RuleML/POSL.
+         Several applications have been built on POSL (see, e.g. <a href="#Library">library</a>).
+         An updated POSL version is described in <a href="http://ojs.academypublisher.com/index.php/jetwi/article/view/0204343353">Integrating Positional and Slotted Knowledge on the Semantic Web</a>,
+         implemented along with d-POSL in <a href="http://www.cs.unb.ca/~boley/cs6795swt/fall2011projects.html">CS 6795 Semantic Web Techniques</a>, Team 1,
+         and available from GitHub via the <a href="http://www.jdrew.org/oojdrew/demo.html">OO jDREW site</a> as a pair of online translators, in Java Web Start.
+         
+      </p>
+      
+      <h2><a name="Grailog">Graph inscribed logic (Updated: 2012-09-26)</a></h2>
+      
+      
+      
+      <p>
+         The Graph inscribed logic (<a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog.pdf">Grailog</a>)
+         was initially developed for the course <a href="https://www.ict.tuwien.ac.at/lva/Boley_LFCS/index.html">Logical Foundations of Cognitive Science</a>
+         and has since much evolved, as presented in a series of talks, including <a href="http://www.slideshare.net/PhiloWeb/rule-ml-grailog">RuleML/Grailog: The Rule Metalogic Visualized with Generalized Graphs</a>
+         at <a href="http://web-and-philosophy.org/philoweb2011_pt-ai_salonica/">PhiloWeb 2011</a> and
+         <a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog-OMG.pdf">The Grailog User Interface for Knowledge Bases of Ontologies &amp; Rules</a>
+         at <a href="http://www.omg.org/news/meetings/tc/agendas/ma-12/Ontology.pdf">OMGCambridge2012</a>.
+         
+      </p>
+      
+      <p>
+         <b>The newest edition of Grailog is being maintained in presentable form:
+            <a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog.pdf">RuleMLGrailog.pdf</a> (<a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog.ppt">RuleMLGrailog.ppt</a>)</b>
+         
+      </p>
+      
+      <p>
+         RuleML/Grailog comes with a mapping from (2-dimensional, 'analogical') generalized graphs
+         to a RuleML/POSL-type (1-dimensional, 'symbolic') logic generalized to an expressive <a href="http://ruleml.org/metalogic/">Rule Metalogic</a>.
+         The transition from RuleML/Grailog to RuleML/POSL to RuleML/XML proceeds in the direction from <i>human</i>-oriented to <i>machine</i>-oriented syntaxes.
+         Since a translator from RuleML/POSL to RuleML/XML already exists (see <a href="#POSL">POSL</a>),
+         its three components (i.e., its source RuleML/POSL, its target RuleML/XML, and the translator itself) could be generalized
+         to cover full RuleML/Grailog expressiveness,
+         and a translator from RuleML/Grailog to RuleML/XML could then be obtained by implementing a translator from RuleML/Grailog
+         (in an appropriate format) to the generalized RuleML/POSL.
+         Alternatively, a translator from RuleML/Grailog (maybe in SVG/XML) directly to the generalized RuleML/XML could be implemented.
+         Subsets of Grailog corresponding to Datalog and Hornlog RuleML will be natural starting points for such an open source translator
+         project.
+         Everyone who is interested in the further development of Grailog or its translators, please contact <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>. 
+         
+      </p>
+      
+      <h2><a name="Interfaces">User Interfaces (Updated: 2011-03-21)</a></h2>
+      
+      
+      
+      <p>
+         RuleML Participant Jens Dietrich's Oryx (version 2.1) has a graphical Knowledge Editor for business rules and a Repository
+         that
+         contains the description of predicates, functions, and database connections.
+         "Oryx works with open XML based formats, support for the emerging RuleML standard and the open source Mandarax XKB 1.0 format
+         is
+         included."  (<a href="http://www.jbdietrich.com/">http://www.jbdietrich.com</a>).
+         
+      </p>
+      
+      <p>
+         <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>
+         has implemented a
+         <a href="http://serv-4100.dfki.uni-kl.de:8765/ruleml/rulemltrans.html">Prolog parser and RDF translator</a>
+         to generate RDF RuleML.
+         
+      </p>
+      
+      <p>
+         <a href="http://www.aifb.uni-karlsruhe.de/WBS/aeb/">Andreas Eberhart</a> wrote
+         a small tool that allows you to convert Prolog (currently, Datalog) rules to RuleML.
+         This <a href="http://www.i-u.de/schools/eberhart/prolog2ruleml/">Prolog2RuleML</a> tool
+         is available both online and as a command line version.
+         
+      </p>
+      
+      <p>
+         2005-12-13: A team led by <a href="http://www.csd.auth.gr/~nbassili">Nick Bassiliades</a>
+         and <a href="http://www.ics.forth.gr/~antoniou/">Grigoris Antoniou</a>
+         has released <a href="http://iskp.csd.auth.gr/systems/dr-device.html">VDR-Device (version 0.27)</a>.
+         VDR-Device is a visual environment for developing defeasible logic rule 
+         bases for the Semantic Web.
+         VDR-Device integrates a graphical RuleML-compliant rule editor and a 
+         defeasible reasoning system that
+         processes RDF data and RDF Schema ontologies. The rule editor constrains 
+         the allowed vocabulary
+         after analyzing the input RDF Schema ontologies, preventing potential 
+         syntactic and semantic errors.
+         The reasoning system supports all defeasible logic rule types, 
+         priorities among rules, two types of negation
+         and conflicting literals.
+         
+      </p>
+      
+      <p>
+         2006-04-28: A Java Web Start application called <a href="http://www.ruleml.org/translator">TRANSLATOR</a> has been developed by David Hirtle for translating from <a href="http://www.ifi.unizh.ch/attempto/">Attempto Controlled English</a> to RuleML.
+         The reverse direction, RuleML to English, is a planned extension.
+         
+      </p>
+      
+      <p>
+         2009-12-08: S2REd is a syntactic+semantic text-based RuleML editor.
+         It is a full-fledged textual XML editor that features: syntax 
+         highlighting, spell checking, brace matching, code-block coloring, 
+         pretty-printing, well-formedness and validation checking.
+         Nevertheless, S2REd is more than an XML editor: it&#146;s a tool totally 
+         dedicated to RuleML authoring, offering domain-specific semantically 
+         enabled functionality.
+         Developed by Thetida Zetta, Efstratios Kontopoulos, and Nick Bassiliades.
+         Project URL: <a href="https://sourceforge.net/projects/s2red/">S2REd</a>
+         
+      </p>
+      
+      <p>
+         2011-03-21: <a href="https://sourceforge.net/projects/s2red/">S2REd</a>, 
+         the syntactic+semantic RuleML editor developed by Thetida Zetta, 
+         Efstratios Kontopoulos, and Nick Bassiliades at <a href="http://lpis.csd.auth.gr">Aristotle University of Thessaloniki</a>, Greece,
+         has been upgraded to provide support for RuleML 1.0.
+         
+      </p>
+      
+      
+      <h2><a name="Library">Rulebase Library (Updated: 2011-11-20)</a></h2>
+      
+      
+      
+      <p>
+         A library of RuleML rulebases is being accumulated here as a collection of use cases
+         for further design discussion and as examples for practical rule exchange
+         (e.g., <a href="http://www.ruleml.org/lib">library</a> and  <a href="http://www.ruleml.org/1.0/exa">examples</a>).
+         The highest version of RuleML (currently 1.0) should be used whenever possible.
+         If you have an entry, please send us its pointer.
+         The discounting business rules example introduces some of the features:
+         <a href="exa/0.8/discount.ruleml">discount.ruleml</a>
+         (<a href="exa/0.8/discount.ruleml.txt">discount.ruleml.txt</a>).
+         
+         <ul>
+              
+            <li>
+               2002-03-06: <a href="http://www.daml.org/people/mdean/">Mike Dean</a>'s
+               <a href="http://www.daml.org/2001/02/gedcom-ruleml/">GEDCOM</a> rulebase
+               <a href="http://www.daml.org/2001/02/gedcom-ruleml/gedcom-relations.xml">GEDCOM RuleML 0.7</a>,
+               with rules on family relationships (child, spouse, etc.), has been made available:
+               <a href="http://www.ruleml.org/lib/gedcom/gedcom-relations0.8.ruleml">GEDCOM RuleML 0.8</a> (View | Page Source).
+               <br>
+               This is Elina Hotman's result of having
+               <a href="http://www.daml.org/2001/02/gedcom-ruleml/gedcom-relations.xml">GEDCOM RuleML 0.7</a>
+               (local copy: <a href="http://www.ruleml.org/lib/gedcom/gedcom-relations0.7.xml">GEDCOM RuleML 0.7</a>),
+               first transformed by the XSLT stylesheet
+               <a href="http://www.ruleml.org/lib/gedcom/ruleml2rfml_gedcom.xsl">ruleml2rfml_gedcom.xsl</a>
+               (a <a href="http://www.relfun.org/ruleml/rfml-ruleml.html">translator</a> version of
+               <a href="http://www.relfun.org/ruleml/ruleml2rfml.xsl">ruleml2rfml.xsl</a>)
+               to the -- likewise positional -- <a href="http://www.relfun.org/rfml/">RFML</a> form
+               <a href="http://www.ruleml.org/lib/gedcom/gedcom-relations0.8.rfml">GEDCOM RFML 0.8</a>,
+               and then having that further transformed by the XSLT stylesheet
+               <a href="http://www.ruleml.org/lib/gedcom/rfml2ruleml_gedcom.xsl">rfml2ruleml_gedcom.xsl</a>
+               (a <a href="http://www.relfun.org/ruleml/rfml-ruleml.html">translator</a> version of
+               <a href="http://www.relfun.org/ruleml/rfml2ruleml.xsl">rfml2ruleml.xsl</a>)
+               to the -- role-using --  RuleML 0.8 form
+               <a href="http://www.ruleml.org/lib/gedcom/gedcom-relations0.8.ruleml">GEDCOM RuleML 0.8</a>.
+               <br>
+               Coincidentally, <a href="http://www.agfa.com/w3c/jdroo/">Jos De Roo</a> used
+               <a href="http://www.daml.org/2001/02/gedcom-ruleml/gedcom-relations.xml">GEDCOM RuleML 0.7</a> to generate
+               <a href="http://www.agfa.com/w3c/euler/gedcom-relations.n3">GEDCOM N3</a>, from which
+               <a href="mailto:jonathan@openhealth.org">Jonathan Borden</a> generated
+               <a href="http://www.openhealth.org/RDF/gedcom-relations-xt.xml">GEDCOM RDFxt</a>
+               (<a href="http://lists.w3.org/Archives/Public/www-webont-wg/2002Mar/0085.html">www-webont-wg -- LANG: GEDCOM N3 as RDFxt</a>).
+               Thus, <a href="http://www.daml.org/2001/02/gedcom-ruleml/">GEDCOM</a> looks like
+               a good benchmark for transforming between RuleML and related systems
+               (future transformers should directly start off from
+               <a href="http://www.ruleml.org/lib/gedcom/gedcom-relations0.8.ruleml">GEDCOM RuleML 0.8</a>
+               or higher).
+               A draft specification for the original <a href="http://www.familysearch.org/GEDCOM/GedXML60.pdf">GEDCOM XML</a>
+               is available.
+                 
+            </li>
+              
+            <li>
+               2002-06-24: <a href="mailto:sabrina.scherer@dfki.de?subject=RACSA">Sabrina Scherer</a> and <a href="mailto:benjamin.olschok@dfki.de?subject=RACSA">Benjamin Olschok</a>, University of Saarbr&uuml;cken,
+               in cooperation with <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, DFKI,
+               have completed the prototype of a
+               Rule-Applying Comparison-Shopping Agent, <a href="http://www.dfki.de/racsa">RACSA</a>,
+               which takes into account
+               various (discount-like) rules for computing the special price
+               a customer will be offered.
+               RACSA is based on RuleML, Mandarax, and Java;
+               it is currently being developed for comparing refrigerator end prices in
+               the German and European market, but can be easily adapted to other products and/or markets.
+               A RACSA servlet and the comparison-shopping rulebases will soon be made
+               available <a href="http://www.dfki.de/racsa">here</a> for testing.
+                 
+            </li>
+              
+            <li>
+               2002-07-08: <a href="mailto:stabet@ruleml.org">Said Tabet</a> created an
+               <a href="http://www.ruleml.org/jess/RuleMLTransform.xsl">XSLT stylesheet</a>
+               for transforming from a version of RuleML to Jess.
+               This is exemplified by an animal rulebase transformed from its neutral
+               <a href="http://www.ruleml.org/jess/rules1.xml">RuleML version</a>
+               (<a href="http://www.ruleml.org/jess/rules1.xml.txt">rules1.xml.txt</a>)
+               into a forward-reasoning
+               <a href="http://www.ruleml.org/jess/rules1.clp">Jess version</a>.
+               The full Java environment for running this is available from
+               <a href="mailto:stabet@ruleml.org">Said Tabet</a>.
+                 
+            </li>
+              
+            <li>
+               2004-02-27: The New Brunswick Business Knowledge Base, <a href="http://www.ruleml.org/usecases/nbbizkb/">NBBizKB</a>,
+               was created as a major use case for <a href="indoo">OO RuleML</a>.
+                 
+            </li>
+              
+            <li>
+               2004-05-15: Based on the RuleML and <a href="http://savannah.nongnu.org/projects/cofi/">Cofi</a> projects,
+               the Rule-Applying Collaborative Filtering System (<a href="http://www.ondelette.com/lemire/abstracts/COLA2003.html">RACOFI</a>) has
+               meanwhile led to a portal for publishing, searching, and rating independent music in MP3 (<a href="http://www.indiscover.net/">inDiscover</a>).
+                 
+            </li>
+              
+            <li>
+               2005-09-13: The <a href="http://www.ruleml.org/usecases/chemxelem/">ChemXelem</a> use case consists of a RuleML knowledge base about the Periodic System of the Elements generated from a non-XML source.
+                 
+            </li>
+              
+            <li>
+               2008-07-31: RuleML/XML and RuleML/POSL rulebases have been built for Expert Finding (<a href="http://www.ruleml.org/usecases/foaf/findxprt/">FindXpRT</a>),
+                 eTourism (<a href="http://ruleml.org/usecases/etourplan/">eTourPlan</a>),
+                 Health Information Retrieval (<a href="http://gge.athost.net/">http://gge.athost.net</a>), and
+                 Personal Agents (<a href="http://responder.ruleml.org/">Rule Responder</a>).
+                 
+            </li>
+              
+            <li>
+               2010-12-28: The well-known Wine Ontology is made available as a sizeable RuleML Use Case in Web rule conversion, upgrading,
+               and normalization (<a href="http://ruleml.org/usecases/wineonto/">WineOnto</a>)
+                 
+            </li>
+            
+         </ul>
+         
+      </p>
+      
+      <h2><a name="Papers-Publications">Papers-Publications (Updated: 2010-02-07)</a></h2>
+      
+      
+      <p>
+         Check out some <a href="http://scholar.google.com/scholar?q=RuleML">Google Scholar results for RuleML</a>.
+         
+      </p>
+      
+      <ul>
+           
+         <li>David Hirtle, <a href="http://www.ruleml.org/translator/TRANSLATOR-CaSTA.pdf">TRANSLATOR: A TRANSlator from LAnguage TO Rules</a>, Canadian Symposium on Text Analysis (CaSTA), Fredericton, October 2006.
+              
+         </li>
+           
+         <li>
+            Marcel Ball, Harold Boley, David Hirtle, Jing Mei, Bruce Spencer: <a href="http://www.ruleml.org/w3c-ws-rules/implementing-ruleml-w3c-ws.html">Implementing RuleML Using Schemas, Translators, and Bidirectional Interpreters</a>, <a href="http://www.w3.org/2004/12/rules-ws/">W3C Workshop on Rule Languages for Interoperability</a>, April 2005, Washington, D.C.
+              
+         </li> 
+           
+         <li>
+            Yevgen Biletskiy, Harold Boley, David Hirtle: <a href="http://www.ece.unb.ca/biletskiy/RuleML-LO-Ontologies.pdf">Building RuleML Learning Object Ontologies on the Semantic Web</a>.
+            Submitted for review, September 2005.
+              
+         </li>
+           
+         <li>
+            Yevgen Biletskiy, Harold Boley, Luqian Zhu: <a href="http://www.ece.unb.ca/biletskiy/RuleML-Inteoperation.pdf">A RuleML-Based Ontology for Interoperation between Learning Objects and Learners</a>, UCFV Research Review, 
+            to appear 2005.
+              
+         </li>
+           
+         <li>
+            Harold Boley: <a href="http://www.dfki.uni-kl.de/~boley/xmlrdf.html">A Web Data Model Unifying XML and RDF</a>. Draft, September 2001.
+              
+         </li>
+           
+         <li>
+            Harold Boley: <a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.pdf">The Rule Markup Language: RDF-XML Data Model, XML Schema Hierarchy, and
+               XSL Transformations</a>, Invited Talk, INAP2001, Tokyo, October 2001.
+              
+         </li>
+           
+         <li>
+            Harold Boley, Said Tabet, and Gerd Wagner: <a href="http://www.ruleml.org/papers/DesignRationaleRuleML-SWWS01paper20.pdf">Design Rationale of RuleML: A Markup
+               Language for Semantic Web Rules</a>, Proc. SWWS'01, Stanford, July/August 2001.
+            
+              
+         </li>
+           
+         <li>
+            Andreas Eberhart, <a href="http://www.cs.unb.ca/ai2002/baseweb/BASeWEB2002_Paper1.pdf">An Agent Infrastructure based on Semantic Web Standards</a>,
+            Workshop on Business Agents and the Semantic Web at the AI 2002,
+            Calgary, Canada
+              
+         </li>
+           
+         <li>
+            Andreas Eberhart, <a href="http://link.springer.de/link/service/series/0558/papers/2342/23420102.pdf">Automatic Generation of Java/SQL based Inference Engines
+               from RDF Schema and RuleML</a>, International Semantic Web Conference
+            2002, Sardinia
+              
+         </li>
+           
+         <li>
+            Andreas Eberhart, <a href="http://www.i-u.de/schools/eberhart/wsdf">Towards Universal Web Service Clients</a>, <a href="http://www.w3c.rl.ac.uk/Euroweb/">EuroWeb 2002 Conference</a>, St Anne's College Oxford, UK, December 17 and 18th 2002.
+              
+         </li>
+           
+         <li>
+            Benjamin Grosof: <a href="http://ebusiness.mit.edu/bgrosof/paps/wits01-extended-working-paper-12-01.pdf">Representing E-Business Rules for the Semantic Web: Situated Courteous Logic Programs in RuleML</a>,
+            Proc. Workshop on Information Technologies and Systems (WITS '01), New Orleans, December, 2001.
+              
+         </li>
+           
+         <li>
+            Benjamin Grosof, Mahesh D. Gandhe, and Timothy W. Finin: <a href="http://www.soi.city.ac.uk/~msch/conf/ruleml/grosof.pdf">SweetJess: Translating DamlRuleML to Jess</a>,
+            Proc. International Workshop on Rule Markup Languages for Business Rules on the Semantic Web,
+            Sardinia (Italy), June 2002.
+              
+         </li>
+           
+         <li>
+            Benjamin Grosof and Terrence Poon: <a href="http://www.soi.city.ac.uk/~msch/conf/ruleml/grosof2.pdf">Representing Agent Contracts with Exceptions using XML Rules, Ontologies, and Process Descriptions</a>,
+            Proc. International Workshop on Rule Markup Languages for Business Rules on the Semantic Web,
+            Sardinia (Italy), June 2002.
+              
+         </li>
+           
+         <li>
+            Jae Kyu Lee and Mye M. Sohn: <a href="http://portal.acm.org/citation.cfm?doid=769800.769802">The eXtensible Rule Markup Language</a>, Communications of the ACM, Volume 46, Issue 5, pp. 59-64, May 2003.
+              
+         </li>
+           
+         <li>
+            Steve Ross-Talbot, Harold Boley, and Said Tabet:
+            <a href="http://www.appdevadvisor.co.uk/Downloads/ADA6_5/ross6_5.pdf">Playing by the Rules</a>,
+            <a href="http://www.appdevadvisor.co.uk/">Application Development Advisor</a> 6(5), June 2002, 38-43.
+              
+         </li>
+           
+         <li>
+            Michael Schroeder and Gerd Wagner (Eds.): <a href="http://CEUR-WS.org/Vol-60/">Proceedings of the International
+               Workshop on  Rule Markup Languages for Business Rules on the Semantic Web</a>.
+            Sardinia, Italy, June 14, 2002. CEUR-WS Publication Vol-60.
+              
+         </li>
+           
+         <li>
+            Gerd Wagner: <a href="http://tmitwww.tm.tue.nl/staff/gwagner/myruleml/GRML.pdf">How to Design a General Rule Markup Language?</a>,  Invited Talk, Workshop XML Technologien f&uuml;r das Semantic Web (XSW 2002), Berlin, June 2002.
+              
+         </li>
+           
+         <li>
+            Gerd Wagner, Said Tabet, and Harold Boley: <a href="http://www.omg.org/docs/br/03-10-02.pdf">MOF-RuleML: The Abstract Syntax of RuleML as a MOF Model</a>,
+            <a href="http://www.integrate2003.com">Integrate 2003</a>, OMG Meting, October 2003, Boston.
+              
+         </li>
+         
+      </ul>
+      
+      <h2><a name="Structure">Structure (Updated: 2012-08-04)</a></h2>
+      
+      
+      
+      
+      <p>
+         Maintained on the wiki at <a href="http://wiki.ruleml.org/index.php/Organizational_Structure">Organizational Structure</a>.
+         
+      </p>
+      
+      
+      
+      
+      
+      <h2><a name="Contacts">Contacts</a></h2>
+      
+      
+      <p>
+         If you are interested to join the RuleML Initiative,
+         please send a link describing your
+         work related to rule markup to <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>
+         and <a href="http://home.comcast.net/~stabet/">Said Tabet</a>;
+         same for general RuleML questions/suggestions.
+         Depending on your specific RuleML interests, you may also contact
+         some RuleML Technical Group (<a href="#Structure">select above</a>) or
+         some RuleML Participant (<a href="#Participants-Systems">select above</a>).
+         You are encouraged to subscribe to our main
+         mailing list: <a href="http://mail.ruleml.org/pipermail/ruleml-all/2003-November/000000.html">ruleml-all</a>.
+         
+      </p>
+      <br>
+      
+      <p>
+         Site Contact:
+         <a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+         Page Version: 2012-11-17
+         
+         <br><br><br>
+         
+               <a name="Practice-Preach"></a><small>"Practice what you preach": XML source of this homepage at <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>);
+                  <br>
+                  transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="homepage.xsl">homepage.xsl</a> (View | Page Source)
+                  </small>
+         
+      </p>
+        
+   </body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+xmlns="http://www.tsheringML.com" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.tsheringML.com"
+>
+
+<xs:attributeGroup name="Conference.attlist">
+		<xs:attribute name="kind" use="required"> 
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="summer"/>
+					<xs:enumeration value="winter"/>
+                    <xs:enumeration value="fall"/>
+					<xs:enumeration value="spring"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<xs:group name="Conference.content">
+		<xs:sequence>
+		    <xs:element ref="Date"/>
+			<xs:element ref="Time"/>
+			<xs:element ref="Location"/>
+			<xs:element ref="Presenters"/>	
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Conference.type">
+		<xs:group ref="Conference.content"/>
+		<xs:attributeGroup ref="Conference.attlist"/>
+	</xs:complexType>
+	<xs:element name="Conference" type="Conference.type"/>
+	
+	<xs:element name="Date" type="xs:date"/>
+	<xs:element name="Time" type="xs:time"/>
+	
+	<xs:attributeGroup name="Location.attlist"/>
+    <xs:group name="Location.content">	
+	    <xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Location.type" mixed = "true">
+		<xs:group ref="Location.content"/>
+		<xs:attributeGroup ref="Location.attlist"/>
+	</xs:complexType>
+	<xs:element name="Location" type="Location.type"/>
+	
+	
+	<xs:attributeGroup name="Presenters.attlist"/>
+    <xs:group name="Presenters.content">	
+	    <xs:sequence>
+		<xs:element ref="person" minOccurs="1" maxOccurs="unbounded"/> 
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Presenters.type" mixed = "true">
+		<xs:group ref="Presenters.content"/>
+		<xs:attributeGroup ref="Presenters.attlist"/>
+	</xs:complexType>
+	<xs:element name="Presenters" type="Presenters.type"/>
+	
+	<xs:attributeGroup name="person.attlist"/>
+    <xs:group name="person.content">	
+	    <xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="person.type" mixed = "true">
+		<xs:group ref="person.content"/>
+		<xs:attributeGroup ref="person.attlist"/>
+	</xs:complexType>
+	<xs:element name="person" type="person.type"/>
+	
+</xs:schema>	
+	
+	

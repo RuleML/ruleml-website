@@ -1,0 +1,16 @@
+<!-- XML DTD for a 'UR' (Flat) Equational-Logic RuleML sublanguage, including classical/strong negation -->
+<!-- File: negurequalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of common -->
+<!-- new elements) are found in equalog_mod.mod because they are common in this DTD and equalog as well -->
+<!ENTITY % equalog.mod SYSTEM "equalog_mod.mod">
+%equalog.mod;
+
+<!-- this module inherits from the (negation) 'UR' Horn-Logic RuleML sublanguage -->
+<!ENTITY % negurhornlog_include SYSTEM "negurhornlog.dtd">
+%negurhornlog_include;
+
+<!-- URI's can also be used under an optional href attribute of funs as used for RDF predicates -->
+<!ATTLIST fun href %URI; #IMPLIED>

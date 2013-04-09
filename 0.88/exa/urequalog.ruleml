@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.88/xsd
+http://www.ruleml.org/0.88/xsd/urequalog.xsd"
+>
+
+<!-- a trivial example rulebase for testing the 'UR' Equalog RuleML sublanguage -->
+
+<And innerclose="universal">
+
+<Implies>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <slot><Ind>t</Ind><Var>b</Var></slot>
+      <Var type="string">x</Var>
+      <Var>y</Var>
+      <Ind wref="some_URI">Steph</Ind>
+     </Atom>
+  </head>
+  <body>
+    <And>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind type="test" wref="some_URI">Jane</Ind>
+      <Ind wref="another_URI">Joan</Ind>
+      <Ind wref="another_URI" type="long">Jack</Ind>
+      <Var>y</Var>
+      <Ind wref="another_URI">Frank</Ind>
+      <slot><Ind>yar</Ind><Cterm type="string">
+          <opc><Ctor wref="another_URI">constructor</Ctor></opc>
+          <Plex>
+            <Var>z</Var>
+            <slot><Ind>yar2</Ind><Var>c</Var></slot>
+          </Plex>
+        </Cterm></slot>
+    </Atom>
+    </And>
+  </body>
+</Implies>
+
+      <Atom>
+        <opr><Rel wref="some_URI">some relation</Rel></opr>
+        <slot><Ind>role_name1</Ind><Ind>role 1</Ind></slot>
+        <Ind>constant a</Ind>
+        <Ind wref="another_URI">constant b</Ind>
+        <slot><Ind>role_name2</Ind><Ind wref="another_URI">role 2</Ind></slot>
+      </Atom>
+
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind wref="another_URI">constant c</Ind>
+        <Ind>constant d</Ind>
+        <Cterm>
+          <opc><Ctor>yac</Ctor></opc>
+            <Ind>constant g</Ind>
+            <Ind wref="another_URI">constant h</Ind>
+            <Cterm>
+              <opc><Ctor wref="empty_URI">empty</Ctor></opc>
+            </Cterm>
+            <Ind>constant h</Ind>
+        </Cterm>
+      </Atom>
+
+      <Equal>
+        <Nano>
+          <opf><Fun wref="fun_URI">some function</Fun></opf>
+          <Ind>arg1</Ind>
+          <Ind>arg2</Ind>
+          <Ind type="test2">arg3</Ind>
+        </Nano>
+        <Nano>
+          <opf><Fun wref="fun_URI">some other function</Fun></opf>
+          <Ind>arg4</Ind>
+          <Ind>arg5</Ind>
+          <Ind>arg6</Ind>
+        </Nano>
+      </Equal>
+
+
+
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <slot><Ind>role_name3</Ind><Ind>role 3</Ind></slot>
+    </Atom>
+
+
+    <Equal>
+      <Ind>some constant</Ind>
+      <Var type="test">d</Var>
+    </Equal>
+
+</And>
+
+</Assert>

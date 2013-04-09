@@ -1,0 +1,20 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Positional Argument Sequences: Binary" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, positional argument sequence, binary" ]
+dc:description [
+    "The expansion module for binary positional argument sequences in predicate logics."
+]
+dc:date [ "2011-05-26" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= notAllowed
+# This module declares the following RuleML choice pattern:
+#            * termsPlus.sequence
+
+## In binary logics, a positional argument sequence has exactly zero or two positional arguments.
+termsForAtoms.sequence |= (positionalArgument-edge.choice, positionalArgument-edge.choice)?
+termsForExpressions.sequence |= (positionalArgument-edge.choice, positionalArgument-edge.choice)?

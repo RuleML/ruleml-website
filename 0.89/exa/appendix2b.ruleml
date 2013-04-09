@@ -1,0 +1,16 @@
+<Query
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/hornlog.xsd">
+
+<!-- 'own' example as universal 'Assert' with existential Query -->
+
+<!-- Existentially closed atom in 'Query' wrapper (response provable from 'Assert') -->
+
+  <Atom closure="existential">
+    <Rel>own</Rel>
+    <Var>person</Var>
+    <Var>object</Var>
+  </Atom>
+
+</Query>

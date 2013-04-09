@@ -1,0 +1,16 @@
+<!-- XML DTD for a 'UR' (Flat) Equational-Logic RuleML sublanguage, including negation as failure (NAF) -->
+<!-- File: nafurequalog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-12-17 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of common -->
+<!-- new elements) are found in equalog_mod.mod because they are common in this DTD and equalog as well -->
+<!ENTITY % equalog.mod SYSTEM "equalog_mod.mod">
+%equalog.mod;
+
+<!-- this module inherits from the (NAF) 'UR' Horn-Logic RuleML sublanguage -->
+<!ENTITY % nafurhornlog_include SYSTEM "nafurhornlog.dtd">
+%nafurhornlog_include;
+
+<!-- URI's can also be used under an optional href attribute of funs as used for RDF predicates -->
+<!ATTLIST fun href %URI; #IMPLIED>

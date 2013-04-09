@@ -1,0 +1,21 @@
+
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+
+<Room
+xmlns="http://www.roomML.com" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.roomML.com http://www.ruleml.org/temp/greg/roomML.xsd"
+kind = "apartment"
+>
+
+
+
+<Owner>
+John Yerxa
+</Owner>
+<Occupant>
+Greg Sherman
+</Occupant>
+</Room> 

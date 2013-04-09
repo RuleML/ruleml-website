@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Event Calculus  -->
+
+<ECA-RuleML 
+xmlns="http://www.ruleml.org/0.9/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.9/xsd 
+http://ibis.in.tum.de/research/projects/eca-ruleml/schemas/0.1/event_calculus.xsd">
+
+<!-- ContractLog formalization of Event Calculus Axioms (ISO Prolog / Prova syntax)
+
+initiates(loading(Server),status(Server,loaded),T).
+terminates(unloading(Server),status(Server,loaded),T).
+ -->
+ 
+<Assert>
+	<Initiates>
+	   <event>
+	       <Cterm>
+	                   <Ctor>loading</Ctor>
+	                   <Var>Server</Var>
+	        </Cterm>
+	   </event>
+	  <fluent>
+	        <Cterm>
+	                    <Ctor>status</Ctor>
+	                    <Var>Server</Var>
+	                     <Ind>loaded</Ind>
+	         </Cterm>
+	   </fluent>
+	   <time>
+	          <Var>T</Var>
+	   </time>
+	</Initiates>
+	
+	<Terminates>
+	         <Cterm>
+	                    <Ctor>unloading</Ctor>
+	                   <Var>Server</Var>
+	           </Cterm>
+	          <Cterm>
+	                     <Ctor>status</Ctor>
+	                     <Var>Server</Var>
+	                     <Ind>loaded</Ind>
+	             </Cterm
+	             <Var>T</Var>
+	</Terminates>
+</Assert>
+</ECA-RuleML>

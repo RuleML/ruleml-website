@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.87/xsd" 
+xmlns="http://www.ruleml.org/0.87/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including Negation as failure (NAF)
+			File: nafdatalog.xsd
+			Version: 0.87
+			Last Modification: 2004-08-11
+		</xs:documentation>
+	</xs:annotation>
+
+	<!-- nafdatalog includes the 'negation' module -->
+	<xs:include schemaLocation="modules/negation_module.xsd"/>
+	
+	<!-- note the addition of Naf (negation as failure) from the negation module -->
+	<xs:redefine schemaLocation="datalog.xsd">
+
+		<!--
+			add Naf so that body's content model is:
+			(Atom | And | Or | Naf)
+		-->
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf so that Query's content model is:
+			( (rlab, (body | Atom | And | Or | Naf) ) | ( (body | Atom | And | Or | Naf), rlab?) )
+		-->
+		<xs:group name="Query.extend">
+			<xs:choice>
+				<xs:group ref="Query.extend"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>	
+		</xs:group>
+
+		<!--
+			add Naf so that And's content model is:
+			((Atom | And | Or | Naf)*)
+		-->
+		<xs:group name="And.content">
+			<xs:choice>
+				<xs:group ref="And.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf so that Or's content model is:
+			((Atom | And | Or | Naf)*)
+		-->		
+		<xs:group name="Or.content">
+			<xs:choice>
+				<xs:group ref="Or.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+
+		<!--
+			add Naf so that wff's content model is:
+			((Atom | And | Or | Naf)*)
+		-->
+		<xs:group name="wff.content">
+			<xs:choice>
+				<xs:group ref="wff.content"/>
+				<xs:element ref="Naf"/>
+			</xs:choice>
+		</xs:group>
+
+	</xs:redefine>
+	
+</xs:schema>

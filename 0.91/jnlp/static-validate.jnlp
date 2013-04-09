@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://ruleml.org/0.91/jar/" 
+  href="../jnlp/static-validate.jnlp">
+  <information>
+    <title>Jing Validator</title>
+    <vendor>Thai OpenSource</vendor>
+  </information>
+  <resources>
+    <j2se version="1.5+" href="" initial-heap-size="128m" max-heap-size="512m" />
+    
+    <jar href="jing.jar"/>
+    <!--<jar href="helloworld.jar"/>-->
+  </resources>
+  <!--<application-desc main-class="testing.HelloWorld"></application-desc>-->
+  <application-desc main-class="com.thaiopensource.relaxng.util.Driver">
+  <!--<argument>http://ruleml.org/0.91/relaxng/schema_rnc.php?backbone=x3f&amp;default=x7&amp;termseq=x7&amp;lng=x1&amp;propo=x3f&amp;implies=x7&amp;terms=xf3f&amp;quant=x7&amp;expr=xf&amp;serial=xf</argument>-->
+  <argument>-c</argument>
+  <argument>"http://ruleml.org/0.91/relaxng/bindatagroundfact_relaxed_real.rnc"</argument>
+  <argument>"http://ruleml.org/0.91/exa-test/naffologeq.ruleml"</argument>
+  </application-desc>
+</jnlp>

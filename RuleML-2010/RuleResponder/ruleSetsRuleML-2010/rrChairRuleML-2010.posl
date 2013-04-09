@@ -1,0 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF profile for RuleML-2010 RuleResponder Chair: **Disclaimer** these rules are experimental and not offical									    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%FOAF contact and personal information									                                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%FOAF facts about the RuleResponder Chair	
+
+person(
+  symposiumChair[ruleML_2010,ruleresponder],  
+  foafname[firstName[Kalliopi],lastName[Kravari]],
+  foaftitle[title[Ms]],
+  foafmbox[email[kkravariATcsdDOTauthDOTgr]],
+  exphones[telephoneNumbers[office[302310998433],cellPhone[]]]).
+  
+person(
+  symposiumChair[ruleML_2010,ruleresponder],  
+  foafname[firstName[Efstratios],lastName[Kontopoulos]],
+  foaftitle[title[Mr]],
+  foafmbox[email[skontopoATcsdDOTauthDOTgr]],
+  exphones[telephoneNumbers[office[302310998433],cellPhone[]]]).
+  

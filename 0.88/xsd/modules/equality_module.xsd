@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.88/xsd"
+xmlns="http://www.ruleml.org/0.88/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Equation RuleML elements module.
+			This is the XML Schema Equation module for RuleML.
+			File: equation_module.xsd
+			Version: 0.88
+			Last Modification: 2005-01-19
+			
+			This module declares the following equation RuleML elements:
+			* Equal
+			* side
+			* Nano
+			* opf
+			* Fun
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Equal ***
+		content model: ( (side | Ind | Var | Cterm | Plex | Nano), (side | Ind | Var | Cterm | Plex | Nano) )
+
+		An equational formula.
+
+		Equational formulas are usable within head, body, Implies, And and Or.  They use two
+		expressions consisting of individuals, variables, complex terms or nanos which can
+		also be introduced by the metarole 'side'.
+	-->
+	<xs:attributeGroup name="Equal.attlist"/>
+	<xs:group name="Equal.content">
+		<xs:sequence>
+			<xs:choice minOccurs="2" maxOccurs="2">
+				<xs:element ref="side"/>
+				<xs:group ref="side.content"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Equal.type">
+		<xs:group ref="Equal.content"/>
+		<xs:attributeGroup ref="Equal.attlist"/>
+	</xs:complexType>
+	<xs:element name="Equal" type="Equal.type"/>
+
+	<!--
+		*** side ***
+		content model: ( Ind | Var | Cterm | Plex | Nano )
+
+		This is a metarole which may be left implicit.  It may contain an Ind, Var, Cterm or Nano.
+	-->
+	<xs:attributeGroup name="side.attlist"/>
+	<xs:group name="side.content">
+		<xs:choice>
+			<xs:group ref="arg.content"/>			
+			<xs:element ref="Nano"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="side.type">
+		<xs:group ref="side.content"/>
+		<xs:attributeGroup ref="side.attlist"/>
+	</xs:complexType>
+	<xs:element name="side" type="side.type"/>
+
+	<!--
+		*** Nano ***
+		content model: ( ( (opf | Fun), (arg | Ind | Var | Cterm | Plex)*) | ((arg | Ind | Var | Cterm | Plex)+, opf) )
+
+		Nanos are usable within equational formulas.  They use an 'opf' role (or, directly, a 'Fun')
+		followed by three flat (i.e. non-Nano) kinds of arguments (optionally introduced by an 'arg'
+		metarole), or vice versa, much like Atoms and Cterms.
+	-->
+	<xs:attributeGroup name="Nano.attlist"/>
+	<xs:group name="Nano.content">
+		<xs:choice>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element ref="opf"/>
+					<xs:element ref="Fun"/>
+				</xs:choice>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="arg"/>
+					<xs:group ref="arg.content"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="arg"/>
+					<xs:group ref="arg.content"/>														
+				</xs:choice>
+				<xs:element ref="opf"/>
+			</xs:sequence>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="Nano.type">
+		<xs:group ref="Nano.content"/>
+		<xs:attributeGroup ref="Nano.attlist"/>
+	</xs:complexType>
+	<xs:element name="Nano" type="Nano.type"/>
+
+	<!--
+		*** opf ***
+		content model: (Fun)
+
+		A function operator expression (similar in spirit to opr and opc).
+
+		This is a metarole which may be left implicit.  It uses a fun(ction) symbol.
+	-->
+	<xs:attributeGroup name="opf.attlist"/>
+	<xs:group name="opf.content">
+		<xs:sequence>
+			<xs:element ref="Fun"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="opf.type">
+		<xs:group ref="opf.content"/>
+		<xs:attributeGroup ref="opf.attlist"/>
+	</xs:complexType>
+	<xs:element name="opf" type="opf.type"/>
+	
+	<!--
+		*** Fun ***
+		content model: (#PCDATA)
+
+		A user-defined function name.
+	-->
+	<xs:attributeGroup name="Fun.attlist"/>
+	<xs:group name="Fun.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Fun.type" mixed="true">
+		<xs:group ref="Fun.content"/>
+		<xs:attributeGroup ref="Fun.attlist"/>
+	</xs:complexType>
+	<xs:element name="Fun" type="Fun.type"/>
+	
+</xs:schema>

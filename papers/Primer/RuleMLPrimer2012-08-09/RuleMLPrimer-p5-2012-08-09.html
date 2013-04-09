@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Keywords"
+      content="RuleML, Primer, tutorial, XML, syntax, knowledge representation, rule language, logic programming, semantic web" />
+    <meta name="Description" content="RuleML as de facto language standard." />
+    <link rel="stylesheet" type="text/css" href="Primer-print-2012-08-09.css" />
+    <title>Order-Labeled Diagram</title>
+    <script>
+      var nextpage="RuleMLPrimer-p6-2012-08-09.html";
+      var enter="13";
+      function handler(e){
+        if (e.keyCode==enter) {location.href = nextpage}
+      }      
+    </script>
+  </head>
+
+  <body onkeydown = "handler(event)">
+    <section class="slide" id="section-p5-slide">
+      <h1>RuleML Datalog Fact</h1>
+      <figure>
+        <img src="../png/spending_atom.png" />
+      </figure>
+      <pre class="example_code">
+<span class="elem">&lt;Atom&gt;</span>
+  <span class="elem">&lt;Ind&gt;</span>Peter Miller<span class="elem">&lt;/Ind&gt;</span>
+  <span class="elem">&lt;op&gt;&lt;Rel&gt;</span>spent at least<span class="elem">&lt;/Rel&gt;&lt;/op&gt;</span>
+  <span class="elem">&lt;Ind&gt;</span>5000 euros<span class="elem">&lt;/Ind&gt;</span>
+  <span class="elem">&lt;Ind&gt;</span>in the previous year<span class="elem">&lt;/Ind&gt;</span>
+<span class="elem">&lt;/Atom&gt;</span>
+      </pre>
+      
+    </section>
+    <section id="section-p5-prose">
+      <h3>RuleML Datalog Fact - Notes</h3>      
+      <p>This ternary 'spent at least' relationship between the individual Peter Miller, the quantity of currency 5000 euro, and the temporal reference to the previous year can be serialized as a Datalog RuleML fact. Here XML tags -- similar to non-terminals in linguistics -- directly mark up PCDATA (Parsed Character Data) of the surface sentence -- similar to linguistic terminals:</p>
+      
+      <p>Going through the tags from inside out, we find that <span
+        style="font-style: italic">"spent at least"</span> is marked up as the relation
+        name (table name) of the fact: <span
+          style="font-family: courier">&lt;Rel&gt;spent at least&lt;/Rel&gt;</span>. On the
+        same level, the three phrases <span style="font-style: italic">"</span><span
+          style="font-style: italic">Peter Miller"</span>, <span
+            style="font-style: italic">"5000 euros"</span>, and <span
+              style="font-style: italic">"in the previous year"</span> are marked up as individual
+        constants that are the three arguments (table columns) of the relation, in
+        the given order: <span style="font-family: courier">&lt;Ind&gt;Peter
+          Miller&lt;/Ind&gt;, &lt;Ind&gt;5000 euros&lt;/Ind&gt;, and
+          &lt;Ind&gt;in the previous year&lt;/Ind&gt;</span>. The entire relation application
+        constitutes an atomic formula, marked up by <span
+          style="font-family: courier">&lt;Atom&gt;</span> ... <span
+            style="font-family: courier">&lt;/Atom&gt;</span>.</p>
+      
+    </section>
+    <footer>
+      <nav>
+        <a class="prev" rel="prev" href="RuleMLPrimer-p4-2012-08-09.html"
+          >&#171; Previous</a>
+        <a class="next" rel="next" href="RuleMLPrimer-p6-2012-08-09.html"
+          >Next &#187;</a>
+      </nav>
+    </footer>
+  </body>
+</html>

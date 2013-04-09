@@ -1,0 +1,20 @@
+Validation Instructions for RuleML 0.86 Examples (using XSDs)
+-------------------------------------------------------------
+Last modified: June 29, 2004
+
+1. Direct your browser to http://www.w3.org/2001/03/webdata/xsv 
+(Validator for XML Schema REC 20010502 version).
+
+2. Enter the URL of an example RuleML file into the textfield preceded
+by "Address(es):".
+
+e.g. http://www.ruleml.org/0.86/exa/urcbindatagroundfact.ruleml
+
+3. If desired, select an output method appropriate for your browser
+using the radio buttons.
+
+4. Click the "Get Results" button.
+
+
+Note: The validation may take a while, and may require a full
+refresh when re-validating to avoid caching.

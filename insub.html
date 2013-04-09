@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><title>RuleML Taxonomies</title><style type="text/css">
+       h1 { font-size: 32pt; font-weight: bold }
+       h2 { font-size: 16pt; font-weight: bold }
+       ul { line-height: 120% }
+       ol { line-height: 120% }
+       p { line-height: 100% }
+     </style></head><body background="hintergrund.gif" bgcolor="#FFFFFF">
+    <center>
+      <big>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+--&gt;</pre></b></td></tr></table>
+        <table bgcolor="#FFCCCC" border="1" cellpadding="5"><tr><td>R u l e M L</td></tr></table>
+        <table bgcolor="#CCCCFF" border="1" cellpadding="5"><tr><td><b><pre>
+
+&lt;--</pre></b></td></tr></table>
+      </big>
+      <br> <br>
+
+<h1>Taxonomies in RuleML</h1>
+<h2><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a></h2>
+<h2>2002-04-18: Version 0.2</h2>
+    </center>
+
+<br> <br> <br>
+
+<p>
+This is a translator from RuleML's experimental taxonomy (sub)
+extension to normal RuleML axioms (imp's).
+</p>
+  <h2>Sections</h2><ul><li><a href="#Overview">Overview</a><li><a href="#Explanations">Explanations</a></ul><h2><a name="Overview">Overview</a></h2>
+
+<p>
+RuleML has its focus on the 'axioms' part of ontologies,
+while the 'taxonomy' part of ontologies can be reduced to
+special axioms, nameley rules that represent subsumption links.
+In order to bridge the taxonomy amd axioms worlds, a set of
+experimental RuleML tags is introduced here, which consist
+of a sub(sumption) -- or sub(set) -- type tag along with a role tag
+_shead for the superclass and a role tag _sbody for the subclass.
+Additionaly, type tags sor for class disjunction and
+sand for class conjunction are introduced.
+</p>
+<p>
+For example, a typical taxonomic downward branch such as
+<b><pre>
+                man
+               /   \
+              /     \
+             /       \
+       bachelor     marriedman
+</pre></b>
+can be represented in the experimental taxonomy extension as follows
+(expressing &quot;bachelor or marriedman implies man&quot;):
+<b><pre>
+&lt;sub&gt;
+  &lt;_shead&gt;&lt;rel&gt;man&lt;/rel&gt;&lt;/_shead&gt;
+  &lt;_sbody&gt;
+    &lt;sor&gt;
+      &lt;rel&gt;bachelor&lt;/rel&gt;
+      &lt;rel&gt;marriedman&lt;/rel&gt;
+    &lt;/sor&gt;
+  &lt;/_sbody&gt;
+&lt;/sub&gt;</pre></b>
+</p>
+<p>
+Conversely, a typical taxonomic upward branch such as
+<b><pre>
+         person     male
+             \       /
+              \     /
+               \   /
+                man
+</pre></b>
+can be represented in the experimental taxonomy extension as follows
+(expressing &quot;man implies person and male&quot;):
+<b><pre>
+&lt;sub&gt;
+  &lt;_shead&gt;
+    &lt;sand&gt;
+      &lt;rel&gt;person&lt;/rel&gt;
+      &lt;rel&gt;male&lt;/rel&gt;
+    &lt;/sand&gt;
+  &lt;/_shead&gt;
+  &lt;_sbody&gt;&lt;rel&gt;man&lt;/rel&gt;&lt;/_sbody&gt;
+&lt;/sub&gt;</pre></b>
+</p>
+<p>
+Finally, assuming there was no named class for man (thus introducing an
+anonymous node Anon1), a taxonomic two-way branch such as
+<b><pre>
+         person     male
+             \       /
+              \     /
+               \   /
+               Anon1
+               /   \
+              /     \
+             /       \
+       bachelor     marriedman
+</pre></b>
+can be represented in the experimental taxonomy extension as follows
+(not requiring a direct counterpart to the anonymous node Anon1
+for expressing &quot;bachelor or marriedman implies person and male&quot;):
+<b><pre>
+&lt;sub&gt;
+  &lt;_shead&gt;
+    &lt;sand&gt;
+      &lt;rel&gt;person&lt;/rel&gt;
+      &lt;rel&gt;male&lt;/rel&gt;
+    &lt;/sand&gt;
+  &lt;/_shead&gt;
+  &lt;_sbody&gt;
+    &lt;sor&gt;
+      &lt;rel&gt;bachelor&lt;/rel&gt;
+      &lt;rel&gt;marriedman&lt;/rel&gt;
+    &lt;/sor&gt;
+  &lt;/_sbody&gt;
+&lt;/sub&gt;</pre></b>
+</p>
+<p>
+The reduction to normal RuleML (0.8) is straight-forward,
+mapping sub to imp, _shead to _head, _sbody to _body,
+sor to or, as well as sand to and. It also expands each rel
+to an atom applying the rel to a newly created variable, x.
+An XSLT stylesheet performs this translation.
+</p>
+<p>
+For example, the three sub elements above,
+when put into the file
+<a href="http://www.ruleml.org/sub/man-sub.ruleml">man-sub.ruleml</a>
+(<a href="http://www.ruleml.org/sub/man-sub.ruleml.txt">man-sub.ruleml.txt</a>),
+will be translated into the imp elements of the file
+<a href="http://www.ruleml.org/sub/man-imp.ruleml">man-imp.ruleml</a>
+(<a href="http://www.ruleml.org/sub/man-imp.ruleml.txt">man-imp.ruleml.txt</a>).
+</p>
+<h2><a name="Explanations">Explanations</a></h2>
+
+<p>
+The XSLT stylesheet <a href="http://www.ruleml.org/sub/sub2imp.xsl">sub2imp.xsl</a> (<a href="http://www.ruleml.org/sub/sub2imp.xsl.txt">sub2imp.xsl.txt</a>) implements the translator from the 'taxonomic RuleML' to
+normal RuleML.
+</p>
+<p>
+Consider the taxonomic RuleML example
+<a href="http://www.ruleml.org/sub/heating-taxonomy-sub.ruleml">heating-taxonomy-sub.ruleml</a> (<a href="http://www.ruleml.org/sub/heating-taxonomy-sub.ruleml.txt">heating-taxonomy-sub.ruleml.txt</a>).
+Running this through Cocoon leads to
+<a href="http://www.ruleml.org/sub/heating-taxonomy-imp.ruleml">heating-taxonomy-imp.ruleml</a> (<a href="http://www.ruleml.org/sub/heating-taxonomy-imp.ruleml.txt">heating-taxonomy-imp.ruleml.txt</a>).
+</p>
+<p>
+Another (partial) translator maps 'taxonomic RuleML' directly to RDF Schema,
+as explained in the <a href="http://www.dfki.uni-kl.de/~boley/heating-design">heating-design</a> page.
+</p>
+<br>
+<p>
+Site Contact:
+<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+Page Version: 2002-04-18
+
+<br><br><br>
+
+      <a name="Practice-Preach"></a><small>&quot;Practice what you preach&quot;: XML source of this homepage at <a href="http://www.dfki.uni-kl.de/~boley/xslt/insub.xml">insub.xml</a> (<a href="http://www.dfki.uni-kl.de/~boley/xslt/insub.xml.txt">insub.xml.txt</a>);
+      <br>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+</p>
+
+<xhtml><a href="http://xml.apache.org/cocoon/index.html" target="_self"><img align="right" alt="Powered by Cocoon" border="0" hspace="4" src="cocoon-small.jpg" vspace="2"></a></xhtml>
+  </body></html>
+<!-- This page was served in 1234 milliseconds by Cocoon 1.8 -->

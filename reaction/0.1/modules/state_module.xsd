@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+          
+			KR state processing module part of Reaction RuleML.
+
+			This is the XML Schema KR module for Reaction RuleML.
+			File: state_module.xsd
+			Version: 0.1
+			Last Modification: 2006-10-13
+
+			This schema declares the following Reaction RuleML elements and attributes:
+
+				* Initiates
+				* Terminates
+				* state
+				* HoldsState
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+
+	<!--
+      *** state ***
+
+      content model: (Ind | Var | Expr)
+	-->
+	<xs:attributeGroup name="state.attlist"/>
+	<xs:group name="state.content">
+		
+			<xs:choice>
+				<xs:element ref="Ind"/>
+				<xs:element ref="Var"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		
+	</xs:group>
+	<xs:complexType name="state.type">
+		<xs:group ref="state.content"/>
+		<xs:attributeGroup ref="state.attlist"/>
+	</xs:complexType>
+	<xs:element name="state" type="state.type"/>
+	
+	
+	<xs:group name="fluent.content">
+		
+			<xs:choice>
+				<xs:element ref="state"/>
+				<xs:group ref="state.content"/>
+			</xs:choice>
+		
+	</xs:group>
+	
+	
+ 	<!--     *** Initiates ***
+
+      content model: (oid?,  (state | Ind | Var | Expr))
+	-->
+	<xs:attributeGroup name="Initiates.attlist"/>
+	<xs:group name="Initiates.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>		
+			<xs:group ref="fluent.content"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Initiates.type">
+		<xs:group ref="Initiates.content"/>
+		<xs:attributeGroup ref="Initiates.attlist"/>
+	</xs:complexType>
+	<xs:element name="Initiates" type="Initiates.type"/>
+
+	<!--
+      *** Terminates ***
+
+      content model: (oid?,  (state | Ind | Var | Expr))
+	-->
+	<xs:attributeGroup name="Terminates.attlist"/>
+	<xs:group name="Terminates.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="fluent.content"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Terminates.type">
+		<xs:group ref="Terminates.content"/>
+		<xs:attributeGroup ref="Terminates.attlist"/>
+	</xs:complexType>
+	<xs:element name="Terminates" type="Terminates.type"/>
+	
+	
+	
+	<!--
+      *** HoldsState ***
+
+      content model: (oid?, (state | Ind | Var | Expr), (time | interval | Ind | Var | Expr | Interval) )
+	-->
+	<xs:attributeGroup name="HoldsState.attlist"/>
+	<xs:group name="HoldsState.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:group ref="fluent.content"/>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:element ref="interval"/>				
+				<xs:group ref="interval.content"/>
+				<xs:element ref="Expr"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="HoldsState.type">
+		<xs:group ref="HoldsState.content"/>
+		<xs:attributeGroup ref="HoldsState.attlist"/>
+	</xs:complexType>
+	<xs:element name="HoldsState" type="HoldsState.type"/>	
+	
+</xs:schema>

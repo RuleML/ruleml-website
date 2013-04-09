@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<homepage>
+	<title>Object-Oriented RuleML to Positional RuleML - Weighted Subset - Translators</title>
+	<opening>
+		<center>
+			<big>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+-->]]></code>
+				</box>
+				<box bgcolor="#FFCCCC">R u l e M L</box>
+				<box bgcolor="#CCCCFF">
+					<code><![CDATA[
+
+<--]]></code>
+				</box>
+			</big>
+			<br/>
+			<br/>
+			<h1>Object-Oriented to Positional RuleML - Weighted Subset - Translators</h1>
+			<h2>
+				<a href="mailto:sgreene@nb.sympatico.ca">Stephen Greene</a>
+			</h2>
+			<h2>2003-03-26: Version 0.1</h2>
+		</center>
+		<br/>
+		<br/>
+		 XSLT translators between the weighted subset of Object-Oriented RuleML and Positional RuleML are provided through this page
+		<br/>
+	</opening>
+	<uplink href="index.html"/>
+	<section label="Overview">
+		<header>Overview</header>
+		<p>
+This is a set of (XSLT-specified) translators for transforming RuleML between its Weighted Positional and Weighted Object-Oriented specifications.
+</p>
+		<p>
+This translator set functions in exactly the same manner as the translator set for transforming between <a href="../oo2prml.html">Postional RuleML and OO RuleML.</a>
+</p>	</section>
+	<section label="Translators">
+		<header>Translators</header>
+		<xhtml>
+			<table border="2" align="center" cellspacing="4" cellpadding="3" bgcolor="#cfdbff">
+				<caption align="top">
+					<b>Object-Oriented RuleML to Positional RuleML Weighted Subset Translators</b>
+				</caption>
+				<tr>
+					<td>
+						<a href="applysigws.xsl">applysigws.xsl</a>
+						<br/>
+					</td>
+					<td>
+						<a href="nprmlsortws.xsl">nprmlsortws.xsl</a>
+						<br/>
+					</td>
+					<td>
+						<a href="nprml2prmlws.xsl">nprml2prmlws.xsl</a>
+						<br/>
+					</td>
+					<td>
+						<a href="applyweights.xsl">applyweights.xsl</a>
+						<br/>
+
+					</td>
+					
+					<td>
+						<a href="prml2nprmlws.xsl">prml2nprmlws.xsl</a>
+						<br/>
+					</td>
+				</tr>
+			</table>
+		</xhtml>
+		<br/>
+		<br/>
+		<itemize>
+			<item>
+				<p>
+					<a href="applysigws.xsl">applysigws.xsl</a> -> This translator takes a defined, object centred, <a href="../002prml.html">signature</a> and applies this signature 
+to the implementation of each atom within a fact, imp or query. The signature specifies the metaroles 
+(_r) which are required for each fact, imp, or query. Any metaroles that are not defined in the 
+implementation of the relation are inserted as an empty ind (&lt;ind/>), or if they are missing from within
+a body, an empty var (&lt;var/>). The output of the translator is a RuleML file in which each 
+implementation of an atom matches the corresponding signature declaration. If a weight is not specified for a role, it is completed with a default weight of 0.0.
+</p>
+			</item>
+			<item>
+				<p>
+					<a href="nprmlsortws.xsl">nprmlsortws.xsl</a> -> This translator sorts all of the metaroles within an atom, numerically by the weight value for each term. ind or var terms which occur within the instance of an atom as positional 
+terms are not sorted, and remain in their original Positional context. All Positional terms 
+currently occur at the beginning of the sorted, object-oriented metaroles. The output of the translator is a 
+RuleML file in which the metaroles are sorted by name within the signature declaration and within the implementation of each atom.
+</p>
+			</item>
+			<item>
+				<p>
+					<a href="nprml2prmlws.xsl">nprml2prmlws.xsl</a> -> This translator removes all of the metaroles within an atom, leaving the contents of the 
+metaroles in a positionalized, sorted order. The weights from each term are then stored in the _opc or _opr tag as space seperated values contained in the ws attribute. The output of the translator is a RuleML file in which the 
+RuleML is completely Positional, based on the sorted order of nprmlsort.xsl translator, in which 
+undefined metaroles have been filled in by empty ind or var terms by the applysig.xsl translator. The positionalized file contains no metaroles.
+</p>
+			</item>
+
+			<item>
+				<p>
+					<a href="prml2nprml.xsl">prml2nprml.xsl</a> -> 
+***This translator is not currently working succesfully, the order of weights to terms is not currently preserved.*** The output of the translator is a RuleML file in 
+which the RuleML is Object-Oriented, having a metarole implemented within an atom for each metarole 
+declared in the corresponding signature as well as the weights from each _opc or _opr tag, applied over the child roles. The output is unsorted. Any Positional terms occurring 
+within a specific implementation are preserved, in order, at the end of the object centred block.
+</p>
+			</item>
+			<item>
+				<p>
+					<a href="applyweights.xsl">applyweights.xsl</a> -> 
+					***This translator is not currently working succesfully, the order of weights to terms is not currently preserved.*** 
+					This translator takes a Positional RuleML file containing a list of weights for each atom or cterm, contained in the _opc or _opr tags.
+					The output of the translator is the Weighted Subset of OO RuleML completely translated with a weight contained within each role as the w attribute.
+</p>
+			</item>
+		</itemize>
+	</section>
+	<br/>
+	<br/>
+	<section label="Explanation">
+		<header>Explanation</header>
+		<p>
+The three translators, applysigwsxsl, nprmlsortws.xsl, and nprml2prmlws.xsl must be piped together in order to completely transform  Object-Oriented RuleML to Positional RuleML file. Each translator performs operations on the same set of nodes and is dependant on the output of the translator that is applied before it. 
+The applysig.xsl translator applys the specified object-oriented signature to all of the metaroles ensuring that the output is a complete RuleML file and adheres to the
+provided signature. Once the signature has been applied to the RuleML, it can be sorted by nprmlsort.xsl. This ensures that when the metaroles are removed 
+by nprml2prml.xsl, there is a guaranteed order that is maintained. 
+</p>
+				<p>
+The backwards translation is not currently bug free. prml2oormlws.xsl and applyweights.xsl must be piped together to completely perform the transformation. However at the current moment, there is an unfixed but causing order to not be preserved between associated weights and terms when this transformation is performed.
+</p>
+	</section>
+	<br/>
+	<br/>
+		<br/>
+	<br/>
+	<br/>
+	<closing>
+		<p>
+		Site Contact:
+		<a href="http://www.dfki.uni-kl.de/~boley/">Harold Boley</a>.
+		Page Version: 2003-03-28
+			<br/>
+			<br/>
+			<br/>
+			<a name="Practice-Preach"/>
+			<small>"Practice what you preach": XML source of this homepage at <a href="oo2prml.xml">oo2prml.xml</a> (<a href="oo2prml.xml.txt">oo2prml.xml.txt</a>);
+      <br/>
+      transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/">Michael Sintek</a>'s SliML <a href="http://www.w3.org/TR/xslt">XSLT</a> 	stylesheet at <a href="http://www.dfki.uni-kl.de/~boley/xslt/homepage.xsl">homepage.xsl</a> (View | Page Source)
+      </small>
+		</p>
+	</closing>
+</homepage>

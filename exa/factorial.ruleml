@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/ruleml-equalog.dtd">
+
+
+<rulebase>
+
+
+<!-- a flattened factorial definition -->
+
+<if>
+  <eq>
+    <nano>
+      <fun>fac</fun>
+      <ind>0</ind>
+    </nano>
+    <ind>1</ind>
+  </eq>
+  <and/>
+</if>
+
+<if>
+  <eq>
+    <nano>
+      <fun>fac</fun>
+      <var>n</var>
+    </nano>
+    <ind>r</ind>
+  </eq>
+  <and>
+    <atom>
+      <rel>greater</rel>
+      <var>n</var>
+      <ind>0</ind>
+    </atom>
+    <eq>
+      <var>m</var>
+      <nano>
+        <fun>-</fun>
+        <var>n</var>
+        <ind>1</ind>
+      </nano>
+    </eq>
+    <eq>
+      <ind>f</ind>
+      <nano>
+        <fun>fac</fun>
+        <var>m</var>
+      </nano>
+    </eq>
+    <eq>
+      <ind>r</ind>
+      <nano>
+        <fun>*</fun>
+        <var>n</var>
+        <var>f</var>
+      </nano>
+    </eq>
+  </and>
+</if>
+
+
+</rulebase>

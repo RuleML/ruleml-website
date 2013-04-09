@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>RuleML-2009 International Symposium on Rule Interchange and Applications | RuleML 2009</title>
+	<link href="master.css" media="screen" rel="stylesheet" type="text/css" />   
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="ruleml.org, Guido Governatori">
+	
+	<script type="text/javascript"> 
+ 
+	function elementSelected(){
+ 
+		var choice = document.form1.select1.selectedIndex;
+	    //general chair contact
+		var choice0 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_GeneralChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+	    //publicity chair sponsoring
+		var choice1 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>sponsor</Rel>" + "\n         " + 
+				"<Expr>" + "\n            " +
+				"<Fun>contact</Fun>" + "\n            " +
+				"<Ind>Mark</Ind>" + "\n            " +
+				"<Ind>JBoss</Ind>" + "\n         " +
+				"</Expr>" + "\n         " + 
+			    "<Ind type=\"integer\">500</Ind>" + "\n         " +
+				"<Expr>" + "\n            " +
+				"<Fun>results</Fun>" + "\n            " +
+				"<Var>Level</Var>" + "\n            " +
+				"<Var>Benefits</Var>" + "\n            " +
+				"<Var>DeadlineResults</Var>" + "\n         " +
+				"</Expr>" + "\n         " + 
+				"<Expr>" + "\n            " +
+				"<Fun>performative</Fun>" + "\n            " +
+				"<Var>Action</Var>" + "\n         " +
+				"</Expr>" + "\n      " + 
+			    "</Atom>" + "\n";
+       //publicity chair contact
+	   var choice2 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_PublicityChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n"; 
+	    //liaison chair view media partners
+		var choice3 = 		
+				"<Atom>" + "\n         " +
+			    "<Rel>viewMediaPartners</Rel>" + "\n         " + 
+				"<Var>Meeting</Var>" + "\n         " + 
+				"<Var>Partner</Var>" + "\n      " + 
+				"</Atom>" + "\n";
+				
+		//liaison chair view organization partners
+		var choice4 = 		
+				"<Atom>" + "\n         " +
+			    "<Rel>viewOrganizationPartners</Rel>" + "\n         " + 
+				"<Var>Meeting</Var>" + "\n         " + 
+				"<Var>Partner</Var>" + "\n      " + 
+				"</Atom>" + "\n";
+		
+		//liaison chair view sponsors with regards to level
+		var choice5 = 		
+				"<Atom>" + "\n         " +
+			    "<Rel>viewSponsors</Rel>" + "\n         " + 
+				"<Var>Meeting</Var>" + "\n         " + 
+				"<Var>Company</Var>" + "\n         " + 
+				"<Var>SponsorLevel</Var>" + "\n      " + 
+				"</Atom>" + "\n";
+				
+		//liaison chair view sponsors
+		var choice6 = 		
+				"<Atom>" + "\n         " +
+			    "<Rel>viewSponsors</Rel>" + "\n         " + 
+				"<Var>Meeting</Var>" + "\n         " + 
+				"<Var>Company</Var>" + "\n      " + 
+				"</Atom>" + "\n";
+				
+		//liaison chair contact
+		var choice7 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_LiaisonChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+				  
+		//program chair contact
+		var choice8 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_ProgramChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+
+	  
+
+				  
+	 var messageHeader =
+                  "<RuleML xmlns=\n   \"http://www.ruleml.org/0.91/xsd\"" + "\n" +
+				  " xmlns:xsi=\n   \"http://www.w3.org/2001/XMLSchema-instance\"" + "\n" +
+				  " xsi:schemaLocation=\n   \"http://www.ruleml.org/0.91/xsd" + "\n   " +
+				  " http://ibis.in.tum.de/research/" + "\n    " + "ReactionRuleML/0.2/rr.xsd\"" + "\n" +
+				  " xmlns:ruleml2007=" + "\n   " + "\"http://ibis.in.tum.de/projects/paw#\">" + "\n" +
+				  "\n " + "<Message mode=\"outbound\"" + "\n  " + "directive=\"query-sync\">" +
+			      "\n   " + "<oid>" + "\n      " + 
+			      "<Ind>RuleML-2009</Ind>" + "\n   " +
+			      "</oid>" + "\n   " +
+			      "<protocol>" + "\n      " +
+			      "<Ind>esb</Ind>" + "\n   " +
+			      "</protocol>" + "\n   " +
+			      "<sender>" + "\n      " +
+			      "<Ind>User</Ind>" + "\n   " +
+			      "</sender>" + "\n   " +
+			      "<content>" + "\n      ";					
+		
+	 var messageFooter = 			     
+				"   " + "</content>" + "\n " +
+			      "</Message>" + "\n" +
+			      "</RuleML>";
+		
+ 
+		if(choice == 0){
+			document.form2.box1.value = messageHeader + choice0 + messageFooter;
+		}else if(choice == 1){
+			document.form2.box1.value = messageHeader + choice1 + messageFooter;
+		}else if(choice == 2){
+			document.form2.box1.value = messageHeader + choice2 + messageFooter;
+		}else if(choice == 3){
+			document.form2.box1.value = messageHeader + choice3 + messageFooter;
+		}else if(choice == 4){
+			document.form2.box1.value = messageHeader + choice4 + messageFooter;
+		}else if(choice == 5){
+			document.form2.box1.value = messageHeader + choice5 + messageFooter;
+		}else if(choice == 6){
+			document.form2.box1.value = messageHeader + choice6 + messageFooter;
+		}else if(choice == 7){
+			document.form2.box1.value = messageHeader + choice7 + messageFooter;
+		}else if(choice == 8){
+			document.form2.box1.value = messageHeader + choice8 + messageFooter;
+		}
+	}
+</script> 
+	
+</head>
+<body onload="elementSelected()">
+
+<div id="page">
+
+  <div id="wrapper">
+        <div id="header">
+      <div id="logo">
+        RuleML <span class="fade">2009</span>
+      </div>
+      <div id="banner">
+        <p id="slogan">The International RuleML Symposium on Rule Interchange and Applications</p>
+
+        <p id="subslogan">Las Vegas, Nevada, USA: Nov 5-7, 2009</p>
+        <div id="headerimagecopyright">
+          <a href="http://creativecommons.org/licenses/by/2.0/deed.en_US" title="prova"><img alt="Creativecommons" src="CreativeCommons.png" /></a>
+          <a href="http://www.flickr.com/photos/schnappi/" 
+          title="Creator's Hompage">Image by Graham Coleman</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="inner_wrapper">
+      <div id="inner_inner_wrapper">
+        <div id="content">
+          <h1 id="overview">Rule Responder</h1>
+
+		  <p>Rule Responder</p>
+ 
+	<p style="margin-bottom: 0pt;"><strong><span style="font-style: italic;"> 
+	Use this text form to send a query in </span></strong><a
+
+	name="textfield"></a> <a
+
+	href="http://ibis.in.tum.de/research/ReactionRuleML/" target="_blank">Reaction
+	RuleML format</a> <strong><span style="font-style: italic;"></span><i> 
+	to the RuleML-2009 Organizational Agent:<br> 
+	<br> 
+	</i></strong></p> 
+	<form name="form2" method="get" action="http://198.164.40.194:8888"> <input
+		name="Horde" value="3a466331bca877eeb014be19eee68790" type="hidden"> <textarea
+		name="box1" cols="46" rows="31" WRAP=OFF></textarea> 
+		<div align="center"><input value="Send Message" type="submit"> </div>
+	</form> 
+	<p style="margin-bottom: 0pt;"><span style="font-weight: bold;">Query
+	Selection</span><br> 
+	<strong><span style="font-style: italic;"></span></strong></p> 
+	<p style="margin-bottom: 0pt;"><strong style="font-weight: normal;"><span
+	style="font-style: italic;">The drop-down boxes show sample queries you -- as an External Agent -- can send
+	to the RuleML-2009 Organizational Agent. These examples can also act as initial templates that you can edit to create your own queries.
+	</span></strong><strong><i><span
+	style="font-weight: normal;"></span><br> 
+	<br> 
+	</i></strong></p> 
+	<form name="form1" method="post"> 
+	  <div align="center"> 
+	  <select name="select1" onchange="elementSelected()"> 
+	  <option value="A">General Chair Contact</option> 
+	  <option value="B">Publicity Chair Sponsoring</option> 
+	  <option value="C">Publicity Chair Contact</option> 
+	  <option value="D">Liaison Chair View Media Partners</option> 
+	  <option value="E">Liaison Chair View Organization Partners</option> 
+	  <option value="F">Liaison Chair View Sponsors With Regards to Level</option>
+	  <option value="G">Liaison Chair View Sponsors</option>
+	  <option value="H">Liaison Chair Contact</option> 
+	  <option value="I">Program Chair Contact</option> 
+	  
+	  </select>
+	  </div> 
+	</form> 
+	<br>
+	<p style="margin-bottom: 0pt;"><span style="font-weight: bold;"><u>Sources Used by SymposiumPlanner-2009:</u></span><br><br>
+	<UL>
+	<p><b><i>RuleML-2009 Organizational Agent:</i></b></p>
+	<LI><p>Prova Knowledge Base [<a href="RuleML-2009-Responder.prova">Prova</a href>]</p></LI>
+	<LI><p>Role Assignment Matrix [<a href="RuleML-2009.owl">OWL</a href>]</p></LI>
+	</UL>
+	<br>
+	<UL>
+	<p><b><i>General Chair Agent:</i></b></p>
+	<LI><p>Rule Base [<a href="http://www.jdrew.org/oojdrew/ruleSetsRuleML-2009/generalChairRuleML-2009.posl">POSL</a href>]</p></LI>
+	</UL>
+	<UL>
+	<p><b><i>Publicity Chair Agent:</i></b></p>
+	<LI><p>Rule Base [<a href="http://www.jdrew.org/oojdrew/ruleSetsRuleML-2009/publicityChairRuleML-2009.posl">POSL</a href>]</p></LI>
+	<LI><p>Taxonomy [<a href="http://www.jdrew.org/oojdrew/ruleSetsRuleML-2009/publicityChairOntologyRuleML-2009.rdf">RDF</a href>]</p></LI>
+	</UL>
+	<UL>
+	<p><b><i>Liaison Chair Agent:</i></b></p>
+	<LI><p>Rule Base [<a href="http://www.jdrew.org/oojdrew/ruleSetsRuleML-2009/liaisonChairRuleML-2009.posl">POSL</a href>]</p></LI>
+	</UL>
+	<UL>
+	<p><b><i>Program Chair Agent:</i></b></p>
+	<LI><p>Rule Base [<a href="http://www.jdrew.org/oojdrew/ruleSetsRuleML-2009/programChairRuleML-2009.posl">POSL</a href>]</p></LI>
+	</UL>
+</div>
+
+<div id="navigation">
+          
+<h1>The Symposium</h1>
+<ul>
+  <li><a href="http://www.defeasible.org/ruleml2009/index">RuleML-2009 Home</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/who">Who Will Attend</a></li>
+
+  <li><a href="http://www.defeasible.org/ruleml2009/highlights">Highlights</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/invited">Invited Speakers</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/program">Program</a> (<a href="RuleML2009Program.pdf">pdf</a>)</li>
+  <!--><li><a href="/ruleml2009/tutorials">Tutorials</a></li> -->
+  <!-- <li><a href="/ruleml2009/rif">W3C RIF Workshop</a></li> -->
+
+  <li><a href="http://www.defeasible.org/ruleml2009/accepted">Accepted Papers</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/pc">Program Committee</a>
+  <li><a href="http://www.businessrulesforum.com/">Business Rules Forum</a></li>
+  <li><a href="http://www.businessrulesforum.com/open-source-day.php/">Open Source Day</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/sponsors">Sponsorship</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/partners">Partners</a></li>
+
+  <li><a href="http://www.defeasible.org/ruleml2009/awards">Student Travel Awards</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/registration">Registration</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/venue">Venue</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/RuleML2009Dinner.pdf">RuleML dinner</a></li>
+  <li><a href="http://ruleml.org/RuleML-2009/RuleResponder/">Rule Responder Q&amp;A</a></li>
+</ul>
+
+<h1>Authors</h1>
+<ul>
+  <li><a href="http://www.defeasible.org/ruleml2009/objectives">Objectives</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/topics">Topics</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/challenge">International Rule Challenge</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/cfp.txt">Call for Papers</a> (<a href="http://www.defeasible.org/ruleml2009/RuleML-2009_Flyer.pdf">pdf</a>)</li>
+  <li><a href="http://www.defeasible.org/ruleml2009/submission">Submission Guidelines</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/dates">Important Dates</a></li>
+</ul>
+
+<h1>RuleML Initiative</h1>
+<ul>
+  <li><a href="http://www.ruleml.org/">About Us</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/past">Past Events</a></li>
+</ul>
+
+
+        </div>
+      </div>
+
+      <div id="sponsor">
+        
+<h1>Latest News</h1>
+<div id="news">
+<dl>
+  <dd>2 November 2009</dd>
+  <dt>Final program<br>
+  <a href="http://www.defeasible.org/ruleml2009/program">read more ...</a></dt>
+  
+  <dd>2 November 2009</dd>
+  <dt>We are pleased to announce that Plug Tree have become a bronze sponsor<br>
+    <a href="http://www.plugtree.com/">Plug Tree web site</a></dt>
+	
+  <dd>15 October 2009</dd>
+  <dt>We are pleased to announce that Ontotext have become a gold level sponsor<br>
+    <a href="http://www.ontotext.com/news.html#rule_05nov09">Ontotext web site</a></dt>
+	
+  <dd>15 October 2009</dd>
+  <dt>RuleML 2009 proceedings now available at Springer<br>
+    <a href="http://www.springer.com/computer/information+systems/book/978-3-642-04984-2">read more ...</a></dt>
+</dl>
+</div>
+
+<h1>RuleML 2009 Sponsors</h1>
+<h2>Gold Sponsor</h2>
+<a href="http://www.ontotext.com/"><img alt="Ontotext Logo" src="ontotext_logo_200.png" width="180px" /></a>
+
+<h2>Silver Sponsors</h2>
+<a href="http://www.nicta.com.au"><img alt="NICTA (National ICT Asutralia) Ltd Logo" src="nicta_logo.jpg" width="100px" /></a>
+
+<a href="http://www.corporate-semantic-web.de/"><img alt="BMBF InnoProfile Corporate Semantic Web Logo" src="csw_logo_150.png" width="150px" /></a>
+
+<a href="http://www.franz.com/"><img alt="Franz Inc Logo" src="franz_logo.jpg" width="150px" /></a>
+
+<a href="http://www.bbn.com/"><img alt="BBN Tech Logo" src="bbn_logo.jpg" width="150px" /></a>
+
+
+<h2>Bronze Sponsors</h2>
+<a href="http://www.lpa.co.uk"><img alt="Plug Tree" src="plugtree-logo.png" width="100px" /></a><br>
+
+<a href="http://www.lpa.co.uk"><img alt="Logic Programming Associates Ltd Logo" src="lpa_logo.gif" width="75px" /></a>
+
+<a href="http://www.modelsy.com"><img alt="Model Systems Ltd Logo" src="modelsystems.gif" width="150px" /></a>
+
+<a href="http://www.rulecore.com"><img alt="ruleCore Logo" src="rulecorelogo.gif" width="150px" /></a>
+
+<a href="http://jboss.com"><img alt="JBoss a division of Red Hat logo" src="jboss_logo.png" width="150px" /></a>
+      </div>
+      <div id="footer">
+        Copyright &copy; 2009, <a href="http://www.ruleml.org">RuleML.org</a>
+
+<br />
+Web design and Web master: <a href="http://www.governatori.net">Guido Governatori</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- google analytics code -->  
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3735483-4");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!--  end of google analytics code-->
+
+</body>
+</html>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd" 
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a First-Order Logic RuleML sublanguage
+			File: folog.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- folog includes and redefines the 'neg' module -->	
+	<xs:redefine schemaLocation="modules/neg_module.xsd">
+
+		<!--
+			Allow unrestricted nesting of first order logic formulas in Neg.
+			
+			strong's content model becomes:
+			(Atom | Rulebase | And | Or | Neg | Implies | Equivalent | Forall | Exists )
+		-->
+		<xs:group name="strong.content">
+			<xs:choice>
+				<xs:group ref="strong.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>	
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Forall"/>
+				<xs:element ref="Exists"/>
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly changes Neg's content model to become:
+			( strong | Atom | Rulebase | And | Or | Neg | Implies | Equivalent | Forall | Exists )		
+		-->
+		
+		<!-- Also allow map attributes on Neg -->
+		<xs:attributeGroup name="Neg.attlist">
+			<xs:attributeGroup ref="Neg.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>	
+	
+	</xs:redefine>
+	
+	<xs:redefine schemaLocation="dishornlog.xsd">
+		<!--
+			Allow unrestricted nesting of first order logic formulas in And and Or.
+			
+			formula's content model becomes:
+			( Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists )
+		-->
+		<xs:group name="formula-and-or.content">
+			<xs:choice>
+				<xs:group ref="formula-and-or.content"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Forall"/>
+				<xs:element ref="Exists"/>				
+			</xs:choice>
+		</xs:group>
+		<!--
+			note that the above indirectly changes the content models of And, Rulebase and Or to become:
+			( oid?, (formula | Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists)* )
+		-->		
+		
+		<!-- Also allow map attributes on all And & Or -->
+		<xs:attributeGroup name="And-query.attlist">
+			<xs:attributeGroup ref="And-query.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>	
+		<xs:attributeGroup name="And-inner.attlist">	
+			<xs:attributeGroup ref="And-inner.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>	
+		<xs:attributeGroup name="Or-query.attlist">
+			<xs:attributeGroup ref="Or-query.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>	
+		<xs:attributeGroup name="Or-inner.attlist">	
+			<xs:attributeGroup ref="Or-inner.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>		
+		
+		<!--
+			Allow unrestricted nesting of first order logic formulas in head and body (and therefore Implies),
+			as well as in torso (and therefore Equivalent).
+			
+			Implies' content model becomes:
+			(
+				oid?, ( head, body) | ( body, head) |
+				( 
+				  (Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists),
+				  (Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists ) 
+				)
+			)
+
+			Equivalent's content model becomes:
+			(
+				oid?, (torso, torso) |
+				(
+				  (Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists ),
+				  (Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists )
+				)
+			)
+		-->
+		<xs:group name="head.content">
+			<xs:choice>
+				<xs:group ref="head.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>				
+				<xs:element ref="Forall"/>
+				<xs:element ref="Exists"/>		
+			</xs:choice>
+		</xs:group>
+		<xs:group name="body.content">
+			<xs:choice>
+				<xs:group ref="body.content"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>				
+				<xs:element ref="Forall"/>
+				<xs:element ref="Exists"/>				
+			</xs:choice>
+		</xs:group>
+		<xs:group name="torso.content">
+			<xs:choice>
+				<xs:group ref="torso.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>		
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>				
+				<xs:element ref="Forall"/>
+				<xs:element ref="Exists"/>				
+			</xs:choice>
+		</xs:group>	
+		
+		<!-- Also allow map attributes on Implies and Equivalent -->		
+		<xs:attributeGroup name="Implies.attlist">
+			<xs:attributeGroup ref="Implies.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>	
+		<xs:attributeGroup name="Equivalent.attlist">
+			<xs:attributeGroup ref="Equivalent.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>	
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>
+
+		<!--		
+			Allow unrestricted nesting of first order logic formulas in formula (below Forall and Exists), 
+			and therefore Forall and Exists as well.
+
+			Forall and Exist's content models become:
+			( oid?, (declare|Var)+, (formula|Atom|And|Or|Neg|Implies|Equivalent|Forall|Exists) )
+		-->
+		<xs:group name="formula-forall.content">
+			<xs:choice>
+				<xs:group ref="formula-forall.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Exists"/>
+			</xs:choice>
+		</xs:group>	
+		<xs:group name="formula-exists.content">
+			<xs:choice>
+				<xs:group ref="formula-exists.content"/>
+				<xs:element ref="Neg"/>
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Forall"/>
+			</xs:choice>
+		</xs:group>
+				
+		<!-- Also allow map attributes on Forall and Exists -->
+		<xs:attributeGroup name="Forall.attlist">
+			<xs:attributeGroup ref="Forall.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>
+		<xs:attributeGroup name="Exists.attlist">
+			<xs:attributeGroup ref="Exists.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>		
+		
+		<!--
+			Allow unrestricted nesting of first order logic formulas in Assert, Retract and Query.
+
+			Assert, Retract and Query's content models become:
+			( oid?,(formula|Atom|Rulebase|And|Or|Neg|Implies|Equivalent|Entails|Forall|Exists)* )
+		-->
+		<xs:group name="formula-query.content">
+			<xs:choice>
+				<xs:group ref="formula-query.content"/>
+				<xs:element ref="Neg"/>	
+				<xs:element ref="Implies"/>
+				<xs:element ref="Equivalent"/>
+				<xs:element ref="Forall"/>				
+			</xs:choice>	
+		</xs:group>
+		<xs:group name="formula-assert.content">
+			<xs:choice>
+				<xs:group ref="formula-assert.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Neg"/>	
+				<xs:element ref="Exists"/>				
+			</xs:choice>	
+		</xs:group>	
+		
+		<!--
+			Allow unrestricted nesting of first order logic formulas in Rulebase.
+
+			Rulebase's content models becomes:
+			( oid?, (formula | Atom | And | Or | Neg | Implies | Equivalent | Forall | Exists)* )
+		-->
+		<xs:group name="formula-rulebase.content">
+			<xs:choice>
+				<xs:group ref="formula-rulebase.content"/>
+				<xs:element name="And" type="And-inner.type"/>
+				<xs:element name="Or" type="Or-inner.type"/>
+				<xs:element ref="Neg"/>	
+				<xs:element ref="Exists"/>				
+			</xs:choice>	
+		</xs:group>	
+		
+		<!-- Also allow map attributes on Query -->
+		<xs:attributeGroup name="Query.attlist">
+			<xs:attributeGroup ref="Query.attlist"/>
+			<xs:attributeGroup ref="mapDirection.attrib"/>
+			<xs:attributeGroup ref="mapClosure.attrib"/>
+			<xs:attributeGroup ref="mapMaterial.attrib"/>
+		</xs:attributeGroup>			
+	
+	</xs:redefine>
+
+</xs:schema>

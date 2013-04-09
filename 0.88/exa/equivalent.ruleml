@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Assert xmlns="http://www.ruleml.org/0.88/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.88/xsd http://www.ruleml.org/0.88/xsd/datalog.xsd">
+
+<And innerclose="universal">
+
+<Forall>
+  <Var>person</Var>
+  <Var>object</Var>
+  <Equivalent>
+    <torso>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </torso>
+    <torso>
+      <Atom>
+        <Rel>belongs</Rel>
+        <Var>object</Var>
+        <Var>person</Var>
+      </Atom>
+    </torso>
+  </Equivalent>
+</Forall>
+
+<!-- also directly below top level And, as follows -->
+
+ <Equivalent>
+    <torso>
+      <Atom>
+        <Rel>own</Rel>
+        <Var>person</Var>
+        <Var>object</Var>
+      </Atom>
+    </torso>
+    <torso>
+      <Atom>
+        <Rel>belongs</Rel>
+        <Var>object</Var>
+        <Var>person</Var>
+      </Atom>
+    </torso>
+  </Equivalent>
+
+</And>
+
+</Assert>

@@ -1,0 +1,15 @@
+<!-- An XML DTD for a 'UR' Horn-Logic RuleML Sublanguage -->
+<!-- Last Modification: 2001-06-24 -->
+
+
+
+<!-- ENTITY Declarations -->
+
+
+<!ENTITY % hornlog.module "INCLUDE">
+
+<!ENTITY % hornlog SYSTEM "ruleml-hornlog.dtd">
+%hornlog;
+
+<!ENTITY % ur SYSTEM "ruleml-ur.dtd">
+%ur;

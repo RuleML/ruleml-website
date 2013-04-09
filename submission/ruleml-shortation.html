@@ -1,0 +1,1454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html lang="EN">
+<head>
+  <title>POSL: Positional-Slotted Language</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+CODE {
+        FONT-FAMILY: monospace
+}
+DIV.constraint {
+        MARGIN-LEFT: 2em
+}
+DIV.issue {
+        MARGIN-LEFT: 2em
+}
+DIV.note {
+        MARGIN-LEFT: 2em
+}
+DIV.notice {
+        MARGIN-LEFT: 2em
+}
+DIV.exampleInner PRE {
+        MARGIN-TOP: 0em; MARGIN-BOTTOM: 0em; MARGIN-LEFT: 1em
+}
+DIV.exampleOuter {
+        BORDER-RIGHT: gray 4px double; PADDING-RIGHT: 0em; BORDER-TOP: gray 4px double; PADDING-LEFT: 0em; PADDING-BOTTOM: 0em; MARGIN: 0em; BORDER-LEFT: gray 4px double; PADDING-TOP: 0em; BORDER-BOTTOM: gray 4px double
+}
+DIV.exampleInner {
+        PADDING-RIGHT: 4px; BORDER-TOP: #d3d3d3 4px double; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN: 0em; PADDING-TOP: 4px; BORDER-BOTTOM: #d3d3d3 4px double; BACKGROUND-COLOR: #d5dee3
+}
+DIV.exampleWrapper {
+        MARGIN: 4px
+}
+DIV.exampleHeader {
+        FONT-WEIGHT: bold; MARGIN: 4px
+}
+TABLE.small {
+        FONT-SIZE: x-small
+}</style>
+  <link href="css/W3C-WD.css" type="text/css"
+  rel="stylesheet">
+</head>
+
+<body>
+
+<div class="head">
+<h1><a id="title" name="title"></a>POSL: An Integrated Positional-Slotted Language for Semantic Web Knowledge</h1>
+<h2>Working Draft 11 May 2004</h2>
+</div>
+
+<p></p>
+
+<div class="head">
+<dl>
+  <dt>This version:</dt>
+    <dd><a href="http://www.ruleml.org/submission/ruleml-shortation-20040511.html">http://www.ruleml.org/submission/ruleml-shortation-20040511.html</a></dd>
+  <dt>Latest version:</dt>
+    <dd><a href="http://www.ruleml.org/submission/ruleml-shortation.html">http://www.ruleml.org/submission/ruleml-shortation.html</a></dd>
+  <dt>Author:</dt>
+    <dd><a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>, NRC </dd>
+</dl>
+
+<p class="copyright">.</p>
+</div>
+<hr>
+
+<div>
+<h2><a id="abstract" name="abstract"></a>Abstract</h2>
+
+<p></p>
+
+<p> A presentation, shorthand, and exchange syntax is described that
+integrates Prolog's positional and F-logic's slotted syntaxes for representing knowledge (facts and rules) in the Semantic Web.
+This positional-slotted (POSL) language accomodates various assertional-logical and object-centered
+modeling styles, yet strives for maximum conciseness and orthogonality.
+After an introduction, the document covers POSL selectors,
+unification, webizing, typing, and implementation.
+Webizing takes up and extends the use of URIs in N3.
+For humans, the POSL language is faster to
+write and easier to read than any XML syntax. However, since a
+parser and a generator map the POSL syntax to Object-Oriented RuleML
+and back,
+the machine advantages of XML can be preserved.</p>
+</div>
+
+<div>
+<h2><a id="status" name="status"></a></h2>
+</div>
+
+<h2><a id="acknowledge" name="acknowledge">Acknowledgments</a></h2>
+  
+<p>Said Tabet and the RuleML Initiative as well as Sandro Hawke from W3C provided 
+valuable feedback during the evolution of this document.
+The Joint Committee, especially
+Mike Dean and Benjamin Grosof, encouraged me to present earlier versions.
+In several telephone conferences the Joint Committee gave valuable feedback.
+In particular, Sandro Hawke and Pat Hayes helped shaping, respectively, sections 2 and 3 of the document through their questions.
+Bruce Spencer supported the development of OO RuleML, its implementations,
+as well as the POSL language.
+Marcel Ball and Stephen Greene gave valuable hints and performed various OO RuleML and POSL implementations.
+Michael Sintek helped me laying the groundwork of this Prolog/F-logic merger.
+The sponsoring of this work by the <a href="http://www.nrc-cnrc.gc.ca/">National Research Council</a>
+is also gratefully acknowledged.
+</p>
+
+<hr>
+
+<div class="toc">
+<h2><a id="contents" name="contents"></a></h2>
+
+<h1>Table of Contents</h1>
+
+<h2></h2>
+
+<p class="toc">1. <a href="ruleml-shortation.html#section_1"><span
+style="COLOR: #0000b2">Introduction</span></a></p>
+
+<p>2. <span style="COLOR: #0000b2"><a
+href="ruleml-shortation.html#section_2">Selectors</a></span></p>
+
+<p>3. <a href="ruleml-shortation.html#section_3">Unification</a></p>
+
+<p>4. <a href="ruleml-shortation.html#section_4">Webizing</a></p>
+
+<p>5. <a href="ruleml-shortation.html#section_5">Typing</a></p>
+
+<p>6. <a href="ruleml-shortation.html#section_6">Implementation</a></p>
+
+<p>7. <a href="ruleml-shortation.html#section_7">Application</a></p>
+
+<p>8. <a href="ruleml-shortation.html#section_8">Issues</a></p>
+</div>
+
+<p></p>
+<hr>
+
+<div class="body">
+
+<div class="div1">
+<h2><a id="section_1" name="section_1"></a>1. Introduction</h2>
+
+<p>
+Some background for the following discussion can be found in
+<a href="http://www.cs.unb.ca/~boley/ruleml/ruleml-rgs.pdf">Object-Oriented RuleML:
+User-Level Roles, URI-Grounded
+Clauses, and Order-Sorted Terms</a>
+(while the markup syntax of OO RuleML has changed,
+the POSL syntax stayed the same but was referred to as the PR syntax).
+</p>
+
+<p>Let us consider a business rule written in natural
+language as follows:</p>
+
+<div class="exampleInner">
+<pre><em><strong><span style="font-family: helvetica; font-size: 10pt">The discount for a customer buying a product is 5 percent if
+     the customer is premium and the product is regular</span></strong></em></pre>
+</div>
+
+<p>
+This rule employs the Datalog subset of Horn logic.
+In the POSL language it is written using a Prolog-style syntax
+except that variables are denoted with a preceding "?":</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer,?product,percent5)  :-       
+   premium(?customer), regular(?product).</span></pre>
+</div>
+
+<p>
+Note that this defines a positional (ternary) discount relation, where one has
+to remember -- e.g. for queries -- that the first argument is the customer, the second
+is the product, and the third is the rebate obtained. This is in the spirit
+of XML's ordered children. Also note that the comma infix within n-ary
+relation applications for n>1 can be regarded as the order-imposing sequence
+operator (while for n=0 and n=1 the sequencing degenerates).
+</p>
+
+<p>
+Reliance on order can be avoided in the spirit of RDF, description logic, and F-logic by
+introducing properties, attributes, roles, or slots. For example, an F-logic-style
+version of the above rule can be written as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->?customer;prod->?product;rebate->percent5) :-
+   premium(cust->?customer), regular(prod->?product).</span></pre>
+</div>
+
+<p>
+Note that in this object-centered modeling of relations
+the semicolon infix indicates an unordered set of n slots, each consisting
+of a 'slot->filler' pair. Queries can now be posed without need for any
+order information (however, knowledge of the slot names cust, prod, rebate
+is needed instead): Generalized (slotted) unification takes care of pairing
+up identical slots before recursively unifying their fillers (we will go
+into the issue of implicit/explicit 'rest' variables in the Unification section). The query
+</p>
+
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(rebate->?amount;prod->Honda;cust->PeterMiller)</span></pre>
+</div>
+
+<p>
+thus succeeds if premium(cust->PeterMiller) and regular(prod->Honda)
+were stored as facts, binding ?amount to percent5. 
+</p>
+
+<p>
+For unary relations like premium and regular, as well as for
+some binary relations, the slot (->) syntax may become cumbersome.
+So in POSL as well as <a href="http://www.ruleml.org/indoo">Object-Oriented RuleML</a> we permit rules using both
+ordered and object-centered relations as premises as well as conclusions.
+In the example, with an object-centered discount relation and (degenerately)
+ordered premium and regular relations, we obtain the following rule:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->?customer;prod->?product;rebate->percent5) :-
+   premium(?customer), regular(?product).</span></pre>
+</div>
+
+<p>
+Finally, suppose we start again with positional Datalog rules, but then
+want to add optional spatio-temporal coordinates. Instead of extending
+the argument sequences of all affected relations by further ordered
+arguments, it may be preferable to add these extra bits in the unordered,
+object-centered way. Restricting the rule scope to the region of MA and
+the period of 2003/04, our example thus becomes:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer,?product,percent5;region->MA;period->"2003/04") :-
+   premium(?customer;period->"2003/04"), regular(?product).</span></pre>
+</div>
+
+<p>
+Applying this rule, the query
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(PeterMiller,Honda,?amount;period->?when;region->?where)</span></pre>
+</div>
+
+<p>
+succeeds if premium(PeterMiller;period->"2003/04") and regular(Honda)
+were stored as facts, binding ?amount to percent5, ?when to "2003/04",
+and ?where to MA.
+</p>
+
+<p>
+In general, we permit a single ordered sequence surrounded by two unordered subsets
+of slots. All arguments together can thus be viewed as the union of the left and right subsets
+and of the singleton set containing the slot seq->(ordered sequence) with the distinguished name 'seq'.
+We thus assume that the 'ordered infix' "," has precedence over the 'unordered
+infix' ";", so that the ordered ","-sequence <em>as a whole</em> is connected with the
+"->" slot subsets to its left and/or right via bordering ";" infixes.
+</p>
+
+<p>
+In the rule example, anticipating the 'plex' notation to be introduced below,
+the ordered sequence of [?customer,?product,percent5] has
+a slot set [region->MA;period->"2003/04"] to its right.
+</p>
+
+<p>
+Summarizing this, an atom of the general form
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM;rL+1->fL+1;rL+2->fL+2;...;rN->fN)</span></pre>
+</div>
+
+<p>
+can be viewed as
+</p>
+
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;r2->f2;...;rL->fL;(e1,e2,...,eM);rL+1->fL+1;rL+2->fL+2;...;rN->fN)</span></pre>
+</div>
+
+<p>
+or as
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;r2->f2;...;rL->fL;seq->(e1,e2,...,eM);rL+1->fL+1;rL+2->fL+2;...;rN->fN)</span></pre>
+</div>
+
+<br/>
+<br/>
+<p>
+For Hornlog rules, complex terms (cterms) are enriched by slots in the same fashion.
+</p>
+
+<p>
+Originally 'complex terms' are exactly what Prolog calls 'structures'. However, for clarity,
+we use a distinction -- introduced in <a href="http://www.dfki.uni-kl.de/~vega/relfun.html">Relfun</a> -- between
+(round) parentheses for active calls and [square] brackets
+for passive structures; the latter can be seen as an obvious
+generalization of Prolog's list notation via a polyadic (com)plex constructor, so that
+[e1,e2,...,eM] -- RuleML's  &lt;cterm> &lt;ctor/> e1 e2 ... eM &lt;/cterm>, abridged to &lt;plex> e1 e2 ... eM &lt;/plex> -- could be defined as
+plex[e1,e2,...,eM] -- RuleML's &lt;cterm> &lt;ctor>plex&lt;/ctor> e1 e2 ... eM &lt;/cterm>.
+</p>
+
+<p>
+Moreover, in general, a plex-constructed cterm (a 'plex') can contain non-positional slots besides the ordered sequence:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">plex[r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM;rL+1->fL+1;rL+2->fL+2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+This can be abbreviated by omitting the distinguished constructor name 'plex':
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM;rL+1->fL+1;rL+2->fL+2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+In POSL as well as Object-Oriented RuleML, we have permitted cterms with arbitrary constructors to <em>also</em>
+contain unordered slots with their fillers,  or -- as in F-logic -- to <em>only</em>
+contain such frame-like slots. In that sense, this is a merger of Prolog and
+F-logic.
+</p>
+
+<p>
+In the example, the individual constant percent5 can be analyzed as the
+cterm percent[5], and the constant "2003/04" can be analyzed as either a
+positional cterm interval[2003,2004] or again as an object-centered cterm
+interval[start->2003;end->2004]. Note that square brackets are preferable
+here for cterms to clearly set them off from the parenthesized atoms.
+</p>
+
+<p>
+Consistently substituting one of these cterms for the constant occurrences in the
+above OO Datalog rule gives us either of the following OO Hornlog rules:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer,?product,percent[5];
+         region->MA;
+         period->interval[2003,2004])
+ :-
+    premium(?customer;period->interval[2003,2004]),
+    regular(?product).</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer,?product,percent[5];
+         region->MA;
+         period->interval[start->2003;end->2004])
+ :-
+    premium(?customer;period->interval[start->2003;end->2004]),
+    regular(?product).</span></pre>
+</div>
+
+<br/>
+<br/>
+
+<p>
+While the terminology around the following three notions tends to overlap,
+they are strictly differentiated in POSL:
+</p>
+
+<p>
+(1) A slotted-only plex, with webized slots, corresponds to a square-bracket expression in Notation 3 (N3).
+Ignoring URIs here (but see the Webizing section), an expression of the <a href="http://www.w3.org/2000/10/swap/Primer">N3 Primer</a> such as
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[ <#name> "Pat"; <#age> "24"; <#eyecolor> "blue" ].
+</span></pre>
+</div>
+
+<p>
+becomes the POSL plex
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[ name -> Pat; age -> 24; eyecolor -> blue ]
+</span></pre>
+</div>
+
+<p>
+(2) The 'anonymous' or "don't care" variable (in Prolog written as a stand-alone "_") in POSL is written as a stand-alone "?".
+It can be employed as if every occurrence, as in [?,?], was a fresh named variable, as in [?gensym00001,?gensym00002],
+except that these names are single-occurrence, hence not accessible from anywhere.
+</p>
+
+<p>
+(3) A 'null' value (as inspired by relational databases) in POSL is expressed by an entry missing before the subsequent delimiter.
+
+Our earlier atom of the general form would thus change as follows if it had null values for all of its positional and slotted arguments:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->;r2->;...;rL->;,,...,;rL+1->;rL+2->;...;rN->)</span></pre>
+</div>
+
+<p>
+Null values make most sense in facts (and rule heads) to express missing information.
+We also allow them in queries (and rule bodies) to test for missing bits of information.
+However, to keep semantics simple, we only allow a null value to
+unify with another null value or with an anonymous variable.
+</p>
+
+<p>
+The POSL options are offered to accomodate various positional and object-centered
+modeling styles. They can all be marked up in OO RuleML.
+</p>
+
+
+<h2><a id="section_2" name="section_2">2. Selectors</a></h2>
+
+<p>
+A 'selector' in a unification-based language such as POSL, Prolog, Relfun, or
+F-logic can be represented by a local unification and variable dereferencing for
+the selected part of the complex data structure.
+</p>
+
+<p>
+So we can access the start date of interval[2003,2004] by unifying it with
+interval[?StartDate,?EndDate] and dereferencing ?StartDate to 2003. Similarly, we
+can access the end date of interval[start->2003;end->2004] via unification
+with interval[start->?StartDate;end->?EndDate] and dereferencing ?EndDate to 2004.
+Unification will be treated in detail in the next section.
+</p>
+
+<p>
+But instead of / in addition to this, we can introduce a 'universal' selector sel,
+parameterized by either a positive integer or a slot name.
+</p>
+
+<p>
+sel[1](interval[2003,2004]) will return 2003.
+<br/>
+sel[end](interval[start->2003;end->2004]) will return 2004.
+</p>
+
+<p>
+The general sel definition is easier to explain for normalized slotted cterms, although
+it also works for non-normalized ones.
+
+<p>
+Excluding rest variables, the most general kind of 'functional' slotted cterms are 'left-and-right-slotted' cterms
+of the form
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM;rL+1->fL+1;rL+2->fL+2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+where 'functionality' means that the slot names rJ taken from {r1,...,rN} are all
+different (equivalently, we restrict ourselves here to a single-valued slot filler fJ
+not allowing F-logic's set-valued slots, although fJ could be a plex representing a finite set.
+</p>
+
+<p>
+Notice that a single sequence of positional elements e1,e2,...,eM is surrounded by two
+sets of unordered elements r1->f1;r2->f2;...;rL->fL and rL+1->fL+1;rL+2->fL+2;...;rN->fN.
+</p>
+
+<p>
+These can be normalized to a 'left-slotted' cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[r1->f1;r2->f2;...;rL->fL;rL+1->fL+1;rL+2->fL+2;...;rN->fN;e1,e2,...,eM]</span></pre>
+</div>
+
+<p>
+or to a 'right-slotted' cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">c[e1,e2,...,eM;r1->f1;r2->f2;...;rL->fL;rL+1->fL+1;rL+2->fL+2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+(Further normalization by lexicographic sorting of the slot names rJ would permit
+'linear' term comparisons, but is out of scope here.)
+</p>
+
+<p>
+Now, without loss of generality, for any right-slotted cterm
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">t = c[e1,e2,...,eM;r1->f1;r2->f2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+we can introduce the universal selector sel, parameterized by either I or rJ:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">sel[I](t)  = eI    for  I  from {1,...,M}
+sel[rJ](t) = fJ    for  rJ from {r1,...,rN}</span></pre>
+</div>
+
+<p>
+As we have a direct representation of positional information in the e1,e2,...,eM part,
+we don't need here positive integers as slot names in the r1->f1;r2->f2;...;rN->fN part,
+although these or RDF's _1->e1;_2->e2;...;_M->eM could be used to simulate e1,e2,...,eM.
+(The other way round, slot[r1,f1],...,slot[rN,fN] plus normalization could simulate
+r1->f1;r2->f2;...;rN->fN.)
+</p>
+
+
+<div class="div3">
+<h2><a id="section_3" name="section_3">3. Unification</a></h2>
+
+<p>
+Unification of 'single' variables was already mentioned in the previous section.
+This will be expanded here. Many languages with positional formulas such as Prolog use an explicit
+'rest' variable in lists.
+Some languages with slotted formulas such as F-logic use a convention of an implicit rest variable
+in slotted terms, atoms, etc.
+Proceeding to the POSL syntax, both in the unification of positional and slotted formulas, rest variables must be explicit.
+</p> 
+
+<p>
+Without explicit rest variables,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">interval[?StartDate,?EndDate] unifies with single variable ?x
+                          by binding ?x = interval[?StartDate,?EndDate]
+
+                          does not unify with the unary interval[?x]
+
+                          unifies with the binary interval[?x,?y]
+                          by binding ?StartDate = ?x, ?EndDate = ?y
+
+                          does not unify with the ternary interval[?x,?y,?z]</span></pre>
+</div>
+
+<p>
+In Prolog a positional rest variable -- only permitted in lists -- is indicated by
+separating it from previous elements via a "|" instead of the normal "," separator.
+Here, a positional rest variable -- permitted in lists, structures, atoms, etc. --
+is again indicated by a "|" instead of the normal "," separator; we
+will also allow a "!" instead of the normal ";" separator for
+unordered (object-centered) complex terms.
+</p>
+
+<p>
+With such explicit rest variables,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">interval[?StartDate,?EndDate|?ResumeDates] unifies with variable ?x
+                          by binding ?x = interval[?StartDate,?EndDate|?ResumeDates]
+
+                          does not unify with the unary interval[?x]
+
+                          unifies with the binary interval[?x,?y]
+                          by binding ?StartDate = ?x, ?EndDate = ?y, ?ResumeDates = []
+
+                          unifies with the ternary interval[?x,?y,?z]
+                          by binding ?StartDate = ?x, ?EndDate = ?y, ?ResumeDates = [?z]
+
+                          unifies with the 4-ary interval[?x,?y,?z,2004]
+                          by binding ?StartDate = ?x, ?EndDate = ?y, ?ResumeDates = [?z,2004]
+
+                          unifies with the (1+n)-ary interval[?x|?y]
+                          by binding ?StartDate = ?x, ?y = [?EndDate|?ResumeDates]</span></pre>
+</div>
+
+<p>
+Dereferencing is performed at least during unification, before built-ins are called, and for result printouts
+(the issue of performing or not performing the 'occurs check' is orthogonal to this
+discussion).
+</p>
+
+<p>
+The object-centered interval[start->?a;end->?b] does not unify with the positional
+interval[?a,?b]. However, an operation positionalize(interval[start->?a;end->?b]) can
+be defined to return the ordered interval[?b,?a] by omitting the slot names after a
+lexicographic normalization (sorting) w.r.t. the slot names. This interval[?b,?a] in
+turn would unify with the positional interval[?a,?b] by binding ?b = ?a.
+</p>
+
+<p>
+Likewise, interval[start->?x;end->?b] does not unify with interval[?a,?b]
+</p>
+
+<p>
+Neither do interval[start->a;end->b] and interval[?x,b] unify.
+</p>
+
+<p>
+Instantiation for positional cterms is defined as usual; for object-centered cterms
+it is defined to apply the bindings of a substitution to the fJ of each slot rj->fJ
+(cf. remarks below on forbidding variables in the position of slot names rJ).
+</p>
+
+<p>
+f[a->?a] does not unify with f[a->?a;b->?b], since rest variables must be explicit
+also for object-centered cterms.
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">With the "!"-separator introduced above, f[a->?a!?x] unifies with f[a->?a;b->?b]
+                                         by binding ?x = [b->?b].
+
+Similarly,                               f[a->?a!?x] unifies with f[a->?a;b->?b;c->?c]
+                                         by binding ?x = [b->?b;c->?c].</span></pre>
+</div>
+
+<p>
+Here, an existential is made explicit after the "!"-separator by a fresh variable ?x
+(so the collection of these rest slots can be referred to via ?x).
+Alternatively, the anonymous variable can be employed (so the collection of rest slots cannot be referred to via "?"):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">f[a->?a!?] unifies with f[a->?a;b->?b]         without any bindings
+f[a->?a!?] unifies with f[a->?a;b->?b;c->?c]   without any bindings</span></pre>
+</div>
+
+<p>
+If anonymous rest slots "!?" are employed in all cterms, the effect of implicit rest variables is obtained.
+This enables applications in case and feature grammars, frame and description logics, RDF and OWL, etc.
+The more precise "!"-free slotted cterms can enforce more restricted
+unifications where needed.
+</p>
+
+<p>
+In general, while keeping unification deterministic,
+the arguments of an atom or cterm may contain a single ("|"-separated) rest variable
+for their positional part plus a single ("!"-separated) rest variable for their slotted part.
+</p>
+
+<p>
+For example, generalizing a query in the Introduction,
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(PeterMiller,Honda,?amount | ?posrest;
+         period->?when;region->?where ! ?slotrest)</span></pre>
+</div>
+
+<p>
+(deterministically) unifies with
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(PeterMiller,Honda,percent5,AutoDeals,full-warranty;
+         region->MA;period->"2003/04";payment->months6;limit->1)</span></pre>
+</div>
+
+<p>
+with (a single mgu of) bindings ?amount to percent5, ?posrest = [AutoDeals,full-warranty],
+?when to "2003/04", ?where to MA, and
+?slotrest = [payment->months6;limit->1].
+</p>
+
+<p>
+Including both kinds of rest variables, the most general kind of slotted atoms/cterms are 'left-and-right-slotted' cterms
+of the (left-"!"-variable) forms
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;r2->f2;...;rL->fL!Vf;e1,e2,...,eM|Ve;rL+1->fL+1;rL+2->fL+2;...;rN->fN)
+c[r1->f1;r2->f2;...;rL->fL!Vf;e1,e2,...,eM|Ve;rL+1->fL+1;rL+2->fL+2;...;rN->fN]</span></pre>
+</div>
+
+<p>
+or, equivalently, of the (right-"!"-variable) forms
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">p(r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM|Ve;rL+1->fL+1;rL+2->fL+2;...;rN->fN!Vf)
+c[r1->f1;r2->f2;...;rL->fL;e1,e2,...,eM|Ve;rL+1->fL+1;rL+2->fL+2;...;rN->fN!Vf]</span></pre>
+</div>
+
+<p>
+Variables are not permitted <em>as</em> slot names for several reasons, two of which being:
+</p>
+
+<ul>
+  <li>The <a href="http://www.daml.org/listarchive/joint-committee/1366.html">functionality</a>
+of slotted cterms could be lost, since initially different variables in two slot-name
+positions could become unified when additionally used in a slot-filler position.
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">For example, f[?x->1;?y->2;c->g[?x,?y]] would unify with f[?u->1;?v->2;c->g[?z,?z]]
+with non-functional common instance f[?z->1;?z->2;c->g[?z,?z]].</span></pre>
+</div>
+</li>
+
+<li>There would no longer be a unique most general unifier, so non-determinism
+would already arise during the unification phase of resolution.
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">For example, f[?x->?u;?y->?v] would unify with f[a->1;b->2]
+by binding ?x = a, ?u = 1, ?y = b, ?v = 2 or, equally general,
+by binding ?x = b, ?u = 2, ?y = a, ?v = 1.</span></pre>
+</div>
+</li>
+</ul>
+
+
+<div class="div4">
+<h2><a id="section_4" name="section_4">4. Webizing</a></h2>
+
+<p>
+The POSL language elements of individuals, constructors, and relations can be
+<a href="http://www.w3.org/DesignIssues/Webize.html">webized</a>, and generally can be given <a href="http://gbiv.com/protocols/uri/rev-2002/rfc2396bis.html">URIs</a>.
+Since it concerns language elements wherever they occur,
+POSL webizing is orthogonal to the 'positional/slotted' distinction.
+It is important to notice that different occurrences of the same language element can
+thus be disambiguated by giving them different URIs.
+</p>
+
+<p>
+Also, we distinguish two kinds of character sequences that have the form of URIs in the POSL knowledge-representation language:
+An active URI, meant to identify a resource (the usual case), is enclosed in a pair of angle brackets (more precisely, by angularization), following
+&lt;<a href="http://gbiv.com/protocols/uri/rev-2002/rfc2396bis.html#delimiting">draft-fielding-uri-rfc2396bis-0x#delimiting</a>> and N3: &lt;...>;
+a passive URI, meant to stand for itself as a string (the unusual case), is enclosed in a pair of double quotes,
+exactly as other strings in POSL or in other languages: "...".
+XML namespace prefixes and local names as well as general <a href="http://www.w3.org/2001/tag/doc/qnameids-2004-03-17.html">QNames</a>
+can then be expressed via variables bound to active (sub)URIs (although XML applications like XSLT and RDF use "..." or '...' as XML attribute values
+for their active URIs, while angle brackets are used for their XML elements;
+mappings from POSL to the XML application RuleML should, however, keep passive URIs unchanged as "..."
+and encode active URIs &lt;...> as '...', where RuleML's 'webizing' XML attribute names href etc.
+must only be employed for active URIs).
+</p>
+
+<p>
+For complete (active) URIs, angularization means a pair of single angle 'brackets',
+actually built from one 'less-than' sign and one 'greater-than' sign.
+To accommodate the handling of incomplete URIs such as in XML namespace prefixes and local names,
+POSL introduces (active) subURIs and their angularization: Besides a complete URI &lt;...>, we permit prefixes written &lt;...>>,
+suffixes written &lt;&lt;...>, and infixes written &lt;&lt;...>>
+(mappings from POSL to RuleML should encode these subURIs as '...&amp;gt;',
+'&amp;lt;...', and '&amp;lt;...&amp;gt;', respectively).
+SubURI concatenation is perfomed
+by juxtaposition (only) on those sides where double angle brackets meet, ...>>&lt;&lt;..., which are eliminated
+in the process. For example, the prefix-suffix concatenation &lt;http://description.org/schema/>>&lt;&lt;Creator>
+returns the complete URI &lt;http://description.org/schema/Creator>,
+the infix-suffix concatenation &lt;&lt;//example.org/book#>>&lt;&lt;chapter3> returns the incomplete (suffix) URI &lt;&lt;//example.org/book#chapter3>, and
+the prefix-infix-suffix concatenation &lt;http:>>&lt;&lt;//example.org/book#>>&lt;&lt;chapter3> returns the complete URI &lt;http://example.org/book#chapter3>.
+</p>
+
+<p>
+Complete and incomplete URIs can then be used as <em>first-class citizens</em>: embedded in data structures, bound to logic variables, input and output as arguments, and returned as values.
+Some examples: A nested plex containing the five Dublin Core Community Profile
+(<a href="http://library.caltech.edu/openurl/PubComDocs/StdDocs/DCProfile20031007.pdf">DCCP</a>) URI Schemes is [&lt;ftp:>>,[&lt;http:>>,&lt;https:>>],&lt;ldap:>>,&lt;mailto:>>].
+If the logic variable ?s is bound to the namespace prefix &lt;http://description.org/schema/>>, the juxtaposition ?s&lt;&lt;Creator> returns &lt;http://description.org/schema/Creator>.
+If ?t is bound to the prefix &lt;http:>> and ?u is bound to the infix &lt;&lt;//description.org/schema/>>, ?t?u corresponds to ?s, the juxtaposition ?t?u&lt;&lt;Creator> again returns &lt;http://description.org/schema/Creator>,
+and the non-ground plex [?t,?u,?t?u] instantiates to [&lt;http:>>,&lt;&lt;//description.org/schema/>>,&lt;http://description.org/schema/>>].
+Given the fact
+</p>
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">scheme-secure(&lt;http:>>,&lt;https:>>).</span></pre>
+</div>
+<p>
+the query scheme-secure(&lt;http:>>,?schesec) binds ?schesec to &lt;https:>>.
+</p>
+
+<p>
+A symbolic POSL language element occurrence is associated with an active URI
+via symbol-URI juxtaposition (generalizing a wide-spread convention for user-email association as in "Ora Lassila"&lt;mailto:lassila@w3.org>). POSL individuals (including double-quoted strings), constructors, and relations can thus be juxtaposed to their webizing URIs with second-highest
+precedence after subURI concatenation, followed by the infix operators ":" (see Typing section) and "->" (see Introduction).
+</p>
+
+<p>
+For example, the individual symbol PeterMiller can be associated with a URI
+for the intended Peter Miller's homepage &lt;http://www.peter_miller.org> to obtain
+the following webized individual:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">PeterMiller&lt;http://www.peter_miller.org></span></pre>
+</div>
+
+<p>
+This can also be produced via a subURI concatenation, as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">PeterMiller&lt;http:>>&lt;&lt;//www.peter_miller.org></span></pre>
+</div>
+
+<p>
+The unary positional fact
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(PeterMiller).</span></pre>
+</div>
+
+<p>
+can now be webized using the above webized individual as the single argument as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<p>
+The query premium(?who) binds ?who to PeterMiller&lt;http://www.peter_miller.org>.
+Proceeding to queries that split the symbolic name from the URI, premium(PeterMiller?uri) binds ?uri to &lt;http://www.peter_miller.org>,
+premium(?sym&lt;http://www.peter_miller.org>) binds ?sym to PeterMiller,  and
+premium(?sym?uri) binds ?sym to PeterMiller and ?uri to &lt;http://www.peter_miller.org>.
+Also, using anonymous variables, premium(??uri) does not care for the symbolic name (the first "?" can be bound to any name, including a null name) and binds ?uri to &lt;http://www.peter_miller.org>,
+premium(?sym?) binds ?sym to PeterMiller and does not care for the URI (the second "?" can be bound to any URI, including a null URI),
+and premium(??), equivalent to premium(?), does not care for the symbolic name nor for the URI.
+Maximally two free variables are allowed in variable juxtapositions
+unified with symbol-URI juxtapositions, since unification never attempts to split (non-deterministically!) a URI into subURIs,
+so the binding boundary is always the one of
+the symbolic name and its angularized URI.
+</p>
+
+<p>
+Similarly, the unary slotted fact
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->PeterMiller).</span></pre>
+</div>
+
+<p>
+can be webized using the webized individual as the filler of the single argument slot as follows:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<p>
+The query premium(cust->?who) binds ?who to PeterMiller&lt;http://www.peter_miller.org>.
+Again, premium(cust->PeterMiller?uri) binds ?uri to &lt;http://www.peter_miller.org>,
+premium(cust->?sym&lt;http://www.peter_miller.org>) binds ?sym to PeterMiller,  and
+premium(cust->?sym?uri) binds ?sym to PeterMiller and ?uri to &lt;http://www.peter_miller.org>.
+</p>
+
+<p>
+The special case of an active URI not associated with any named language element is
+captured by just employing this URI in place of the language element.
+</p>
+
+<p>
+For example, Peter Miller's homepage can be directly
+used as an active URI in the positional or slotted facts, thus:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<p>
+Contrast this with facts over the corresponding passive URI,
+stating a property of the URI string itself (or about any other string):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored("http://www.peter_miller.org").</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored(strng->"http://www.peter_miller.org").</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored("peter_miller dot org").</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">underscored(strng->"peter_miller dot org").</span></pre>
+</div>
+
+<p>
+Besides associating a language element with an active URI and
+employing an active URI in place of a language element, the third possibility is
+just using the original language element as we did before webizing.
+The POSL language thus supports a mix of all three options, so users
+can tune their degree of webizing.
+</p>
+
+<p>
+Let us proceed to webizing another language element, relations,
+employing active URIs in place of, or in addition to, symbolic relation names.
+</p>
+
+<p>
+As an example consider a ternary between relation applied to North American countries:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between(mexico,usa,canada).</span></pre>
+</div>
+
+<p>
+Here, the three arguments are to be interpreted such that the first, a 'lower' object,
+borders the second, an 'inner' object, which borders the third, an 'upper' object.
+</p>
+
+<p>
+Now consider another ternary 'between' relation applied to the same countries:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between(usa,mexico,canada).</span></pre>
+</div>
+
+<p>
+Here, the three arguments are to be interpreted such that the first is an 'inner' object, bordering
+the second, a 'lower' object, and the third, an 'upper' object.
+</p>
+
+<p>
+This difference could be avoided by proceeding from
+a positional to a slotted representation, where the two 'between' interpretations would coincide:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between(lower->mexico;inner->usa;upper->canada).
+</span></pre>
+</div>
+
+<p>
+is equivalent to
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between(inner->usa;lower->mexico;upper->canada).</span></pre>
+</div>
+
+<p>
+The symbolic relation name 'between' could be webized using a URI, e.g. &lt;http://www.relheritance.org>,
+providing extra information such as 'between' being a subrelation of a 'neighboring' relation (similar to RDF linking
+to RDFS for providing extra information on binary properties or slot names):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between&lt;http://www.relheritance.org>(inner->usa;lower->mexico;upper->canada).</span></pre>
+</div>
+
+<p>
+Instead of a juxtaposed symbolic name and URI, a different URI could use 'between' as a fragmentid, so that no
+symbolic name would be needed:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;http://www.relheritance.org#between>(inner->usa;lower->mexico;upper->canada).</span></pre>
+</div>
+
+<p>
+On the other hand, keeping the different positional 'signatures' between(lower,inner,upper) vs.
+between(inner,lower,upper), these could be made explicit in several ways,
+one again being webizing the symbolic relation name 'between' using different URIs, e.g. &lt;http://www.direction.org#between>
+vs. &lt;http://www.georelate.org#between>:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">between&lt;http://www.direction.org#between>(mexico,usa,canada).
+between&lt;http://www.georelate.org#between>(usa,mexico,canada).</span></pre>
+</div>
+
+<p>
+In cases like here, where the fragmentid, #between, of URIs already gives the symbolic name,
+only those URIs are usually used:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;http://www.direction.org#between>(mexico,usa,canada).
+&lt;http://www.georelate.org#between>(usa,mexico,canada).</span></pre>
+</div>
+
+<p>
+Let us proceed to the webizing of atoms (a language element built on top of relations)
+in the form of URI anchoring, which basically associates an active URI with an atom that need not have a relation name.
+Atoms are webized by using an OID (a URI possibly prefixed by a symbolic name) as a special 'zeroth' argument separated from further arguments by an up-arrow infix "^": relation(oid^arg1 ... argN).
+In general, a "^" can separate multiple (M) objects from the regular (N) arguments of an operation: operation(oid1 ... oidM^arg1 ... argN).
+</p>
+
+<p>
+For example, the earlier webized unary positional and slotted facts
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<p>
+can now be anchored (or grounded) in WebFacts&lt;http://facts.net> to obtain these webized facts:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(WebFacts&lt;http://facts.net>^PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<br/>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(WebFacts&lt;http://facts.net>^cust->PeterMiller&lt;http://www.peter_miller.org>).</span></pre>
+</div>
+
+<p>
+As another example consider two well-known RDF descriptions
+(assuming XML namespace declarations like xmlns:s="http://description.org/schema/"):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rdf:RDF>
+  &lt;rdf:Description about="http://www.w3.org/Home/Lassila">
+    &lt;s:Creator rdf:resource="http://www.w3.org/staffId/85740"/>
+  &lt;/rdf:Description>
+  &lt;rdf:Description about="http://www.w3.org/staffId/85740">
+    &lt;v:Name>Ora Lassila&lt;/v:Name>
+    &lt;v:Email>lassila@w3.org&lt;/v:Email>
+  &lt;/rdf:Description>
+&lt;/rdf:RDF>
+</span></pre>
+</div>
+
+<p>
+A POSL version of these descriptions leads to two anchored, slotted facts
+(a unary and a binary anonymous atom) using empty (null) relation names,
+where the RDF subjects become the URIs used for anchoring, here denoting the resource subjects being described.
+Without any rdf:type, we obtain empty relation names, and a anchored fact has the form (uri^arg1 ... argN).
+Note that an RDF about="uri" becomes a POSL &lt;uri>^.
+RDF/XML tags combining a namespace prefix and a local name such as s:Creator in POSL become
+slot names concatenating a URI-prefix-valued global variable (denoted with a preceding "$") such as $s and a URI-suffix-bracketed local name such as &lt;&lt;Creator>; a POSL QName such as $s&lt;&lt;Creator>
+must instantiate-concatenate to a ground slot name like &lt;http://description.org/schema/Creator> before being used as such.
+The rdf:RDF root element with two rdf:Description children 
+then becomes a POSL module (enclosed in braces) of two webized facts:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">{
+  (&lt;http://www.w3.org/Home/Lassila>^$s&lt;&lt;Creator>->&lt;http://www.w3.org/staffId/85740>).
+  (&lt;http://www.w3.org/staffId/85740>^$v&lt;&lt;Name>->"Ora Lassila";$v&lt;&lt;Email>->&lt;mailto:lassila@w3.org>).
+}</span></pre>
+</div>
+
+<p>
+Alternatively, using a blank node and replacing the global URI http://www.w3.org/staffId/85740
+by the local blank node identifier OraLassilaRecord, the RDF descriptions become:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;rdf:RDF>
+  &lt;rdf:Description about="http://www.w3.org/Home/Lassila">
+    &lt;s:Creator rdf:nodeID="OraLassilaRecord"/>
+  &lt;/rdf:Description>
+  &lt;rdf:Description rdf:nodeID="OraLassilaRecord">
+    &lt;v:Name>Ora Lassila&lt;/v:Name>
+    &lt;v:Email>lassila@w3.org&lt;/v:Email>
+  &lt;/rdf:Description>
+&lt;/rdf:RDF>
+</span></pre>
+</div>
+
+<p>
+This can be represented as a module of two facts
+connected by an existential variable, in POSL replaced by a Skolem constant _OraLassilaRecord.
+Skolem constants,
+whose scope is global to clauses but local to modules, are prefixed by an "_" and usable, e.g., as slot fillers and OIDs:
+</p>
+
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">{
+  (&lt;http://www.w3.org/Home/Lassila>^$s&lt;&lt;Creator>->_OraLassilaRecord).
+  (_OraLassilaRecord^$v&lt;&lt;Name>->"Ora Lassila";$v&lt;&lt;Email>->&lt;mailto:lassila@w3.org>).
+}</span></pre>
+</div>
+
+<p>
+Coming back to an example in the Introduction, the square-bracket expression of the <a href="http://www.w3.org/2000/10/swap/Primer">N3 Primer</a>
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[ <#name> "Pat"; <#age> "24"; <#eyecolor> "blue" ].
+</span></pre>
+</div>
+
+<p>
+can now be represented as a POSL plex that uses webizing for the slot names
+(the URI of the current documented is considered a prefix to be concatenated to the suffixes <<#name> etc.):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">[ <<#name> -> Pat; <<#age> -> 24; <<#eyecolor> -> blue ]
+</span></pre>
+</div>
+
+<p>
+It can also be stored as a fact with a null value as the relation name:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">( <<#name> -> Pat; <<#age> -> 24; <<#eyecolor> -> blue ).
+</span></pre>
+</div>
+
+<p>
+Instead, corresponding to N3's
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt"><#pat>   <#name> "Pat"; <#age> "24"; <#eyecolor> "blue" .
+</span></pre>
+</div>
+
+<p>
+it can be stored as a URI-anchored fact (still with a null relation name):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">(<<#pat> ^ <<#name> -> Pat; <<#age> -> 24; <<#eyecolor> -> blue ).
+</span></pre>
+</div>
+
+<p>
+Finally, all kinds of webizing can be combined.
+As an example, relations and atoms can be webized at the same time.
+In the positional case this allows, e.g., to refer to a specific signature of the earlier relation 'between'
+and to give a unique OID to the asserted atom:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;http://www.georelate.org#between>(&lt;http://www.tuple.org/arity3/between/oid1672>^usa,mexico,canada).</span></pre>
+</div>
+
+<p>
+In the slotted case this could be written as an RDF description 'about' this OID containing an rdf:type
+that links to the 'between' URL;
+for the corresponding POSL fact we can directly employ this rdf:type as a non-empty relation name:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;http://www.relheritance.org#between>(&lt;http://www.description.org/between/oid1672>^inner->usa;
+                                                                                   lower->mexico;
+                                                                                   upper->canada).</span></pre>
+</div>
+
+<p>
+Using webizing also for RDF-like QNames instead of symbolic slots, we obtain a version where everything is webized,
+except that the countries are left as literals here rather than being made resources ($g is assumed to globally denote &lt;http://www.geoslot.org#>>):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">&lt;http://www.relheritance.org#between>(&lt;http://www.description.org/between/oid1672>^$g:&lt;&lt;inner>->usa;
+                                                                                   $g:&lt;&lt;lower>->mexico;
+                                                                                   $g:&lt;&lt;upper>->canada).</span></pre>
+</div>
+
+
+<div class="div5">
+<h2><a id="section_5" name="section_5">5. Typing</a></h2>
+
+<p>
+Up to this point, only untyped individuals and variables were used.
+Here we proceed to an optional POSL type extension expressed via the well-known, classical ":" notation
+(whose specific:general order was syntactically 'reversed' to general:specific in XML namespaces).
+Since it concerns individuals and variables wherever they occur,
+POSL typing is again orthogonal to the 'positional/slotted' distinction.
+Since it can be applied to symbolic or URI-associated individuals and since types can be local or URI-addressed (e.g., referencing
+RDFS or OWL classes),
+typing is also orthogonal to webizing.
+</p>
+
+<p>
+Basically, individuals such as PeterMiller and variables such as ?customer
+can be typed by ":"-separating them from a type such as a type constant or a URI reference to their RDFS or OWL member class,
+say the constant EBizCust or the URI &lt;http://e-biz.org/taxonomy#Custclass>. As in well-known, classical typed languages such as
+Sorted Logic, Description Logic, and F-logic, a colon separator is used between the individual or variable to be typed and a type expression,
+which can be a type name, a type URI, or a type-forming operation such as a type intersection.
+In our example, we obtain the typed individual
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">PeterMiller:EBizCust</span></pre>
+</div>
+
+<p>
+or
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">PeterMiller:&lt;http://e-biz.org/taxonomy#Custclass></span></pre>
+</div>
+
+<p>
+or the typed variable
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">?customer:EBizCust</span></pre>
+</div>
+
+<p>
+or
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">?customer:&lt;http://e-biz.org/taxonomy#Custclass></span></pre>
+</div>
+
+<p>
+The variables ?customer and ?product of our introductory Prolog-like discount rule
+can be typed by ":"-augmenting each occurrence with such a type constant:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer:EBizCust,
+         ?product:EBizProd,
+         percent5)  :-
+   premium(?customer:EBizCust),
+   regular(?product:EBizProd).</span></pre>
+</div>
+
+<p>
+Or with a URI reference:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer:&lt;http://e-biz.org/taxonomy#Custclass>,
+         ?product:&lt;http://e-biz.org/taxonomy#Prodclass>,
+         percent5)  :-
+   premium(?customer:&lt;http://e-biz.org/taxonomy#Custclass>),
+   regular(?product:&lt;http://e-biz.org/taxonomy#Prodclass>).</span></pre>
+</div>
+
+<p>
+For such re-occurring URIs we could use
+'type declarations' similar to XML namespace and N3 prefix declarations, global to an entire knowledge base.
+These would be based on global type variables ("$"). However, for simplicity, we use here 'logical type  variables' ("?").
+For this we bind, locally in the clause, logical variables ?c and ?p to URIs for the ?customer and ?product types, respectively. These
+names are then employed instead of the full URIs (these body-side type bindings could also be put into a separate constraint/guard part of clauses):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(?customer:?c,?product:?p,percent5)  :-
+   ?c=&lt;http://e-biz.org/taxonomy#Custclass>,
+   ?p=&lt;http://e-biz.org/taxonomy#Prodclass>,
+   premium(?customer:?c),
+   regular(?product:?p).</span></pre>
+</div>
+
+<p>
+Type constants or, shown here, the direct typing use of URIs is also possible for our F-logic-like discount rule:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->?customer:&lt;http://e-biz.org/taxonomy#Custclass>;
+         prod->?product:&lt;http://e-biz.org/taxonomy#Prodclass>;
+         rebate->percent5) :-
+   premium(cust->?customer:&lt;http://e-biz.org/taxonomy#Custclass>),
+   regular(prod->?product:&lt;http://e-biz.org/taxonomy#Prodclass>).</span></pre>
+</div>
+
+<p>
+But again 'URI declarations' are preferable here:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">discount(cust->?customer:?c;prod->?product:?p;rebate->percent5) :-
+   ?c=&lt;http://e-biz.org/taxonomy#Custclass>,
+   ?p=&lt;http://e-biz.org/taxonomy#Prodclass>,
+   premium(cust->?customer:?c),
+   regular(prod->?product:?p).</span></pre>
+</div>
+
+<p>
+For some POSL formulas it will be advantageous to type certain individuals/variables directly
+-- e.g., single-occurrence variables via direct types -- and other ones via type variables.
+These typing possibilities are also available for all other kinds of POSL formulas,
+including combined positional/slotted formulas, facts, and queries.
+</p>
+
+<p>
+Typing can be combined with webizing as shown by the following example
+(here, the webizing juxtaposition has highest precedence, followed by the typing ":" and the slotting "->"):
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(cust->PeterMiller&lt;http://www.peter_miller.org>:&lt;http://e-biz.org/taxonomy#Custclass>).</span></pre>
+</div>
+
+<p>
+Removing the symbolic individual name and adding anchoring, this leaves the relation name
+as the only symbolic element:
+</p>
+
+<div class="exampleInner">
+<pre><span style="font-family: courier; font-size: 10pt">premium(&lt;http://facts.net>^cust->&lt;http://www.peter_miller.org>:&lt;http://e-biz.org/taxonomy#Custclass>).</span></pre>
+</div>
+
+<p>
+Type checking for individuals can be performed statically;
+for variables, it must normally be deferred to run-time.
+For RDF Schema and OWL Light class hierarchies, greatest-lower-bound techniques from
+order-sorted logics can be used for computing type intersections.
+In combination with OWL DL, techniques from description logic classifiers
+will become necessary.
+</p>
+
+<div class="div6">
+<h2><a id="section_6" name="section_6">6. Implementation</a></h2>
+
+<p>Marcel Ball has implemented a Java-based parser and generator to translate between the
+basic POSL syntax and OO RuleML, both of which can be run in his 
+<a href="http://www.jdrew.org/oojdrew">OO jDREW</a>.
+
+<ul>
+  <li>The parser servlet is available online at <a href="http://www.ruleml.org:8080/converters/servlet/AsciiToRuleML">http://www.ruleml.org:8080/converters/servlet/AsciiToRuleML</a>.
+</li>
+
+<li>The generator servlet is available online at <a href="http://www.ruleml.org:8080/converters/servlet/RuleMLToAscii">http://www.ruleml.org:8080/converters/servlet/RuleMLToAscii</a>.
+</li>
+</ul>
+
+It will probably be easy to write such a parser/generator pair in Python or any other language as well.
+</p>
+
+<p>To go -- in both directions -- between positional and slotted forms, Stephen Greene
+has XSLT-implemented 'signature' declarations for preserving order and slot information,
+which could also be extended to type and mode information; the
+development URL is <a href="http://198.164.40.138/ruleml/ooruleml-xslt/">http://198.164.40.138/ruleml/ooruleml-xslt/</a>, and a URI will later
+be reachable again via <a href="http://www.ruleml.org/indoo">http://www.ruleml.org/indoo</a>. The ideas of 'positionalizing'
+are based on earlier work Michael Sintek and I did at DFKI.</p>
+
+<p>While POSL as a shorthand syntax is expected to stay in
+plain text (ASCII) for convenient input and parsing (into OO RuleML),
+POSL as a presentation syntax will be able to exploit, e.g. with XSLT,
+the possibilities of XHTML (such as font and color
+to differentiate individuals, variables, slots, relations, etc.).
+An early version of such a generator was XSLT-implemented for <a href="http://www.dfki.uni-kl.de/~boley/ruleml-mht.pdf">RFML</a>;
+Marcel Ball's above XHTML generator for POSL was implemented in Java.
+Further possibilities arise with Unicode and graphics (such as merging the
+two-character symbols ":-" and "->" into single characters,
+e.g. into a single-character two-shafted backarrow and a normal arrow,
+respectively).
+</p>
+
+
+<div class="div7">
+<h2><a id="section_7" name="section_7">7. Application</a></h2>
+
+<p>We have implemented in POSL a real-world application: The New Brunswick Business Knowledge Base 
+(<a href="http://www.ruleml.org/usecases/nbbizkb">NBBizKB</a>).
+
+
+<div class="div8">
+<h2><a id="section_8" name="section_8">8. Issues</a></h2>
+
+<p>
+Solutions to the following issues have been found:
+
+<ol>
+<li>Positional rest variables are separated from previous terms by a "|",
+as in Prolog.
+Slotted rest variables are separated from previous terms by a "!".
+Putting this information into the separator,
+rather than into the variable name, simplifies ensuring that there is
+at most one positional and one slotted rest variable on each level of a cterm
+or an atom (so unification stays deterministic);
+it also enables function expressions (see below) that are 'rest-valued'.
+</li>
+<li>Variables are no longer distinguished from individuals using Prolog's first-letter-capitalizing
+convention. This has been replaced by the convention of using a question mark as the first character,
+as, e.g., in Jess, N3, and SCL.
+</li>
+
+<li>Active URIs are now represented not by surrounding single quotes but by angularization as in N3.
+</li>
+<li>
+Webizing is no longer represented via an "+>" but simply by juxtaposition.
+Anchoring is now considered as a special case of object definition via "^".
+</li>
+
+<li>Types have been decoupled from QNames, and the colon is now used in the classical form specific:general.
+</li>
+
+<li>For describing objects -- e.g., for RDF's resource descriptions --
+active URIs are no longer being employed <em>in place of relations</em>.
+The new way of resource description is <em>anchoring</em> a slotted atom via the active URI of the resource.
+This is a similar kind of webizing as done for individuals etc.
+</li>
+
+<li>Modules have been introduced as clauses surrounded by braces "{...}",
+whereas (the above) object anchoring is done via a "^" infix within extended argument lists.
+Modules are the scoping construct for the newly introduced Skolem constants prefixed by an "_"
+(for RDF blank node identifiers).
+</li>
+
+</ol>
+
+</p>
+
+<p>
+Ongoing work includes looking into the following issues and possible new features,
+in particular into their semantic ramifications:
+
+<ol>
+
+<li>Of the two-character symbols, ":-" has already been widely used for
+backward implications (even though "<-" has also been used instead) and
+"->" has often -- such as of course in F-logic -- been used for slot-filler slots (but it has also
+been used for forward implications, not currently employed in POSL).
+But an inverse "-:" symbol can be introduced in POSL for forward implications.
+</li>
+
+<li>A distinguished symmetric equality predicate, currently used only for local type bindings,
+could be easily introduced as a more general "=" infix (also see the next issue on the directed equality of function definitions).
+</li>
+
+<li>Only derivation rules are currently captured.
+Functions and their defining transformation rules will be easy.
+It should also be possible to incorporate certain kinds of reaction rules.
+</li>
+
+<li>Access to order-sorted types is currently being supported.
+The development of further extensions towards OWL DL and OWL Full should be doable.
+</li>
+<li>No <em>relevance</em> differentiations are currently performed for the slots within a given cterm
+or atom.
+The weighted extension of OO RuleML could be transferred to permitting optional slot weights in the POSL syntax.
+</li>
+</ol>
+
+</p>
+
+</body>
+</html>

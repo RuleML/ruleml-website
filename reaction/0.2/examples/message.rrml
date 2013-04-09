@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Message Interchange Example -->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+
+<!-- An outgoing query message with payload "r1(X,Y,"Dummy Message Payload",r2(Z))" -->
+
+<Message mode='outbound' directive='query'>
+	<oid><Ind>Organization@lapbichler32</Ind></oid>
+	<protocol><Ind>esb</Ind></protocol>
+	<sender><Ind>Organization</Ind></sender>
+	<content>
+		<Atom>
+			<Rel>r1</Rel>
+			<Var>X</Var>
+			<Var>Y</Var>
+			<Ind>Dummy Message Payload</Ind>
+			<Expr>
+				<Fun>r2</Fun>
+				<Var>Z</Var>
+			</Expr>	
+		</Atom>
+	</content>
+</Message>
+
+	
+</RuleML>

@@ -1,0 +1,125 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+
+dc:title [ "RuleML Implications" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, implication" ]
+dc:description [ "The expansion module for implications." ]
+dc:date [ "2011-05-24" ]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |=
+  Implies.Node.def | head_Implies.edge.def | body_Implies.edge.def
+Node.choice |= Implies.Node.def
+edge.choice |= head_Implies.edge.def | body_Implies.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * <Implies>
+#            * <body>
+#            * <head>
+# This module also declares the following RuleML choice pattern:
+# PremiseFormula.choice
+# ConclusionFormula.choice
+
+## a convenience pattern that unifies implications and equivalences
+## because equivalence is allowed wherever implication is allowed.
+Implication-node.choice |=
+  Implies-node.choice | Equivalent-node.choice
+# For the declaration of equivalences, see the equivalance module (equivalence_module)
+
+## an extension point to allow alternate names and internationalization of uni-directional implication tag name.
+Implies-node.choice |= Implies.Node.def
+
+## An implication rule. It consists of a conclusion role (<head>) followed by a Premise role (<body>), or, equivalently (since roles constitute unordered elements), a Premise role followed by a conclusion role.
+## Alternatively, the roles may be skipped, in which case the Premise comes first followed by the conclusion as suggested by the element name 'Implies' (since the if of a rule implies the 'then', not vice versa).
+## The children of the implication element are divided into two sections, a header section for modifiers, and a main section for the premises and conclusion. 
+Implies.Node.def =
+  
+  ## <Implies>: an implication between two formulas, a premise and a conclusion. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-Implies
+  element Implies {
+    (Implies-datt.choice & reImplies.attlist),
+    Implies.header,
+    Implies.main
+  }
+
+## Implications may have an optional closure attribute 
+## and will accept a scoped closure attribute at full first-order logic.
+reImplies.attlist &=
+  closure-att.choice? & mapClosure-att-fo.choice?
+# For the declaration of the closure attribute pattern, see the quantification closure module (closure_expansion_module)
+
+## Implications accept the header pattern of general formulas.
+Implies.header &= CompoundFormula.header?
+# For the declaration of the compound formula header, see the con/disjunction module (andor_module).
+# 
+# Implies.main |= notAllowed is declared in the initialization module.
+# This pattern must be over-ridden to allow the Implies element to be used.
+# The pattern of the main content of an implication is serialization dependent,
+# but it will contain exactly one body (if) and one head (then).
+# For the declaration of the main content if implications, see the serialization modules (orderstrict_module or orderlax_module)
+
+## 
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the body tag name in implications.  
+body_Implies.name.choice |= body_Implies.edge.def
+
+## The body of an implication rule (<Implies>) containing the Premise(s), also known as the "antecedent" or "if" part of the rule. 
+## Also used as the "antecedent" part of an entailment (<Entails>).
+## Within Implies...
+body_Implies.edge.def =
+  
+  ## <body>: contains the premise of the implication. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-body
+  element body { body_Implies.content }
+
+## The premise of an implication consists of a single formula
+body_Implies.content |= PremiseFormula.choice
+
+## formulas allowed to be premises. 
+PremiseFormula.choice |=
+  SimpleFormula-node.choice
+  | And-node.choice
+  | Or-node.choice
+  | Negation-node.choice
+  | NegationAsFailure-node.choice
+  | Implication-fo-node.choice
+  | Forall-fo-node.choice
+  | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)
+
+## an extension point for stripe skipping as well as alternate spellings and internationalization of the head tag name in implications.  
+head_Implies.name.choice |= head_Implies.edge.def
+
+## The head of an implication rule (<Implies>) containing the conclusion, also known as the "consequent" or "then" part of the rule. 
+## Also used as the "consequent" part of an entailment (<Entails>).
+## Within Implies...
+head_Implies.edge.def =
+  
+  ## <head>: contains the conclusion of the implication. See 
+  ## http://www.ruleml.org/0.91/glossary/#gloss-head
+  element head { head_Implies.content }
+
+## The conclusion of an implication consists of a single formula.
+head_Implies.content |= ConclusionFormula.choice
+
+## formulas allowed to be conclusions include atomic formulas. 
+ConclusionFormula.choice |=
+  SimpleFormula-node.choice
+  | And-fo-node.choice
+  | Or-dis-node.choice
+  | Negation-node.choice
+  | NegationAsFailure-node.notallowed
+  | Implication-fo-node.choice
+  | Forall-fo-node.choice
+  | Exists-fo-node.choice
+# For the declaration of the simple formula pattern, see the atomic formula module ( atom_expansion_module) 
+# For the declaration of conjunctive and disjunctive formula patterns, see the conjunction and disjunction module (andor_module)
+# For the declaration of the strong negation formula pattern, see the strong negation module ( neg_expansion_module) 
+# For the declaration of the weak negation formula pattern, see the weak negation module ( naf_expansion_module) 
+# For the declaration of the implication pattern, see the implication modules (implication_module and equivalence_module)
+# For the declaration of the quantification patterns, see the quantification module (quantifier_module)

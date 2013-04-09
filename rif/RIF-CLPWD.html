@@ -1,0 +1,881 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head><!--*- nxml -*-->
+
+    <title>RIF Core Logic Programming Dialect Based on the Well-founded Semantics</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <style type="text/css">
+      .editsection { display: none; }
+    </style>
+    <style type="text/css">
+      .nonterminal {
+      font-weight: bold;
+      font-style: italic;
+      font-family: sans-serif;
+      }
+      .name {
+      font-family: monospace;
+      }
+      .grammar {
+      font-family: monospace; padding-left: 20px; 
+      }
+      .gexample {
+      font-family: monospace; padding-left: 20px; 
+      }
+      .image {
+      text-align: center;
+      }
+      .caption {
+      font-weight: bold;
+      }
+      table.complexity td {
+      text-align: center;
+      }
+
+      /* override mediawiki's beautiful DL styling... */
+      dl {
+      background: white;
+      width: 100%;
+      border: none;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      }
+
+      div {
+      margin-top: 0;
+      margin-bottom: 0;
+      }
+
+      /* let's try a class for a plain note; editor's notes might be
+      different, relations to issues might be different, etc. */
+
+      .note {
+      padding: 5px;
+      border: solid 1px black;
+      margin-left: 10%;
+      background-color: #FFA;
+      font-size: smaller;
+      }
+
+      .note_author {
+      font-size: smaller;
+      font-style: italic;
+      }
+
+
+      .ednote {
+      padding: 5px;
+      border: solid 1px black;
+      background-color: #FFA;
+      }
+
+      .ednotehead {
+      font-weight: bold;
+      }
+
+      #fulltitle {
+      font-size: 140%; 
+      font-weight: bold;
+      }
+
+      .syntax-translation-table td {
+      vertical-align: top;
+      }
+
+      .syntax-translation-table table {
+      border-collapse: collapse;
+      background: #FFF;
+      }
+
+      .syntax-translation-table th,td {
+      padding: 4px 1em;
+      background: #eee;
+      border: 1px black solid;
+      }
+
+      .syntax-translation-table pre {
+      background-color: #eee;
+      border: none;
+      color:black;
+      line-height:1.1em;
+      padding: 0;
+      }
+
+      .atRiskNote {
+      padding: 5px;
+      border: solid 2px blue;
+      background-color: #FFA;
+      }
+
+      .atRiskRef {
+      font-style: italic;	
+      }
+
+      .atRiskNoteHead {
+      font-style: italic;	
+      }
+
+      .warning {
+      margin: 1em;
+      padding: 1em;
+      border: solid 2px blue;
+      background-color: #FFA;
+      }
+    </style>
+    <link href="http://www.w3.org/StyleSheets/TR/base.css" rel="stylesheet" type="text/css"/>
+    
+  </head>
+  <body>
+
+    <div class="head">
+      <a href="http://www.w3.org/"><img alt="W3C" src="http://www.w3.org/Icons/w3c_home.png" height="48" width="72"/></a>
+      <a href="http://ruleml.org/"><img alt="RuleML" src="http://ruleml.org/images/RuleMLlogo2005.jpg" height="48"/></a>
+
+      <h1 id="title" style="clear: both;"><span id="short-title">RIF Core Logic Programming Dialect Based on the Well-founded Semantics</span></h1>
+      <h2 id="W3C-doctype">Specification 13 August 2010</h2>
+
+      <dl>
+	<dt>Editors:</dt>
+	<dd><a href="mailto:kifer@cs.stonybrook.edu">Michael Kifer</a>, Stony
+	Brook University, USA</dd>
+      </dl>
+
+      
+      <hr/>
+      <h2><a id="abstract" name="abstract">Abstract</a></h2>
+
+      <div>
+	<div>
+	  <p>
+	    This document specifies the <em>Core Logic Programming Dialect based on the well-founded semantics</em> for default negation, RIF-CLPWD, a language for exchanging rules among systems that are based on the Logic Programming paradigm with the well-founded semantics. The RIF-CLPWD presentation syntax and semantics are specified as specializations of the <i>RIF Framework for Logic Dialects</i> (RIF-FLD). The XML serialization syntax of RIF-CLPWD is also given as a specialization of the XML syntax of RIF-FLD.
+	  </p>
+	</div>
+      </div>
+    </div>
+
+    <table class="toc" id="toc" summary="Contents">
+      <tbody>
+	<tr>
+	  <td>
+	    <h2>Table of Contents</h2>
+	    <ul>
+	      <li class="toclevel-1"><a href="#Overview"><span class="tocnumber">1</span> <span class="toctext">Overview</span></a></li>
+	      <li class="toclevel-1"><a href="#The_Presentation_Syntax_of_RIF-BLD_as_a_Specialization_of_RIF-FLD"><span class="tocnumber">2</span> <span class="toctext">The Presentation Syntax of RIF-CLPWD as a Specialization of RIF-FLD</span></a></li>
+	      <li class="toclevel-1"><a href="#The_Semantics_of_RIF-CLPWD-FLD"><span class="tocnumber">3</span> <span class="toctext">The Semantics of RIF-CLPWD as a Specialization of RIF-FLD</span></a>
+		<ul>
+		  <li class="toclevel-2"><a href="#casp-intended-models"><span class="tocnumber">3.1</span> <span class="toctext">Intended Models</span></a></li>
+		</ul>
+	      </li>
+	      <li class="toclevel-1"><a href="#The_XML_Serialization_of_RIF-CLPWD"><span class="tocnumber">4</span> <span class="toctext">The XML Serialization of RIF-CLPWD as a Specialization of RIF-FLD</span></a></li>
+	      <li class="toclevel-1"><a href="#RIF-BLD_Conformance_as_a_Specialization_of_RIF-FLD"><span class="tocnumber">5</span> <span class="toctext">RIF-CLPWD Conformance as a Specialization of RIF-FLD</span></a></li>
+	      <li class="toclevel-1"><a href="#Acknowledgements"><span class="tocnumber">6</span> <span class="toctext">Acknowledgements</span></a></li>
+	      <li class="toclevel-1"><a href="#References"><span class="tocnumber">7</span> <span class="toctext">References</span></a>
+		<ul>
+		  <li class="toclevel-2"><a href="#Normative_References"><span class="tocnumber">7.1</span> <span class="toctext">Normative References</span></a></li>
+		  <li class="toclevel-2"><a href="#Informational_References"><span class="tocnumber">7.2</span> <span class="toctext">Informational References</span></a></li>
+		</ul>
+	      </li>
+	    </ul>
+	    
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <script type="text/javascript">
+      if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); }
+    </script>
+
+    <h2><a name="Overview"> <span class="mw-headline">1  Overview </span></a></h2>
+    <p>
+      This specification develops <i><b>RIF-CLPWD</b></i>, the Core Logic Programming Dialect based on the well-founded semantics for default negation. RIF-CLPWD is intended to capture the paradigm of declarative logic programming that is based on the <em><b>well-founded semantics</b></em> (WFS) [<a href="#ref-wf-model" title="">GRS91</a>,<a href="#ref-przymusinski-stationary" title="">Prz94</a>]. RIF-CLPWD is defined here as a specialization of the RIF framework for logic-based dialect [<a href="#ref-rif-fld" title="">RIF-FLD</a>], and high level of familiarity with RIF-FLD as well as with the well-founded semantics for default negation is assumed.
+    </p>
+    <p>
+      Syntactically, RIF-CLPWD corresponds to the language of rules with
+      function symbols and negation (both default and explicit), where rule
+      heads <em>cannot</em> contain disjunctions or equality. From the
+      expressive power point of view, knowledge representation based on such
+      rules is incomparable to the other popular logic programming paradigm,
+      one that is based on <em><b>answer-set programming</b></em> (ASP)
+      [<a href="#ref-gelfond-leone" title="">GLe02</a>]. One of the frequently cited difference is that ASP supports <em>reasoning by cases</em>, which is not possible using WFS. On the other hand, RIF-CLPWD is Turing-complete. Also, ASP is based on two-valued models, while WFS uses three-valued models. Due to the differences in their expressive power, the two paradigms are typically used for different purposes. WFS-based systems are normally used as programming languages in their own right. In contrast, ASP systems usually appear as embedded knowledge base components of imperative programming languages and are best suited for solving hard combinatorial problems.
+    </p>
+    <p>
+      Compared to standard logic programming, RIF-CLPWD has a number of syntactic extensions that are supported by most RIF dialects. These include objects and frames as in F-logic [<a href="#ref-flogic-95" title="">KLW95</a>], internationalized resource identifiers (or IRIs, defined by [<a href="#ref-rfc-3987" title="">RFC-3987</a>]) as identifiers for concepts, and XML Schema datatypes [<a href="#ref-xml-schema2" title="">XML-SCHEMA2</a>].
+    </p>
+    <p>
+      Compared to RIF-BLD [<a href="#ref-rif-bld" title="">RIF-BLD</a>], RIF-CLPWD does not support equality in rule conclusions, which reflects the limitations of most WFS-based systems (such support should be provided by dialects that are more expressive than this core logic programming dialect). On the other hand, it supports two kinds of negation, <tt>Naf</tt> (default negation with the WFS semantics) and <tt>Neg</tt> (the explicit negation). Thus, RIF-CLPWD is a proper extension of [<a href="#ref-rif-core" title="">RIF-Core</a>], but, due to the exclusion of equality in rule heads, it is incomparable in its expressive power to RIF-BLD.
+    </p>
+    <p>
+      The following examples illustrate the key syntactic features of RIF-CLPWD, which are not found in RIF-BLD.
+    </p>
+    <p>
+      <a name="ex1">
+      <b>Example 1</b> (Barber).
+    </p>
+    <p>
+      Unlike RIF-BLD, the well-founded semantics is three-valued. This example is a simple illustration of this property.
+    </p>
+    <pre>Document(
+      Prefix(br &lt;http://example.com/haircut#&gt;)
+      Prefix(hu &lt;http://example.com/humanity#&gt;)
+
+      Group (
+          Forall ?P (
+              br:shaves(br:barber ?P) :- And (hu:person(?P)  Naf br:shaves(?P ?P))
+          )
+          hu:person(br:barber)
+          hu:person(hu:JoePublic)
+      )
+)
+    </pre>
+    In this example, the ground atomic formula <tt>hu:person(br:barber)</tt> is assigned the truth value <b><em>u</em></b> (undefined), while <tt>hu:person(hu:JoePublic)</tt> has the truth value <b><em>t</em></b> (true). Other facts, such as <tt>hu:person(hu:Mary)</tt>, are false (<b><em>f</em></b>). &nbsp;&nbsp; &#9744;
+    <p>
+      The following example illustrates the use of both explicit and default negation.
+    </p>
+    <p>
+      <a name="ex2">
+      <b>Example 2</b> (Math Phobia).
+    </p>
+    <p>
+      The first rule here says that an individual would not be afraid of Math, if he is a student and it is not known (not explicitly stated) that that individual is not afraid of Math. Not being explicitly stated is expressed here by means of explicit negation <tt>Neg</tt>, while not being known is expressed by means of the default negation <tt>Naf</tt>.
+      The second rule says that if an individual is a student majoring in Math then it is explicitly stated that that individual is unafraid of Math.
+    </p>
+    <pre>Document(
+      Prefix(ex &lt;http://example.com/concepts#&gt;)
+
+      Group (
+	  Forall ?S (
+	      ex:afraid(?S ex:Math) :- And ( ?S#ex:Student (Naf Neg ex:afraid(?S ex:Math)) )
+	  )
+      
+	  Forall ?S (
+	      Neg ex:afraid(?S ex:Math) :- And ( ?S#ex:Student ?S[ex:majors -&gt; ex:Math] )
+	  )
+      )
+)
+    </pre>
+    <p>
+    If we also had the facts <tt>ex:Joe#ex:Student</tt> and <tt>ex:Joe[ex:majors -&gt; ex:Math]</tt>  then we could conclude <tt>Neg ex:afraid(ex:Joe ex:Math)</tt> by the second rule. We will also be able to infer <tt>ex:afraid(ex:Joe ex:Math)</tt> by the first rule, which intuitively is a contradiction. In the RIF-CLPWD semantics, the well-founded model of such a knowledge base is said to be <em>inconsistent</em>. However, this does not destroy the KB completely in the sense that not everything is derivable. For instance, <tt>ex:afraid(ex:Nancy ex:Math)</tt> is derivable, but <tt>Neg ex:afraid(ex:Nancy ex:Math)</tt> is not. In a correctly built knowledge base, the above rules would have to be adjusted to avoid unintended conclusions (for example, by adding a conjunct of the form <tt>Naf ?S[ex:majors -&gt; ex:Math]</tt> to the body of the first rule).   &nbsp;&nbsp; &#9744;
+    </p>
+
+
+    <h2><a name="The_Presentation_Syntax_of_RIF-BLD_as_a_Specialization_of_RIF-FLD"> <span class="mw-headline">2  The Presentation Syntax of RIF-CLPWD as a Specialization of RIF-FLD </span></a></h2>
+
+    <p>
+      The presentation syntax of the RIF Core Logic Programming Dialect with the well-founded semantics is defined by specialization from the presentation syntax of the <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-syntactic-framework" title="FLD">RIF Syntactic Framework for Logic Dialects</a> described in [<a href="#ref-rif-fld" title="">RIF-FLD</a>]. Section <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-dialect-syntax" title="FLD">Syntax of a RIF Dialect as a Specialization of the RIF Framework</a> in [<a href="#ref-rif-fld" title="">RIF-FLD</a>] lists the parameters of the syntactic framework in mathematical English, which we will now specialize for RIF-CLPWD. 
+    </p>
+    <ol>
+      <li>
+	<i>Extension points</i>.
+	<p>
+	  All extension points of RIF-FLD are removed (specialized by replacing them with zero objects).
+	</p>
+      </li>
+      <li> <i>Alphabet</i>. 
+	<p>
+	  The alphabet of the RIF-CLPWD presentation syntax is identical to the alphabet of RIF-FLD.
+	</p>
+      </li>
+      <li> <i>Assignment of signatures to each constant and variable symbol</i>.
+	<p>
+	  Unlike RIF-BLD, RIF-CLPWD does not impose strict separation between individuals, predicates, and functions. As a result, the signature structure is much simplified. More specifically, RIF-CLPWD contains the following signatures:
+	</p>
+	<ol style="list-style-type: lower-alpha;">
+	  <li>Basic
+	    <ul>
+	      <li><tt>individual{&nbsp;}</tt></li>
+	      <li><tt>atomic{&nbsp;}</tt></li>
+	    </ul>
+	    <p>
+	      The signature <tt>individual{&nbsp;}</tt> represents the context in which individual objects can appear. The signature <tt>atomic</tt> is the standard signature of RIF-FLD, which represents the context where atomic formulas can occur. 
+	    </p>
+	    <p>
+	      In the definitions of the remaining signatures, below, the symbol <em><tt>&Tau;</tt></em>   stands for either <tt>individual</tt> or <tt>atomic</tt>.
+	    </p>
+	  </li>
+	  <li>	  
+	    Signatures for lists
+	    <ul>	     
+	      <li>
+		The signature <tt>list</tt>  for closed lists. It has the following arrow expressions: <tt>() &rArr; individual</tt>, <tt>(<em><tt>individual</tt></em>) &rArr; individual</tt>, <tt>(<em><tt>individual</tt></em> <em><tt>individual</tt></em>) &rArr; individual</tt>, ...
+		
+	      </li>
+	      <li>	       
+		The signature <tt>openlist</tt>  for open lists (that have tails). It has the following arrow expressions: <tt>(<em><tt>individual</tt></em> <em><tt>individual</tt></em>) &rArr; individual</tt>, <tt>(<em><tt>individual</tt></em> <em><tt>individual</tt></em> <em><tt>individual</tt></em>) &rArr; individual</tt>, ... 
+	      </li>
+	    </ul>
+	  </li>
+	  <li>Signatures for functions, predicates, and external functions and predicates
+	    <ul>
+	      <li>
+		A signature for function and predicate symbols: <tt>fp</tt>. This signature has the arrow expressions for positional functions and predicates:   <tt>() &rArr; <em>&Tau;</em></tt>, <tt>(<em>individual</em>) &rArr; <em>&Tau;</em></tt>, <tt>(<em>individual</em> <em>individual</em>) &rArr; <em>&Tau;</em></tt>, ..., plus the arrow expressions for predicates with named arguments: <tt>(s1-&gt;<em>individual</em> ... sk-&gt;<em>individual</em>) &rArr; <em>&Tau;</em></tt>, for all k&gt;0 and all <tt>s1, ..., sk</tt> &isin; <tt>ArgNames</tt>.
+	      </li>
+	    </ul>
+	  </li>
+
+	  <li>
+	    The signature for equality is <tt>={(<em>individual</em>&nbsp;<em>individual</em>)</tt> &rArr; <tt><em>&Tau;</em>}</tt>.
+	    <p>
+	       The above arrow expressions imply that an equality term is both an atomic formula and an individual. Therefore, such terms can occur anywhere an individual can occur, including arguments to predicates, functions, and so on.
+	    </p>
+	  </li>
+	  <li>
+	    The frame signature, <tt>-&gt;</tt>,
+	    is <tt>-&gt;{(<em>individual&nbsp;individual&nbsp;individual</em>)</tt> &rArr; <tt><em>&Tau;</em>}</tt>.
+	    <p>
+	      Note that this allows frame terms to occur as arguments to predicates, functions, or as components in frame terms.
+	    </p>
+	  </li>
+	  <li>
+	    The membership signature, <tt>#</tt>, is <tt>#{(<em>individual</em>&nbsp;<em>individual</em>) &rArr; <em>&Tau;</em>}</tt>.
+	    <p>
+	      Again, this allows membership terms to occur as arguments to predicates, functions, or other terms.
+	    </p>
+	  </li>
+	  <li>
+	    The signature for the subclass relationship is <tt>##{(<em>individual</em>&nbsp;<em>individual</em>)</tt> &rArr; <tt><em>&Tau;</em>}</tt>.
+	    <p>
+	      As with frames and membership terms, this allows subclass terms to occur inside other terms.
+	    </p>
+	  </li>
+	  <li>
+	    <em>Assignment of signatures to symbols</em>:
+	    <ul>	    
+	      <li>
+		<em>Non-datatype</em> symbols in <tt>Const</tt>, including the <tt><a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#rif-iri-space" title="DTB">rif:iri</a></tt> and <tt><a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#rif-local-space" title="DTB">rif:local</a></tt> symbols, have the signatures <tt>individual</tt>, <tt>atomic</tt>, and, possibly, <tt>fp</tt>.
+		<p>
+		  Thus, a symbol can can appear in the position of an individual, a function, or a predicate without restrictions. However, the same symbol cannot represent both an external function/predicate and a regular one. This follows from the <a href="#cond-external-term">additional restrictions</a> below.
+		</p>
+	      </li>
+	      <li>
+		Symbols that correspond to RIF datatypes (XML Schema datatypes, <tt><a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#rif-xmlliteral-space" title="DTB">rdf:XMLLiteral</a></tt>, <tt><a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#rdf-PlainLiteral-space" title="DTB">rdf:PlainLiteral</a></tt>, etc.) all have the signature <tt>individual</tt> in RIF-CLPWD.
+	      </li>
+	      <li>
+		All variables have the signature <tt>individual</tt>, so they can range only over individuals.
+	      </li>
+	    </ul>
+	  </li>
+	</ol>
+	<p>
+	  RIF-CLPWD uses no special syntax for declaring signatures. Instead, the rule author specifies signatures <i>contextually</i>.  That is, since RIF-CLPWD requires that each symbol can be either an external symbol or a regular symbol, if the same symbol occurs as both in different contexts then the parser must treat this as a syntax error. If no errors are found, all terms and atomic formulas are guaranteed to be well-formed. Thus, signatures are <i>not</i> part of the RIF-CLPWD language, and <tt>individual</tt>, <tt>atomic</tt>, <tt>list</tt>, <tt>fp</tt>, etc., are not reserved keywords.
+	</p>
+      </li>
+      <li><i>Supported types of terms</i>.
+	<ul>
+	  <li>
+	    RIF-CLPWD supports the following types of terms defined by the syntactic framework (see the Section <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-terms" title="FLD">Terms</a> of [<a href="#ref-rif-fld" title="">RIF-FLD</a>]):
+	    <ol style="list-style-type: lower-alpha;">
+	      <li>constants</li>
+	      <li>variables</li>
+	      <li>positional</li>
+	      <li>with named arguments</li>
+	      <li>	      
+		lists
+	      </li>
+	      <li>equality</li>
+	      <li>frame</li>
+	      <li>membership</li>
+	      <li>subclass</li>
+	      <li>external</li>
+	      <li>formula</li>
+	    </ol>
+	  </li>
+	  <li>
+	    Compared to RIF-FLD, terms (both positional and with named
+	    arguments) have a number of restrictions:
+	    <ul>
+	      <li> <em>Variables</em>:
+		<br/>
+		The signature for the variable symbols does not permit them to occur in the context of predicate symbol, function symbol, or formulas. In particular, in the RIF-CLPWD specialization of RIF-FLD, a variable is not an atomic formula.
+	      </li>
+	      <li><em>Functions and predicates</em>:
+		<br/>
+		Signatures permit only constant symbols to occur in the context of function or predicate symbols. Indeed, RIF-CLPWD signatures ensure that all variables have the signature <tt>individual{&nbsp;}</tt> and all other terms, except for the constants from <tt>Const</tt>, can have either the signature <tt>individual{&nbsp;}</tt> or <tt>atomic{&nbsp;}</tt>. Therefore, if <tt>t</tt> is a (non-<tt>Const</tt>) term (e.g., <tt>s(a)</tt>) then <tt>t(...)</tt> is not a well-formed term (e.g., <tt>s(a)(b)</tt>).
+	      </li>
+	      <li><em>External predicates and functions</em>:  
+		<br/>
+		<span class="anchor" id="cond-external-term">
+		  A term, <tt>t</tt>, may appear as an external term or an external atomic formula (i.e., in the context <tt>External(t)</tt>) <em>if and only if</em> <tt>t</tt> is an instantiation of an externally defined schema from <a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#def-external-schema-set" title="DTB">the coherent set of external schemas associated with the language</a>.
+		</span>
+		<p>
+		  It thus follows that a predicate or a function symbol, <tt>s</tt>, that occurs in an external term <tt>External(s(...))</tt> cannot also occur as a non-external symbol.
+                </p>
+	      </li>
+	      <li>	  
+		<em>Formula terms</em>:
+		<br/>
+		Only the formula terms described below
+		in <a href="#supported-formulas">Supported formulas</a>
+		are allowed.
+	      </li>
+	    </ul>
+	  </li>
+	</ul> 
+      </li>
+      <li>  
+	No <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#ref-aggregate-term"
+	title="FLD">aggregate terms</a>
+	or <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#ref-module-term"
+	title="FLD">remote term references</a> are allowed.
+      </li>
+      <li>
+	<i>Required symbol spaces</i>.
+	<p>
+	  RIF-CLPWD requires the symbol spaces defined in Section <a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#sec-constants" title="DTB">Constants, Symbol Spaces, and Datatypes</a> of [<a href="#ref-rif-dtb" title="">RIF-DTB</a>].
+	</p>
+      </li> 
+      <li>
+	<span class="anchor" id="supported-formulas"/>
+	<i>Supported formulas</i>.
+	<p>
+	  RIF-CLPWD supports the following types of formulas (see <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-fld-wff" title="FLD">Well-formed Terms and Formulas</a> in [<a href="#ref-rif-fld" title="">RIF-FLD</a>] for the definitions):
+	</p>
+	<ul>
+	  <li>
+	    <i><b>RIF-CLPWD condition</b></i>
+	    <p>
+	      A RIF-CLPWD condition is an atomic formula, an external atomic formula, a <em>negated</em> (normal or external) atomic formula, or it is composed of such formulas using conjunctions and disjunctions. All these can be optionally preceded with existential quantifiers. A <em><b>negated</b></em> atomic formula has the form or either <tt>Neg &phi;</tt>, <tt>Naf &psi;</tt>, or <tt>Naf Neg &phi;</tt>, where <tt>&phi;</tt> is a normal atomic formula and <tt>&psi;</tt> is a normal or external atomic formula, i.e., classical negation cannot be applied to external atomic formulas. 
+	    </p>
+	    
+
+	  </li>
+	  <li>
+	    <i><b>RIF-CLPWD rule</b></i>
+	    <p>
+	      A RIF-CLPWD rule is a RIF-FLD rule implication or a universally quantified RIF-FLD rule with the following restrictions:
+	    </p>
+	    <ul>
+	      <li>
+		The conclusion of a rule is an atomic formula, an explicitly negated atomic formula (<tt>Neg &phi;</tt>), or a <em>conjunction</em> of such formulas.
+	      </li>
+	      <li>      
+		None of the atomic formulas mentioned in the rule conclusion is externally defined (i.e., cannot have the form <tt>External(...)</tt>).
+	      </li>
+	      <li>
+		The premise of the rule is a RIF-CLPWD condition.
+		<p>
+		  A RIF-CLPWD rule can have free (non-quantified)
+		  variables. The semantics of RIF-CLPWD treats them as if they
+		  were implicitly quantified outside of the rule (i.e., if <tt>r</tt> is a rule with a free variable <tt>?X</tt> then this is considered to be equivalent to <tt>Forall ?X (r)</tt>).
+		</p>
+	      </li>
+	    </ul>
+	  </li>
+	  <li>    
+	    <i><b>RIF-CLPWD fact</b></i>
+	    <p>
+	      A RIF-CLPWD fact is a (optionally universally quantified) atomic formula or a negated atomic formula that does not include <tt>Naf</tt>. 
+	      Free variables in such facts are assumed to be implicitly universally quantified.
+	    </p>
+	  </li>
+	  <li>
+	    <i><b>RIF-CLPWD group</b></i>
+	    <p>
+	      A RIF-CLPWD group is a RIF-FLD group formula that contains only
+	      RIF-CLPWD rules, RIF-CLPWD facts, 
+	      and RIF-CLPWD groups.
+	    </p>
+	  </li>
+	  <li>    
+	    <i><b>RIF-CLPWD document</b></i>
+	    <p>
+	      A RIF-CLPWD document is a RIF-FLD document that consists of directives and a RIF-CLPWD group formula. There is no <tt>Module</tt> directive. The <tt>Dialect</tt>  directive must be <tt>Dialect("RIF-CLPWD")</tt>,  and the <tt>Import(&lt;loc&gt;)</tt> directive (with one argument) can import RIF-CLPWD documents only. Here <tt>loc</tt> must be a Unicode character sequence that forms an IRI. There are no CLPWD-specific restrictions on the two-argument directive <tt>Import</tt> except that the second argument must be a Unicode sequence of characters of the form <tt>&lt;loc&gt;</tt>, where <tt>loc</tt> is an IRI.
+	    </p>
+	  </li>
+	</ul>
+      </li>
+    </ol>
+    
+
+    <h2><a name="The_Semantics_of_RIF-CLPWD-FLD"> <span class="mw-headline">3  The Semantics of RIF-CLPWD as a Specialization of RIF-FLD </span></a></h2>
+
+    <p>
+      The semantics of the RIF Core Logic Programming Dialect Dialect is defined by specialization from the semantics of the RIF <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-fld-semantic-framework" title="FLD">framework for logic dialects</a>. Section <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-rif-dialect-semantics" title="FLD">Semantics of a RIF Dialect as a Specialization of the RIF Framework</a> in [<a href="#ref-rif-fld" title="">RIF-FLD</a>] lists the parameters of the semantic framework that can be specialized. Thus, for RIF-CLPWD, we need to look at the following parameters:
+    </p>
+    <ul>
+      <li>
+	<i>The effect of the syntax</i>.
+	<p>
+	  The restrictions on the signatures of symbols, terms, or formulas in RIF-CLPWD do not affect the semantic definitions of RIF-FLD in any significant way.
+	</p>
+      </li>
+      <li>
+	<span class="anchor" id="def-preliminary-semantic-restrictions"/>
+	<i>Truth values</i>.
+	<p>
+	  The set <i><b>TV</b></i> of truth values in RIF-CLPWD consists of three values, <b>t</b>, <b>f</b>, and <b>u</b> (undefined), such that <b>f</b> &lt;<sub>t</sub> <b>u</b> &lt;<sub>t</sub>  <b>t</b>.
+	</p>
+      </li>
+      <li><i>Datatypes</i>.
+	<p>
+	  The set of data types and <em><b>DTS</b></em> of RIF-CLPWD includes the datatypes listed in Section <a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#sec-data-types" title="DTB">Datatypes</a> of [<a href="#ref-rif-dtb" title="">RIF-DTB</a>].
+	</p>
+      </li>
+      <li>
+	<em>Directives, connectives</em>.  
+	<ul>      
+	  <li>
+	    <i>Import directive</i>.
+	    <p>
+	      The semantics of the two-argument <tt>Import</tt> directive is given in [<a href="#ref-rif-swc" title="">RIF-RDF+OWL</a>]. The semantics of the one-argument directive is the same as in RIF-FLD.
+	    </p>
+	  </li>
+	  <li>	     
+	    <em>The rule implication connective</em> <tt>:-</tt>. 
+	    <p>
+	      Truth valuation of a rule of the form <tt>head :- body</tt> is defined as follows. This definition is a specialization of the <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#def-fld-truth" title="FLD">corresponding definition in RIF-FLD</a> for the <tt>:-</tt> connective.
+	    </p>
+	    <p>
+	      <em>TVal<sub>I</sub></em>(<em>head</em> <tt>:-</tt> <em>body</em>) = <b>t</b> if and only if <em>TVal<sub>I</sub></em>(<em>head</em>) &ge;<sub>t</sub> <em>TVal<sub>I</sub></em>(<em>body</em>). Otherwise, <em>TVal<sub>I</sub></em>(<em>head</em> <tt>:-</tt> <em>body</em>) = <b>f</b>.
+	    </p>
+	    
+	  </li>
+	</ul>
+      </li>
+      <li><i>Logical entailment</i>.
+	<p>
+	  Recall that logical entailment in RIF-FLD is defined with respect to an unspecified set of <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-intended-models">intended semantic structures</a> and that dialects of RIF must make this notion concrete. For RIF-CLPWD, this set is defined in Section <a href="#casp-intended-models">Intended Models</a>.
+	</p>
+      </li>
+    </ul>
+
+    <h3><a name="casp-intended-models"> <span class="mw-headline">3.1  Intended Models</span></a></h3>
+
+    <p>
+      The well-founded semantics [<a href="#ref-wf-model" title="">GRS91</a>,<a href="#ref-przymusinski-stationary" title="">Prz94</a>] is typically defined with respect to Herbrand domains
+      [<a href="#ref-chang-lee" title="">CL73</a>], so we limit our attention to RIF-FLD <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#Semantic_Structures">semantic structures</a>
+      &nbsp; <em><b>I</b></em> =   &lt;<i><b>TV</b></i>, <i><b>DTS</b></i>, <i><b>D</b></i>, <i><b>I</b></i><sub>C</sub>, <i><b>I</b></i><sub>V</sub>, <i><b>I</b></i><sub>F</sub>, <i><b>I</b></i><sub>NF</sub>, <i><b>I</b></i><sub>list</sub>, <i><b>I</b></i><sub>tail</sub>, <i><b>I</b></i><sub>frame</sub>, <i><b>I</b></i><sub>sub</sub>, <i><b>I</b></i><sub>isa</sub>, <i><b>I</b></i><sub>=</sub>, <i><b>I</b></i><sub>external</sub>, <i><b>I</b></i><sub>connective</sub>, <i><b>I</b></i><sub>truth</sub>&gt;&nbsp; 
+      that all have the same <em>RIF-CLPWD-Herbrand</em> domain.
+      We say <em>RIF-CLPWD-Herbrand</em> domain   and not simply a <em>Herbrand</em> domain because RIF-CLPWD has many more kinds of terms than the standard classical logic. This even includes certain formulas, such as membership, subclass, and frames.
+      The semantics of RIF-FLD, which we are specializing here, is defined in a general way in which all such terms are mapped into the domain. Therefore, we need to define RIF-CLPWD-Herbrand domains, a generalization of the classical notion of Herbrand domains.
+    </p>
+    <p>
+      In what follows, we will be relying on the notions of
+      <em><b>ground</b></em> terms, <em><b>Herbrand Universe</b></em> and <em><b>Herbrand Domain</b></em>, <em><b>Herbrand Semantic Structure</b></em>, <em><b>minimal models</b></em>, and other notions defined in <a href="http://www.w3.org/TR/rif-fld/#Appendix:_A_Subframework_for_Herbrand_Semantic_Structures">Appendix: A Subframework for Herbrand Semantic Structures</a> of the <a href="http://www.w3.org/TR/rif-fld/">RIF FLD</a> specification.
+    </p>
+
+
+    <p><span class="anchor" id="def-intended-model-general"/>
+      <b>Definition (Intended Models - General).</b>
+      Let <b>&Gamma;</b> be a RIF-CLPWD document and <b>&Gamma;<sup>*</sup></b>
+      be its ground instantiation. We say a RIF Herbrand semantic
+      multi-structure <em><b>&Icirc;</b></em>
+      of <b>&Gamma;</b> is its <em><b>intended model</b></em> if and only
+      if <em><b>&Icirc;</b></em> is an intended model of <b>&Gamma;<sup>*</sup></b>.
+      <br/>
+      The remainder of this section defines the notion of intended
+      models of ground RIF-CLPWD documents.
+      &nbsp;&nbsp; &#9744;
+    </p>
+
+    <p>
+      To define intended models for ground documents, we need to introduce
+      the following notion of a program quotient (sometimes also called
+      Gelfond-Lifshitz reduct). For the purpose of the next definition, we introduce three additional propositions that correspond to the three truth values of RIF-CLPWD: <tt>true</tt>, <tt>false</tt>, and <tt>undefined</tt>, such that for any RIF Herbrand semantic structure, <em><b>I</b></em>, <em>TVal<sub>I</sub></em>(<tt>true</tt>) = <b>t</b>, <em>TVal<sub>I</sub></em>(<tt>false</tt>) = <b>f</b>, and <em>TVal<sub>I</sub></em>(<tt>undefined</tt>) = <b>u</b>. (Note that for <tt>true</tt> we could have used <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001#def-fld-well-formed-formula"><tt>And()</tt></a> and for false <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001#def-fld-well-formed-formula"><tt>Or()</tt></a>. But no substitute exists in RIF-FLD for <tt>undefined</tt>.)   
+    </p>
+
+    <p><span class="anchor" id="def-quotient"/>
+      <b>Definition (Quotient).</b>
+      Let <b>&Gamma;</b> be a <em>ground</em>  RIF-CLPWD document
+      and <em><b>&Icirc;</b></em> a RIF Herbrand semantic
+      multi-structure
+      for it. The quotient of <b>&Gamma;</b> with respect
+      to <em><b>&Icirc;</b></em>, denoted <b>&Gamma;</b>/ <em><b>&Icirc;</b></em>
+      is a RIF-CLPWD document obtained as follows:
+    </p>
+    <ul>      
+      <li>
+	For every rule or fact in <b>&Gamma;</b>, replace every
+	negated atomic formula of the form <tt>Naf &phi;</tt> according to
+	its truth value <i>TVal</i><sub>I</sub>(<tt>Naf &phi;</tt>):
+	if <i>TVal</i><sub>I</sub>(<tt>Naf &phi;</tt>) = <b>t</b> then
+	<tt>Naf &phi;</tt> is replaced with the proposition <tt>true</tt>; if
+	<i>TVal</i><sub>I</sub>(<tt>Naf &phi;</tt>) = <b>f</b> then it is replaced with <tt>false</tt>; otherwise, it is replaced with <tt>undefined</tt>.   
+      </li>
+    </ul>
+    <p>
+      The resulting document is called the quotient of <b>&Gamma;</b>
+      with respect to <em><b>&Icirc;</b></em> and is
+      denoted <b>&Gamma;</b>/ <em><b>&Icirc;</b></em>.
+    </p>
+    <p>
+      It is easy to see that <b>&Gamma;</b>/ <em><b>&Icirc;</b></em> does not contain atomic formulas that are negated with <tt>Naf</tt>. 
+      &nbsp;&nbsp; &#9744;
+    </p>
+
+    <p>
+      Observe that any quotient <b>&Gamma;</b>/ <em><b>&Icirc;</b></em> is a
+      Horn-like rule set in that it does not use default negation. We
+      say <em>Horn-like</em> because these rules can still have explicit
+      negation <tt>Neg</tt>. However, explicit negation behaves monotonically
+      and this means that such rules have a <a href="http://www.w3.org/TR/rif-fld/#def-minimal-model">unique minimal model</a>.
+      This model is computed by an iterative process of making all possible
+      inferences using the rules in <b>&Gamma;</b>/ <em><b>&Icirc;</b></em>
+      starting with the <a href="http://www.w3.org/TR/rif-fld/#def-empty-herb-struct">empty RIF Herbrand semantic structure</a> in
+      which <em><b>I</b></em><sub>true</sub> maps everything to <b>u</b>
+      [<a href="#ref-vanemden-kowalski" title="">vEK76</a>].
+    </p>
+
+      <p>
+	Let <b>&Gamma;</b> be a ground RIF-CLPWD document and <em><b>&Icirc;</b></em> a <a href="http://www.w3.org/TR/rif-fld/#def-herbrand-semantic-structure">RIF Herbrand semantic multi-structure</a>.
+	 The <a href="http://www.w3.org/TR/rif-fld/#def-minimal-model">unique minimal model</a> of <b>&Gamma;</b>/ <em><b>&Icirc;</b></em> will be denoted by <b>M<sub>min</sub></b>(<b>&Gamma;</b>/ <em><b>&Icirc;</b></em>).
+      </p>
+
+    <p>
+      The following definition is an adaptation from [<a href="#ref-przymusinski-stationary" title="">Prz94</a>].
+    </p>
+
+    <p><span class="anchor" id="def-well-founded-model-ground"/>
+      <b>Definition (Well-founded Models).</b>
+      The <b>well-founded model</b> of a ground RIF-CLPWD document,  <b>&Gamma;</b>, is defined as a limit of the following transfinite sequence of RIF Herbrand semantic structures <em><b>I</b></em><sup>0</sup>, <em><b>I</b></em><sup>1</sup>, ....
+      <br/>
+      The initial structure, <em><b>I</b></em><sup>0</sup> is the 
+      <a href="http://www.w3.org/TR/rif-fld/#def-empty-herb-struct">empty structure</a> defined in <a href="http://www.w3.org/TR/rif-fld/#Appendix:_A_Subframework_for_Herbrand_Semantic_Structures">Appendix: A Subframework for Herbrand Semantic Structures</a> of the <a href="http://www.w3.org/TR/rif-fld/">RIF FLD</a> specification.
+      Suppose that <em><b>I</b></em><sup>m</sup> has already been defined for every <tt>m&lt;k</tt>, where <tt>k</tt> is some ordinal number.  Then:
+    </p>
+    <ul>      
+      <li>
+	<em><b>I</b></em><sup>k</sup> = <b>M<sub>min</sub></b>(<b>&Gamma;</b>/ <em><b>I</b></em><sup>k-1</sup>), if <tt>k</tt> is a non-limit ordinal. 
+      </li>
+      <li>	
+	<em><b>I</b></em><sup>k</sup> = &cup;<sub>i&lt;k</sub> <em><b>I</b></em><sup>i</sup>, if <tt>k</tt> is a limit ordinal. 
+      </li>
+    </ul>
+    <p>
+      The limit of such a sequence is known to exist  [<a href="#ref-przymusinski-stationary" title="">Prz94</a>] and is unique; it is reached for some, possibly transfinite, ordinal <tt>&alpha;</tt>, such that <em><b>I</b></em><sup>&alpha;</sup> = <em><b>I</b></em><sup>&alpha;+1</sup>.
+      &nbsp;&nbsp; &#9744;
+    </p>
+
+    <p>
+      Note that although the above limit exists and therefore a well-founded model is unique, it might not be consistent. Here is a simple example that illustrates that:
+    </p>
+    <pre>Group (
+      ex:p
+      Neg ex:p :- Naf ex:q
+)
+    </pre>
+    <p>
+      It is easy to see that the well-founded model here makes both <tt>ex:p</tt> and <tt>Neg ex;p</tt> true and therefore is inconsistent.  <a href="#ex1">Example 2</a> is another illustration of such possible inconsistency.
+      We are now ready to define
+      intended models for ground RIF-CLPWD documents.
+    </p>
+    
+    <p><span class="anchor" id="def-intended-model-ground"/>
+      <b>Definition (Intended Models - Ground).</b>
+      Let <b>&Gamma;</b> be
+      a <em>ground</em> RIF-CLPWD document.  A RIF Herbrand semantic
+      multi-structure <em><b>&Icirc;</b></em> of <b>&Gamma;</b> is said to be
+      an <em><b>intended model</b></em> of <b>&Gamma;</b> if it is
+      a <a href="http://www.w3.org/TR/rif-fld#def-consistent-semantic-structure">consistent Herbrand semantic multi-structure</a> and a well-founded model for
+      <b>&Gamma;</b>/ <em><b>&Icirc;</b></em>.
+      &nbsp;&nbsp; &#9744;
+    </p>
+
+    <p>
+      As explained just before the above definition, the intended model does not always exist, due to the consistency requirement,
+    </p>
+
+    <p>
+      <b>Example 3</b>  (Intended and unintended models)
+    </p>
+    <p>
+       Going back to <a href="#ex1">Example 1</a>, the intended model here is the one that assigns
+    <tt>hu:person(br:barber)</tt> the truth value <b><em>u</em></b> and <tt>hu:person(hu:JoePublic)</tt> the truth value <b><em>t</em></b>. Other facts, such as <tt>hu:person(hu:Mary)</tt>, are assigned the truth value <b><em>f</em></b>. 
+    </p>
+    <p>
+      An example of an un-intended model would be one where <tt>hu:person(hu:Mary)</tt> is assigned <b><em>t</em></b> or <b><em>u</em></b>, as such conclusions are deemed to be unsupported.
+      &nbsp;&nbsp; &#9744;
+    </p>
+
+
+    <h2><a name="The_XML_Serialization_of_RIF-CLPWD"> <span class="mw-headline">4  The XML Serialization of RIF-CLPWD as a Specialization of RIF-FLD </span></a></h2>
+
+    <p>
+      Section <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-translate-fld-to-xml" title="FLD">Mapping from the RIF-FLD Presentation Syntax to the XML Syntax</a> of [<a href="#ref-rif-fld" title="">RIF-FLD</a>] defines a mapping, <tt>&chi;<sub>fld</sub></tt>, from the presentation syntax of RIF-FLD to its XML serialization. When restricted to well-formed RIF-CLPWD formulas, <tt>&chi;<sub>fld</sub></tt> becomes the CLPWD-to-XML mapping <tt>&chi;<sub>clpwd</sub></tt>. In this way, the XML serialization of RIF-CLPWD is a specialization of the <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-fld-specialization-framework" title="FLD">RIF-FLD XML Serialization Framework</a> defined in [<a href="#ref-rif-fld" title="">RIF-FLD</a>].
+    </p>
+    <p>
+    </p>
+
+    <h2><a name="RIF-BLD_Conformance_as_a_Specialization_of_RIF-FLD"> <span class="mw-headline">5  RIF-CLPWD Conformance as a Specialization of RIF-FLD </span></a></h2>
+    <p>
+      If T is a set of datatypes and symbol spaces and E a <a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/#def-external-schema-set" title="DTB">coherent set of external schemas</a> for functions and predicates, then the general definition of <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/#sec-conformance" title="FLD">conformance in RIF-FLD</a> yields the notion of conformant CLPWD<sub>T,E</sub> producers and consumers.
+    </p>
+    
+    <h2><a name="Acknowledgements"> <span class="mw-headline">6  Acknowledgements </span></a></h2>
+    <p>
+      TBD
+    </p>
+    
+    <h2><a name="References"> <span class="mw-headline">7  References </span></a></h2>
+    <h3><a name="Normative_References"> <span class="mw-headline">7.1  Normative References </span></a></h3>
+
+    <!--
+       <p> <span class="anchor" id="ref-rdf-concepts"> </span></p>
+       <dl>
+	 <dt> [RDF-CONCEPTS] </dt>
+	 <dd>
+	   <i>Resource Description Framework (RDF): Concepts and Abstract Syntax</i>, Klyne G., Carroll J. (Editors), W3C Recommendation, 10 February 2004, <a class="external free" href="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</a>. Latest version available at <a class="external free" href="http://www.w3.org/TR/rdf-concepts/" title="http://www.w3.org/TR/rdf-concepts/">http://www.w3.org/TR/rdf-concepts/</a>. 
+	 </dd>
+       </dl>
+       -->
+    <p><span class="anchor" id="ref-rfc-3987"> </span></p>
+    <dl>
+      <dt> [RFC-3987] </dt>
+      <dd>
+	<i><a class="external" href="http://tools.ietf.org/html/rfc3987" title="http://tools.ietf.org/html/rfc3987">RFC 3987</a> - Internationalized Resource Identifiers (IRIs)</i>, M. Duerst and M. Suignard, IETF, January 2005. This document is <a class="external free" href="http://www.ietf.org/rfc/rfc3987.txt" title="http://www.ietf.org/rfc/rfc3987.txt">http://www.ietf.org/rfc/rfc3987.txt</a>.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-rif-bld"> </span></p>
+    <dl>
+      <dt> [RIF-BLD] </dt>
+      <dd>
+	<span><cite><a href="http://www.w3.org/TR/2009/CR-rif-bld-20091001/"><span>RIF Basic Logic Dialect</span></a></cite> Harold Boley, Michael Kifer, eds. W3C Candidate Recommendation, 1 October 2009, <a href="http://www.w3.org/TR/2009/CR-rif-bld-20091001/">http://www.w3.org/TR/2009/CR-rif-bld-20091001/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-bld/">http://www.w3.org/TR/rif-bld/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-rif-core"></span></p>
+    <dl><dt> [RIF-Core] </dt>
+      <dd>
+	<span><cite><a href="http://www.w3.org/TR/2009/CR-rif-core-20091001/"><span>RIF Core Dialect</span></a></cite> Harold Boley, Gary Hallmark, Michael Kifer, Adrian Paschke, Axel Polleres, Dave Reynolds, eds. W3C Candidate Recommendation, 1 October 2009, <a href="http://www.w3.org/TR/2009/CR-rif-core-20091001/">http://www.w3.org/TR/2009/CR-rif-core-20091001/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-core/">http://www.w3.org/TR/rif-core/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-rif-dtb"> </span></p>
+    <dl><dt> [RIF-DTB] </dt>
+      <dd><span><cite><a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/"><span>RIF Datatypes and Built-Ins 1.0</span></a></cite> Axel Polleres, Harold Boley, Michael Kifer, eds. W3C Candidate Recommendation, 1 October 2009, <a href="http://www.w3.org/TR/2009/CR-rif-dtb-20091001/">http://www.w3.org/TR/2009/CR-rif-dtb-20091001/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-dtb/">http://www.w3.org/TR/rif-dtb/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-rif-fld"> </span></p>
+    <dl>
+      <dt> [RIF-FLD] </dt>
+      <dd>
+	<span><cite><a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/"><span>RIF Framework for Logic Dialects</span></a></cite> Harold Boley, Michael Kifer, eds. W3C Candidate Recommendation, 1 October 2009, <a href="http://www.w3.org/TR/2009/CR-rif-fld-20091001/">http://www.w3.org/TR/2009/CR-rif-fld-20091001/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-fld/">http://www.w3.org/TR/rif-fld/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-rif-swc"> </span></p>
+    <dl>
+      <dt> [RIF-RDF+OWL] </dt>
+      <dd>
+	<span><cite><a href="http://www.w3.org/TR/2009/CR-rif-rdf-owl-20091001/"><span>RIF RDF and OWL Compatibility</span></a></cite> Jos de Bruijn, editor. W3C Candidate Recommendation, 1 October 2009, <a href="http://www.w3.org/TR/2009/CR-rif-rdf-owl-20091001/">http://www.w3.org/TR/2009/CR-rif-rdf-owl-20091001/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-rdf-owl/">http://www.w3.org/TR/rif-rdf-owl/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-xml-1-point-0"> </span></p>
+    <dl> 
+      <dt> [XML1.0] </dt>
+      <dd>
+	<i>Extensible Markup Language (XML) 1.0 (Fourth Edition)</i>, W3C Recommendation, World Wide Web Consortium, 16 August 2006, edited in place 29 September 2006. This version is <a class="external free" href="http://www.w3.org/TR/2006/REC-xml-20060816/" title="http://www.w3.org/TR/2006/REC-xml-20060816/">http://www.w3.org/TR/2006/REC-xml-20060816/</a>.
+      </dd>
+    </dl>
+    <p> <span class="anchor" id="ref-xml-schema2"></span> </p>
+    <dl>
+      <dt> [XML Schema Datatypes]</dt>
+      <dd>
+	<cite><a class="external text" href="http://www.w3.org/TR/2009/CR-xmlschema11-2-20090430/" title="http://www.w3.org/TR/2009/CR-xmlschema11-2-20090430/">W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes</a></cite>. David Peterson, Shudi Gao, Ashok Malhotra, C. M. Sperberg-McQueen, and Henry S. Thompson, eds. W3C Candidate Recommendation, 30 April 2009, http://www.w3.org/TR/2009/CR-xmlschema11-2-20090430/. Latest version available as http://www.w3.org/TR/xmlschema11-2/.
+      </dd>
+    </dl>
+
+    <h3><a name="Informational_References"> <span class="mw-headline">7.2  Informational References </span></a></h3>
+
+    <p><span class="anchor" id="ref-chang-lee"> </span></p>
+    <dl>
+      <dt> [CL73] </dt>
+      <dd>
+	<i>Symbolic Logic and Mechanical Theorem Proving</i>, C.L. Chang and R.C.T. Lee. Academic Press, 1973.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-curie"> </span></p>
+    <dl>
+      <dt> [CURIE] </dt>
+      <dd>
+	<i>CURIE Syntax 1.0: A syntax for expressing Compact URIs</i>, Mark Birbeck, Shane McCarron.  W3C Working Draft 2 April 2008. Available at <a class="external free" href="http://www.w3.org/TR/curie/" title="http://www.w3.org/TR/curie/">http://www.w3.org/TR/curie/</a>.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-enderton01"> </span></p>
+    <dl> 
+      <dt> [Enderton01] </dt>
+      <dd>
+	<i>A Mathematical Introduction to Logic, Second Edition</i>, H. B. Enderton. Academic Press, 2001.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-gelfond-leone"/> </p>
+    <dl>
+      <dt> [GLe02] </dt>
+      <dd>
+	<i>Logic programming and knowledge representation - The A-Prolog perspective</i>, M. Gelfond and N. Leone. Artificial Intelligence 138(1-2), pages 3-38, 2002.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-stable-model"/> </p>
+    <dl>
+      <dt> [GLi88] </dt>
+      <dd>
+	<i>The Stable Model Semantics for Logic Programming</i>, M. Gelfond and V. Lifschitz. Logic Programming: Proceedings of the Fifth Conference and Symposium, pages 1070-1080, 1988.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-wf-model"/> </p>
+    <dl>
+      <dt> [GRS91] </dt>
+      <dd>
+	<i>The Well-Founded Semantics for General Logic Programs</i>, A. Van Gelder, K.A. Ross, J.S. Schlipf. Journal of ACM, 38:3, pages 620-650, 1991. 
+      </dd>
+    </dl>
+    <p><span class="anchor" id="negation-head"/> </p>
+    <dl>
+      <dt> [IS98] </dt>
+      <dd>
+	<i>Negation as Failure in the Head</i>, K. Inoue and C. Sakama. Journal of Logic Programming, 35, pages 39-78, 1998. 
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-flogic-95"> </span></p>
+    <dl>
+      <dt> [KLW95] </dt>
+      <dd>
+	<i>Logical foundations of object-oriented and frame-based languages,</i> M. Kifer, G. Lausen, J. Wu. Journal of ACM, July 1995, pp. 741--843.
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-mendelson97"> </span></p>
+    <dl>
+      <dt> [Mendelson97] </dt>
+      <dd>
+	<i>Introduction to Mathematical Logic, Fourth Edition</i>, E. Mendelson. Chapman &amp; Hall, 1997.
+      </dd>
+    </dl>
+    <!--
+       <p><span class="anchor" id="ref-owl-reference"> </span></p>
+       <dl>
+	 <dt>[OWL-Reference] </dt>
+	 <dd>
+	   <i><a class="external text" href="http://www.w3.org/TR/2004/REC-owl-ref-20040210/" title="http://www.w3.org/TR/2004/REC-owl-ref-20040210/">OWL Web Ontology Language Reference</a></i>, M. Dean, G. Schreiber, Editors, W3C Recommendation, 10 February 2004. Latest version available at <a class="external free" href="http://www.w3.org/TR/owl-ref/" title="http://www.w3.org/TR/owl-ref/">http://www.w3.org/TR/owl-ref/</a>.
+	 </dd>
+       </dl>
+    <p><span class="anchor" id="ref-rdf-syntax"> </span></p>
+    <dl>
+      <dt> [RDFSYN04] </dt>
+      <dd>
+	<i>RDF/XML Syntax Specification (Revised)</i>, Dave Beckett, Editor, W3C Recommendation, 10 February 2004, <a class="external free" href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/" title="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/">http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/</a>. Latest version available at <a class="external free" href="http://www.w3.org/TR/rdf-syntax-grammar/" title="http://www.w3.org/TR/rdf-syntax-grammar/">http://www.w3.org/TR/rdf-syntax-grammar/</a>.
+      </dd>
+    </dl>
+    -->
+    <p><span class="anchor" id="ref-rif-ucr"> </span></p>
+    <dl>
+      <dt> [RIF-UCR] </dt>
+      <dd>
+	<span><cite><a href="http://www.w3.org/TR/2008/WD-rif-ucr-20081218/"><span>RIF Use Cases and Requirements</span></a></cite> Adrian Paschke, David Hirtle, Allen Ginsberg, Paula-Lavinia Patranjan, Frank McCabe, eds. W3C Working Draft, 18 December 2008, <a href="http://www.w3.org/TR/2008/WD-rif-ucr-20081218/">http://www.w3.org/TR/2008/WD-rif-ucr-20081218/</a>.  Latest version available at <a href="http://www.w3.org/TR/rif-ucr/">http://www.w3.org/TR/rif-ucr/</a>.</span>
+      </dd>
+    </dl>
+    <p><span class="anchor" id="ref-vanemden-kowalski"> </span></p>
+    <dl>
+      <dt> [vEK76] </dt>
+      <dd>
+	<i>The semantics of predicate logic as a programming language</i>, M. van Emden and R. Kowalski. Journal of the ACM 23 (1976), pp. 733-742.
+      </dd>
+    </dl>
+
+    <p><span class="anchor" id="ref-przymusinski-stationary"> </span></p>
+    <dl>
+      <dt> [Prz94] </dt>
+      <dd>
+	<i>Well-founded and stationary models of logic programs</i>, T.C. Przymusinski. Annals of Mathematics and Artificial Intelligence 12 (1994), pp. 141-187.
+      </dd>
+    </dl>
+
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<Protect
+xmlns="http://www.ruleml.org/0.89/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.89/xsd http://www.ruleml.org/0.89/xsd/fologeq.xsd"
+>
+
+<!--
+
+	Here are serialization examples from the SWSL Report
+	(http://www.daml.org/services/swsl/report/swsl.shtml#swsl-rules-courteous):
+
+	
+	!- pricediscount(?CUST,fivepercent) and pricediscount(?CUST,tenpercent).
+
+	This Mutex didn't have an "mgiv", so the corresponding Implies
+	doesn't have a body which currently isn't permitted in RuleML.
+
+<Constraint>
+ <Implies>
+ <head>
+  <Neg>
+   <And>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Ind>fivepercent</Ind>
+     </Atom>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Ind>tenpercent</Ind>
+     </Atom>
+   </And>
+  </Neg>
+ </head>
+ </Implies>
+</Constraint>
+
+-->
+
+<Constraint>
+ <Implies kind="fo">
+ <head>
+  <Neg>
+   <And>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Var>Y</Var>
+     </Atom>
+     <Atom>
+       <Rel>pricediscount</Rel>
+       <Var>CUST</Var>
+       <Var>Z</Var>
+     </Atom>
+   </And>
+  </Neg>
+ </head>
+ <body>
+   <Neg>
+     <Equal>
+       <Var>Y</Var>
+       <Var>Z</Var>
+     </Equal>
+   </Neg>
+ </body>
+ </Implies>
+</Constraint>
+
+  <And mapClosure="universal">
+
+    <!-- a dummy fact -->
+    <Atom>
+      <Rel>gold</Rel>
+      <Ind>watch17</Ind>
+    </Atom>
+
+  </And>
+
+</Protect>

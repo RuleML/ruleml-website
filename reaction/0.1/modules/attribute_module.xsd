@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="http://www.ruleml.org/0.91/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ruleml.org/0.91/xsd">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+            
+            		Mode / Transactional Reaction RuleML attribute module.
+			This is the XML Schema mode module for Reaction Rules.
+			File: attribute_module.xsd
+			Version: 0.1
+			Last Modification: 2006-10-12
+			
+			This module declares the following Reaction RuleML elements and attributes:
+                  
+                  * @mode
+                  * @safety
+                  * @lang
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+
+	
+	<!--
+           *** @mode ***
+           A attribute for optionally specifing the intended input-output constellations of the predicate terms with the
+           following semantics:
+        
+           "+" The term is intended to be input
+           "-" The term is intended to be output
+           "?" The term is undefined (input or output)
+		   
+		   default="?"
+		   optional attribute
+-->
+	<xs:attributeGroup name="mode.attrib">
+		<xs:attribute name="mode" use="optional" default="?">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="+"/>
+					<xs:enumeration value="-"/>
+					<xs:enumeration value="?"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	
+	<!--
+	  *** @safety ***
+
+	     restriction: normal or transaction
+		 default: normal
+		 optional attribute
+	-->
+
+	<xs:attributeGroup name="safety.attrib">
+		<xs:attribute name="safety" use="optional" default="normal">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="normal"/>
+					<xs:enumeration value="transactional"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	
+	<!-- *** @lang ***
+ 		
+ 		To be used in combination with "in=yes"
+ 		
+	     restriction: java | modal
+		 default: java
+		 optional attribute
+	-->
+
+	<xs:attributeGroup name="lang.attrib">
+		<xs:attribute name="lang" use="optional" default="java">
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="java"/>
+					<xs:enumeration value="modal"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+	
+</xs:schema>

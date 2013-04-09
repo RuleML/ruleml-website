@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema Driver for a 'UR'-Centered Datalog RuleML sublanguage
+			File: urcdatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- include the auxiliary schema -->	
+	<xs:include schemaLocation="aux_urcbindatalog.xsd"/>
+
+	<!--
+		by default, atoms permit 0 or more inds or vars, and since this sublanguage
+		is not binary (like the previous ones), the default is correct so there's no need to redefine
+	-->
+	<xs:include schemaLocation="modules/atom_module.xsd"/>
+	
+</xs:schema>

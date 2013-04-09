@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.89/xsd"
+xmlns="http://www.ruleml.org/0.89/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			Role RuleML elements module.
+			This is the XML Schema slot element module for RuleML.
+			File: slot_module.xsd
+			Version: 0.89
+			Last Modification: 2005-05-27
+			
+			This module declares the following RuleML element and attributes:
+			* slot
+			* @card
+			* @minCard
+			* @maxCard
+			* @weight
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		Note that this element's content model is context-sensitive, so it is locally declared.
+		See http://www.w3.org/2000/04/26-csrules.html.
+
+		*** slot ***
+		content model (in frame sublanguages):
+		( (Ind | Data | Skolem | Var | Reify), (Ind | Data | Skolem | Var | Reify)? )
+		content model (normally):
+		( (Ind | Data | Skolem | Var | Reify), (Ind | Data | Skolem | Var | Reify) )
+
+		User-defined slots.
+
+		'slot' consists of a name given in the first position and a filler, supplied as the second child.
+
+		Optional attributes are 'card', specifying the role's cardinality, (or 'minCard' and/or 'maxCard'
+		to be more specific) and 'weight', specifying the role's relative weight.
+
+		Note that unary slots are only supported within Atoms in frame sublanguages, not Hterm.
+	-->
+	<xs:attributeGroup name="slot.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="slot-frame.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="minCard.attrib"/>
+		<xs:attributeGroup ref="maxCard.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="slot.content">
+		<xs:sequence>
+			<xs:group ref="arg.content" minOccurs="2" maxOccurs="2"/>
+		</xs:sequence>		
+	</xs:group>
+	<xs:group name="slot-frame.extend">
+		<xs:choice>
+			<xs:group ref="arg.content"/>
+		</xs:choice>			
+	</xs:group>
+	<xs:group name="slot-frame.content">
+		<xs:sequence>
+			<xs:group ref="arg.content"/>
+			<xs:sequence minOccurs="0">
+				<xs:group ref="slot-frame.extend"/>
+			</xs:sequence>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="slot.type">
+		<xs:group ref="slot.content"/>
+		<xs:attributeGroup ref="slot.attlist"/>
+	</xs:complexType>
+	<xs:complexType name="slot-frame.type">
+		<xs:group ref="slot-frame.content"/>
+		<xs:attributeGroup ref="slot-frame.attlist"/>
+	</xs:complexType>
+	<xs:element name="slot" type="slot.type"/>
+
+	<!--
+		*** @card ***
+		
+		Optionally specifies the metarole's cardinality.
+	-->
+	<xs:attributeGroup name="card.attrib">
+		<xs:attribute name="card" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @minCard ***
+		
+		Optionally specifies the metarole's minimum cardinality.
+	-->
+	<xs:attributeGroup name="minCard.attrib">
+		<xs:attribute name="minCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @maxCard ***
+		
+		Optionally specifies the metarole's maximum cardinality.
+	-->
+	<xs:attributeGroup name="maxCard.attrib">
+		<xs:attribute name="maxCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @weight ***
+		
+		Optionally specifies the metarole's relative weight.
+	-->
+	<xs:attributeGroup name="weight.attrib">
+		<xs:attribute name="weight" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+</xs:schema>

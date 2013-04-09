@@ -1,0 +1,243 @@
+<?xml version='1.0' ?>
+<!DOCTYPE swrlx:Ontology [
+	 <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema#'>  
+	 <!ENTITY map 'http://www.daml.org/2001/06/map/map-ont#'>
+         <!ENTITY airport 'http://www.daml.org/cgi-bin/airport?'>
+         <!ENTITY airport-ont 'http://www.daml.org/2001/09/html/airport-ont#'>
+]>
+
+<swrlx:Ontology
+  xmlns:owlx="http://www.w3.org/2003/05/owl-xml"
+  xmlns:swrlx="http://www.w3.org/2003/11/swrlx"
+  xmlns:ruleml="http://www.w3.org/2003/11/ruleml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3.org/2003/11/swrlx http://www.ruleml.org/swrl/xsd/swrlx.xsd"
+>
+  <owlx:Annotation>
+    <owlx:Documentation>SWRL Example 5.1-4</owlx:Documentation>
+  </owlx:Annotation>
+  <owlx:VersionInfo>$Id: example5.1-4.swrlx,v 1.1 2004/05/21 18:46:39 vivien Exp $</owlx:VersionInfo>
+
+<ruleml:var>maploc</ruleml:var>
+<ruleml:var>loc</ruleml:var>
+<ruleml:var>lat</ruleml:var>
+<ruleml:var>lon</ruleml:var>
+<ruleml:var>airport</ruleml:var>
+<ruleml:var>point</ruleml:var>
+<ruleml:var>name</ruleml:var>
+
+<!--
+Background knowledge about airports and maps:
+-->
+
+<owlx:DatatypeProperty owlx:name="latitude"/>
+<owlx:DatatypeProperty owlx:name="longitude"/>
+
+<owlx:SubClassOf> 
+  <owlx:sub> 
+    <owlx:Class owlx:name="Location" />
+  </owlx:sub> 
+  <owlx:super> 
+    <owlx:IntersectionOf>
+      <owlx:DataRestriction owlx:property="latitude"> 
+        <owlx:allValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+      <owlx:DataRestriction owlx:property="longitude"> 
+        <owlx:allValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+    </owlx:IntersectionOf>
+  </owlx:super> 
+</owlx:SubClassOf> 
+
+<owlx:Individual owlx:name="&airport;GEG">
+  <owlx:type owlx:name="&airport-ont;Airport" /> 
+  <owlx:DataPropertyValue owlx:property="airport-ont:name">
+    <owlx:DataValue owlx:datatype="&xsd;string">Spokane Intl</owlx:DataValue> 
+  </owlx:DataPropertyValue>
+  <owlx:ObjectPropertyValue owlx:property="location">
+    <owlx:Individual>
+      <owlx:DataPropertyValue owlx:property="latitude">
+        <owlx:DataValue>47.6197</owlx:DataValue> 
+      </owlx:DataPropertyValue>
+      <owlx:DataPropertyValue owlx:property="longitude">
+        <owlx:DataValue>-117.5336</owlx:DataValue> 
+      </owlx:DataPropertyValue>
+    </owlx:Individual>
+  </owlx:ObjectPropertyValue>
+</owlx:Individual>
+ 
+<owlx:Individual owlx:name="layer">
+  <owlx:type owlx:name="&map;DrawingLayer" /> 
+</owlx:Individual>
+ 
+<owlx:Individual owlx:name="map">
+  <owlx:type owlx:name="&map;Map" /> 
+  <owlx:DataPropertyValue owlx:property="&map;name">
+    <owlx:DataValue owlx:datatype="&xsd;string">Airports</owlx:DataValue> 
+  </owlx:DataPropertyValue>
+  <owlx:ObjectPropertyValue owlx:property="map:layer">
+    <owlx:Individual owlx:name="layer"/>
+  </owlx:ObjectPropertyValue>
+</owlx:Individual>
+
+<!--
+A map:Location has latitude and longitude, both of which are doubles:
+-->
+
+<owlx:SubClassOf> 
+  <owlx:sub> 
+    <owlx:Class owlx:name="&map;Location" />
+  </owlx:sub> 
+  <owlx:super> 
+    <owlx:IntersectionOf>
+      <owlx:DataRestriction owlx:property="&map;latitude"> 
+        <owlx:someValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+      <owlx:DataRestriction owlx:property="&map;latitude"> 
+        <owlx:allValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+      <owlx:DataRestriction owlx:property="&map;longitude"> 
+        <owlx:someValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+      <owlx:DataRestriction owlx:property="&map;longitude"> 
+        <owlx:allValuesFrom owlx:datatype="&xsd;double"/>
+      </owlx:DataRestriction> 
+    </owlx:IntersectionOf>
+  </owlx:super> 
+</owlx:SubClassOf> 
+
+<!--
+If a map:Location is the sameLocation as another location, 
+then it has the same values for latitude and longitude.
+-->
+
+<ruleml:imp> 
+  <ruleml:_body> 
+    <swrlx:classAtom> 
+      <owlx:Class owlx:name="&map;Location" />
+      <ruleml:var>maploc</ruleml:var>
+    </swrlx:classAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="sameLocation"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>maploc</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="latitude"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>lat</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="longitude"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>lon</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_body> 
+  <ruleml:_head> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&map;latitude"> 
+      <ruleml:var>maploc</ruleml:var>
+      <ruleml:var>lat</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&map;longitude"> 
+      <ruleml:var>maploc</ruleml:var>
+      <ruleml:var>lon</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+<!--
+Wherever an Airport is located, there is some map:Location
+that is the sameLocation as the Airport's location, and that
+is the location of a map Point that is an object of the
+map:DrawingLayer "layer":
+-->
+
+<owlx:ObjectProperty owlx:name="&map;location" owlx:inverseOf="&map;isLocationOf" />
+<owlx:ObjectProperty owlx:name="&map;object" owlx:inverseOf="&map;isObjectOf" />
+
+<ruleml:imp> 
+  <ruleml:_body> 
+    <swrlx:classAtom> 
+      <owlx:Class owlx:name="&airport-ont;Airport" />
+      <ruleml:var>airport</ruleml:var>
+    </swrlx:classAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="location"> 
+      <ruleml:var>airport</ruleml:var>
+      <ruleml:var>loc</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="latitude"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>lat</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="longitude"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>lon</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_body> 
+  <ruleml:_head> 
+    <swrlx:classAtom> 
+      <owlx:ObjectRestriction owlx:property="sameLocation"> 
+        <owlx:someValuesFrom>
+          <owlx:IntersectionOf>
+            <owlx:Class owlx:name="&map;Location" />
+            <owlx:ObjectRestriction owlx:property="&map;isLocationOf"> 
+              <owlx:someValuesFrom>
+                <owlx:IntersectionOf>
+                  <owlx:Class owlx:name="&map;Point" />
+                  <owlx:ObjectRestriction owlx:property="&map;isObjectOf"> 
+                    <owlx:someValuesFrom>
+                      <owlx:OneOf>
+                        <owlx:Individual owlx:name="#layer" /> 
+                      </owlx:OneOf>
+                    </owlx:someValuesFrom>
+                  </owlx:ObjectRestriction>
+                </owlx:IntersectionOf>
+              </owlx:someValuesFrom>
+            </owlx:ObjectRestriction>
+          </owlx:IntersectionOf>
+        </owlx:someValuesFrom>
+      </owlx:ObjectRestriction> 
+      <ruleml:var>loc</ruleml:var>
+    </swrlx:classAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+<!--
+The map:Point whose map:location is the map:Location of an Airport 
+has the airport as a map:underlyingObject and has a map:label 
+which is the name of the Airport.
+-->
+
+<ruleml:imp> 
+  <ruleml:_body> 
+    <swrlx:classAtom> 
+      <owlx:Class owlx:name="&airport-ont;Airport" />
+      <ruleml:var>airport</ruleml:var>
+    </swrlx:classAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="location"> 
+      <ruleml:var>airport</ruleml:var>
+      <ruleml:var>loc</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="sameLocation"> 
+      <ruleml:var>loc</ruleml:var>
+      <ruleml:var>maploc</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:individualPropertyAtom  swrlx:property="&map;location"> 
+      <ruleml:var>point</ruleml:var>
+      <ruleml:var>maploc</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&airport-ont;name"> 
+      <ruleml:var>airport</ruleml:var>
+      <ruleml:var>name</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_body> 
+  <ruleml:_head> 
+    <swrlx:individualPropertyAtom  swrlx:property="&map;underlyingObject"> 
+      <ruleml:var>point</ruleml:var>
+      <ruleml:var>airport</ruleml:var>
+    </swrlx:individualPropertyAtom> 
+    <swrlx:datavaluedPropertyAtom  swrlx:property="&map;label"> 
+      <ruleml:var>point</ruleml:var>
+      <ruleml:var>name</ruleml:var>
+    </swrlx:datavaluedPropertyAtom> 
+  </ruleml:_head> 
+</ruleml:imp> 
+
+</swrlx:Ontology>

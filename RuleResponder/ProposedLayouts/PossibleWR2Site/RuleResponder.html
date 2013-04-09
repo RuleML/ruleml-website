@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBliC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>WellnessRules2</title>
+<link href="files/layout.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="files/datetimepicker_css.js"></script>
+<script type="text/javascript" src="files/gui.js"></script>
+</head>
+
+<body onload="startCheck()">
+<div id="wrapper">
+<div id="logo"><img src="images/logo.png" width="1000" height="100" alt="logo" /></div>
+<div id="headerImg"></div>
+  
+<div id="bodyArea">
+	<ul id="nav">
+		<li><a href="index.html">Home</a></li> 
+		<li><a href="">Rule Responder</a></li>
+		<li><a href="documentation.html">Documentation</a></li>
+	</ul>
+	<div id="title">
+	<h1>Rule Responder</h1>
+		<img src="images/line.jpg" width="700" height="10" /><br>
+		&nbsp<i> Use below box to send a query in <a href="http://ibis.in.tum.de/research/ReactionRuleML/" target="_blank">Reaction
+		RuleML format</a> to the WellnessRules2 Organizational Agent:</i><br>
+	</div>	  
+    <div id="inner_left">
+		<form name="form2" method="get" action="http://198.164.40.194:8888"> 
+			<input name="Horde" value="3a466331bca877eeb014be19eee68790" type="hidden"> 
+			<textarea name="box1" cols="55" rows="36" WRAP=OFF></textarea>
+			<input value="Send Message" type="submit" OnClick="IESubmit()">
+		</form>	
+		<br>
+	</div>
+	
+	<div id="inner_right">
+	<b><u>Query Selection:</u></b>
+			<form name="form" method="post">
+				
+				<form name="form" method="post">
+				<p>
+				ProfileID:
+  				  <select name="profileID" onchange= elementSelectedProfileID()>
+		  			<option>Any Profile</option>
+					<option>Profile 1</option>
+					<option>Profile 2</option>
+					<option>Profile 3</option>
+	  			  </select>
+				<br>
+				Activity:
+  				  <select name="activity" onchange= elementSelectedActivity()>
+					<option value="Walking">Any Activity</option>
+					<option value="Walking">Walking</option>
+					<option value="Running">Running</option>
+					<option value="Swimming">Swimming</option>
+					<option value="Skating">Skating</option>
+					<option value="Yoga">Yoga</option>
+					<option value="Hiking">Hiking</option>
+					<option value="Baseball">Baseball</option>
+	  			  </select>
+			
+				Ambience:
+  				  <select name="ambience" onchange= elementSelectedAmbience()>
+		  			<option value="Any">Any</option>
+					<option value="In">Indoors</option>
+					<option value="Out">Outdoors</option>
+	  			  </select>
+				<br>
+				Min RSVP:
+					<input type="text" name="minRSVP" maxlength=2 value=2 size=1 onkeyup= elementSelectedMinRSVP() onblur = elementErrorCheck()>
+				Max RSVP:
+					<input type="text" name="maxRSVP" maxlength=2 value=4 size=1 onkeyup= elementSelectedMaxRSVP() onblur = elementErrorCheck()>
+				<br>
+
+				Start Date mm/dd/yyyy:
+				 <a href="javascript:NewCssCal('startDate','mmddyyyy','arrow')"><img src="images/cal.gif" width="16" height="16" alt="Pick a date"></a>
+				<input type="Text" id="startDate" maxlength="10" size="10" name="startDate" value="05/21/2010" onblur = elementSelectedStartDate() onkeyup = elementSelectedStartDate()>
+				<br>
+				Start Time hours:minutes :
+				<input type="Text" id="startTime" maxlength="5" size="5" name="startTime" value="10:00" onblur = elementSelectedStartTime() onkeyup = elementSelectedStartTime()>
+               
+				<br>	
+				End Date mm/dd/yyyy:
+				<a href="javascript:NewCssCal('endDate','mmddyyyy','arrow')"><img src="images/cal.gif" width="16" height="16" alt="Pick a date"></a>
+				<input type="Text" id="endDate" maxlength="10" size="10" name="endDate" value="05/21/2010" onblur = elementSelectedEndDate() onkeyup = elementSelectedEndDate()>
+				<br>
+				End Time hours:minutes :
+				<input type="Text" id="endTime" maxlength="5" size="5" name="endTime" value="11:40" onblur = elementSelectedEndTime() onkeyup = elementSelectedEndTime()> 
+				<br>
+
+				Duration hours:
+				<input type="Text" id="durationHours" maxlength="2" size="2" name="durationHours" value="1" onblur = elementSelectedDuration() onkeyup = elementSelectedDuration()>	
+			
+				Duration minutes :
+				<input type="Text" id="durationMinutes" maxlength="2" size="2" name="durationMinutes" value="0" onblur = elementSelectedDuration() onkeyup = elementSelectedDuration()>
+				<br>
+				
+				Location:
+				<select name="location1" onchange= elementSelectedLocation()>
+		  			<option value="Any">Any</option>
+					<option value="conniesStation">Connie's Station</option>
+					<option value="debbiesValley">Debbie's Valley</option>
+					<option value="petersWagon">Peter's Wagon</option>
+					<option value="allensBrook">Allen's Brook</option>
+					<option value="johnsPool">John's Pool</option>
+					<option value="sandrasLake">Sandra's Lake</option>
+					<option value="lukesHall">Luke's Hall</option>
+					<option value="applePark">Apple Park</option>
+				</select>
+				<br>
+				Fitness Level
+				<input type="Text" id="fitness" maxlength="2" size="2" name="fitness" onblur = elementSelectedFitness() onkeyup = elementSelectedFitness()>		
+				
+			</p>
+			</form>  
+			
+		  <b><u>English Description:</u></b><br><br>	
+				<form name="form3">  
+					<textarea name="box2" cols="50" rows="10" WRAP=ON readonly = "readonly"></textarea>
+				</form> 
+	</div>
+	
+	<div id="inner_bottom">
+		<h2 style="font-style:none; text-decoration: underline;">Sources Used by WellnessRules2:</h2>
+			
+			<p><b><i>WellnessRules2 Organizational Agent:</i></b></p>
+			<ul>
+			<li><p>Global N3 Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/OA/WR-Global.n3">N3</a href>]</p></li>
+			<li><p>Global POSL Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/OA/WR-Global.posl">POSL</a href>]</p></li>
+			<li><p>Wellness Responsibility Matrix [<a href="http://ruleml.org/WellnessRules2/resources/OA/WellnessRules.owl">OWL</a href>]</p></li>
+			<li><p>Profile Responsibility Matrix [<a href="http://ruleml.org/WellnessRules2/resources/PA/config.xml">XML</a href>]</p></li>
+			</ul>
+			
+			<p><b><i>Dynamic Weather System:</i></b></p>
+			<ul>
+				<li><p>N3 Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/OA/Weather.n3">N3</a href>]</p></li>
+				<li><p>POSL Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/OA/Weather.n3">POSL</a href>]</p></li>
+			</ul>
+			
+			<p><b><i>WellnessRules Personal Agent - P0004:</i></b></p>
+			<ul>
+				<li><p>N3 Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/PA/p0004.n3">N3</a href>]</p></li>
+				<li><p>POSL Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/PA/p0004.posl">POSL</a href>]</p></li>
+			</ul>
+			
+			<p><b><i>WellnessRules Personal Agent - P0005:</i></b></p>
+			<ul>
+				<li><p>N3 Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/PA/p0005.n3">N3</a href>]</p></li>
+				<li><p>POSL Knowledge Base [<a href="http://ruleml.org/WellnessRules2/resources/PA/p0005.posl">POSL</a href>]</p></li>
+			</ul>
+			<ul>
+			<p><b><i>Other Documentation:</i></b></p>
+			<li><p>Taxonomy [<a href="http://ruleml.org/WellnessRules2/resources/OA/WR-Taxonomy.rdf">POSL</a href>]</p></li>
+			</ul>
+	</div>
+</div>
+
+<div id="footer"><br>
+	<B>Maintained by: <a href="http://www.nrc-cnrc.gc.ca/eng/people/osmun_taylor_12266.html">Taylor M. Osmun</a href> and <A href="http://www.nrc-cnrc.gc.ca/eng/people/smith_derek_15425.html">Derek M. Smith</A></B>
+</div>
+
+</div>
+</body>
+</html>

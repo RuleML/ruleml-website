@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.85/dtd/hornlog.dtd">
+
+<rulebase
+xmlns="http://www.ruleml.org/inspec"
+xsi:schemaLocation="http://www.ruleml.org/inspec http://www.ruleml.org/0.85/xsd/hornlog.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+<!-- non-ground-fact-like rule with 4-ary cterm as single argument -->
+
+<fact>
+  <_head>
+    <atom>
+      <_opr><rel>book</rel></_opr>
+      <cterm>
+        <_opc><ctor>parts</ctor></_opc>
+        <var>title</var>
+        <var>autor</var>
+        <var>toc</var>
+        <var>chapters</var>
+      </cterm>
+    </atom>
+  </_head>
+</fact>
+
+</rulebase>

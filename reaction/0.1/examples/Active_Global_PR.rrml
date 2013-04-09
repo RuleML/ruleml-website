@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a global active production rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+Forward-directed Production Rule:
+
+occurs(heartbeat(Service),T) -> assert ( alive(Service,T) )
+
+ContractLog / Prova formalization in RBSLA (related to ISO Prolog notation)
+
+eca(_,_,occurs(heartbeat(Service),T),add("availability values","alive(_0,_1).", [Service, T]),_,_). 
+
+ -->
+ 
+<Assert>
+
+<Reaction kind="ca" exec="active">
+
+
+<body>
+        <Atom>
+           <Rel>occurs</Rel>
+ 		 <Expr in="no">
+                 <Fun>heartbeat</Fun>
+                 <Var>Service</Var>  
+           </Expr>
+           <Var>T</Var>
+        </Atom>
+</body>
+
+<action>
+     <Assert>  
+	    	<oid><Ind>availability values</Ind></oid>                          
+		 <Atom>
+               <Rel>alive</Rel>
+               <Var>Service</Var>  
+		       <Var>T</Var>
+         </Atom>            
+     </Assert>     
+</action>
+
+</Reaction>
+
+</Assert>
+
+</RuleML>

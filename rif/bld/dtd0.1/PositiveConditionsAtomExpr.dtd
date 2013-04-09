@@ -1,0 +1,24 @@
+<!ENTITY % TERM "(Con | Var | Expr)">
+<!ENTITY % LITFORM "(Atom | Equal)">
+<!ENTITY % QUANTIF "(Exists)">
+<!ENTITY % CONDIT "(%LITFORM; | %QUANTIF; | And | Or)">
+
+<!ELEMENT Con  (#PCDATA)>
+<!ELEMENT Var  (#PCDATA)>
+
+<!ELEMENT Expr (Con, (%TERM;)*)>
+
+<!ELEMENT Atom (Con, (%TERM;)*)>
+<!ELEMENT Equal (%TERM;, %TERM;)>
+
+<!ELEMENT Exists ((declare+, formula) | (Var+, %CONDIT;))>
+<!--                                     stripe-skipping   -->
+
+<!ELEMENT declare (Var)>
+<!ELEMENT formula (%CONDIT;)>
+
+<!ELEMENT And ((%CONDIT;)*)>
+<!ELEMENT Or  ((%CONDIT;)*)>
+
+<!ATTLIST Con type CDATA #IMPLIED>
+<!ATTLIST Var type CDATA #IMPLIED>

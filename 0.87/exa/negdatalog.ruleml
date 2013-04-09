@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Rulebase xmlns="http://www.ruleml.org/0.87/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ruleml.org/0.87/xsd http://www.ruleml.org/0.87/xsd/negdatalog.xsd" direction="backward">
+
+<!-- a trivial example rulebase for testing the Datalog RuleML sublanguage, with strong/classical negation -->
+
+<Imp>
+  <head>
+    <Neg>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Slot><Ind>t</Ind><Var>b</Var></Slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+    </Neg>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+   <Neg>
+    <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+    </Atom>
+   </Neg>
+  </body>
+</Imp>
+
+<Imp>
+  <head>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Slot><Ind>t</Ind><Var>b</Var></Slot>
+      <Var>x</Var>
+      <Var>y</Var>
+      <Ind>Steph</Ind>
+     </Atom>
+  </head>
+  <rlab><Ind>(implication) rule label</Ind></rlab>
+  <body>
+   <Or>
+    <Neg>
+     <Atom>
+      <opr><Rel>friend</Rel></opr>
+      <Ind>Jane</Ind>
+      <Ind>Joan</Ind>
+      <Ind>Jack</Ind>
+      <Var>y</Var>
+      <Ind>Frank</Ind>
+     </Atom>
+    </Neg>
+   </Or>
+  </body>
+</Imp>
+
+<Query>
+  <body>
+    <And>
+     <Neg>
+      <Atom>
+        <opr><Rel>some relation</Rel></opr>
+        <Slot><Ind>role_name1</Ind><Ind>role 1</Ind></Slot>
+        <Ind>constant a</Ind>
+        <Ind>constant b</Ind>
+        <Slot><Ind>role_name2</Ind><Ind>role 2</Ind></Slot>
+      </Atom>
+     </Neg>
+     <Neg>
+      <Atom>
+        <opr><Rel>another relation</Rel></opr>
+        <Ind>constant c</Ind>
+        <Ind>constant d</Ind>
+      </Atom>
+     </Neg>
+    </And>
+  </body>
+  <rlab><Ind>rule (query) label</Ind></rlab>
+</Query>
+
+<Fact>
+  <rlab><Ind>rule (fact) label</Ind></rlab>
+  <head>
+    <Atom>
+      <opr><Rel>yet another relation</Rel></opr>
+      <Ind>constant e</Ind>
+      <Ind>constant b</Ind>
+      <Slot><Ind>role_name3</Ind><Ind>role 3</Ind></Slot>
+    </Atom>
+  </head>
+</Fact>
+
+<rbaselab><Ind>test rulebase</Ind></rbaselab>
+</Rulebase>

@@ -1,0 +1,127 @@
+A Rule Interoperation Ontology
+
+Harold Boley
+
+
+
+RuleML Report
+9 October 2010 (first version: 11 July 2009)
+<http://ruleml.org/papers/rio/>
+
+
+This Rule Interoperation Ontology (RIO) is the beginning of a Knowledge Interoperation Ontology
+specialized to rule base interoperation and combinable with an ontology of rule types.
+RIO currently has the form of a taxonomy with multiple inheritance expressed through
+cross-references (see, recursively ...). The resulting Directed Acyclic Graph (DAG) can be
+implemented using OO jDREW's type definitions based on RDF Schema's subClassOf property.
+
+
+  Interoperation within a set of rule base representations
+    Mapping topology
+      Interoperation using canonical representations
+        Exactly one canonical representation
+          Mapping from and to canonical representation
+          Canonical-representation proposals
+            RuleML
+            EU
+              R2ML
+              ONTORULE
+            W3C
+              SWRL
+              RIF
+              OWL 2 RL
+              N3/Turtle
+            OMG
+              PRR
+              SBVR
+            ISO
+              CL
+        More than one canonical representation
+          Inner representation topology
+            Interoperation using inner canonical representations (see, recursively, "Interoperation using canonical representations")
+            Interoperation not using inner canonical representations (see "Interoperation not using canonical representations")
+          Outer representation topology (see, reduced to, "Exactly one canonical representation")
+      Interoperation not using canonical representations
+        All-to-all mapping
+        Ring mapping
+    Mapping management
+      Mapping library
+        EU REWERSE Strelka library
+      Use case library <http://ruleml.org/#Translators>
+      Test case library
+
+  Interoperation between two given rule base representations
+    Mapping lossiness
+      Mapping without information loss (bijective)
+        Quality measures
+          Length of interoperation path (measured in # of intermediate representations)
+            Shortest interoperation path
+          Complexity of interoperation path
+            Time complexity/efficiency
+              Sum of mapping complexities/efficiencies in path
+            Space complexity/efficiency
+      Mapping with information loss (non-bijective)
+        Atom-level information loss
+          Loss of precision (unsoundness)
+            'Specialization' mapping (injective)
+            'Arbitrary' mapping (non-injective)
+          Loss of recall (incompleteness)
+        Term-level information loss
+          Similarity of interoperated and original terms
+          Positional Herbrand terms vs. slotted/feature terms (cf. "Positionalizing/framizing translators")
+    Mapping technology
+      Abstract syntax-as-input
+        Translators
+          URML->R2ML
+      XML-as-input
+        XML&RDF-as-input
+          RDF/XML-as-input
+          Plain XML-as-input
+            RFML/XML-as-input
+              Translators
+                RFML-XSLT->RuleML/XML translator by Harold Boley
+                <http://www.relfun.org/ruleml/rfml-ruleml.html>
+                RFML-XSLT->RuleML/XML translator by Jie Li
+                <http://ruleml.org/usecases/chemxelem/#XSLT%20Stylesheet>
+            RuleML/XML-as-input
+              RuleML/XML-as-output
+                Inter-paradigm translators
+                  Positionalizing/framizing translators
+                    Object Oriented RuleML-XSLT->Positional RuleML by Stephen Greene
+                    <http://ruleml.org/ooruleml-xslt/oo2prml.html>
+                      Version of Object-Relational Mapping
+                    Positional RuleML-XSLT->Object-Oriented RuleML by Stephen Greene
+                    <http://ruleml.org/ooruleml-xslt/oo2prml.html>
+                Intra-paradigm translators
+                  Stripe skipping translator (simple)
+                  Stripe reconstruction translator by David Hirtle
+                  <http://ruleml.org/0.89/#XSLT-Based%20Normalizer>
+              Other languages-as-output
+                Translators
+                  RuleML/XML-XSLT->RFML translator by Harold Boley
+                  <http://www.relfun.org/ruleml/rfml-ruleml.html>
+                  RuleML/XML-XSLT->Jess translator by Said Tabet
+                  <http://ruleml.org/jess/RuleMLTransform.xsl>
+        Translator tools with XML-as-input
+          W3C XML tools
+            XSLT
+            XQuery
+      Non-XML-as-input (parsers from human-readable syntax)
+        Web rule languages-as-input
+          POSL-as-input
+            Translators
+              Java Webstart POSL-Java->RuleML/XML translator by Marcel Ball
+          N3/Turtle-as-input
+            Translators
+              N3/Turtle->RIF/XML translator by Sandro Hawke (forthcoming)
+          RIF Presentation Syntax-as-input
+            Translators
+              RIF Presentation Syntax-AST->RIF/XML translator by Hassan Ait-Kaci
+              RIF Presentation Syntax-Python->RIF/XML translator by Sandro Hawke
+        Translator tools with non-XML-as-input
+          Generators
+            ANTLR
+            AST
+      Programming languages used for mappings
+        Java
+        Python

@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>RuleML-2009 International Symposium on Rule Interchange and Applications | RuleML 2009</title>
+	<link href="master.css" media="screen" rel="stylesheet" type="text/css" />   
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="ruleml.org, Guido Governatori">
+	
+	<script type="text/javascript"> 
+ 
+	function elementSelected(){
+ 
+		var choice = document.form1.select1.selectedIndex;
+	    //general chair contact
+		var choice0 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_GeneralChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+	    //program chair contact
+		var choice1 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_ProgramChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+		//liaison chair view media partners
+		var  choice2 =
+				"<Atom>" + "\n         " +
+				"<Rel>viewMediaPartners</Rel>" + "\n         " + 
+				"<Var>Meeting</Var>" + "\n         " + 
+				"<Var>Partner</Var>" + "\n      " + 
+				"</Atom>" + "\n";
+	    //liaison chair contact
+		var choice3 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_LiaisonChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+
+		//liaison chair view organizing partners
+		var choice4 = 
+				"<Atom>" + "\n         " +
+				"<Rel>viewOrganizationPartners</Rel>" + "\n         " +
+				"<Var>Meeting</Var>"  + "\n         " +
+				"<Var>Partner</Var>" + "\n      " +
+				"</Atom>" + "\n";
+				
+		//liaison chair sponors with regards to level
+		var choice5 = 
+				"<Atom>" + "\n         " +
+				"<Rel>viewSponsors</Rel>" + "\n         " +
+				"<Var>Meeting</Var>" + "\n         " +
+				"<Var>Company</Var>" + "\n         " +
+				"<Var>SponsorLevel</Var>" + "\n      " +
+				"</Atom>" + "\n";
+				
+		//lisaison chair view sponsors
+		var choice6 = 
+				"<Atom>" + "\n         " +
+				"<Rel>viewSponsors</Rel>" + "\n         " +
+				"<Var>Meeting</Var>" + "\n         " +
+				"<Var>Company</Var>" + "\n      " +
+				"</Atom>" + "\n";
+				
+       //publicity chair contact
+	   var choice7 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_PublicityChair</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+		//publicity chair sponsoring
+		var choice8 =
+				"<Atom>" + "\n         " +
+				"<Rel>sponsor</Rel>" + "\n         " + 
+				"<Expr>" + "\n            " + 
+				"<Fun>contact</Fun>" + "\n            " + 
+				"<Ind>Mark</Ind>" + "\n            " + 
+				"<Ind>JBoss</Ind>" + "\n         " + 
+				"</Expr>" + "\n         " +
+				"<Ind type=\"integer\">500</Ind>" + "\n         " +
+				"<Expr>" + "\n            " + 
+				"<Fun>results</Fun>" + "\n            " + 
+				"<Var>Level</Var>" + "\n            " + 
+				"<Var>Benefits</Var>" + "\n            " + 
+				"<Var>DeadlineResults</Var>" + "\n         " + 
+				"</Expr>" + "\n         " + 
+				"<Expr>" + "\n            " + 
+				"<Fun>performative</Fun>"  + "\n            " + 
+				"<Var>Action</Var>"  + "\n         " + 
+				"</Expr>" + "\n      " + 
+				"</Atom>" + "\n";
+	  //rule transformation and extraction contact
+	  var choice9 =
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RuleTransformationAndExtraction</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+ 
+	  //rules and uncertainty contact
+	 var choice10 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RulesAndUncertainty</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+	
+	 //rules and norms contact
+	 var choice11 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RulesAndNorms</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+				  
+	 //rule-based game ai contact
+	 var choice12 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RulebasedGameAI</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+ 
+	 //Rule-based Event Processing and Reaction Rules contact
+	 var choice13 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RulebasedEventAndReaction</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+			
+     //Rules and Cross Industry Standards contact
+	 var choice14 = 	  
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RulesAndCrossIndustry</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n";
+				  
+	 //RuleML Challenge contact
+     var choice15 = 
+			      "<Atom>" + "\n         " +
+			      "<Rel>getContact</Rel>" + "\n         " + 
+				"<Ind>ruleml2009_RuleMLChallenge</Ind>" + "\n         " +
+				"<Ind>update</Ind>" + "\n         " +
+			      "<Var>Contact</Var>" + "\n      " +
+			      "</Atom>" + "\n"; 
+				  
+	 var messageHeader =
+                  "<RuleML xmlns=\n   \"http://www.ruleml.org/0.91/xsd\"" + "\n" +
+				  " xmlns:xsi=\n   \"http://www.w3.org/2001/XMLSchema-instance\"" + "\n" +
+				  " xsi:schemaLocation=\n   \"http://www.ruleml.org/0.91/xsd" + "\n   " +
+				  " http://ibis.in.tum.de/research/" + "\n    " + "ReactionRuleML/0.2/rr.xsd\"" + "\n" +
+				  " xmlns:ruleml2007=" + "\n   " + "\"http://ibis.in.tum.de/projects/paw#\">" + "\n" +
+				  "\n " + "<Message mode=\"outbound\"" + "\n  " + "directive=\"query-sync\">" +
+			      "\n   " + "<oid>" + "\n      " + 
+			      "<Ind>RuleML-2009</Ind>" + "\n   " +
+			      "</oid>" + "\n   " +
+			      "<protocol>" + "\n      " +
+			      "<Ind>esb</Ind>" + "\n   " +
+			      "</protocol>" + "\n   " +
+			      "<sender>" + "\n      " +
+			      "<Ind>User</Ind>" + "\n   " +
+			      "</sender>" + "\n   " +
+			      "<content>" + "\n      ";					
+		
+	 var messageFooter = 			     
+				"   " + "</content>" + "\n " +
+			      "</Message>" + "\n" +
+			      "</RuleML>";
+		
+ 
+		if(choice == 0){
+			document.form2.box1.value = messageHeader + choice0 + messageFooter;
+		}else if(choice == 1){
+			document.form2.box1.value = messageHeader + choice1 + messageFooter;
+		}else if(choice == 2){
+			document.form2.box1.value = messageHeader + choice2 + messageFooter;
+		}else if(choice == 3){
+			document.form2.box1.value = messageHeader + choice3 + messageFooter;
+		}else if(choice == 4){
+			document.form2.box1.value = messageHeader + choice4 + messageFooter;
+		}else if(choice == 5){
+			document.form2.box1.value = messageHeader + choice5 + messageFooter;
+		}else if(choice == 6){
+			document.form2.box1.value = messageHeader + choice6 + messageFooter;
+		}else if(choice == 7){
+			document.form2.box1.value = messageHeader + choice7 + messageFooter;
+		}else if(choice == 8){
+			document.form2.box1.value = messageHeader + choice8 + messageFooter;
+		}else if(choice == 9){
+			document.form2.box1.value = messageHeader + choice9 + messageFooter;
+		}else if(choice == 10){
+			document.form2.box1.value = messageHeader + choice10 + messageFooter;
+		}
+		else if(choice == 11){
+			document.form2.box1.value = messageHeader + choice11 + messageFooter;
+		}
+		else if(choice == 12){
+			document.form2.box1.value = messageHeader + choice12 + messageFooter;
+		}
+		else if(choice == 13){
+			document.form2.box1.value = messageHeader + choice12 + messageFooter;
+		}
+		else if(choice == 14){
+			document.form2.box1.value = messageHeader + choice12 + messageFooter;
+		}
+		else if(choice == 15){
+			document.form2.box1.value = messageHeader + choice12 + messageFooter;
+		}
+	}
+	  </script> 
+	
+</head>
+<body onload="elementSelected()">
+
+<div id="page">
+
+  <div id="wrapper">
+        <div id="header">
+      <div id="logo">
+        RuleML <span class="fade">2009</span>
+      </div>
+      <div id="banner">
+        <p id="slogan">The International RuleML Symposium on Rule Interchange and Applications</p>
+
+        <p id="subslogan">Las Vegas, Nevada, USA: Nov 5-7, 2009</p>
+        <div id="headerimagecopyright">
+          <a href="http://creativecommons.org/licenses/by/2.0/deed.en_US" title="prova"><img alt="Creativecommons" src="CreativeCommons.png" /></a>
+          <a href="http://www.flickr.com/photos/schnappi/" 
+          title="Creator's Hompage">Image by Graham Coleman</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="inner_wrapper">
+      <div id="inner_inner_wrapper">
+        <div id="content">
+          <h1 id="overview">Rule Responder</h1>
+
+		  <p>Rule Responder</p>
+ 
+	<p style="margin-bottom: 0pt;"><strong><span style="font-style: italic;"> 
+	Use this text form to send a query in </span></strong><a
+
+	name="textfield"></a> <a
+
+	href="http://ibis.in.tum.de/research/ReactionRuleML/" target="_blank">Reaction
+	RuleML format</a> <strong><span style="font-style: italic;"></span><i> 
+	to the RuleML-2009 Organizational Agent:<br> 
+	<br> 
+	</i></strong></p> 
+	<form name="form2" method="get" action="http://198.164.40.210:8888"> <input
+		name="Horde" value="3a466331bca877eeb014be19eee68790" type="hidden"> <textarea
+		name="box1" cols="46" rows="31" WRAP=OFF></textarea> 
+		<div align="center"><input value="Send Message" type="submit"> </div>
+	</form> 
+	<p style="margin-bottom: 0pt;"><span style="font-weight: bold;">Query
+	Selection</span><br> 
+	<strong><span style="font-style: italic;"></span></strong></p> 
+	<p style="margin-bottom: 0pt;"><strong style="font-weight: normal;"><span
+	style="font-style: italic;">The drop-down boxes show sample queries you -- as an External Agent -- can send
+	to the RuleML-2009 Organizational Agent. These examples can also act as initial templates that you can edit to create your own queries.
+	</span></strong><strong><i><span
+	style="font-weight: normal;"></span><br> 
+	<br> 
+	</i></strong></p> 
+	<form name="form1" method="post"> 
+	  <div align="center"> 
+	  <select name="select1" onchange="elementSelected()"> 
+	  <option value="A">General Chair Contact</option> 
+	  <option value="B">Program Chair Contact</option> 
+	  <option value="C">Liaison Chair View Media Partners</option> 
+	  <option value="D">Liaison Chair Contact</option> 
+	  <option value="E">Liaison Chair View Organizing Partners</option> 
+	  <option value="F">Liaison Chair View Sponors with Regards to Level</option> 
+	  <option value="F">Liaison Chair View Sponors</option> 
+	  <option value="G">Publicity Chair Contact</option> 
+	  <option value="H">Publicity Chair Sponsoring</option> 
+	  <option value="I">Rule Transformation And Extraction Contact</option> 
+	  <option value="J">Rules And Uncertainty Contact</option> 
+	  <option value="K">Rules And Norms Contact</option> 
+	  <option value="M">Rule-based Game AI Contact</option> 
+	  <option value="N">Rule-based Event Processing and Reaction Rules Contact</option> 
+	  <option value="O">Rules and Cross Industry Standards Contact</option> 
+	  <option value="P">RuleML Challenge Contact</option> 
+	  </select>
+	  </div> 
+	</form> 
+ 
+</div>
+
+<div id="navigation">
+          
+<h1>The Symposium</h1>
+<ul>
+  <li><a href="/ruleml2009/index">RuleML-2009 Home</a></li>
+  <li><a href="/ruleml2009/who">Who Will Attend</a></li>
+
+  <li><a href="/ruleml2009/highlights">Highlights</a></li>
+  <!-- <li><a href="/ruleml2009/invited">Invited Speakers</a></li>
+  <li><a href="/ruleml2009/tutorials">Tutorials</a></li> -->
+  <li><a href="/ruleml2009/rif">W3C RIF Workshop</a></li>
+  <li><a href="/ruleml2009/accepted">Accepted Papers</a></li>
+  <li><a href="/ruleml2009/pc">Program Committee</a>
+  <li><a href="http://www.businessrulesforum.com/">Business Rules Forum</a></li>
+
+  <li><a href="/ruleml2009/sponsors">Sponsorship</a></li>
+  <li><a href="/ruleml2009/partners">Partners</a></li>
+  <li><a href="/ruleml2009/awards">Student Travel Awards</a></li>
+  <li><a href="/ruleml2009/registration">Registration</a></li>
+  <li><a href="/ruleml2009/venue">Venue</a></li>
+  <li><a href="http://ruleml.org/RuleML-2009/RuleResponder/">Rule Responder Q&amp;A</a></li>
+
+  
+</ul>
+
+<h1>Authors</h1>
+<ul>
+  <li><a href="/ruleml2009/objectives">Objectives</a></li>
+  <li><a href="/ruleml2009/topics">Topics</a></li>
+  <li><a href="/ruleml2009/challenge">International Rule Challenge</a></li>
+  <li><a href="cfp.txt">Call for Papers</a> (<a href=RuleML-2009_Flyer.pdf>pdf</a>)</li>
+
+  <li><a href="/ruleml2009/submission">Submission Guidelines</a></li>
+  <li><a href="/ruleml2009/dates">Important Dates</a></li>
+
+</ul>
+
+<h1>RuleML Initiative</h1>
+<ul>
+  <li><a href="http://www.ruleml.org/">About Us</a></li>
+  <li><a href="http://www.defeasible.org/ruleml2009/past">Past Events</a></li>
+</ul>
+
+
+        </div>
+      </div>
+
+      <div id="sponsor">
+        
+<h1>Latest News</h1>
+<div id="news">
+<dl>
+  <dd>18 September 2009</dd>
+
+  <dt>Deadline for early bird registration<br>
+    <a href="/ruleml2009/registration">read more ...</a></dt>  
+  <dd>4 September 2009</dd>
+  <dt>3rd International Rule Challenge submission deadline<br>
+    <a href="/ruleml2009/challenge">read more ...</a></dt>
+  <dd>17 August 2009</dd>
+
+  <dt>RuleML 2009 Accepted Papers<br> 
+    <a href="/ruleml2009/accepted">read more ...</a></dt>
+  <dd>24 June 2009</dd>
+  <dt>Invited speakers announced<br>
+    <a href="/ruleml2009/highlights">read more ...</a></dt>
+  <dd>17 June 2009</dd>
+
+  <dt>Student Travel Awards<br>
+    <a href="/ruleml2009/awards">read more ...</a></dt>
+
+</dl>
+</div>
+
+<h1>RuleML 2009 Sponsors</h1>
+<h2>Silver Sponsors</h2>
+<a href="http://www.nicta.com.au"><img alt="NICTA (National ICT Asutralia) Ltd Logo" src="nicta_logo.jpg" width="100px" /></a>
+
+<a href="http://www.corporate-semantic-web.de/"><img alt="BMBF InnoProfile Corporate Semantic Web Logo" src="csw_logo_150.png" width="150px" /></a>
+
+<a href="http://www.franz.com/"><img alt="Franz Inc Logo" src="franz_logo.jpg" width="150px" /></a>
+<a href="http://www.bbn.com/"><img alt="BBN Technologies" src="bbn_logo.jpg" width="150px" /></a>
+
+<h2>Bronze Sponsors</h2>
+
+<a href="http://www.lpa.co.uk"><img alt="Logic Programming Associates Ltd Logo" src="lpa_logo.gif" width="75px" /></a>
+
+<a href="http://www.modelsy.com"><img alt="Model Systems Ltd Logo" src="modelsystems.gif" width="150px" /></a>
+
+<a href="http://www.rulecore.com"><img alt="ruleCore Logo" src="rulecorelogo.gif" width="150px" /></a>
+
+<a href="http://jboss.com"><img alt="JBoss a division of Red Hat logo" src="jboss_logo.gif" width="150px" /></a>
+      </div>
+      <div id="footer">
+        Copyright &copy; 2009, <a href="http://www.ruleml.org">RuleML.org</a>
+
+
+<br />
+Web design and Web master: <a href="http://www.governatori.net">Guido Governatori</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- google analytics code -->  
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3735483-4");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!--  end of google analytics code-->
+
+</body>
+</html>

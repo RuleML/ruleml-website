@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE Forall SYSTEM "http://www.jdrew.org/rif/HornRulesBipart.dtd">
+<Forall>
+  <Var>item</Var>
+  <Var>deliverydate</Var>
+  <Var>scheduledate</Var>
+  <Var>diffdate</Var>
+  <Implies>
+    <head>
+      <Atom>
+        <Rel>reject</Rel>
+        <Ind iri="#John"/>
+        <Var>item</Var>
+      </Atom>
+    </head>
+    <body>
+      <And>
+        <Exists>
+          <Var>Buyer</Var>
+          <Atom>
+            <Rel>purchase</Rel>
+            <Var>Buyer</Var>
+            <Var>Seller</Var>
+            <Expr>
+              <Fun>book</Fun>
+              <Var>Author</Var>
+              <Ind iri="#LeRif"/>
+            </Expr>
+            <Data>$49</Data>
+          </Atom>
+        </Exists>
+        <Equal>
+          <Var type="#MERCHANT">Seller</Var>
+          <Var>Author</Var>
+        </Equal>
+      </And>
+    </body>
+  </Implies>
+</Forall>
+

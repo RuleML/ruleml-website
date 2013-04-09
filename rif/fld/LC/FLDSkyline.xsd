@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+ <xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: FLDSkyline.xsd, v. 1.5, 2010-02-02, hboley/dhirtle">
+ 
+  <xs:annotation>
+    <xs:documentation>
+ 
+    This is the Skyline schema module of FLD. It is split off from the Baseline
+    schema for modularity. The Skyline XML schema is based on the following EBNF
+    (which adds Group and Document, and brings 'Implies' into FORMULA and TERMULA):
+ 
+  Document       ::= IRIMETA? 'Document' '(' Dialect? Base? Prefix* Import* Module* Group? ')'
+  Dialect        ::= 'Dialect' '(' Name ')'
+  Base           ::= 'Base' '(' ANGLEBRACKIRI ')'  
+  Prefix         ::= 'Prefix' '(' NCName ANGLEBRACKIRI ')'
+  Import         ::= IRIMETA? 'Import' '(' LOCATOR PROFILE? ')'
+  Module         ::= IRIMETA? 'Module' '(' (Const | Expr) LOCATOR ')'
+  Group          ::= IRIMETA? 'Group' '(' (FORMULA | Group)* ')'
+  Implies        ::= IRIMETA? FORMULA ':-' FORMULA
+  FORMULA        ::= Implies |
+                     IRIMETA? CONNECTIVE '(' FORMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' FORMULA ')' |
+                     IRIMETA? 'Neg' FORMULA |
+                     IRIMETA? 'Naf' FORMULA |
+                     IRIMETA?  FORMULA '@' MODULEREF |
+                     FORM
+  TERMULA        ::= Implies |
+                     IRIMETA? CONNECTIVE '(' TERMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' TERMULA ')' |
+                     IRIMETA? 'Neg' TERMULA |
+                     IRIMETA? 'Naf' TERMULA |
+                     IRIMETA? TERMULA '@' MODULEREF |
+                     TERM
+  PROFILE        ::= ANGLEBRACKIRI
+      
+    Note that this is an extension of the syntax for the Baseline schema (FLDBaseline.xsd).
+    </xs:documentation>
+  </xs:annotation>
+ 
+  <!--
+   The Skyline schema extends, with Implies, the FORMULA and TERMULA groups
+   of the Baseline schema from the same directory
+    -->
+  <xs:redefine schemaLocation="FLDBaseline.xsd">
+    <!--
+  FORMULA        ::= Implies |
+                     IRIMETA? CONNECTIVE '(' FORMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' FORMULA ')' |
+                     IRIMETA? 'Neg' FORMULA |
+                     IRIMETA? 'Naf' FORMULA |
+                     IRIMETA?  FORMULA '@' MODULEREF |
+                     FORM
+  TERMULA        ::= Implies |
+                     IRIMETA? CONNECTIVE '(' TERMULA* ')' |
+                     IRIMETA? QUANTIFIER '(' TERMULA ')' |
+                     IRIMETA? 'Neg' TERMULA |
+                     IRIMETA? 'Naf' TERMULA |
+                     IRIMETA? TERMULA '@' MODULEREF |
+                     TERM
+    -->
+    <xs:group name="FORMULA">
+      <xs:choice>
+        <xs:group ref="FORMULA"/>
+        <xs:element ref="Implies"/>
+      </xs:choice>
+    </xs:group>
+    <xs:group name="TERMULA">
+      <xs:choice>
+        <xs:group ref="TERMULA"/>
+        <xs:element ref="Implies"/>
+      </xs:choice>
+    </xs:group>
+  </xs:redefine>
+ 
+  <xs:element name="Document">
+    <!--
+  Document       ::= IRIMETA? 'Document' '(' Dialect? Base? Prefix* Import* Module* Group? ')'
+  Dialect        ::= 'Dialect' '(' Name ')'  represented with a dialect attribute.
+  Base and Prefix represented directly in XML.
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+	<xs:element ref="directive" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="payload" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="dialect" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="directive">
+   <xs:complexType>
+     <xs:choice>
+       <xs:element ref="DIRECTIVE-IMPORT"/>
+       <xs:element ref="DIRECTIVE-MODULE"/>
+     </xs:choice>
+   </xs:complexType>
+ </xs:element>
+
+ <xs:element name="DIRECTIVE-IMPORT">
+   <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="Import"/>
+    </xs:sequence>
+   </xs:complexType>
+ </xs:element>
+
+ <xs:element name="DIRECTIVE-MODULE">
+   <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="Module"/>
+    </xs:sequence>
+   </xs:complexType>
+ </xs:element>
+
+  <xs:element name="payload">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Group"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Import">
+    <!--
+  Import    ::= IRIMETA? 'Import' '(' LOCATOR PROFILE? ')'
+  LOCATOR   ::= ANGLEBRACKIRI
+  PROFILE   ::= ANGLEBRACKIRI
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/> 
+        <xs:element ref="location"/>
+        <xs:element ref="profile" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Module">
+    <!--
+  Module         ::= IRIMETA? 'Module' '(' (Const | Expr) LOCATOR ')'
+  LOCATOR   ::= ANGLEBRACKIRI
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/> 
+        <xs:choice>
+          <xs:element ref="Const"/>
+          <xs:element ref="Expr"/>
+        </xs:choice>
+        <xs:element ref="location"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="profile" type="xs:anyURI"/>
+  
+  <xs:element name="Group">
+    <!--
+  Group          ::= IRIMETA? 'Group' '(' (FORMULA | Group)* ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="sentence" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="sentence">
+   <xs:complexType>
+     <xs:choice>
+       <xs:group ref="FORMULA"/>
+       <xs:element ref="Group"/>
+     </xs:choice>
+   </xs:complexType>
+ </xs:element>
+    
+ <xs:element name="Implies">
+    <!--
+  Implies        ::= IRIMETA? FORMULA ':-' FORMULA
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="IRIMETA" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="if"/>
+        <xs:element ref="then"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="if">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="then">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="FORMULA"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+   
+ </xs:schema>

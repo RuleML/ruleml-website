@@ -1,0 +1,53 @@
+namespace dc = "http://purl.org/dc/elements/1.1/"
+namespace dcterms = "http://purl.org/dc/terms/"
+default namespace this = inherit
+
+
+dc:title [ "RuleML Slots" ]
+dc:version [ "0.91.01" ]
+dc:creator [ "Tara Athan (taraathan AT gmail.com" ]
+dc:subject [ "RuleML, slot" ]
+dc:description [ "The expansion module for slots." ]
+dc:date ["2011-05-24"]
+dc:language [ "en" ]
+dcterms:rights [ "LGPL-3.0" ] 
+dc:relation [ "http://wiki.ruleml.org/index.php/Relax_NG" ]
+start |= slot.edge.def
+# This module declares the following RuleML elements and attributes:
+#            * slot
+#            * @weight
+#            * @card
+
+## In atomic formulas, zero or more slots are allowed.
+slotTermsForAtoms.sequence |= slot-edge.choice*
+
+## In expressions, zero or more slots are allowed.
+slotTermsForExpressions.sequence |= slot-edge.choice*
+# For the declaration of slotted rest variables, see the slotted rest variable module (resl_module).
+
+## an extension point for alternate spellings and internationalization of the slot tag name.  
+slot-edge.choice |= slot.edge.def
+slot.edge.def =
+    
+    ## A user-defined slot (property). See http://www.ruleml.org/0.91/glossary/#gloss-slot
+    element slot { (slot-datt.choice & reslot.attlist), slot.content }
+
+## The slot element accepts optional cardinality and  weight attributes. 
+reslot.attlist &= cardinality-att.choice?
+reslot.attlist &= weight-att.choice?
+
+## The slot content model consists of a key (first position) and a filler (second position).
+slot.content |= slotKeyTerm.choice, slotFillerTerm.choice
+
+## The key (first position) in a slot contains an interpreted term or data, which may be simple or compound.
+slotKeyTerm.choice |= SimpleKeyTerm.choice | CompoundTerm.choice
+# For the declaration of term patterns, see the term module (individual_expansion_module).
+
+## The filler (second position) in a slot contains any single term.
+slotFillerTerm.choice |= AnyTerm.choice
+# For the declaration of term patterns, see the term module (individual_expansion_module).
+edge.choice |= slot.edge.def
+# 
+
+
+

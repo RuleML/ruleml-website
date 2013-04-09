@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RuleML
+xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd http://www.ruleml.org/0.91/xsd/datalog.xsd">
+
+<!-- start XML comment ...
+
+Note: This is an expanded (i.e. maximally-roled) version of this example.
+
+This example rulebase contains four rules.
+The first and second rules are implications; the third and fourth ones are facts.
+
+In English:
+
+The first rule implies that a person owns an object
+if that person buys the object from a merchant and the person keeps the object.
+
+As an OrdLab Tree:
+
+Implies~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          *                         *
+     head *                    body *
+          *                         *
+        Atom~~~~~~~~~~~~~~~~~~     And~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 *     *     *           |                                   |
+              op * arg * arg *           |                                   |
+                 *     *     *           |                                   |        
+                Rel   Var   Var        Atom~~~~~~~~~~~~~~~~~~~~~~~~~~~     Atom~~~~~~~~~~~~~~~~~~
+                 .     .     .                  *     *      *       *              *     *     *
+                 .     .     .               op * arg *  arg *   arg *           op * arg * arg *
+                 .     .     .                  *     *      *       *              *     *     *
+                own  person object             Rel   Var    Var     Var            Rel   Var   Var
+                                                .     .      .       .              .     .     . 
+                                                .     .      .       .              .     .     .
+                                                .     .      .       .              .     .     .
+                                               buy  person merchant object        keep  person object
+
+... end XML comment -->
+
+<Assert mapClosure="universal">
+
+<formula>
+	<Implies>
+	  <head>
+	    <Atom>
+	      <op><Rel>own</Rel></op>
+	      <arg index="1"><Var>person</Var></arg>
+	      <arg index="2"><Var>object</Var></arg>
+	    </Atom>
+	  </head>
+	  <body>
+	    <!-- explicit 'And' -->
+	    <And>
+	      <Atom>
+	        <op><Rel>buy</Rel></op>
+	        <arg index="3"><Var>object</Var></arg>
+	        <arg index="2"><Var>merchant</Var></arg>
+      	  	<arg index="1"><Var>person</Var></arg>
+	      </Atom>
+	      <Atom>
+	        <op><Rel>keep</Rel></op>
+	        <arg index="2"><Var>object</Var></arg>
+	        <arg index="1"><Var>person</Var></arg>
+	      </Atom>
+	    </And>
+	  </body>
+	</Implies>
+  </formula>
+
+<!-- The second rule implies that a person buys an object from a merchant
+if the merchant sells the object to the person. -->
+
+<formula>
+	<Implies>
+	  <head>
+	    <Atom>
+	      <op><Rel>buy</Rel></op>
+	      <arg index="2"> <Var>merchant</Var></arg>
+	      <arg index="1"><Var>person</Var></arg>
+	      <arg index="3"><Var>object</Var></arg>
+	    </Atom>
+	  </head>
+	  <body>
+	    <Atom>
+	      <op><Rel>sell</Rel></op>
+	      <arg index="1"><Var>merchant</Var></arg>
+	      <arg index="2"><Var>person</Var></arg>
+	      <arg index="3"> <Var>object</Var></arg>
+	    </Atom>
+	  </body>
+	</Implies>
+ </formula>
+ 
+<!-- The third rule is a fact that asserts that
+John sells XMLBible to Mary. -->
+
+<formula>
+	    <Atom>
+	      <op><Rel>sell</Rel></op>
+	      <arg index="1"><Ind>John</Ind></arg>
+	      <arg index="2"><Ind>Mary</Ind></arg>
+	      <arg index="3"><Ind>XMLBible</Ind></arg>
+	    </Atom>
+ </formula>
+ 
+<!-- The fourth rule is a fact that asserts that
+Mary keeps XMLBible.
+ 
+Observe that this fact is binary - i.e., there are two arguments
+for the relation. RDF viewed as a logical knowledge representation
+is, likewise, binary, although its arguments have type restrictions,
+e.g., the first must be a resource (basically, a URI). -->
+ 
+<formula>
+	    <Atom>
+	      <op><Rel>keep</Rel></op>
+	      <arg index="1"><Ind>Mary</Ind></arg>
+	      <arg index="2"><Ind>XMLBible</Ind></arg>
+	    </Atom>
+</formula>
+
+
+</Assert>
+
+</RuleML>

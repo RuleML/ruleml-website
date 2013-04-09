@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of local declarations -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for higher-order logic in RuleML.
+			File: holog_module.xsd
+			Version: 0.91
+			Last Modification: 2006-08-18
+			
+			See http://www.daml.org/services/swsl/report/swsl/#ruleml-hilog for more details.
+
+			This module declares the following RuleML elements:
+			* Hterm
+			* Atom
+			* slot
+			* op
+			* Con
+			* @minCard
+			* @maxCard
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** Hterm ***
+		A Hilog term, generalizing an atom and an expression.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Hterm
+		
+		content model:
+		( 
+		   (oid)?, (op | Con | Data | Skolem | Var | Reify | Hterm), (slot)*, (resl)?,
+		   (arg | Con | Data | Skolem | Var | Reify | Hterm)*, (repo)?, (slot)*, (resl)?
+		)
+
+		however, this is non-deterministic, so it is (equivalently) restructured as follows:
+		(
+			(oid)?, (op | Con | Data | Skolem | Var | Reify | Hterm), (slot)*, (resl)?,
+			( 
+				( 
+					((arg|Con|Data|Skolem|Var|Reify|Hterm)+, (repo)?)
+					|
+					(repo)
+				),
+				(slot)*, (resl)?
+			)?
+		)                    
+	-->
+	<xs:attributeGroup name="Hterm.attlist"/>
+	<xs:group name="Hterm.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="op" type="op-hterm.type"/>
+				<xs:group ref="op-hterm.content"/>	
+			</xs:choice>
+			<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="resl" minOccurs="0"/>
+			<xs:sequence minOccurs="0">
+				<xs:choice>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="arg"/>
+							<xs:group ref="arg.content"/>
+						</xs:choice>
+						<xs:element ref="repo" minOccurs="0"/>
+					</xs:sequence>
+					<xs:element ref="repo"/>
+				</xs:choice>
+				<xs:element name="slot" type="slot.type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="resl" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="Hterm.type">
+		<xs:group ref="Hterm.content"/>
+		<xs:attributeGroup ref="Hterm.attlist"/>
+	</xs:complexType>
+	<xs:element name="Hterm" type="Hterm.type"/>
+
+	<!--
+        *** Atom ***
+		A logical atom, i.e. an expression formed from a predicate
+		applied to a collection of its (logical) arguments.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-Atom
+	
+		content model (in SWSL sublanguages):
+		( oid, (op | Con | Skolem | Var | Reify | Hterm)?, slot* )
+		
+		Another (context-sensitive) version of <Atom> is in the atom module.
+		
+		Note the 'positionalized' normal form where the oid and op roles
+		are at the beginning of the atom.
+	-->
+	<xs:group name="Atom-frame.extend">
+		<xs:sequence>
+			<xs:element ref="oid"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="op" type="op-hterm.type"/>				
+				<xs:group ref="op-hterm.content"/>
+			</xs:choice>
+		</xs:sequence>			
+	</xs:group>
+	<xs:group name="Atom-frame.content">
+		<xs:sequence>
+			<xs:group ref="Atom-frame.extend"/>
+			<xs:element name="slot" type="slot-frame.type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="Atom-frame.type">
+		<xs:group ref="Atom-frame.content"/>
+		<xs:attributeGroup ref="Atom.attlist"/>
+	</xs:complexType>
+	
+	<!--
+		*** slot ***
+		A (unary) user-defined slot consisting only of a filler, supported only
+		within Atoms in frame sublanguages.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-slot
+
+		content model (in frame sublanguages):
+		( (Con | Hterm), (Con | Hterm | Skolem | Var | Reify)? )
+		
+		Another (context-sensitive) version of <slot> is in the slot module.
+	-->
+	<xs:attributeGroup name="slot-frame.attlist">
+		<xs:attributeGroup ref="card.attrib"/>
+		<xs:attributeGroup ref="minCard.attrib"/>
+		<xs:attributeGroup ref="maxCard.attrib"/>
+		<xs:attributeGroup ref="weight.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="slot-frame.content">
+		<xs:sequence>
+			<xs:group ref="slot-name.extend"/>
+			<xs:group ref="arg.content" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="slot-frame.type">
+		<xs:group ref="slot-frame.content"/>
+		<xs:attributeGroup ref="slot-frame.attlist"/>
+	</xs:complexType>
+
+
+	<!--
+		*** op ***
+		An operator expression including the neutralized constant of a Hilog term.
+
+		See http://www.ruleml.org/0.91/glossary/#gloss-op
+
+		content model (within Hterm): (Con | Skolem | Var | Reify | Hterm)
+		
+		Other (context-sensitive) versions of <op> are in the atom and expr modules.
+	-->
+	<!-- the (empty) attribute list is declared in the atom module -->
+	<xs:group name="op-hterm.content">
+		<xs:choice>
+			<xs:element ref="Con"/>
+			<xs:element ref="Skolem"/>			
+			<xs:element ref="Var"/>
+			<xs:element ref="Reify"/>
+			<xs:element ref="Hterm"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="op-hterm.type">
+		<xs:group ref="op-hterm.content"/>
+		<xs:attributeGroup ref="op.attlist"/>
+	</xs:complexType>
+
+	<!--
+		*** Con ***
+		A neutralized constant (for a relation and individual constant) of a Hilog term.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-Con
+
+		content model: (#PCDATA)
+	-->
+   <xs:attributeGroup name="Con.attlist">
+		   <xs:attributeGroup ref="type.attrib"/>
+		   <xs:attributeGroup ref="uri.attrib"/>
+   </xs:attributeGroup>
+	<xs:group name="Con.content">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="Con.type" mixed="true">
+		<xs:group ref="Con.content"/>
+		<xs:attributeGroup ref="Con.attlist"/>
+	</xs:complexType>
+	<xs:element name="Con" type="Con.type"/>
+	
+	<!--
+		*** @minCard ***
+		An attribute optionally specifying a slot's minimum cardinality.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@minCard		
+	-->
+	<xs:attributeGroup name="minCard.attrib">
+		<xs:attribute name="minCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+
+	<!--
+		*** @maxCard ***
+		An attribute optionally specifying a slot's maximum cardinality.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@maxCard		
+	-->
+	<xs:attributeGroup name="maxCard.attrib">
+		<xs:attribute name="maxCard" type="xs:nonNegativeInteger" use="optional"/>
+	</xs:attributeGroup>
+	
+</xs:schema>

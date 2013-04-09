@@ -1,0 +1,37 @@
+<RuleML xmlns="http://www.ruleml.org/0.91/xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd
+http://ibis.in.tum.de/research/ReactionRuleML/0.2/rr.xsd">
+
+	<Message mode="outbound" directive="query-sync">
+		<oid>
+			<Ind>HCLS</Ind>
+		</oid>
+		<protocol>
+			<Ind>esb</Ind>
+		</protocol>
+		<sender>
+			<Ind>User</Ind>
+		</sender>
+		<content>
+			<Atom>
+				<Rel>retrieveData</Rel>
+                                <Var>Result</Var>
+                                <Ind>hcls</Ind>
+                                <Ind>xml</Ind>
+                                <Ind>
+                                   'PREFIX swan: <http://swan.mindinformatics.org/ontology/1.0/20070410/core.owl#>
+                                   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                                   SELECT ?statement ?title
+                                   FROM <http://purl.org/commons/hcls/20070416>
+                                   WHERE { 
+                                      ?statement rdf:type swan:ResearchStatement . 
+                                      ?statement swan:title ?title . 
+                                      ?statement swan:citesConcept ?concept . 
+                                      ?concept rdf:type swan:TherapeuticTarget . }'
+                                 </Ind>
+	                </Atom>
+		</content>
+	</Message>
+
+</RuleML>

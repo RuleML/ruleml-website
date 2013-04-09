@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+targetNamespace="http://www.ruleml.org/0.9/xsd"
+xmlns="http://www.ruleml.org/0.9/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified"
+>
+
+<!-- note that elementFormDefault is qualified because of the local declaration of formula -->
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for performative-related RuleML elements.
+			File: performative_module.xsd
+			Version: 0.9
+			Last Modification: 2005-11-29
+						
+			This module declares the following RuleML elements:
+			* RuleML
+			* Assert
+			* Query
+			* Protect
+			* warden
+			
+			The approach is modelled after that used in "Modularization of XHTML in XML Schema"
+			WD [http://www.w3.org/TR/xhtml-m12n-schema/], which will soon be integrated with
+			"Modularization of XHTML" (REC-xhtml-modularization-20010410)
+			[http://www.w3.org/TR/xhtml-modularization/].
+		</xs:documentation>
+	</xs:annotation>
+
+	<!--
+		*** RuleML ***
+		The n-ary top-level of a RuleML document.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-RuleML
+
+		content model:
+		( oid?, (Assert | Query | Protect)* )
+	-->
+	<xs:attributeGroup name="RuleML.attlist"/>
+	<xs:group name="RuleML.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Assert"/>		
+				<xs:element ref="Query"/>
+				<xs:element ref="Protect"/>			
+			</xs:choice>
+		</xs:sequence>		
+	</xs:group>
+	<xs:complexType name="RuleML.type">
+		<xs:group ref="RuleML.content"/>
+		<xs:attributeGroup ref="RuleML.attlist"/>
+	</xs:complexType>
+	<xs:element name="RuleML" type="RuleML.type"/>
+	
+	<!--
+		*** Assert ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		asserted, making an 'implicit <And>' assumption.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Assert 
+
+		For full details, see also http://www.ruleml.org/fol
+
+		content model:
+		( oid?, (formula | Atom | Implies | Equivalent | Forall)* )
+	-->
+	<xs:attributeGroup name="Assert.attlist">
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Assert.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-assert.type"/>
+				<xs:group ref="formula-assert.content"/>
+			</xs:choice>	
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Assert.type">
+		<xs:group ref="Assert.content"/>
+		<xs:attributeGroup ref="Assert.attlist"/>
+	</xs:complexType>
+	<xs:element name="Assert" type="Assert.type"/>
+	
+	<!--
+		*** Query ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		queried, making an 'implicit <And>' assumption.
+		
+		See http://www.ruleml.org/0.9/glossary/#gloss-Query 
+
+		For full details, see also http://www.ruleml.org/fol
+
+		content model:
+		( oid?, (formula | Atom | And | Or | Exists)* )
+	-->
+	<xs:attributeGroup name="Query.attlist">
+		<xs:attributeGroup ref="closure.attrib"/>
+	</xs:attributeGroup>	
+	<xs:group name="Query.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-query.type"/>		
+				<xs:group ref="formula-query.content"/>
+			</xs:choice>	
+		</xs:sequence>	
+	</xs:group>
+	<xs:complexType name="Query.type">
+		<xs:group ref="Query.content"/>
+		<xs:attributeGroup ref="Query.attlist"/>
+	</xs:complexType>
+	<xs:element name="Query" type="Query.type"/>
+
+	<!--
+		*** Protect ***
+		A KQML-like performative acting as a wrapper specifying that its content is
+		protected, making an 'implicit <And>' assumption.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-Protect		
+
+		content model:
+		( oid?, (warden | Integrity)+, (formula | Atom | Implies | Equivalent | Forall)* )
+	-->
+	<xs:attributeGroup name="Protect.attlist">
+		<xs:attributeGroup ref="mapDirection.attrib"/>
+		<xs:attributeGroup ref="mapClosure.attrib"/>
+	</xs:attributeGroup>
+	<xs:group name="Protect.content">
+		<xs:sequence>
+			<xs:element ref="oid" minOccurs="0"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="warden"/>
+				<xs:group ref="warden.content"/>
+			</xs:choice>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="formula" type="formula-assert.type"/>
+				<xs:group ref="formula-assert.content"/>
+			</xs:choice>			
+		</xs:sequence>			
+	</xs:group>
+	<xs:complexType name="Protect.type">
+		<xs:group ref="Protect.content"/>
+		<xs:attributeGroup ref="Protect.attlist"/>
+	</xs:complexType>
+	<xs:element name="Protect" type="Protect.type"/>
+		
+	
+	<!--
+		*** warden ***
+		A role used for an integrity constraint.
+
+		See http://www.ruleml.org/0.9/glossary/#gloss-warden
+		
+		content model: ( Integrity )
+	-->
+	<xs:attributeGroup name="warden.attlist"/>
+	<xs:group name="warden.content">
+		<xs:choice>
+			<xs:element ref="Integrity"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="warden.type">
+		<xs:group ref="warden.content"/>
+		<xs:attributeGroup ref="warden.attlist"/>
+	</xs:complexType>
+	<xs:element name="warden" type="warden.type"/>
+
+</xs:schema>

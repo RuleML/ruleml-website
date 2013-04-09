@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+This example shows a global passive notification reaction rule.
+
+-->
+
+<RuleML 
+xmlns="http://www.ruleml.org/0.91/xsd"	
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.ruleml.org/0.91/xsd 
+http://ibis.in.tum.de/research/ReactionRuleML/0.1/rr.xsd">
+
+<!-- 
+Prova AA formalization of passive (message style) rule
+
+rcvMsg(XID,Protocol,From,"end_of_transmission",input(PayLoad)) :-
+		 sender(From).
+ -->
+ 
+<Assert>
+	<Reaction kind="ea" exec="passive">
+	
+	   <event>	      	
+	         <Message mode="inbound" directive="end_of_transmission">
+	               <oid><Var>XID</Var></oid>
+	               <protocol><Var>Protocol</Var></protocol>
+	               <sender><Var>From</Var></sender>
+		   		   <content><Inform><Atom><Rel>input</Rel><Var>PayLoad</Var></Atom></Inform></content> <!--message payload-->
+	         </Message>	         	        
+	   </event>
+	
+	
+	   <action>
+	      <Atom>
+	         <Rel>sender</Rel>
+	         <Var>From</Var> 
+	      </Atom>
+	   </action>
+	
+	</Reaction>
+
+
+</Assert>
+
+</RuleML>

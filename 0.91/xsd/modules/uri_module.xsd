@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<xs:schema
+targetNamespace="http://www.ruleml.org/0.91/xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://www.ruleml.org/0.91/xsd"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			This is the XML Schema module for URI references in RuleML.
+			File: uri_module.xsd
+			Version: 0.91
+			Last Modification: 2006-07-19
+			
+			This module declares the following RuleML attribute:
+			* @uri
+			
+			See http://www.ruleml.org/modularization for details about this modularization approach.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!--
+		*** @uri ***
+		An attribute for referring to a URI.
+		
+		See http://www.ruleml.org/0.91/glossary/#gloss-@uri
+	-->
+	<xs:attributeGroup name="uri.attrib">
+		<xs:attribute name="uri" type="xs:anyURI" use="optional"/>
+	</xs:attributeGroup>
+	
+</xs:schema>

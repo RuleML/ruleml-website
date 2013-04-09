@@ -1,0 +1,16 @@
+<!-- XML DTD for a 'UR' Horn-Logic RuleML sublanguage -->
+<!-- File: urhornlog.dtd -->
+<!-- Version: 0.85 -->
+<!-- Last Modification: 2003-10-22 -->
+
+<!-- the parameter entity modifications affecting previously declared elements (as well as the declarations of -->
+<!-- common new elements) are found in hornlog_mod.mod because they are common in this DTD and hornlog as well -->
+<!ENTITY % hornlog.mod SYSTEM "hornlog_mod.mod">
+%hornlog.mod;
+
+<!-- this module inherits from the 'UR' Datalog RuleML sublanguage (urdatalog) -->
+<!ENTITY % urdatalog_include SYSTEM "urdatalog.dtd">
+%urdatalog_include;
+
+<!-- URI's can also be used under an optional href attribute of ctors as used for RDF predicates -->
+<!ATTLIST ctor href %URI; #IMPLIED>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+targetNamespace="http://www.ruleml.org/inspec" 
+xmlns="http://www.ruleml.org/inspec" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			XML Schema for a Datalog RuleML sublanguage, including both explicit and default (strong/weak) negation
+			File: nafnegdatalog.xsd
+			Version: 0.85 (fixed)
+			Last Modification: 2004-05-25
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:redefine schemaLocation="modules/negation_module.xsd">
+		<xs:group name="naf.content">
+			<xs:choice>
+				<xs:group ref="naf.content"/>
+				<xs:element ref="neg"/>
+			</xs:choice>
+		</xs:group>
+	</xs:redefine>
+
+	<xs:redefine schemaLocation="datalog.xsd">
+		<xs:group name="_body.extend">
+			<xs:choice>
+				<xs:group ref="_body.extend"/>
+				<xs:element ref="neg"/>
+				<xs:element ref="naf"/>	
+			</xs:choice>
+		</xs:group>	
+
+		<xs:group name="and.extend">
+			<xs:choice>
+				<xs:group ref="and.extend"/>
+				<xs:element ref="neg"/>
+				<xs:element ref="naf"/>				
+			</xs:choice>
+		</xs:group>	
+		
+		<xs:group name="or.extend">
+			<xs:choice>
+				<xs:group ref="or.extend"/>
+				<xs:element ref="neg"/>
+				<xs:element ref="naf"/>					
+			</xs:choice>
+		</xs:group>			
+	</xs:redefine>
+	
+</xs:schema>

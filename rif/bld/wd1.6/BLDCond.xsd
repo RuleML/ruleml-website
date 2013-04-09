@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.w3.org/2007/rif#"
+  targetNamespace="http://www.w3.org/2007/rif#"
+  elementFormDefault="qualified"
+  version="Id: BLDCond.xsd,v 0.7 2008-02-12 dhirtle/hboley">
+
+  <xs:annotation>
+    <xs:documentation>
+    This is the XML schema for the Condition Language as defined by
+    Working Draft 2 of the RIF Basic Logic Dialect.
+    
+    The schema is based on the following EBNF for the RIF-BLD Condition Language:
+
+  CONDITION      ::= 'And' '(' CONDITION* ')' |
+                     'Or' '(' CONDITION* ')' |
+                     'Exists' Var+ '(' CONDITION ')' |
+                     COMPOUND
+  COMPOUND       ::= Uniterm | Equal | Member | Subclass | Frame
+  Uniterm        ::= Const '(' (TERM* | (Const '->' TERM)*) ')'
+  Equal          ::= TERM '=' TERM
+  Member         ::= TERM '#' TERM
+  Subclass       ::= TERM '##' TERM
+  Frame          ::= TERM '[' (TERM '->' TERM)* ']'
+  TERM           ::= Const | Var | COMPOUND
+  Const          ::= LITERAL '^^' SYMSPACE
+  Var            ::= '?' VARNAME
+    </xs:documentation>
+  </xs:annotation>
+  
+  <xs:group name="CONDITION">  
+    <!--
+  CONDITION      ::= 'And' '(' CONDITION* ')' |
+                     'Or' '(' CONDITION* ')' |
+                     'Exists' Var+ '(' CONDITION ')' |
+                     COMPOUND
+    -->
+    <xs:choice>
+      <xs:element ref="And"/>
+      <xs:element ref="Or"/>
+      <xs:element ref="Exists"/>
+      <xs:group ref="COMPOUND"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="And">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="formula" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="declare" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="formula"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="formula">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="CONDITION"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="declare">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Var"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:group name="COMPOUND">
+    <!--
+  COMPOUND       ::= Uniterm | Equal | Member | Subclass | Frame
+    -->
+    <xs:choice>
+      <xs:element ref="Uniterm"/>
+      <xs:element ref="Equal"/>
+      <xs:element ref="Member"/>
+      <xs:element ref="Subclass"/>
+      <xs:element ref="Frame"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Uniterm">
+    <!--
+  Uniterm        ::= Const '(' (TERM* | (Const '->' TERM)*) ')'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="op"/>
+        <xs:choice>
+          <xs:element ref="arg" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element ref="slot" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="op">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="arg">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="slot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Const"/>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="Equal">
+    <!--
+    Equal          ::= TERM '=' TERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="side"/>
+        <xs:element ref="side"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="side">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+    
+  <xs:element name="Member">
+    <!--
+  Member         ::= TERM '#' TERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="lower"/>
+        <xs:element ref="upper"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Subclass">
+    <!--
+  Subclass       ::= TERM '##' TERM
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="lower"/>
+        <xs:element ref="upper"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="lower">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="upper">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Frame">
+    <!--
+  Frame          ::= TERM '[' (TERM '->' TERM)* ']'
+    -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="object"/>
+        <xs:element name="slot" minOccurs="0" maxOccurs="unbounded">
+          <!-- note difference from slot in Uniterm -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="TERM"/>
+              <xs:group ref="TERM"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="TERM"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="TERM">  
+    <!--
+  TERM           ::= Const | Var | COMPOUND
+    -->
+      <xs:choice>
+         <xs:element ref="Const"/>
+         <xs:element ref="Var"/>
+         <xs:group ref="COMPOUND"/>
+      </xs:choice>
+  </xs:group>
+  
+  <xs:element name="Const">
+    <!--
+    Const       ::= LITERAL '^^' SYMSPACE
+    -->
+    <xs:complexType mixed="true">
+      <xs:sequence/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Var" type="xs:string">
+    <!--
+    Var         ::= '?' VARNAME
+    -->
+  </xs:element>
+  
+</xs:schema>
