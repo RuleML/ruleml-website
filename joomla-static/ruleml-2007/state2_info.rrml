@@ -1,5 +1,0 @@
-
-    Returns the start and end date of a phase.
-    The results are dynamically computed by the rules of the
-    program chair (a Prova agent) from the 
-    life data in the RuleML Google Calendar.

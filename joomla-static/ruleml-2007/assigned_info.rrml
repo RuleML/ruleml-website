@@ -1,8 +1,0 @@
-This query asks for the assignment of responsibilities (Topics) to members (Agents) 
-     of the virtual organization (RuleML-2007). 
-
-     This info is defined as a responsiblity assignment matrix in an external OWL ontology.
- 
-     The RuleML-2007 organizational agent (Prova inference service) by asking DL inference 
-     queries to this ontology collects the answers and sends them back to the requester.
-
