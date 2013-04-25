@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE rulebase SYSTEM "http://www.ruleml.org/0.8/dtd/ruleml-datalog.dtd">
+<!DOCTYPE rulebase SYSTEM "http://www.dfki.de/ruleml/dtd/0.8/ruleml-datalog.dtd">
 
 
 <!--
