@@ -8,6 +8,10 @@ and another for the usecases (https://github.com/RuleML/ruleml-usecases).
 Prerequisites
 -------------
 1. To contribute to this repository, You must have Git installed on your system. See [7].
+
+Training
+--------
+1. See the RuleML Github Demos at http://wiki.ruleml.org/index.php/Github_Demo .
    
 Initialization
 --------------
