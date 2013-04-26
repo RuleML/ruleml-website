@@ -12,6 +12,9 @@ Prerequisites
 Training
 --------
 1. See the RuleML Github Demos at http://wiki.ruleml.org/index.php/Github_Demo .
+
+Recommended Workflow
+====================
    
 Initialization
 --------------
