@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % term "(Data | Ind | Var | Expr)">
+<!ENTITY % ateq "(Atom | Equal)">
+<!ENTITY % conclusion "(%ateq;)">
+<!ENTITY % condition "(And | %ateq;)">
+<!ELEMENT Assert (Implies | %ateq;)*>
+<!ELEMENT Implies (%condition;, %conclusion;)>
+<!ELEMENT And (%ateq;)*>
+<!ELEMENT Equal (%term;, %term;)>
+<!ELEMENT Atom ((Rel | Expr | Lambda | Var), (%term; | Rel | Fun | Lambda)*)>
+<!ELEMENT Expr ((Fun | Expr | Lambda | Var), (%term; | Rel | Fun | Lambda)*)>
+<!ELEMENT Lambda ((%term;)+, %term;)>
+<!ELEMENT Fun (#PCDATA)>
+<!ELEMENT Rel (#PCDATA)>
+<!ELEMENT Data (#PCDATA)>
+<!ELEMENT Ind (#PCDATA)>
+<!ELEMENT Var (#PCDATA)>
+<!ATTLIST Equal
+	oriented (yes | no) "no"
+>
+<!ATTLIST Expr
+	in (yes | no | semi) "semi"
+>
+<!ATTLIST Rel
+	in (yes | no | semi) "semi"
+>
+<!ATTLIST Fun
+	in (yes | no | semi) "semi"
+	val (1 | 0..) "0.."
+>
+<!ATTLIST Var
+	ord (1 | h) "h"
+	in (yes | no | semi) "semi"
+>
