@@ -2,85 +2,85 @@
 <Assert>
 	<Implies>
 		<Atom>
-			<Rel in="yes">buy</Rel>
+			<Rel per="value">buy</Rel>
 			<Ind>peters</Ind>
 			<Var>what</Var>
 		</Atom>
 		<Equal oriented="yes">
 			<Expr>
-				<Fun in="yes">peters-buy</Fun>
+				<Fun per="value">peters-buy</Fun>
 			</Expr>
 			<Var>what</Var>
 		</Equal>
 	</Implies>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">customer</Fun>
+			<Fun per="value">customer</Fun>
 			<Ind>peters</Ind>
 		</Expr>
 		<Ind>miller</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">customer</Fun>
+			<Fun per="value">customer</Fun>
 			<Ind>peters</Ind>
 		</Expr>
 		<Ind>fuller</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">cost</Fun>
+			<Fun per="value">cost</Fun>
 			<Ind>stock1</Ind>
 		</Expr>
 		<Ind>165</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">cost</Fun>
+			<Fun per="value">cost</Fun>
 			<Ind>stock2</Ind>
 		</Expr>
 		<Ind>130</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">cost</Fun>
+			<Fun per="value">cost</Fun>
 			<Ind>stock3</Ind>
 		</Expr>
 		<Ind>175</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">benefit</Fun>
+			<Fun per="value">benefit</Fun>
 			<Ind>stock1</Ind>
 		</Expr>
 		<Ind>160</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">benefit</Fun>
+			<Fun per="value">benefit</Fun>
 			<Ind>stock2</Ind>
 		</Expr>
 		<Ind>130</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">benefit</Fun>
+			<Fun per="value">benefit</Fun>
 			<Ind>stock3</Ind>
 		</Expr>
 		<Ind>180</Ind>
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Expr in="yes">
-				<Fun in="no">mixtree</Fun>
+			<Expr per="value">
+				<Fun per="copy">mixtree</Fun>
 				<Var>terfun</Var>
 				<Var>mixvoid</Var>
 			</Expr>
 			<Var>tree</Var>
 		</Expr>
 		<Expr>
-			<Expr in="yes">
-				<Fun in="no">walktree</Fun>
+			<Expr per="value">
+				<Fun per="copy">walktree</Fun>
 				<Var>terfun</Var>
 				<Var>mixvoid</Var>
 			</Expr>
@@ -91,8 +91,8 @@
 	</Equal>
 	<Equal oriented="yes">
 		<Expr>
-			<Expr in="yes">
-				<Fun in="no">walktree</Fun>
+			<Expr per="value">
+				<Fun per="copy">walktree</Fun>
 				<Var>terfun</Var>
 				<Var>mixvoid</Var>
 			</Expr>
@@ -107,8 +107,8 @@
 			<Equal oriented="yes">
 				<Var>newleft</Var>
 				<Expr>
-					<Expr in="yes">
-						<Fun in="no">walktree</Fun>
+					<Expr per="value">
+						<Fun per="copy">walktree</Fun>
 						<Var>terfun</Var>
 						<Var>mixvoid</Var>
 					</Expr>
@@ -120,8 +120,8 @@
 			<Equal oriented="yes">
 				<Var>newright</Var>
 				<Expr>
-					<Expr in="yes">
-						<Fun in="no">walktree</Fun>
+					<Expr per="value">
+						<Fun per="copy">walktree</Fun>
 						<Var>terfun</Var>
 						<Var>mixvoid</Var>
 					</Expr>
@@ -133,7 +133,7 @@
 			<Equal oriented="yes">
 				<Var>mixsofar</Var>
 				<Expr>
-					<Var in="yes">terfun</Var>
+					<Var per="value">terfun</Var>
 					<Var>label</Var>
 					<Var>mixleft</Var>
 					<Var>mixright</Var>
@@ -142,13 +142,13 @@
 		</And>
 		<Equal oriented="yes">
 			<Expr>
-				<Expr in="yes">
-					<Fun in="no">walktree</Fun>
+				<Expr per="value">
+					<Fun per="copy">walktree</Fun>
 					<Var>terfun</Var>
 					<Var>mixvoid</Var>
 				</Expr>
 				<Expr>
-					<Fun in="no">tree</Fun>
+					<Fun per="copy">tree</Fun>
 					<Var>label</Var>
 					<Var>left</Var>
 					<Var>right</Var>
@@ -157,7 +157,7 @@
 				<Var>mixsofar</Var>
 			</Expr>
 			<Expr>
-				<Fun in="no">tree</Fun>
+				<Fun per="copy">tree</Fun>
 				<Var>mix</Var>
 				<Var>newleft</Var>
 				<Var>newright</Var>
