@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Assert SYSTEM "http://www.ruleml.org/fun/FinalVersionFunRuleML.dtd">
 <Assert>
-	<!-- home(father-of(John)) = Mexico City -->
+	<!-- home(father-of(John)) = Shanghai -->
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">home</Fun>
+			<Fun per="value">home</Fun>
 			<Expr>
-				<Fun in="no">father-of</Fun>
+				<Fun per="copy">father-of</Fun>
 				<Ind>John</Ind>
 			</Expr>
 		</Expr>
-		<Ind>Mexico City</Ind>
+		<Ind>Shanghai</Ind>
 	</Equal>
 	<!-- home(father-of(John)) = largest-city(Earth) -->
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">home</Fun>
+			<Fun per="value">home</Fun>
 			<Expr>
-				<Fun in="no">father-of</Fun>
+				<Fun per="copy">father-of</Fun>
 				<Ind>John</Ind>
 			</Expr>
 		</Expr>
 		<Expr>
-			<Fun in="yes">largest-city</Fun>
+			<Fun per="value">largest-city</Fun>
 			<Ind>Earth</Ind>
 		</Expr>
 	</Equal>
@@ -30,16 +30,16 @@
 	<!-- Expr-nesting-valued -->
 	<Equal oriented="yes">
 		<Expr>
-			<Fun in="yes">home</Fun>
+			<Fun per="value">home</Fun>
 			<Expr>
-				<Fun in="no">father-of</Fun>
+				<Fun per="copy">father-of</Fun>
 				<Ind>John</Ind>
 			</Expr>
 		</Expr>
 		<Expr>
-			<Fun in="yes">largest-city</Fun>
+			<Fun per="value">largest-city</Fun>
 			<Expr>
-				<Fun in="yes">planet-of</Fun>
+				<Fun per="value">planet-of</Fun>
 				<Ind>Sun</Ind>
 				<Data>3</Data>
 			</Expr>
@@ -59,16 +59,16 @@
 		</Atom>
 		<Equal>
 			<Expr>
-				<Fun in="yes">home</Fun>
+				<Fun per="value">home</Fun>
 				<Expr>
-					<Fun in="no">father-of</Fun>
+					<Fun per="copy">father-of</Fun>
 					<Ind>John</Ind>
 				</Expr>
 			</Expr>
 			<Expr>
-				<Fun in="yes">largest-city</Fun>
+				<Fun per="value">largest-city</Fun>
 				<Expr>
-					<Fun in="yes">planet-of</Fun>
+					<Fun per="value">planet-of</Fun>
 					<Ind>Sun</Ind>
 					<Data>3</Data>
 				</Expr>

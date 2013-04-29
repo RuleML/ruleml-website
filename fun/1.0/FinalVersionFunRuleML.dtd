@@ -19,16 +19,16 @@
 	oriented (yes | no) "no"
 >
 <!ATTLIST Expr
-	in (yes | no | semi) "semi"
+	per (value | copy | open) "copy"
 >
 <!ATTLIST Rel
-	in (yes | no | semi) "semi"
+	per (value | copy | open) "value"
 >
 <!ATTLIST Fun
-	in (yes | no | semi) "semi"
+	per (value | copy | open) "copy"
 	val (1 | 0..) "0.."
 >
 <!ATTLIST Var
 	ord (1 | h) "h"
-	in (yes | no | semi) "semi"
+	per (value | copy | open) "copy"
 >
