@@ -795,9 +795,18 @@
         <item>
           <a href="http://ruleml.org/rif/RIF-CASPD.html">RIF-CASPD</a>
         </item>
-        <item>
-          <a href="http://ruleml.org/rif/RIF-CLPWD.html">RIF-CLPWD</a>
-        </item>
+      <item>
+        <a href="http://ruleml.org/rif/RIF-CLPWD.html">RIF-CLPWD</a>
+      </item>
+      <item>
+        <a href="rif/rulelog/rif/RIF-Rulelog.html">RIF-Rulelog</a>
+      </item>
+      <item>
+        <a href="rif/rulelog/spec/Rulelog.html">Rulelog: Syntax and Semantics [HTML]</a>
+      </item>
+      <item>
+        <a href="rif/rulelog/spec/Rulelog.pdf">Rulelog: Syntax and Semantics [PDF]</a>
+      </item>
       </itemize> Convergence of RIF and RuleML is facilitated by <a href="#PSOA">PSOA RuleML</a>.
     </p>
   </section>
