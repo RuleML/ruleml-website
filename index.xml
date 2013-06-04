@@ -375,6 +375,14 @@
         please send wiki snippets about your tools to the webmaster
         {A T} ruleml.org.
       </item>
+      <item>The <b>Grailog Initiative</b>, an Affiliate of RuleML, has
+        created a wiki page on Graph inscribed logic (<a
+          href="http://wiki.ruleml.org/index.php/Grailog">Grailog</a>)
+        containing, e.g., links to initial implementations and use cases. This
+        wiki page will replace the below <a href="#Grailog">Grailog
+          section</a>. If you want to contribute, please contact <a
+            href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
+      </item>
 
     </itemize>
   </news>
@@ -1033,10 +1041,11 @@
 
 
   <section label="Grailog">
-    <header>Graph inscribed logic (Updated: 2012-09-26)</header>
+    <header>Graph inscribed logic (Updated: 2013-06-04)</header>
 
-    <p> The Graph inscribed logic (<a href="http://www.cs.unb.ca/~boley/talks/RuleMLGrailog.pdf"
-        >Grailog</a>) was initially developed for the course <a
+    <p> The Graph inscribed logic (<a
+      href="http://wiki.ruleml.org/index.php/Grailog"
+      >Grailog</a>) was initially developed for the course <a
         href="https://www.ict.tuwien.ac.at/lva/Boley_LFCS/index.html">Logical Foundations of
         Cognitive Science</a> and has since much evolved, as presented in a series of talks,
       including <a href="http://www.slideshare.net/PhiloWeb/rule-ml-grailog">RuleML/Grailog: The
