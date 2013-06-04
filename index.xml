@@ -365,6 +365,16 @@
               and Accepted Paers</a></item>
         </itemize>
       </item>
+      <item>A wiki page on <a
+        href="http://wiki.ruleml.org/index.php/RuleML_Implementations">RuleML
+        Implementations</a>  has been created for implementers of RuleML
+        tools. This wiki page will replace the below  <a
+          href="#Translators">Translators section</a> and <a
+            href="#Engines">Engines section</a>. 
+        If you do not yet have edit privileges for the wiki directly, 
+        please send wiki snippets about your tools to the webmaster
+        {A T} ruleml.org.
+      </item>
 
     </itemize>
   </news>
