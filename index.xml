@@ -114,22 +114,27 @@
 
       <b>Lists/Groups:</b>
       <itemize>
+        <!--- URLs are cPanel-specific, and should be changed if the Mailman implementation is changed,
+              and especially if the private ruleml-all archive is made public. -->
         <item>
-          <a href="http://mail.ruleml.org/pipermail/ruleml-all/2003-November/000000.html"
-            >Subscribe</a> to our main mailing list: <a
-            href="http://mail.ruleml.org/pipermail/ruleml-all/">ruleml-all</a>. </item>
+          Subscribe to our main mailing list <a href="http://ruleml.org/mailman/listinfo/ruleml-all_ruleml.org"
+              >ruleml-all</a>: <a
+              href="http://ruleml.org/mailman/private/ruleml-all_ruleml.org/">Archives</a> are available to subscribers. </item>
         <item> Get up to date with the Fuzzy RuleML TG mailing list: <a
-            href="http://mail.ruleml.org/pipermail/fuzzy-tg/">fuzzy-tg</a>. </item>
+          href="http://ruleml.org/mailman/listinfo/fuzzy-tg_ruleml.org">fuzzy-tg</a>. </item>
         <item> Peek into the Reaction Rules TG mailing list: <a
-            href="http://mail.ruleml.org/pipermail/reaction-tg/">reaction-tg</a>. </item>
+          href="http://ruleml.org/mailman/listinfo/reaction-tg_ruleml.org">reaction-tg</a>. </item>
         <item>
-          <a href="http://mail.jdrew.org/pipermail/jdrew-all/2005-June/000000.html">Consider</a> to
-          join the engine mailing list: <a href="http://mail.jdrew.org/pipermail/jdrew-all/"
+          Consider to
+          join the engine mailing list: <a href="http://wdc006.hawkhost.com/mailman/listinfo/jdrew-all_jdrew.org"
             >jdrew-all</a>. </item>
+        <!--<item> Make an exception to participate in the Defeasible Rules mailing list:
+          <a href="http://ruleml.org/mailman/listinfo/defeasible-tg_ruleml.org">defeasible-tg</a>.
+        </item>-->
         <item> Discuss Web rule-based agents on the Rule Responder TG mailing list: <a
             href="http://tech.groups.yahoo.com/group/Rule_Responder/">responder-tg</a>. </item>
-        <item> Join the LinkedIn RuleML group or some of its subgoups: <a
-            href="http://www.google.ca/search?q=LinkedIn+RuleML+group">LinkedIn RuleML group</a>.
+        <item> Join the LinkedIn RuleML group or some of its subgroups: <a
+          href="http://www.linkedin.com/groups/RuleML-Group-2190838/about">LinkedIn RuleML group</a>.
         </item>
       </itemize>
     </p>
@@ -1293,7 +1298,7 @@
   </item>
   <item>
 <b>Reaction Rules (<a href="http://ibis.in.tum.de/research/ReactionRuleML/">Reaction RuleML</a>) Technical Group, Co-Chairs:</b> <a href="http://ibis.in.tum.de/staff/paschke/index.htm">Adrian Paschke</a> &amp; <a href="alex.kozlenkov@betfair.com">Alex Kozlenkov</a>,
-Mailing list: <a href="http://mail.ruleml.org/pipermail/reaction-tg/">reaction-tg</a>
+Mailing list: <a href="http://ruleml.org/mailman/listinfo/reaction-tg_ruleml.org">reaction-tg</a>
   </item>
   <item>
 <b>Ontology Combination Technical Group, Co-Chairs:</b> <a href="http://ebusiness.mit.edu/bgrosof/">Benjamin Grosof</a> &amp; <a href="http://www.aifb.uni-karlsruhe.de/WBS/aeb/">Andreas Eberhart</a>
@@ -1326,7 +1331,7 @@ Mailing list: <a href="http://tech.groups.yahoo.com/group/Rule_Responder/">respo
       questions/suggestions. Depending on your specific RuleML interests, you may also contact some
       RuleML Technical Group (<a href="#Structure">select above</a>) or some RuleML Participant (<a
         href="#Participants-Systems">select above</a>). You are encouraged to subscribe to our main
-      mailing list: <a href="http://mail.ruleml.org/pipermail/ruleml-all/2003-November/000000.html"
+      mailing list: <a href="http://ruleml.org/mailman/listinfo/ruleml-all_ruleml.org"
         >ruleml-all</a>. </p>
   </section>
 
