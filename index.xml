@@ -115,7 +115,9 @@
       <b>Lists/Groups:</b>
       <itemize>
         <!--- URLs are cPanel-specific, and should be changed if the Mailman implementation is changed,
-              and especially if the private ruleml-all archive is made public. -->
+              and especially if the private ruleml-all archive is made public.
+              All the mailman lists are accessible from http://ruleml.org/mailman/listinfo
+        -->
         <item>
           Subscribe to our main mailing list <a href="http://ruleml.org/mailman/listinfo/ruleml-all_ruleml.org"
               >ruleml-all</a>: <a
@@ -1360,7 +1362,9 @@ Mailing list: <a href="http://tech.groups.yahoo.com/group/Rule_Responder/">respo
 
   <closing>
     <p> Site Contact: webmaster {A T} ruleml.org . Page Version:
-      2013-05-18 <br/><br/><br/>
+      <script>
+        2013-06-06;
+      </script> <br/><br/><br/>
       <a name="Practice-Preach"/><small>"Practice what you preach": XML source of this homepage at
           <a href="index.xml">index.xml</a> (<a href="index.xml.txt">index.xml.txt</a>); <br/>
         transformed to HTML via the adaptation of <a href="http://www.dfki.uni-kl.de/~sintek/"
