@@ -983,11 +983,15 @@
   </section>
 
   <section label="Papers-Publications">
-    <header>Papers-Publications (Updated: 2010-02-07)</header>
-    <p> Check out some <a href="http://scholar.google.com/scholar?q=RuleML">Google Scholar results
-        for RuleML</a>. </p>
+    <header>Publications</header>
+    <!--<p> Check out some <a href="http://scholar.google.com/scholar?q=RuleML">Google Scholar results
+        for RuleML</a>. </p> -->
     <itemize>
-      <item>David Hirtle, <a href="http://www.ruleml.org/translator/TRANSLATOR-CaSTA.pdf"
+      <item><b><big>Please see the RuleML Wiki 
+        <a href="http://wiki.ruleml.org/index.php/Publications:Master">Publications Page</a> 
+        for all RuleML-related publications.</big></b> 
+      </item>  
+      <!--<item>David Hirtle, <a href="http://www.ruleml.org/translator/TRANSLATOR-CaSTA.pdf"
           >TRANSLATOR: A TRANSlator from LAnguage TO Rules</a>, Canadian Symposium on Text Analysis
         (CaSTA), Fredericton, October 2006. </item>
       <item> Marcel Ball, Harold Boley, David Hirtle, Jing Mei, Bruce Spencer: <a
@@ -1011,7 +1015,7 @@
           href="http://www.ruleml.org/papers/DesignRationaleRuleML-SWWS01paper20.pdf">Design
           Rationale of RuleML: A Markup Language for Semantic Web Rules</a>, Proc. SWWS'01,
         Stanford, July/August 2001.
-        <!-- <a href="http://www.semanticweb.org/SWWS/program/full/paper20.pdf"> -->
+        < ! - - <a href="http://www.semanticweb.org/SWWS/program/full/paper20.pdf"> - - >
       </item>
       <item> Andreas Eberhart, <a href="http://www.cs.unb.ca/ai2002/baseweb/BASeWEB2002_Paper1.pdf"
           >An Agent Infrastructure based on Semantic Web Standards</a>, Workshop on Business Agents
@@ -1053,7 +1057,7 @@
       <item> Gerd Wagner, Said Tabet, and Harold Boley: <a
           href="http://www.omg.org/docs/br/03-10-02.pdf">MOF-RuleML: The Abstract Syntax of RuleML
           as a MOF Model</a>, <a href="http://www.integrate2003.com">Integrate 2003</a>, OMG Meting,
-        October 2003, Boston. </item>
+        October 2003, Boston. </item> -->
     </itemize>
   </section>
 
