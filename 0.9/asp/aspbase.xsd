@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+  targetNamespace="http://www.kr.tuwien.ac.at/staff/roman/aspruleml" 
+  xmlns="http://www.kr.tuwien.ac.at/staff/roman/aspruleml"
+  xmlns:rulmeml="http://www.ruleml.org/0.9/xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  >
+  
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      XML Schema for an ASP core language
+      File: aspbase.xsd
+      Version: 0.9
+      Last Modification: 2006-04-04
+    </xs:documentation>
+  </xs:annotation>
+  
+  <xs:redefine schemaLocation="http://www.ruleml.org/0.9/xsd/nafnegdatalog.xsd">
+    
+    <!--
+            redefine RuleML:
+            - remove Query
+            - add Constraint
+        -->
+    <xs:group name="RuleML.content">
+      <xs:sequence>
+        <xs:element ref="oid" minOccurs="0"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="Assert"/>
+          <xs:element ref="Constraint"/>
+        </xs:choice>
+      </xs:sequence>    
+    </xs:group> 
+    
+    
+    <!--
+            modify Assert:
+            - remove Equivalent
+            - remove Forall
+        -->
+    <xs:group name="formula-assert.content">
+      <xs:choice>
+        <xs:element name="Atom" type="Atom.type"/>
+        <xs:element ref="Implies"/>
+      </xs:choice>
+    </xs:group>
+    
+    <!--
+            redefine head to contain only disjunction of Neg.
+        -->
+    <xs:group name="head.content">
+      <xs:choice>
+        <xs:element ref="Neg"/>
+        <xs:element name="Or" type="Or-pure.type"/>
+      </xs:choice>
+    </xs:group>
+    
+    <!--
+            define "pure" disjunction of Neg.
+        -->
+    <xs:group name="Or-pure.content">
+      <xs:sequence>
+        <xs:choice minOccurs="0">
+          <xs:element ref="oid"/>
+        </xs:choice>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="Neg"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:group>
+    
+    <xs:complexType name="Or-pure.type">
+      <xs:group ref="Or-pure.content"/>
+      <xs:attributeGroup ref="Or-inner.attlist"/>
+    </xs:complexType>
+    
+    <!--
+            redefine body to contain only conjunction of Naf or single Naf.
+        -->
+    <xs:group name="body.content">
+      <xs:choice>
+        <xs:element ref="Naf"/>
+        <xs:element name="And" type="And-pure.type"/>
+      </xs:choice>
+    </xs:group>
+    
+    <!--
+            define "pure" conjunction of Naf.
+        -->
+    <xs:group name="And-pure.content">
+      <xs:sequence>
+        <xs:choice minOccurs="0">
+          <xs:element ref="oid"/>
+        </xs:choice>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="Naf"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:group>
+    
+    <xs:complexType name="And-pure.type">
+      <xs:group ref="And-pure.content"/>
+      <xs:attributeGroup ref="And-inner.attlist"/>
+    </xs:complexType>
+    
+    
+    
+    <!--
+            define Constraint.
+        -->
+    <xs:attributeGroup name="Constraint.attlist"/>
+    
+    <xs:group name="Constraint.content">
+      <xs:sequence>
+        <xs:element ref="oid" minOccurs="0"/>
+        <xs:choice>
+          <xs:element ref="body"/>
+          <xs:group ref="body.content"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:group>
+    
+    <xs:complexType name="Constraint.type">
+      <xs:group ref="Constraint.content"/>
+      <xs:attributeGroup ref="Constraint.attlist"/>
+    </xs:complexType>
+    <xs:element name="Constraint" type="Constraint.type"/>
+    
+    
+    <!--
+            redefine arg to accept only constants and variables
+        -->
+    <xs:group name="arg.content">
+      <xs:choice>
+        <xs:element ref="Ind"/>
+        <xs:element ref="Data"/>
+        <xs:element ref="Var"/>
+      </xs:choice>    
+    </xs:group>       
+    
+    <!--
+            redefine Atom:
+            - remove degree
+            - remove slots
+        -->
+    <xs:group name="Atom.content">
+      <xs:sequence>
+        <xs:element ref="oid" minOccurs="0"/>
+        <xs:choice>
+          <xs:element name="op" type="op-atom.type"/>
+          <xs:group ref="op-atom.content"/>
+        </xs:choice>
+        <xs:sequence minOccurs="0">
+          <xs:group ref="Atom.extend.arg-repo"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:group>
+    
+    
+    
+  </xs:redefine>
+  
+</xs:schema>
