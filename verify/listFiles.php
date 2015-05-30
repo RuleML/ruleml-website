@@ -6,12 +6,11 @@ class RecursiveDotFilterIterator extends  RecursiveFilterIterator
         return '.' !== substr($this->current()->getFilename(), 0, 1);
     }
 }
-echo "hello\n";
-echo getcwd()."\n";
+//echo getcwd()."\n";
 //$top= $_GET["top"];
-$top = "~/public_html/ruleml.org/verify";
+$top = "/home/rulemlso/public_html";
   
-echo "$top\n";
+//echo "$top\n";
 
 $iterator = new RecursiveIteratorIterator(
     new RecursiveDotFilterIterator(
