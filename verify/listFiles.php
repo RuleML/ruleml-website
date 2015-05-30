@@ -1,4 +1,4 @@
 <?php
-echo "hello";
-echo getcwd();
+echo "hello\n";
+echo getcwd()\n;
 ?>
