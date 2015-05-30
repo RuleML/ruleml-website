@@ -19,10 +19,10 @@ $iterator = new RecursiveIteratorIterator(
 );
 foreach($iterator as $file){
     $path_parts = pathinfo($file);
-    $base = $path_parts['basename'];
+    $base = trim(preg_replace('/\s+/', '', $path_parts['basename']));
     echo "$base";
     echo "\t";
-    echo substr($path_parts['dirname'], 27);
+    echo trim(preg_replace('/\s+/', '', substr($path_parts['dirname'], 27)));
     echo "\t";
     echo filesize($file);
     echo "\t";
