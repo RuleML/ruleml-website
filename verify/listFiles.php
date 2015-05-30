@@ -21,11 +21,11 @@ foreach($iterator as $file){
     $path_parts = pathinfo($file);
     $base = $path_parts['basename'];
     echo "$base";
-    echo " ";
-    echo $path_parts['dirname'];
-    echo " ";
+    echo "\t";
+    echo substr($path_parts['dirname'], 27);
+    echo "\t";
     echo filesize($file);
-    echo " ";
+    echo "\t";
     echo filemtime($file);
     echo "\n";
 }
