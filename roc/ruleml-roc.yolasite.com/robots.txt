@@ -1,0 +1,4 @@
+User-agent: * 
+Sitemap: http://ruleml-roc.yolasite.com/sitemap.xml
+Disallow: /definitions/ 
+Disallow: /templates/ 

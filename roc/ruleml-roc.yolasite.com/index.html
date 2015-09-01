@@ -1,0 +1,311 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>ROC</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<style type="text/css">
+body{
+    background-color:#f6f0e2;
+    background-image: url(http://ruleml-roc.yolasite.com/templates/Suarez/resources/canvas.jpg);
+    background-repeat:repeat;
+    background-position:top left;
+    background-attachment:;
+    text-align:center;
+    margin:0;
+    padding:0 0 20px 0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:13px;
+}
+
+div.ys-bar{
+    width:100%;
+    background:#262628 url(http://ruleml-roc.yolasite.com/templates/Suarez/resources/slate.jpg) center top repeat-y;
+    z-index:1;
+    border-bottom:3px solid #fff;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+       -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+}
+
+div.ys-layout{
+    width:920px;
+    margin:-55px auto 0 auto;
+    text-align:left;
+}
+
+div.ys-nav-wrap{
+    width:920px;
+    margin:0 auto;
+    text-align:left;
+    padding:30px 0 60px 0;
+}
+
+div.sys_navigation ul{
+    text-align:right;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+div.sys_navigation ul li{
+    display:inline;
+}
+
+div.sys_navigation ul li a{
+    display:inline-block;
+    color:#f6f4ee;
+    padding:10px 23px 10px 35px;
+    background:url(http://ruleml-roc.yolasite.com/templates/Suarez/resources/star.png) center left no-repeat;
+    text-decoration:none;
+    font-size:13px;
+    text-shadow:0 1px 0 rgba(0,0,0,1);
+}
+
+div.sys_navigation ul li.single a,
+div.sys_navigation ul li.first a{
+    background:none;
+    padding-left:0;
+}
+
+div.sys_navigation ul li.selected a{
+    color:#fff;
+    font-weight:bold;
+}
+
+div.sys_navigation ul li a:hover{
+    text-decoration:underline;
+}
+
+div.ys-banner-wrap{
+    background:#fff;
+    padding:10px;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+       -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+}
+
+div.ys-banner-wrap td.heading{
+    width:100%;
+    background:#262628 url(http://ruleml-roc.yolasite.com/templates/Suarez/resources/board.jpg) 0 0 repeat;
+    border-right:1px solid #333;
+}
+
+div.ys-banner-wrap div.heading h1{
+    margin:0;
+    padding: 0 40px 0 40px;
+}
+
+div.ys-banner-wrap div.heading h1 a{
+    color:#fff;
+    text-decoration:none;
+    font-size:30px;
+    font-weight:normal;
+    font-family:Georgia;
+    text-shadow:0 1px 0 rgba(0,0,0,1);
+}
+
+div#sys_banner{
+    width:525px;
+    height:195px;
+    background: url(resources/RuleMLlogo2005.jpg.cropped525x195o0,0s528x195.jpg) top left no-repeat;
+}
+
+div.ys-banner-wrap table{
+    width:900px;
+    background:#262628;
+    height:195px;
+}
+
+div.content{
+    background:#fff;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+       -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+    margin:20px 0 10px 0;
+    padding:10px;
+}
+
+
+/* Variables - only edit these */
+
+
+
+
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#222;
+}
+
+a{
+    color:#0062b5;
+    text-decoration:underline;
+}
+
+a:hover{
+    text-decoration:none;
+    color:#0062b5
+}
+
+a img{border:none;}
+
+p{
+    padding: 5px 0;
+    margin: 0;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{color: #333333;}
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover{color: #333333;}
+h1, h2, h3, h4, h5, h6{
+    padding: 10px 0;
+    margin: 5px 0;
+    color: #333333;
+}
+
+h1{font-size: 200%;}
+h2{font-size: 180%;}
+h3{font-size: 160%;}
+h4{font-size: 140%;}
+h5{font-size: 130%;}
+h6{font-size: 100%;}
+</style><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script src="classes/commons/jquery/jquery-1.7.1.min.js"><\/script>')</script>
+<link rel="stylesheet" type="text/css" href="classes/commons/resources/flyoutmenu/flyoutmenu.css" />
+<script type="text/javascript" src="classes/commons/resources/flyoutmenu/flyoutmenu.js"></script>
+
+    </head>
+    <body id="sys_background">
+        <div class='ys-bar'>
+            <div class='ys-nav-wrap'>
+                <div class='sys_navigation'>
+                    <ul class='sys_navigation'>
+			<li id="ys_menu_0" class="selected first"><a href="index.html" title="Home">Home</a></li>
+			<li id="ys_menu_1"><a href="project-description.php.html" title="Project Description">         Description         </a></li>
+			<li id="ys_menu_2"><a href="working.php.html" title="Working">Working</a></li>
+			<li id="ys_menu_3"><a href="documentation.php.html" title="Documentation">Documentation</a></li>
+			<li id="ys_menu_4" class="last"><a href="references.php.html" title="References">References</a></li>
+			</ul>
+<script>$(document).ready(flyoutMenu.initFlyoutMenu([{"href": "index.php","title": "Home","name": "Home","children": []},{"href": "project-description.php","title": "Project Description","name": "         Description         ","children": [{"href": "test-cases-for-roc.php","title": "Test cases for ROC","name": "ROC Test cases and Results"},{"href": "test-cases-for-ron.php","title": "Test Cases for RON","name": "RON Test Cases and Results"}]},{"href": "working.php","title": "Working","name": "Working","children": []},{"href": "documentation.php","title": "Documentation","name": "Documentation","children": []},{"href": "references.php","title": "References","name": "References","children": []}], "flyover"));</script>
+                </div>
+            </div>
+        </div>        
+        <div class="ys-layout">
+            <div class="ys-banner-wrap">
+                <table cellpadding='0' cellspacing='0'>
+                    <tr>
+                        <td class='heading'>
+                            <div class="heading">
+                                <h1 style="text-align:left;"><a id="sys_heading" href="index.html" style="color:#ffffff;font-size:34px;font-style:italic;font-weight:bold;font-family:Georgia;text-decoration:none;">RuleML Official Compactifier</a></h1>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="sys_banner"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="content">
+                <div id="content">
+                    <div style="width: 100%; padding: 0px; margin: 0px" class="layout_1-column">
+    <div id="layout_row1">
+                    <div id="sys_region_1" style="margin:0px; padding:5px; vertical-align:top; line-height:normal; min-width:100px" class="zone_top" ><div id="I18" style="display:block;clear: both;margin:10px 10px 10px 10px;" class="Panel_Default">
+    <style id='yola-panel-style-I18' type='text/css'>
+    
+        div#yola-panel-I18{
+            background:#e1e1e1;background:#e1e1e1 -webkit-gradient(linear, center top, center bottom, from(#e1e1e1), to(#fff));background:#e1e1e1 -moz-linear-gradient(center top, #e1e1e1 0%, #fff 100%);border:1px solid #fff;-webkit-border-radius:7px;-khtml-border-radius:7px;-moz-border-radius:7px;-o-border-radius:7px;border-radius:7px;-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, .5), 0 0 2px rgba(255, 255, 255, 1) inset;-moz-box-shadow:0 1px 2px rgba(0, 0, 0, .5), 0 0 2px rgba(255, 255, 255, 1) inset;box-shadow:0 1px 2px rgba(0, 0, 0, .5), 0 0 2px rgba(255, 255, 255, 1) inset;
+        }
+    
+        div#yola-panel-inner-I18{
+            -webkit-border-radius:6px;-khtml-border-radius:6px;-moz-border-radius:6px;-o-border-radius:6px;border-radius:6px;background-position:top left;background-repeat:repeat;font-size:30px;padding:20px 20px 20px 20px;color:#333;
+        }
+    
+                div#yola-panel-inner-I18 h1,
+        div#yola-panel-inner-I18 h2,
+        div#yola-panel-inner-I18 h3,
+        div#yola-panel-inner-I18 h4,
+        div#yola-panel-inner-I18 h5,
+        div#yola-panel-inner-I18 h6{
+            color:#333;
+        }
+            
+                div#yola-panel-inner-I18 a{
+            color:#2D76B9;
+        }
+            
+                div#yola-panel-inner-I18 a:hover{
+            color:#2D76B9;
+        }
+            
+    </style>
+    <div id='yola-panel-I18'>
+        <div id='yola-panel-inner-I18'>
+            <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                <tr>
+                    <td id="Panel_I18" style="text-align:left; vertical-align:top; width:100%;" ><div id="I20" style="display:block;clear: both;" class="Text_Default">    
+    <div id="I20_sys_txt" class="sys_txt" style="margin:0px; padding:0px; color:; font:; background-color:;">Testing, inverting and round tripping RON Normalizer for RuleML 1.0 in XSLT 2.0<br><br>Supervisor<font size="3"><font face="Georgia">:&nbsp;<font size="4"> </font></font></font><font class="Apple-style-span" face="Georgia" size="5"><a href="http://www.cs.unb.ca/~boley/">Dr. Harold Boley</a></font><font size="4">&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Adviser: <font size="5"><a target="new" href="http://www.athant.com/">Dr. <font size="5">T</font>ara Athan</a></font><br><br><div align="center">Team Members:<br></div><p align="center"><font face="Arial,Arial Unicode MS" size="4"><a href="mailto:pratik.shah@unb.ca">Pratik Shah</a></font></p><p align="center"><font face="Arial,Arial Unicode MS" size="4"><a href="mailto:Simranjit.Singh@unb.ca">Simranjit Singh</a></font></p><p align="center"><font face="Arial,Arial Unicode MS" size="4"><a href="mailto:m05f2@unb.ca">Bijiteshwar R Aayush</a></font></p><br>
+</div>
+    
+</div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div></div>
+            </div>
+</div>
+                </div>
+            </div>
+            <div class="bottom"></div>
+        </div>
+        
+<style type="text/css">
+    a#sys_yolacredit_a1:hover {text-decoration: underline!important; font-weight:normal!important}
+    a#sys_yolacredit_a2:hover {text-decoration: underline!important; font-weight:normal!important}
+    a#sys_yolacredit_a1 {text-decoration: none!important; font-weight:normal!important}
+    a#sys_yolacredit_a2 {text-decoration: none!important; font-weight:normal!important}
+    #sys_yolacredit_left {background:url(classes/commons/yola_footer/png/yolaTag.png) top left no-repeat;}
+    #sys_yolacredit_center {background:url(classes/commons/yola_footer/png/yolaTag.png) -10px top no-repeat;}
+    #sys_yolacredit_right {background:url(classes/commons/yola_footer/png/yolaTag.png) top right no-repeat;}
+</style>
+<!--[if lte IE 6]>
+        <style type="text/css">
+            #sys_yolacredit_right {background:url(classes/commons/yola_footer/gif/yolaTag_03.gif) top right}
+            #sys_yolacredit_left {background-image:url(classes/commons/yola_footer/gif/yolaTag_01.gif)}
+            #sys_yolacredit_center {background-image:url(classes/commons/yola_footer/gif/yolaTag_02.gif)}
+        </style>
+<![endif]-->
+<div id="sys_yolacredit" style="margin: 1em auto;text-align:center; width:220px; display:block; visibility:visible; height:35px"
+     title="Visit Yola.com to create your own free website">
+    <div id="sys_yolacredit_left" style="width:6px; height:32px; float:left;margin:0px; padding:0px"></div>
+    <div id="sys_yolacredit_center" style="height:35px; float:left;padding-left:3px; margin:0px; background-repeat: repeat-x; display:block; visibility:visible; font-family: Arial; font-size: 9px; line-height:33px;color: #000;">
+                        Make a <a id="sys_yolacredit_a1" href="http://www.yola.com/" style="color:#000; display:inline; visibility: visible;font-family: Arial; font-size: 9px;" target="_blank" >Free Website</a> with <span id="sys_yolacredit_a2" style="color: #E7004F;display:inline;visibility:visible;font-family:Arial;font-size:9px;" target="_blank" >Yola.</span>    </div>
+    <div id="sys_yolacredit_right" style="width:8px; height:32px; float:left; margin:0px; padding:0px"></div><div style="clear:both"></div>
+</div>
+
+
+        <script type="text/javascript">
+            var _yts = _yts || [];
+            _yts.push(["_siteId", "8a4986c83b05f332013b15578a840d30"]);
+            _yts.push(["_trackPageview"]);
+            (function() {
+                var yts = document.createElement("script");
+                yts.type = "text/javascript";
+                yts.async = true;
+                yts.src = "http://analytics.yola.net/tracking.js";
+                (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(yts);
+            })();        
+        </script><!-- Start Quantcast tag -->
+    <script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+    <script type="text/javascript">_qacct="p-b8x17GqsQ_656";quantserve();</script>
+    <noscript>
+        <a href="http://www.quantcast.com/p-b8x17GqsQ_656" target="_blank"><img src="http://pixel.quantserve.com/pixel/p-b8x17GqsQ_656.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/></a>
+    </noscript>
+    <!-- End Quantcast tag -->
+    </body>
+</html>
