@@ -37,7 +37,7 @@
 		(cf.  <a href="http://www.ruleml.org/exa/0.81/">trans examples</a>)
 		and builds on an earlier paper
 		(cf. 
-		<a href="ruleml-fun.pdf">Functional RuleML: From Horn Logic with Equality to Lambda Calculus</a>,
+		<a href="../ruleml-fun.pdf">Functional RuleML: From Horn Logic with Equality to Lambda Calculus</a>,
 		published in <a href="http://www.upgrade-cepis.com/issues/2005/6/upgrade-vol-VI-6.html#boley">UPGRADE VI(6)</a> and
 		as part of <a href="http://www.cs.unb.ca/~boley/papers/ruleml-family.pdf">The RuleML Family of Web Rule Languages</a>
 		in <a href="http://www.dbis.informatik.uni-goettingen.de/PPSWR06/ppswr06-program.html">PPSWR 2006</a>).
@@ -422,7 +422,7 @@ This composition can be applied to two (parental) individuals thus:</p>
 		<p>
 		Site Contact:
 		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
-		Page Version: 2013-04-27
+		Page Version: 2015-10-19
 		
 		<br/>
 			<br/>
