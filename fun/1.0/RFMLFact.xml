@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!-- edited with XML Spy v3.0.7 NT (http://www.xmlspy.com) by Ocean (Family Doan) -->
-<?xml-stylesheet type="text/xsl" href="http://www.ruleml.org/fun/rfml2ruleml.xslt"?>
+<?xml-stylesheet type="text/xsl" href="http://www.ruleml.org/fun/1.0/rfml2ruleml.xslt"?>
 <rfml>
 	<ft>
 		<pattop>
