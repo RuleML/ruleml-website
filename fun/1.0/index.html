@@ -37,7 +37,7 @@
             			
             <tr>
                <td>
-                  <h3>2013-04-27 - </h3>
+                  <h3>2013-04-29 - </h3>
                </td>
                <td>
                   <h3><a href="http://ruleml.org/fun/1.0/">Version 1.0</a></h3>
@@ -54,11 +54,11 @@
       		<br>
       		
       <p>This page describes Functional RuleML (Fun RuleML),
-         		   which has been incorporated into RuleML since Version <a href="http://www.ruleml.org/0.91/">0.91</a>.
+         		   much of which has been incorporated into RuleML since Version <a href="http://www.ruleml.org/0.91/">0.91</a>.
          		   Fun RuleML develops RuleML into a Relational-Functional or Functional-Logic Markup
-         Language (cf. <a href="http://www.relfun.org/rfml/">RFML</a>) that can be regarded as being composed of Relational RuleML plus transformation
-         rules
-         (definitions of functions by oriented equations, usually conditional on premises).
+         Language (cf. <a href="http://www.relfun.org/rfml/">RFML</a>) that can be regarded as being composed of Relational RuleML plus
+         definitions of generalized functions by oriented equations, either unconditionally
+         (facts) or conditional on premises (rules).
          
       </p>
       	
@@ -78,18 +78,27 @@
       		
       <p>Functional Programming (FP) has become increasing relevant in software engineering
          with languages like
-         		Clojure, Erlang, Haskell, <a href="http://www.cs.unb.ca/~boley/FLP/python-intro.pdf">Python</a>, and <a href="http://racket-lang.org/">Racket</a>.
-         		Varieties of FP are also playing a prominent Web role, with MathML, XSLT and XQuery
-         being examples.
-         		We present here Functional RuleML, whose design benefited from previous work on
-         Transformational RuleML
-         		(cf.  <a href="http://www.ruleml.org/exa/0.81/">trans examples</a>)
-         		and builds on an earlier paper
+         		<a href="http://clojure.org">Clojure</a>,
+         		<a href="http://www.erlang.org">Erlang</a>,
+         		<a href="https://www.haskell.org">Haskell</a>,
+         		<a href="https://www.python.org">Python</a>, and
+         		<a href="http://racket-lang.org/">Racket</a>.
+         		Varieties of FP are also playing a prominent Web role, with
+         		<a href="http://www.w3.org/Math">MathML</a>,
+         		<a href="http://www.w3.org/standards/xml/transformation.html">XSLT</a>, and
+         		<a href="http://www.w3.org/standards/xml/query.html">XQuery</a>
+         		being prime examples.
+         		We present here Functional RuleML, whose design
+         
+         		builds on an earlier paper
          		(cf. 
-         		<a href="ruleml-fun.pdf">Functional RuleML: From Horn Logic with Equality to Lambda Calculus</a>,
-         		published in <a href="http://www.upgrade-cepis.com/issues/2005/6/upgrade-vol-VI-6.html#boley">UPGRADE VI(6)</a> and
+         		<a href="../ruleml-fun.pdf">Functional RuleML: From Horn Logic with Equality to Lambda Calculus</a>,
+         		published in <a href="http://www.cepis.org/upgrade/files/full-2005-VI.pdf">UPGRADE VI(6)</a>
+         		
+         		 and
          		as part of <a href="http://www.cs.unb.ca/~boley/papers/ruleml-family.pdf">The RuleML Family of Web Rule Languages</a>
-         		in <a href="http://www.dbis.informatik.uni-goettingen.de/PPSWR06/ppswr06-program.html">PPSWR 2006</a>).
+         		in <a href="http://www.dbis.informatik.uni-goettingen.de/PPSWR06/ppswr06-program.html">PPSWR 2006</a>
+         		[<a href="http://ruleml.org/talks/RuleML-Family-PPSWR06-talk-up.pdf">talk</a> (<a href="http://ruleml.org/talks/RuleML-Family-PPSWR06-talk-up.ppt">ppt</a>)]).
          Functional RuleML was developed via orthogonal notions and is freely combinable with
          the previous Relational RuleML, including <a href="http://ruleml.org/indoo/indoo.html">OO RuleML</a>.
          This also makes RuleML a language for FP/LP-integrated programming (<a href="http://www.cs.unb.ca/~boley/FLP/cs6905FLP.pdf">FLP</a>), including OO FLP (e.g., <a href="http://wiki.ruleml.org/index.php/PSOA_RuleML">PSOA RuleML</a>).
@@ -97,10 +106,13 @@
          <br>
          RuleML, with <a href="http://www.relfun.org/rfml/">RFML</a> as one of its inputs,
          has long permitted the markup of oriented (i.e., directed) equations
-         for defining the value(s) of a function applied to arguments,
+         for defining the value(s) of a generalized function applied to arguments,
          optionally conditional on a body as in Horn rules.
+         The two generalizations of functions (allowing their tight, <a href="https://books.google.ca/books?id=OMwACkP_25gC">Relfun</a>-style integration with <a href="https://books.google.ca/books?id=VjHk2Cjrti8C">Prolog</a>-style relations)
+         are optional non-ground arguments and/or values (partial data structures) in combination
+         with optional set/multi-valuedness (non-determinism).
          Later, this was extended to logics with unoriented (i.e., undirected)
-         equality for the various sublanguages of RuleML,
+         equality for the various languages of RuleML,
          but the equality element has still often utilized
          the left-to-right orientation of its (abridged) textual syntax.
          
@@ -109,8 +121,7 @@
          Functional RuleML
          
          employs general
-         expression (<b>Expr</b>) elements which usually applies (to zero or more arguments) a contained function
-         (<b>Fun</b>) element distinguishing mainly
+         expression (<b>Expr</b>) elements which usually apply (to zero or more arguments) a contained function (<b>Fun</b>) element distinguishing mainly
          uninterpreted (constructor, 'self-<b>copy</b>ing') vs. interpreted (user-defined, '<b>value</b>-returning') functions
          via an XML attribute <b>per</b>={<b>"copy"</b>,<b>"value"</b>}.
          Another attribute likewise distinguishes the (single- vs. set-)valuedness of functions.
@@ -124,7 +135,7 @@
          Higher-order functions are finally added, currently named ones such as <b>Compose</b>,
          and later anonymous ones, i.e. 'in-place' <b>Lambda</b> definitions.
          While various subsets of the F(L)P features described here are currently embedded
-         within the sublanguages of the RuleML schema family,
+         within the languages of the Deliberation RuleML schema family,
          customizations of RuleML schemas in Relax NG could be performed with the Modular sYNtax
          confiGurator (<a href="http://wiki.ruleml.org/index.php/MYNG">MYNG</a>)
          to carve out the exact schemas of existing and future (OO) F(L)P languages.
@@ -154,8 +165,8 @@
       <p>For example, a function <b>first-born(John, Mary) </b>can be uninterpreted,
          		so that the application <b>first-born(John, Mary)</b> just denotes the first-born child; or, interpreted, e.g. using equational definition
          <b>first-born(John, Mary) = Jory</b>, so that the application <b>first-born(John, Mary)</b> returns <b>Jory</b>.
-         Such interpreted and uninterpreted functions are both allowed in Functional RuleML,
-         and are marked up here with a discriminating interpreted attribute <b>per</b> as follows
+         Interpreted and uninterpreted functions are both allowed in Functional RuleML,
+         and are marked up here with a discriminating attribute <b>per</b> as follows
          (interpreted on the left, uninterpreted on the right):
          		
          <table border="0" cellspacing="" cellpadding="">
@@ -221,9 +232,9 @@
       </p>
       
       
-      <p>The rationale here is to preserve the natural extension hierarchy of the RuleML sublanguages,
-         guaranteeing that RuleML sublanguages without equality will not need an <b>per="copy"</b> attribute setting
-         (on <b>Fun</b>ctions inside <b>Expr</b>essions) in order to preserve their meaning in RuleML sublanguages with equality.
+      <p>The rationale here is to preserve the natural extension hierarchy of the RuleML languages,
+         guaranteeing that RuleML languages without equality will not need an <b>per="copy"</b> attribute setting
+         (on <b>Fun</b>ctions inside <b>Expr</b>essions) in order to preserve their meaning in RuleML languages with equality.
          
          This entails that, e.g., rules from <a href="http://www.ruleml.org/1.0/xsd/hornlog.xsd">hornlog</a> rulebases can be copied and pasted unchanged
          into <a href="http://www.ruleml.org/1.0/xsd/hornlogeq.xsd">hornlogeq</a> rulebases while preserving their original meaning.
@@ -260,7 +271,7 @@
          		inside an uninterpreted <b>age</b> there can only be an uninterpreted <b>first-born</b> .
          		The resulting three versions of the example can be marked up thus (where "u" and
          "v" can
-         assume "value" "value", "value" "copy", or "copy" "copy", respectively):
+         assume "value" and "value", "value" and "copy", or "copy" and "copy", respectively):
       </p>
       		<b><pre>
 &lt;Expr&gt;
@@ -414,7 +425,7 @@
       
       
       <p>With the above <b>age</b> definition,
-         also assuming <b>birth-year(Jory) = 1993</b> and  <b>this-year() = 2013</b>,
+         also assuming <b>birth-year(Jory) = 1993</b> and  <b>this-year() = 2015</b>,
          the <b>age</b> call
       </p>
       		<b><pre>
@@ -438,7 +449,7 @@
 &lt;/Expr&gt;
 </pre></b>
       
-      <p>return <b>20</b>, where we moreover assume the earlier <b>first-born</b> definition.
+      <p>return <b>22</b>, where we moreover assume the earlier <b>first-born</b> definition.
       </p>
       	
       <h2><a name="Higher-Order Functions">Higher-Order Functions</a></h2>
@@ -480,8 +491,8 @@
       		
       		
       <p>The functional part of Relfun's RFML syntax can be translated into Fun RuleML using
-         the <a href="http://www.ruleml.org/fun/rfml2ruleml.xslt">RFML2RuleML.xslt</a> stylesheet, which was
-         adapted from an <a href="http://www.relfun.org/ruleml/rfml2ruleml.xsl">earlier stylesheet</a> for mapping a Hornlog RFML program into an older version
+         the <a href="http://www.ruleml.org/fun/1.0/rfml2ruleml.xslt">RFML2RuleML.xslt</a> stylesheet, which was
+         adapted from an <a href="http://www.relfun.org/ruleml/rfml2ruleml.xsl">earlier stylesheet</a> (View Page Source) for mapping a Hornlog RFML program into an older version
          of RuleML. The new stylesheet is designed to map the functional part of RFML into
          RuleML 0.91.
       </p>
@@ -495,7 +506,7 @@
       		
       <ul>
          			
-         <li>FatherOfJohn in Functional RuleML: <a href="http://www.ruleml.org/fun/FatherOfJohn.xml">FatherOfJohn.xml</a>
+         <li>FatherOfJohn in Functional RuleML: <a href="http://www.ruleml.org/fun/1.0/FatherOfJohn.xml">FatherOfJohn.xml</a>
             			
          </li>
          		
@@ -505,7 +516,7 @@
       		
       <ul>
          			
-         <li>RFMLFact.xml in RFML: <a href="http://www.ruleml.org/fun/RFMLFact.xml">RFMLFact.xml</a>
+         <li>RFMLFact.xml in RFML: <a href="http://www.ruleml.org/fun/1.0/RFMLFact.xml">RFMLFact.xml</a>
             			
          </li>
          		
@@ -513,7 +524,7 @@
       		
       <ul>
          			
-         <li>RuleMLResult.xml in RuleML: <a href="http://www.ruleml.org/fun/RuleMLResult.xml">RuleMLResult.xml</a>
+         <li>RuleMLResult.xml in RuleML: <a href="http://www.ruleml.org/fun/1.0/RuleMLResult.xml">RuleMLResult.xml</a>
             			
          </li>
          		
@@ -551,7 +562,7 @@
       <p>
          		Site Contact:
          		<a href="http://www.cs.unb.ca/~boley/">Harold Boley</a>.
-         		Page Version: 2013-04-27
+         		Page Version: 2015-10-20
          		
          		<br>
          			<br>
