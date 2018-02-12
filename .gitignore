@@ -4,6 +4,7 @@
 /1.0
 /usecases
 /ruleml2tptp
+/rif/rulelog
 /0.91/relaxng/*.zip
 /0.91/relaxng/error_log
 /mbox/new
