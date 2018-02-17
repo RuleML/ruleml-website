@@ -7,7 +7,7 @@ and another for the usecases (https://github.com/RuleML/ruleml-usecases).
 
 Prerequisites
 -------------
-1. To contribute to this repository, You must have Git installed on your system. See [7].
+1. To contribute to this repository, you must have Git installed on your system. See [7].
 
 Training
 --------
