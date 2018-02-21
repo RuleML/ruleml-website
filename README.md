@@ -34,8 +34,9 @@ You should replace "greenTara" with your Github user name.
 
     $ git remote add myFork https://github.com/greenTara/ruleml-website.git
     
-5. Other configuration steps, such as providing your name and email so your commits can be identified
-   should be performed at this point, if they haven't been done already.
+5. Other configuration steps, such as providing your name and email so your
+   commits can be identified should be performed at this point,
+   if they haven't been done already.
 
     $ git config --global user.name "Tara Athan"
     
