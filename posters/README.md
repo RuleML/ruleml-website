@@ -1,0 +1,1 @@
+Posters are similar to talks but usually consist of (only) a single (large) page, hence are spatially (rather than temporally) structured, and often carry no metadata about their presentation events (hence can be easily reused for multiple events).
