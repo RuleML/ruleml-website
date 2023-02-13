@@ -2,7 +2,6 @@
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-||Christian De Sainte Marie|Neuro-symbolic AI : where are the rules?||
 ||Ahmad Mel| Subjectively Interesting Pattern and Outlier Mining||
 
 *History of talks*
@@ -10,6 +9,7 @@
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2023-01-25|Christian De Sainte Marie (IBM France Lab)|[Neuro-symbolic AI : where are the rules?](ChristianDeSainteMarie-neurosymbolic-ai-where-are-the-rules-RuleMLWebinar-2023-01-25.pdf)||
 |2022-11-30|Kevin Angele (STI Innsburck)|[RUBEN: A Rule Engine Benchmarking Framework](https://github.com/RuleML/ruleml-website/blob/master/talks/KevinAngele_RuleEngineBenchmarking-RUBEN-RuleMLWebinar_2022_11_30.pdf)|[Rule challenge paper](https://ceur-ws.org/Vol-3229/paper66.pdf)|
 |2022-10-26|Robert Kowalski (Imperial College)|[Fifty Years of Prolog and Beyond](https://github.com/RuleML/ruleml-website/blob/master/talks/BobKowalski-YearOfProlog-RuleMLWebinar-2022-10-25.pdf)|[Year of Prolog](https://prologyear.logicprogramming.org/PrologYear.html)|
 |2022-6-29|Lukáš Sýkora (VŠE and Robolytix)|[Process Mining via Webhooks and Action Rules](http://ruleml.org/talks/LukasSykora-ActionRules-RuleMLWebinar-2022-06-29.pdf)|
