@@ -1,10 +1,16 @@
-*Upcoming talks*
+The RuleML Webinars feature rule topics of shared interest to the RuleML community. Each Webinar currently consists of a 20-minute presentation interleaved with / followed by about 10 minutes of discussion. Presenters provide their slides (PDFized as exemplified in the Title column below) prior to the Zoom-based Webinars (using "Share Screens"). The events typically happen on the last Wednesday of the month at 4 PM Central Europe. The organization of this Webinar series was started in January 2015 by Harold Boley, who ran it until June 2019. Starting in July 2019, the RuleML Webinar organization has been continued by Tomáš Kliegr, who should be contacted by prospective presenters.
+
+
+## Accessing the webinar.
+To receive Zoom connection information, please write to the webinar organizer (tomas.kliegr -at- vse.cz).
+
+## Upcoming talks
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 |2023-03-29|Leora Morgenstern|Reasoning about deception and coercion in the game of Diplomacy  using epistemic rules||
 
-*History of talks*
+## History of talks
 
 
 |Date|Presenter|Title|Material|
