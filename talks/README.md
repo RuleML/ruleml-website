@@ -2,13 +2,14 @@
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-||Ahmad Mel| Subjectively Interesting Pattern and Outlier Mining||
+|2023-03-29|Leora Morgenstern|Reasoning about deception and coercion in the game of Diplomacy  using epistemic rules||
 
 *History of talks*
 
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2023-02-22|Ahmad Mel (University of Ghent)|[Subjectively Interesting Pattern and Outlier Mining](AhmadMel-pattern-mining-RuleMLWebinar-2023-02-22.pdf)|[paper](https://link.springer.com/article/10.1007/s10618-019-00664-w)|
 |2023-01-25|Christian De Sainte Marie (IBM France Lab)|[Neuro-symbolic AI : where are the rules?](ChristianDeSainteMarie-neurosymbolic-ai-where-are-the-rules-RuleMLWebinar-2023-01-25.pdf)||
 |2022-11-30|Kevin Angele (STI Innsburck)|[RUBEN: A Rule Engine Benchmarking Framework](https://github.com/RuleML/ruleml-website/blob/master/talks/KevinAngele_RuleEngineBenchmarking-RUBEN-RuleMLWebinar_2022_11_30.pdf)|[Rule challenge paper](https://ceur-ws.org/Vol-3229/paper66.pdf)|
 |2022-10-26|Robert Kowalski (Imperial College)|[Fifty Years of Prolog and Beyond](https://github.com/RuleML/ruleml-website/blob/master/talks/BobKowalski-YearOfProlog-RuleMLWebinar-2022-10-25.pdf)|[Year of Prolog](https://prologyear.logicprogramming.org/PrologYear.html)|
