@@ -8,7 +8,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2023-03-29|Leora Morgenstern|Reasoning about deception and coercion in the game of Diplomacy  using epistemic rules||
+|2023-03-29|Leora Morgenstern (PARC, USA) |Reasoning about deception and coercion in the game of Diplomacy  using epistemic rules||
 
 ## History of talks
 
