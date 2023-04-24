@@ -8,7 +8,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2023-03-29|Leora Morgenstern (PARC, USA) |Reasoning about deception and coercion in the game of Diplomacy  using epistemic rules||
+|2023-04-26|Tomáš Kliegr (VŠE, Czech Republic) |QCBA: improving rule classifiers learned from quantitative data by recovering information lost by discretisation|[paper](https://link.springer.com/article/10.1007/s10489-022-04370-x), [r package](https://cran.r-project.org/web/packages/qCBA/index.html)|
 
 ## History of talks
 
