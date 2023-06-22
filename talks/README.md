@@ -8,13 +8,14 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2023-04-26|Tomáš Kliegr (VŠE, Czech Republic) |QCBA: improving rule classifiers learned from quantitative data by recovering information lost by discretisation|[paper](https://link.springer.com/article/10.1007/s10489-022-04370-x), [r package](https://cran.r-project.org/web/packages/qCBA/index.html)|
+
 
 ## History of talks
 
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2023-04-26|Tomáš Kliegr (VŠE, Czech Republic) |[QCBA: improving rule classifiers learned from quantitative data by recovering information lost by discretisation](TomasKliegr-QCBA-Classsification-By-Association-Rules-Quantitative-RuleMLWebinar-2023-04-26.pdf)|[QCBA paper](https://link.springer.com/article/10.1007/s10489-022-04370-x), [r package](https://cran.r-project.org/web/packages/qCBA/index.html)|
 |2023-02-22|Ahmad Mel (University of Ghent)|[Subjectively Interesting Pattern and Outlier Mining](AhmadMel-pattern-mining-RuleMLWebinar-2023-02-22.pdf)|[paper](https://link.springer.com/article/10.1007/s10618-019-00664-w)|
 |2023-01-25|Christian De Sainte Marie (IBM France Lab)|[Neuro-symbolic AI : where are the rules?](ChristianDeSainteMarie-neurosymbolic-ai-where-are-the-rules-RuleMLWebinar-2023-01-25.pdf)||
 |2022-11-30|Kevin Angele (STI Innsburck)|[RUBEN: A Rule Engine Benchmarking Framework](https://github.com/RuleML/ruleml-website/blob/master/talks/KevinAngele_RuleEngineBenchmarking-RUBEN-RuleMLWebinar_2022_11_30.pdf)|[Rule challenge paper](https://ceur-ws.org/Vol-3229/paper66.pdf)|
