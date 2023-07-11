@@ -8,8 +8,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-
-
+|2023-08-01|Marcin Joachimiak (LBL Berkeley, USA) |[Understanding Earth’s Ecosystems with Machine Learning](MarcinJoachimiak-Understanding_Earths_Ecosystems_with_Machine_Learning-RuleMLWebinar-2023-08-01.pdf)|KBase ([paper](https://www.nature.com/articles/nbt.4163), [system](https://www.kbase.us/)), KG-Microbe ([paper](https://ceur-ws.org/Vol-3073/paper19.pdf), [KG-Hub](https://kg-hub.berkeleybop.io/kg-microbe/), [github](https://github.com/Knowledge-Graph-Hub/kg-microbe))
 ## History of talks
 
 
