@@ -8,6 +8,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2023-10-25|[Len Feremans](https://www.uantwerpen.be/en/staff/len-feremans/) (Adrem Data lab at the University of Antwerp, The Netherlands) |[Rule learning for recommender systems](https://www.uantwerpen.be/en/staff/len-feremans/research/)|
 
 ## History of talks
 
