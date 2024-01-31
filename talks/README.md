@@ -8,7 +8,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2024-1-31|[Bettina Finzel](https://www.uni-bamberg.de/kogsys/team/finzel-bettina/) (Cognitive Systems group, University of Bamberg, Germany) | [Generating Concept-based and Relational Explanations for Image Classification](BettinaFinzel-Corex-RuleMLWebinar-2024-01-31) |
+|2024-1-31|[Bettina Finzel](https://www.uni-bamberg.de/kogsys/team/finzel-bettina/) (Cognitive Systems group, University of Bamberg, Germany) | [Generating Concept-based and Relational Explanations for Image Classification](BettinaFinzel-Corex-RuleMLWebinar-2024-01-31.pdf) |
 
 ## History of talks
 
