@@ -4,17 +4,11 @@ The RuleML Webinars feature rule topics of shared interest to the RuleML communi
 ## Accessing the webinar.
 To receive Zoom connection information, please write to the webinar organizer (tomas.kliegr -at- vse.cz).
 
-## Upcoming talks
+## History of talks
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 |2024-1-31|[Bettina Finzel](https://www.uni-bamberg.de/kogsys/team/finzel-bettina/) (Cognitive Systems group, University of Bamberg, Germany) | [Generating Concept-based and Relational Explanations for Image Classification](BettinaFinzel-Corex-RuleMLWebinar-2024-01-31.pdf) |
-
-## History of talks
-
-
-|Date|Presenter|Title|Material|
-|-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 |2023-10-25|[Len Feremans](https://www.uantwerpen.be/en/staff/len-feremans/) (Adrem Data lab at the University of Antwerp, The Netherlands) |[Rule learning for recommender systems](LensFeremans-RuleLearningForRecommendation-2023-10-25.pdf.pdf)|
 |2023-08-01|Marcin Joachimiak (LBL Berkeley, USA) |[Understanding Earth’s Ecosystems with Machine Learning](MarcinPJoachimiak-UnderstandingEarthEcosystem-RuleMLWebinar-2023-08-01.pdf)|KBase ([paper](https://www.nature.com/articles/nbt.4163), [system](https://www.kbase.us/)), KG-Microbe ([paper](https://ceur-ws.org/Vol-3073/paper19.pdf), [KG-Hub](https://kg-hub.berkeleybop.io/kg-microbe/), [github](https://github.com/Knowledge-Graph-Hub/kg-microbe))
 |2023-04-26|Tomáš Kliegr (VŠE, Czech Republic) |[QCBA: improving rule classifiers learned from quantitative data by recovering information lost by discretisation](TomasKliegr-QCBA-Classsification-By-Association-Rules-Quantitative-RuleMLWebinar-2023-04-26.pdf)|[QCBA paper](https://link.springer.com/article/10.1007/s10489-022-04370-x), [r package](https://cran.r-project.org/web/packages/qCBA/index.html)|
