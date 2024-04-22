@@ -7,7 +7,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2024-1-31|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) |  TBA | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
+|2024-5-29|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) |  TBA | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 
 ## History of talks
 
