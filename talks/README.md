@@ -7,12 +7,13 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2024-5-29|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) |  TBA | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
+|2024-6-26|[David M. Cerna]([https://celinehocquette.github.io/](https://www.cs.cas.cz/dcerna/)) (Institute of Computer Science, Czech Academy of Sciences) |  Predicate invention in rule learning with Popper use case - When what is known is not enough | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 
 ## History of talks
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2024-5-29|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) | [Popper system for Inductive Logical Programming](https://github.com/RuleML/ruleml-website/blob/master/talks/POPPER-Celine-Hocquett-RuleMLWebinar-2024-05-09.pdf) | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 |2024-1-31|[Bettina Finzel](https://www.uni-bamberg.de/kogsys/team/finzel-bettina/) (Cognitive Systems group, University of Bamberg, Germany) | [Generating Concept-based and Relational Explanations for Image Classification](BettinaFinzel-Corex-RuleMLWebinar-2024-01-31.pdf) |
 |2023-10-25|[Len Feremans](https://www.uantwerpen.be/en/staff/len-feremans/) (Adrem Data lab at the University of Antwerp, The Netherlands) |[Rule learning for recommender systems](LensFeremans-RuleLearningForRecommendation-2023-10-25.pdf.pdf)|
 |2023-08-01|Marcin Joachimiak (LBL Berkeley, USA) |[Understanding Earth’s Ecosystems with Machine Learning](MarcinPJoachimiak-UnderstandingEarthEcosystem-RuleMLWebinar-2023-08-01.pdf)|KBase ([paper](https://www.nature.com/articles/nbt.4163), [system](https://www.kbase.us/)), KG-Microbe ([paper](https://ceur-ws.org/Vol-3073/paper19.pdf), [KG-Hub](https://kg-hub.berkeleybop.io/kg-microbe/), [github](https://github.com/Knowledge-Graph-Hub/kg-microbe))
