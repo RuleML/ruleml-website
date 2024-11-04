@@ -5,9 +5,9 @@ The RuleML Webinars feature rule topics of shared interest to the RuleML communi
 To receive Zoom connection information, please write to the webinar organizer (tomas.kliegr -at- vse.cz).
 
 ## Upcoming talks
-|Date|Presenter|Title|Material|
+|Date|Presenter|Title|Notes|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2024-11-15|[Martin F. Berger](https://martinfriedrichberger.net/) (University of Sussex, UK & Montanarius Ltd) |  Towards GPU-accelerated automated reasoning | 
+|2024-11-15|[Martin F. Berger](https://martinfriedrichberger.net/) (University of Sussex, UK & Montanarius Ltd) |  Towards GPU-accelerated automated reasoning | !! Starts at 10 am and is a jointly given as part of the  [KEG seminar](https://kizi.vse.cz/seminare-keg/towards-gpu-accelerated-automated-reasoning/)  in Prague!!
 
 
 ## History of talks
