@@ -7,13 +7,13 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Notes|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2024-11-15|[Martin F. Berger](https://martinfriedrichberger.net/) (University of Sussex, UK & Montanarius Ltd) |  Towards GPU-accelerated automated reasoning | !! Starts at 10 am and is a jointly given as part of the  [KEG seminar](https://kizi.vse.cz/seminare-keg/towards-gpu-accelerated-automated-reasoning/)  in Prague!!
 
 
 ## History of talks
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2024-11-15|[Martin F. Berger](https://martinfriedrichberger.net/) (University of Sussex, UK & Montanarius Ltd) |  [Towards GPU-accelerated automated reasoning](https://github.com/RuleML/ruleml-website/blob/master/talks/Martin-Berger-GPU-Reasoning-RuleMLwebinar-2024-11-15.pdf) | !! Starts at 10 am and is jointly given as part of the  [KEG seminar](https://kizi.vse.cz/seminare-keg/towards-gpu-accelerated-automated-reasoning/)  in Prague!!
 |2024-6-26|[David M. Cerna](https://www.cs.cas.cz/dcerna/) (Institute of Computer Science, Czech Academy of Sciences) |  [Predicate invention in rule learning with Popper use case - When what is known is not enough](https://github.com/RuleML/ruleml-website/blob/master/talks/DavidCerna-PredicateInvention-RuleMLWebinar-2024-06-26.pdf) | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 |2024-5-29|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) | [Popper system for Inductive Logical Programming](https://github.com/RuleML/ruleml-website/blob/master/talks/POPPER-Celine-Hocquett-RuleMLWebinar-2024-05-09.pdf) | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 |2024-1-31|[Bettina Finzel](https://www.uni-bamberg.de/kogsys/team/finzel-bettina/) (Cognitive Systems group, University of Bamberg, Germany) | [Generating Concept-based and Relational Explanations for Image Classification](BettinaFinzel-Corex-RuleMLWebinar-2024-01-31.pdf) |
