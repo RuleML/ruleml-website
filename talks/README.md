@@ -7,7 +7,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Notes|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-
+|2025-11-26|[Szymon Bobek](https://github.com/sbobek) (Jagiellonian University, Kraków, Poland) | One Tree to Explain Them All: Importance-Aware Rule Models for Black-Box Systems | [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S1566253525004300), [arXiv](https://arxiv.org/abs/2310.14894)
 
 ## History of talks
 
