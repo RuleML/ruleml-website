@@ -7,12 +7,12 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Notes|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-|2025-11-26|[Szymon Bobek](https://github.com/sbobek) (Jagiellonian University, Kraków, Poland) | One Tree to Explain Them All: Importance-Aware Rule Models for Black-Box Systems | [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S1566253525004300), [arXiv](https://arxiv.org/abs/2310.14894)
 
 ## History of talks
 
 |Date|Presenter|Title|Material|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+|2025-11-26|[Szymon Bobek](https://github.com/sbobek) (Jagiellonian University, Kraków, Poland) | [One Tree to Explain Them All: Importance-Aware Rule Models for Black-Box Systems](https://github.com/RuleML/ruleml-website/blob/master/talks/SzymonBobek-RuleModels-2025-26-11) | [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S1566253525004300), [arXiv](https://arxiv.org/abs/2310.14894)
 |2024-11-15|[Martin F. Berger](https://martinfriedrichberger.net/) (University of Sussex, UK & Montanarius Ltd) |  [Towards GPU-accelerated automated reasoning](https://github.com/RuleML/ruleml-website/blob/master/talks/Martin-Berger-GPU-Reasoning-RuleMLwebinar-2024-11-15.pdf) |  [ltl-learning-on-gpus](https://martinfriedrichberger.net/ltl),[https://martinfriedrichberger.net/pldi2023](https://martinfriedrichberger.net/pldi2023)
 |2024-6-26|[David M. Cerna](https://www.cs.cas.cz/dcerna/) (Institute of Computer Science, Czech Academy of Sciences) |  [Predicate invention in rule learning with Popper use case - When what is known is not enough](https://github.com/RuleML/ruleml-website/blob/master/talks/DavidCerna-PredicateInvention-RuleMLWebinar-2024-06-26.pdf) | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
 |2024-5-29|[Céline Hocquette](https://celinehocquette.github.io/) (University of Oxford, Department of Computer Science) | [Popper system for Inductive Logical Programming](https://github.com/RuleML/ruleml-website/blob/master/talks/POPPER-Celine-Hocquett-RuleMLWebinar-2024-05-09.pdf) | [Popper ILP System](https://github.com/logic-and-learning-lab/Popper)
