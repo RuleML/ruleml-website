@@ -7,7 +7,7 @@ To receive Zoom connection information, please write to the webinar organizer (t
 ## Upcoming talks
 |Date|Presenter|Title|Notes|
 |-------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-
+| 2026-02-25 (15:00) | [Maciej Mozolewski](https://scholar.google.com/citations?user=cBsxqQgAAAAJ&hl=pl) and [Maciej Szelążek](https://scholar.google.com/citations?user=z3EBTNsAAAAJ&hl=pl) (Jagiellonian University, GEIST Group) | Mining Structured Knowledge and Semantic Insights from Time Series | **Talk 1:** Rule-Based and Prototype-Driven Explanations for Time Series,**Talk 2:** Use of ML and XAI as decision–support for Business Intelligence analysis |
 ## History of talks
 
 |Date|Presenter|Title|Material|
